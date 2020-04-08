@@ -151,9 +151,9 @@ namespace GpsGyroAnalysisUITool.Networking
                     nmeaData.longtitude = MinuteToDegree(double.Parse(gpsData[3].Replace('.', ',')));
 
 
-                    Console.WriteLine("wl: "+ nmeaData.degreeAngle);
-                    Console.WriteLine("lat: "+ nmeaData.latitude);
-                    Console.WriteLine("lng: " + nmeaData.longtitude);
+                    //Console.WriteLine("wl: "+ nmeaData.degreeAngle);
+                    //Console.WriteLine("lat: "+ nmeaData.latitude);
+                    //Console.WriteLine("lng: " + nmeaData.longtitude);
 
                     foreach (var gpsAction in gpsActions)
                     {

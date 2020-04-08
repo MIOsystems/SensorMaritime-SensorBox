@@ -21,7 +21,6 @@ namespace GpsGyroAnalysisUITool
             InitializeComponent();
             data = new SensorData();
 
-
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -60,11 +59,14 @@ namespace GpsGyroAnalysisUITool
         void drawRotationBar(Graphics g, double min, double max, double avg, int positionx, string label)
         {
 
-            int range = (Height - 80);
+            int range = (Height - 100);
 
             double avgDeg = ((90.0 + ToDegrees(avg)) / 180.0) * range;
             double minDeg = ((90.0 + ToDegrees(min)) / 180.0) * range;
             double maxDeg = ((90.0 + ToDegrees(max)) / 180.0) * range;
+
+            Console.WriteLine("avgDeg: "+ label+ avgDeg);
+
 
             int maxRange = (int)(maxDeg - minDeg);
 
@@ -74,7 +76,7 @@ namespace GpsGyroAnalysisUITool
             g.DrawLine(Pens.Black, positionx - 1, Height - 80, positionx + (50 - 1), Height - 80);
            // g.DrawLine(Pens.Black, positionx + 15, 20, positionx + 15, Height - 80);
             g.FillRectangle(Brushes.Blue, new Rectangle(positionx, 20 + (int)minDeg, 50, maxRange));
-            g.DrawLine(Pens.Red, positionx - 1, 20 + (int)avgDeg, positionx + (50 - 1), 20 + (int)avgDeg);
+            g.DrawLine(Pens.Red, positionx - 1, 20+(int)avgDeg, positionx + (50 - 1), 20+(int)avgDeg);
             g.DrawString("min: " + Math.Round(ToDegrees(min),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 80));
             g.DrawString("max: " + Math.Round(ToDegrees(max),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 70));
             g.DrawString("avg: " + Math.Round(ToDegrees(avg),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 60));

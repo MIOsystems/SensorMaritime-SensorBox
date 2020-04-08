@@ -48,6 +48,11 @@ namespace DavisBridgeTool3.Entities
 
 			if (point == null)
 				return;
+			if (point.Length < 2) {
+				PointF pointFC = Transform.WorldtoMap(point[0].Coordinate, map);
+				g.FillEllipse(Brushes.Red, new Rectangle( (int)pointFC.X - 3, (int)pointFC.Y - 3, 6, 6));
+				return;
+			}
 			PointF pointF = Transform.WorldtoMap(point[0].Coordinate, map);
 			double diffCoordX = (((IPoint)point[1]).X - ((IPoint)point[0]).X);
 			double diffCoordY = (((IPoint)point[1]).Y - ((IPoint)point[0]).Y);

@@ -1,0 +1,2211 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "mem.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .comm ram_heap,1619,4
+  20              	 .section .bss.ram,"aw",%nobits
+  21              	 .align 2
+  24              	ram:
+  25 0000 00000000 	 .space 4
+  26              	 .section .bss.ram_end,"aw",%nobits
+  27              	 .align 2
+  30              	ram_end:
+  31 0000 00000000 	 .space 4
+  32              	 .section .bss.lfree,"aw",%nobits
+  33              	 .align 2
+  36              	lfree:
+  37 0000 00000000 	 .space 4
+  38              	 .section .text.ptr_to_mem,"ax",%progbits
+  39              	 .align 2
+  40              	 .thumb
+  41              	 .thumb_func
+  43              	ptr_to_mem:
+  44              	.LFB137:
+  45              	 .file 1 "../Dave/Generated/ETH_LWIP/lwip/core/mem.c"
+   1:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+   2:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @file
+   3:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Dynamic memory manager
+   4:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+   5:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * This is a lightweight replacement for the standard C library malloc().
+   6:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+   7:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * If you want to use the standard C library malloc() instead, define
+   8:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * MEM_LIBC_MALLOC to 1 in your lwipopts.h
+   9:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  10:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * To let mem_malloc() use pools (prevents fragmentation and is much faster than
+  11:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * a heap but might waste some memory), define MEM_USE_POOLS to 1, define
+  12:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * MEMP_USE_CUSTOM_POOLS to 1 and create a file "lwippools.h" that includes a list
+  13:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * of pools like this (more pools can be added between _START and _END):
+  14:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  15:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Define three pools with sizes 256, 512, and 1512 bytes
+  16:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * LWIP_MALLOC_MEMPOOL_START
+  17:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * LWIP_MALLOC_MEMPOOL(20, 256)
+  18:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * LWIP_MALLOC_MEMPOOL(10, 512)
+  19:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * LWIP_MALLOC_MEMPOOL(5, 1512)
+  20:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * LWIP_MALLOC_MEMPOOL_END
+  21:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+  22:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  23:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /*
+  24:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  25:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * All rights reserved.
+  26:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  27:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  28:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * are permitted provided that the following conditions are met:
+  29:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  30:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  31:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *    this list of conditions and the following disclaimer.
+  32:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  33:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *    this list of conditions and the following disclaimer in the documentation
+  34:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *    and/or other materials provided with the distribution.
+  35:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * 3. The name of the author may not be used to endorse or promote products
+  36:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *    derived from this software without specific prior written permission.
+  37:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  38:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  39:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  40:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  41:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  42:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  43:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  44:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  45:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  46:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  47:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * OF SUCH DAMAGE.
+  48:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  49:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * This file is part of the lwIP TCP/IP stack.
+  50:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  51:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Author: Adam Dunkels <adam@sics.se>
+  52:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *         Simon Goldschmidt
+  53:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  54:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+  55:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  56:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include "ETH_LWIP/lwip/include/lwip/opt.h"
+  57:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include "ETH_LWIP/lwip/include/lwip/mem.h"
+  58:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include "ETH_LWIP/lwip/include/lwip/def.h"
+  59:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include "ETH_LWIP/lwip/include/lwip/sys.h"
+  60:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include "ETH_LWIP/lwip/include/lwip/stats.h"
+  61:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include "ETH_LWIP/lwip/include/lwip/err.h"
+  62:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  63:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include <string.h>
+  64:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  65:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_LIBC_MALLOC
+  66:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #include <stdlib.h> /* for malloc()/free() */
+  67:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+  68:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  69:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* This is overridable for tests only... */
+  70:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #ifndef LWIP_MEM_ILLEGAL_FREE
+  71:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ILLEGAL_FREE(msg)         LWIP_ASSERT(msg, 0)
+  72:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+  73:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  74:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_STATS_INC_LOCKED(x)         SYS_ARCH_LOCKED(MEM_STATS_INC(x))
+  75:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_STATS_INC_USED_LOCKED(x, y) SYS_ARCH_LOCKED(MEM_STATS_INC_USED(x, y))
+  76:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_STATS_DEC_USED_LOCKED(x, y) SYS_ARCH_LOCKED(MEM_STATS_DEC_USED(x, y))
+  77:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  78:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+  79:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SANITY_OFFSET   MEM_SANITY_REGION_BEFORE_ALIGNED
+  80:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SANITY_OVERHEAD (MEM_SANITY_REGION_BEFORE_ALIGNED + MEM_SANITY_REGION_AFTER_ALIGNED)
+  81:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else
+  82:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SANITY_OFFSET   0
+  83:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SANITY_OVERHEAD 0
+  84:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+  85:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+  86:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK || MEMP_OVERFLOW_CHECK
+  87:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+  88:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Check if a mep element was victim of an overflow or underflow
+  89:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * (e.g. the restricted area after/before it has been altered)
+  90:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+  91:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param p the mem element to check
+  92:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param size allocated size of the element
+  93:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param descr1 description of the element source shown on error
+  94:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param descr2 description of the element source shown on error
+  95:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+  96:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+  97:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_overflow_check_raw(void *p, size_t size, const char *descr1, const char *descr2)
+  98:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+  99:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_REGION_AFTER_ALIGNED || MEM_SANITY_REGION_BEFORE_ALIGNED
+ 100:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   u16_t k;
+ 101:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   u8_t *m;
+ 102:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 103:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_REGION_AFTER_ALIGNED > 0
+ 104:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   m = (u8_t *)p + size;
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   for (k = 0; k < MEM_SANITY_REGION_AFTER_ALIGNED; k++) {
+ 106:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (m[k] != 0xcd) {
+ 107:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       char errstr[128];
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       snprintf(errstr, sizeof(errstr), "detected mem overflow in %s%s", descr1, descr2);
+ 109:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_ASSERT(errstr, 0);
+ 110:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 111:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_SANITY_REGION_AFTER_ALIGNED > 0 */
+ 113:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 114:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_REGION_BEFORE_ALIGNED > 0
+ 115:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   m = (u8_t *)p - MEM_SANITY_REGION_BEFORE_ALIGNED;
+ 116:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   for (k = 0; k < MEM_SANITY_REGION_BEFORE_ALIGNED; k++) {
+ 117:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (m[k] != 0xcd) {
+ 118:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       char errstr[128];
+ 119:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       snprintf(errstr, sizeof(errstr), "detected mem underflow in %s%s", descr1, descr2);
+ 120:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_ASSERT(errstr, 0);
+ 121:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 122:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 123:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_SANITY_REGION_BEFORE_ALIGNED > 0 */
+ 124:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else
+ 125:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_UNUSED_ARG(p);
+ 126:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_UNUSED_ARG(desc);
+ 127:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_UNUSED_ARG(descr);
+ 128:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 129:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 130:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 131:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 132:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Initialize the restricted area of a mem element.
+ 133:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 134:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+ 135:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_overflow_init_raw(void *p, size_t size)
+ 136:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_REGION_BEFORE_ALIGNED > 0 || MEM_SANITY_REGION_AFTER_ALIGNED > 0
+ 138:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   u8_t *m;
+ 139:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_REGION_BEFORE_ALIGNED > 0
+ 140:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   m = (u8_t *)p - MEM_SANITY_REGION_BEFORE_ALIGNED;
+ 141:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   memset(m, 0xcd, MEM_SANITY_REGION_BEFORE_ALIGNED);
+ 142:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 143:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_REGION_AFTER_ALIGNED > 0
+ 144:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   m = (u8_t *)p + size;
+ 145:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   memset(m, 0xcd, MEM_SANITY_REGION_AFTER_ALIGNED);
+ 146:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 147:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else /* MEM_SANITY_REGION_BEFORE_ALIGNED > 0 || MEM_SANITY_REGION_AFTER_ALIGNED > 0 */
+ 148:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_UNUSED_ARG(p);
+ 149:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_UNUSED_ARG(desc);
+ 150:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_SANITY_REGION_BEFORE_ALIGNED > 0 || MEM_SANITY_REGION_AFTER_ALIGNED > 0 */
+ 151:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 152:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_OVERFLOW_CHECK || MEMP_OVERFLOW_CHECK */
+ 153:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 154:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_LIBC_MALLOC || MEM_USE_POOLS
+ 155:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 156:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** mem_init is not used when using pools instead of a heap or using
+ 157:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * C library malloc().
+ 158:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 159:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+ 160:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_init(void)
+ 161:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 162:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 163:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 164:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** mem_trim is not used when using pools instead of a heap or using
+ 165:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * C library malloc(): we can't free part of a pool element and the stack
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * support mem_trim() to return a different pointer
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 169:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_trim(void *mem, mem_size_t size)
+ 170:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 171:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_UNUSED_ARG(size);
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return mem;
+ 173:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 174:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_LIBC_MALLOC || MEM_USE_POOLS */
+ 175:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 176:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_LIBC_MALLOC
+ 177:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* lwIP heap implemented using C library malloc() */
+ 178:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 179:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* in case C library malloc() needs extra protection,
+ 180:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * allow these defines to be overridden.
+ 181:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 182:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #ifndef mem_clib_free
+ 183:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define mem_clib_free free
+ 184:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 185:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #ifndef mem_clib_malloc
+ 186:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define mem_clib_malloc malloc
+ 187:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 188:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #ifndef mem_clib_calloc
+ 189:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define mem_clib_calloc calloc
+ 190:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 191:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 192:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_STATS && MEM_STATS
+ 193:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_LIBC_STATSHELPER_SIZE LWIP_MEM_ALIGN_SIZE(sizeof(mem_size_t))
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else
+ 195:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_LIBC_STATSHELPER_SIZE 0
+ 196:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 197:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 198:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 199:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Allocate a block of memory with a minimum of 'size' bytes.
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 201:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param size is the minimum size of the requested block in bytes.
+ 202:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @return pointer to allocated memory or NULL if no free memory was found.
+ 203:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 204:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Note that the returned value must always be aligned (as defined by MEM_ALIGNMENT).
+ 205:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 206:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 207:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_malloc(mem_size_t size)
+ 208:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 209:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   void *ret = mem_clib_malloc(size + MEM_LIBC_STATSHELPER_SIZE);
+ 210:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (ret == NULL) {
+ 211:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(err);
+ 212:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   } else {
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("malloc() must return aligned memory", LWIP_MEM_ALIGN(ret) == ret);
+ 214:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_STATS && MEM_STATS
+ 215:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     *(mem_size_t *)ret = size;
+ 216:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     ret = (u8_t *)ret + MEM_LIBC_STATSHELPER_SIZE;
+ 217:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_USED_LOCKED(used, size);
+ 218:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 219:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return ret;
+ 221:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 222:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 223:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** Put memory back on the heap
+ 224:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 225:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param rmem is the pointer as returned by a previous call to mem_malloc()
+ 226:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 227:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+ 228:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_free(void *rmem)
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 230:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("rmem != NULL", (rmem != NULL));
+ 231:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("rmem == MEM_ALIGN(rmem)", (rmem == LWIP_MEM_ALIGN(rmem)));
+ 232:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_STATS && MEM_STATS
+ 233:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   rmem = (u8_t *)rmem - MEM_LIBC_STATSHELPER_SIZE;
+ 234:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_STATS_DEC_USED_LOCKED(used, *(mem_size_t *)rmem);
+ 235:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 236:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_clib_free(rmem);
+ 237:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 238:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 239:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #elif MEM_USE_POOLS
+ 240:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 241:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* lwIP heap implemented with different sized pools */
+ 242:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 243:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 244:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Allocate memory: determine the smallest pool that is big enough
+ 245:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * to contain an element of 'size' and get an element from that pool.
+ 246:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 247:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param size the size in bytes of the memory needed
+ 248:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @return a pointer to the allocated memory or NULL if the pool is empty
+ 249:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 250:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 251:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_malloc(mem_size_t size)
+ 252:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 253:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   void *ret;
+ 254:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct memp_malloc_helper *element = NULL;
+ 255:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   memp_t poolnr;
+ 256:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t required_size = size + LWIP_MEM_ALIGN_SIZE(sizeof(struct memp_malloc_helper));
+ 257:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 258:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   for (poolnr = MEMP_POOL_FIRST; poolnr <= MEMP_POOL_LAST; poolnr = (memp_t)(poolnr + 1)) {
+ 259:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* is this pool big enough to hold an element of the required size
+ 260:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****        plus a struct memp_malloc_helper that saves the pool this element came from? */
+ 261:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (required_size <= memp_pools[poolnr]->size) {
+ 262:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       element = (struct memp_malloc_helper *)memp_malloc(poolnr);
+ 263:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       if (element == NULL) {
+ 264:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         /* No need to DEBUGF or ASSERT: This error is already taken care of in memp.c */
+ 265:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_USE_POOLS_TRY_BIGGER_POOL
+ 266:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         /** Try a bigger pool if this one is empty! */
+ 267:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         if (poolnr < MEMP_POOL_LAST) {
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           continue;
+ 269:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         }
+ 270:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_USE_POOLS_TRY_BIGGER_POOL */
+ 271:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         MEM_STATS_INC_LOCKED(err);
+ 272:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         return NULL;
+ 273:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       }
+ 274:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       break;
+ 275:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 276:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 277:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (poolnr > MEMP_POOL_LAST) {
+ 278:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("mem_malloc(): no pool is that big!", 0);
+ 279:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(err);
+ 280:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return NULL;
+ 281:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 282:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 283:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* save the pool number this element came from */
+ 284:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   element->poolnr = poolnr;
+ 285:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* and return a pointer to the memory directly after the struct memp_malloc_helper */
+ 286:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ret = (u8_t *)element + LWIP_MEM_ALIGN_SIZE(sizeof(struct memp_malloc_helper));
+ 287:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 288:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEMP_OVERFLOW_CHECK || (LWIP_STATS && MEM_STATS)
+ 289:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* truncating to u16_t is safe because struct memp_desc::size is u16_t */
+ 290:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   element->size = (u16_t)size;
+ 291:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_STATS_INC_USED_LOCKED(used, element->size);
+ 292:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEMP_OVERFLOW_CHECK || (LWIP_STATS && MEM_STATS) */
+ 293:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEMP_OVERFLOW_CHECK
+ 294:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* initialize unused memory (diff between requested size and selected pool's size) */
+ 295:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   memset((u8_t *)ret + size, 0xcd, memp_pools[poolnr]->size - size);
+ 296:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 297:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return ret;
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 299:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 300:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 301:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Free memory previously allocated by mem_malloc. Loads the pool number
+ 302:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * and calls memp_free with that pool number to put the element back into
+ 303:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * its pool
+ 304:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 305:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param rmem the memory element to free
+ 306:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 307:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+ 308:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_free(void *rmem)
+ 309:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 310:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct memp_malloc_helper *hmem;
+ 311:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 312:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("rmem != NULL", (rmem != NULL));
+ 313:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("rmem == MEM_ALIGN(rmem)", (rmem == LWIP_MEM_ALIGN(rmem)));
+ 314:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 315:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* get the original struct memp_malloc_helper */
+ 316:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* cast through void* to get rid of alignment warnings */
+ 317:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   hmem = (struct memp_malloc_helper *)(void *)((u8_t *)rmem - LWIP_MEM_ALIGN_SIZE(sizeof(struct mem
+ 318:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 319:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("hmem != NULL", (hmem != NULL));
+ 320:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("hmem == MEM_ALIGN(hmem)", (hmem == LWIP_MEM_ALIGN(hmem)));
+ 321:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("hmem->poolnr < MEMP_MAX", (hmem->poolnr < MEMP_MAX));
+ 322:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 323:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_STATS_DEC_USED_LOCKED(used, hmem->size);
+ 324:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEMP_OVERFLOW_CHECK
+ 325:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   {
+ 326:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     u16_t i;
+ 327:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("MEM_USE_POOLS: invalid chunk size",
+ 328:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****                 hmem->size <= memp_pools[hmem->poolnr]->size);
+ 329:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* check that unused memory remained untouched (diff between requested size and selected pool's
+ 330:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     for (i = hmem->size; i < memp_pools[hmem->poolnr]->size; i++) {
+ 331:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       u8_t data = *((u8_t *)rmem + i);
+ 332:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_ASSERT("MEM_USE_POOLS: mem overflow detected", data == 0xcd);
+ 333:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 334:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 335:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 336:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 337:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* and put it in the pool we saved earlier */
+ 338:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   memp_free(hmem->poolnr, hmem);
+ 339:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 340:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 341:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else /* MEM_USE_POOLS */
+ 342:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* lwIP replacement for your libc malloc() */
+ 343:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 344:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 345:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * The heap is made up as a list of structs of this type.
+ 346:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * This does not have to be aligned since for getting its size,
+ 347:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * we only use the macro SIZEOF_STRUCT_MEM, which automatically aligns.
+ 348:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 349:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** struct mem {
+ 350:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /** index (-> ram[next]) of the next struct */
+ 351:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t next;
+ 352:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /** index (-> ram[prev]) of the previous struct */
+ 353:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t prev;
+ 354:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /** 1: this area is used; 0: this area is unused */
+ 355:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   u8_t used;
+ 356:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 357:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /** this keeps track of the user allocation size for guard checks */
+ 358:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t user_size;
+ 359:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 360:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** };
+ 361:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 362:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** All allocated blocks will be MIN_SIZE bytes big, at least!
+ 363:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * MIN_SIZE can be overridden to suit your needs. Smaller values save space,
+ 364:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * larger values could prevent too small blocks to fragment the RAM too much. */
+ 365:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #ifndef MIN_SIZE
+ 366:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MIN_SIZE             12
+ 367:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MIN_SIZE */
+ 368:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* some alignment macros: we define them here for better source code layout */
+ 369:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MIN_SIZE_ALIGNED     LWIP_MEM_ALIGN_SIZE(MIN_SIZE)
+ 370:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define SIZEOF_STRUCT_MEM    LWIP_MEM_ALIGN_SIZE(sizeof(struct mem))
+ 371:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SIZE_ALIGNED     LWIP_MEM_ALIGN_SIZE(MEM_SIZE)
+ 372:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 373:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** If you want to relocate the heap to external memory, simply define
+ 374:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * LWIP_RAM_HEAP_POINTER as a void-pointer to that location.
+ 375:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * If so, make sure the memory at that location is big enough (see below on
+ 376:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * how that space is calculated). */
+ 377:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #ifndef LWIP_RAM_HEAP_POINTER
+ 378:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** the heap. we need one struct mem at the end and some room for alignment */
+ 379:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** LWIP_DECLARE_MEMORY_ALIGNED(ram_heap, MEM_SIZE_ALIGNED + (2U * SIZEOF_STRUCT_MEM));
+ 380:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_RAM_HEAP_POINTER ram_heap
+ 381:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_RAM_HEAP_POINTER */
+ 382:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 383:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** pointer to the heap (ram_heap): for alignment, ram is now a pointer instead of an array */
+ 384:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static u8_t *ram;
+ 385:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** the last entry, always unused! */
+ 386:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static struct mem *ram_end;
+ 387:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 388:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** concurrent access protection */
+ 389:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if !NO_SYS
+ 390:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static sys_mutex_t mem_mutex;
+ 391:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 392:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 393:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 394:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 395:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static volatile u8_t mem_free_count;
+ 396:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 397:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* Allow mem_free from other (e.g. interrupt) context */
+ 398:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_FREE_DECL_PROTECT()  SYS_ARCH_DECL_PROTECT(lev_free)
+ 399:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_FREE_PROTECT()       SYS_ARCH_PROTECT(lev_free)
+ 400:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_FREE_UNPROTECT()     SYS_ARCH_UNPROTECT(lev_free)
+ 401:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ALLOC_DECL_PROTECT() SYS_ARCH_DECL_PROTECT(lev_alloc)
+ 402:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ALLOC_PROTECT()      SYS_ARCH_PROTECT(lev_alloc)
+ 403:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ALLOC_UNPROTECT()    SYS_ARCH_UNPROTECT(lev_alloc)
+ 404:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_LFREE_VOLATILE       volatile
+ 405:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 406:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 407:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 408:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* Protect the heap only by using a mutex */
+ 409:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_FREE_DECL_PROTECT()
+ 410:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_FREE_PROTECT()    sys_mutex_lock(&mem_mutex)
+ 411:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_FREE_UNPROTECT()  sys_mutex_unlock(&mem_mutex)
+ 412:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* mem_malloc is protected using mutex AND LWIP_MEM_ALLOC_PROTECT */
+ 413:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ALLOC_DECL_PROTECT()
+ 414:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ALLOC_PROTECT()
+ 415:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_ALLOC_UNPROTECT()
+ 416:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define LWIP_MEM_LFREE_VOLATILE
+ 417:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 418:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 419:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 420:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /** pointer to the lowest free block, this is used for faster search */
+ 421:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static struct mem * LWIP_MEM_LFREE_VOLATILE lfree;
+ 422:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 423:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_CHECK
+ 424:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static void mem_sanity(void);
+ 425:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SANITY() mem_sanity()
+ 426:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else
+ 427:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define MEM_SANITY()
+ 428:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 429:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 430:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 431:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static void
+ 432:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_overflow_init_element(struct mem *mem, mem_size_t user_size)
+ 433:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 434:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   void *p = (u8_t *)mem + SIZEOF_STRUCT_MEM + MEM_SANITY_OFFSET;
+ 435:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem->user_size = user_size;
+ 436:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_overflow_init_raw(p, user_size);
+ 437:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 438:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 439:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static void
+ 440:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_overflow_check_element(struct mem *mem)
+ 441:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 442:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   void *p = (u8_t *)mem + SIZEOF_STRUCT_MEM + MEM_SANITY_OFFSET;
+ 443:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_overflow_check_raw(p, mem->user_size, "heap", "");
+ 444:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 445:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else /* MEM_OVERFLOW_CHECK */
+ 446:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define mem_overflow_init_element(mem, size)
+ 447:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #define mem_overflow_check_element(mem)
+ 448:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_OVERFLOW_CHECK */
+ 449:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 450:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static struct mem *
+ 451:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** ptr_to_mem(mem_size_t ptr)
+ 452:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+  46              	 .loc 1 452 0
+  47              	 .cfi_startproc
+  48              	 
+  49              	 
+  50              	 
+  51 0000 80B4     	 push {r7}
+  52              	.LCFI0:
+  53              	 .cfi_def_cfa_offset 4
+  54              	 .cfi_offset 7,-4
+  55 0002 83B0     	 sub sp,sp,#12
+  56              	.LCFI1:
+  57              	 .cfi_def_cfa_offset 16
+  58 0004 00AF     	 add r7,sp,#0
+  59              	.LCFI2:
+  60              	 .cfi_def_cfa_register 7
+  61 0006 0346     	 mov r3,r0
+  62 0008 FB80     	 strh r3,[r7,#6]
+ 453:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return (struct mem *)(void *)&ram[ptr];
+  63              	 .loc 1 453 0
+  64 000a 054B     	 ldr r3,.L3
+  65 000c 1A68     	 ldr r2,[r3]
+  66 000e FB88     	 ldrh r3,[r7,#6]
+  67 0010 1344     	 add r3,r3,r2
+ 454:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+  68              	 .loc 1 454 0
+  69 0012 1846     	 mov r0,r3
+  70 0014 0C37     	 adds r7,r7,#12
+  71              	.LCFI3:
+  72              	 .cfi_def_cfa_offset 4
+  73 0016 BD46     	 mov sp,r7
+  74              	.LCFI4:
+  75              	 .cfi_def_cfa_register 13
+  76              	 
+  77 0018 5DF8047B 	 ldr r7,[sp],#4
+  78              	.LCFI5:
+  79              	 .cfi_restore 7
+  80              	 .cfi_def_cfa_offset 0
+  81 001c 7047     	 bx lr
+  82              	.L4:
+  83 001e 00BF     	 .align 2
+  84              	.L3:
+  85 0020 00000000 	 .word ram
+  86              	 .cfi_endproc
+  87              	.LFE137:
+  89              	 .section .text.mem_to_ptr,"ax",%progbits
+  90              	 .align 2
+  91              	 .thumb
+  92              	 .thumb_func
+  94              	mem_to_ptr:
+  95              	.LFB138:
+ 455:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 456:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static mem_size_t
+ 457:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_to_ptr(void *mem)
+ 458:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+  96              	 .loc 1 458 0
+  97              	 .cfi_startproc
+  98              	 
+  99              	 
+ 100              	 
+ 101 0000 80B4     	 push {r7}
+ 102              	.LCFI6:
+ 103              	 .cfi_def_cfa_offset 4
+ 104              	 .cfi_offset 7,-4
+ 105 0002 83B0     	 sub sp,sp,#12
+ 106              	.LCFI7:
+ 107              	 .cfi_def_cfa_offset 16
+ 108 0004 00AF     	 add r7,sp,#0
+ 109              	.LCFI8:
+ 110              	 .cfi_def_cfa_register 7
+ 111 0006 7860     	 str r0,[r7,#4]
+ 459:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return (mem_size_t)((u8_t *)mem - ram);
+ 112              	 .loc 1 459 0
+ 113 0008 7B68     	 ldr r3,[r7,#4]
+ 114 000a 054A     	 ldr r2,.L7
+ 115 000c 1268     	 ldr r2,[r2]
+ 116 000e 9B1A     	 subs r3,r3,r2
+ 117 0010 9BB2     	 uxth r3,r3
+ 460:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 118              	 .loc 1 460 0
+ 119 0012 1846     	 mov r0,r3
+ 120 0014 0C37     	 adds r7,r7,#12
+ 121              	.LCFI9:
+ 122              	 .cfi_def_cfa_offset 4
+ 123 0016 BD46     	 mov sp,r7
+ 124              	.LCFI10:
+ 125              	 .cfi_def_cfa_register 13
+ 126              	 
+ 127 0018 5DF8047B 	 ldr r7,[sp],#4
+ 128              	.LCFI11:
+ 129              	 .cfi_restore 7
+ 130              	 .cfi_def_cfa_offset 0
+ 131 001c 7047     	 bx lr
+ 132              	.L8:
+ 133 001e 00BF     	 .align 2
+ 134              	.L7:
+ 135 0020 00000000 	 .word ram
+ 136              	 .cfi_endproc
+ 137              	.LFE138:
+ 139              	 .section .text.plug_holes,"ax",%progbits
+ 140              	 .align 2
+ 141              	 .thumb
+ 142              	 .thumb_func
+ 144              	plug_holes:
+ 145              	.LFB139:
+ 461:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 462:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 463:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * "Plug holes" by combining adjacent empty struct mems.
+ 464:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * After this function is through, there should not exist
+ 465:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * one empty struct mem pointing to another empty struct mem.
+ 466:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 467:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param mem this points to a struct mem which just has been freed
+ 468:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @internal this function is only called by mem_free() and mem_trim()
+ 469:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 470:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * This assumes access to the heap is protected by the calling function
+ 471:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * already.
+ 472:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 473:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static void
+ 474:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** plug_holes(struct mem *mem)
+ 475:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 146              	 .loc 1 475 0
+ 147              	 .cfi_startproc
+ 148              	 
+ 149              	 
+ 150 0000 90B5     	 push {r4,r7,lr}
+ 151              	.LCFI12:
+ 152              	 .cfi_def_cfa_offset 12
+ 153              	 .cfi_offset 4,-12
+ 154              	 .cfi_offset 7,-8
+ 155              	 .cfi_offset 14,-4
+ 156 0002 85B0     	 sub sp,sp,#20
+ 157              	.LCFI13:
+ 158              	 .cfi_def_cfa_offset 32
+ 159 0004 00AF     	 add r7,sp,#0
+ 160              	.LCFI14:
+ 161              	 .cfi_def_cfa_register 7
+ 162 0006 7860     	 str r0,[r7,#4]
+ 476:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *nmem;
+ 477:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *pmem;
+ 478:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 479:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("plug_holes: mem >= ram", (u8_t *)mem >= ram);
+ 480:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("plug_holes: mem < ram_end", (u8_t *)mem < (u8_t *)ram_end);
+ 481:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("plug_holes: mem->used == 0", mem->used == 0);
+ 482:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 483:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* plug hole forward */
+ 484:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("plug_holes: mem->next <= MEM_SIZE_ALIGNED", mem->next <= MEM_SIZE_ALIGNED);
+ 485:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 486:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   nmem = ptr_to_mem(mem->next);
+ 163              	 .loc 1 486 0
+ 164 0008 7B68     	 ldr r3,[r7,#4]
+ 165 000a 1B88     	 ldrh r3,[r3]
+ 166 000c 1846     	 mov r0,r3
+ 167 000e FFF7FEFF 	 bl ptr_to_mem
+ 168 0012 F860     	 str r0,[r7,#12]
+ 487:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (mem != nmem && nmem->used == 0 && (u8_t *)nmem != (u8_t *)ram_end) {
+ 169              	 .loc 1 487 0
+ 170 0014 7A68     	 ldr r2,[r7,#4]
+ 171 0016 FB68     	 ldr r3,[r7,#12]
+ 172 0018 9A42     	 cmp r2,r3
+ 173 001a 24D0     	 beq .L10
+ 174              	 .loc 1 487 0 is_stmt 0 discriminator 1
+ 175 001c FB68     	 ldr r3,[r7,#12]
+ 176 001e 1B79     	 ldrb r3,[r3,#4]
+ 177 0020 002B     	 cmp r3,#0
+ 178 0022 20D1     	 bne .L10
+ 179              	 .loc 1 487 0 discriminator 2
+ 180 0024 264B     	 ldr r3,.L14
+ 181 0026 1B68     	 ldr r3,[r3]
+ 182 0028 FA68     	 ldr r2,[r7,#12]
+ 183 002a 9A42     	 cmp r2,r3
+ 184 002c 1BD0     	 beq .L10
+ 488:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* if mem->next is unused and not end of ram, combine mem and mem->next */
+ 489:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (lfree == nmem) {
+ 185              	 .loc 1 489 0 is_stmt 1
+ 186 002e 254B     	 ldr r3,.L14+4
+ 187 0030 1A68     	 ldr r2,[r3]
+ 188 0032 FB68     	 ldr r3,[r7,#12]
+ 189 0034 9A42     	 cmp r2,r3
+ 190 0036 02D1     	 bne .L11
+ 490:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       lfree = mem;
+ 191              	 .loc 1 490 0
+ 192 0038 224A     	 ldr r2,.L14+4
+ 193 003a 7B68     	 ldr r3,[r7,#4]
+ 194 003c 1360     	 str r3,[r2]
+ 195              	.L11:
+ 491:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 492:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem->next = nmem->next;
+ 196              	 .loc 1 492 0
+ 197 003e FB68     	 ldr r3,[r7,#12]
+ 198 0040 1A88     	 ldrh r2,[r3]
+ 199 0042 7B68     	 ldr r3,[r7,#4]
+ 200 0044 1A80     	 strh r2,[r3]
+ 493:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (nmem->next != MEM_SIZE_ALIGNED) {
+ 201              	 .loc 1 493 0
+ 202 0046 FB68     	 ldr r3,[r7,#12]
+ 203 0048 1B88     	 ldrh r3,[r3]
+ 204 004a B3F5C86F 	 cmp r3,#1600
+ 205 004e 0AD0     	 beq .L10
+ 494:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ptr_to_mem(nmem->next)->prev = mem_to_ptr(mem);
+ 206              	 .loc 1 494 0
+ 207 0050 FB68     	 ldr r3,[r7,#12]
+ 208 0052 1B88     	 ldrh r3,[r3]
+ 209 0054 1846     	 mov r0,r3
+ 210 0056 FFF7FEFF 	 bl ptr_to_mem
+ 211 005a 0446     	 mov r4,r0
+ 212 005c 7868     	 ldr r0,[r7,#4]
+ 213 005e FFF7FEFF 	 bl mem_to_ptr
+ 214 0062 0346     	 mov r3,r0
+ 215 0064 6380     	 strh r3,[r4,#2]
+ 216              	.L10:
+ 495:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 496:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 497:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 498:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* plug hole backward */
+ 499:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   pmem = ptr_to_mem(mem->prev);
+ 217              	 .loc 1 499 0
+ 218 0066 7B68     	 ldr r3,[r7,#4]
+ 219 0068 5B88     	 ldrh r3,[r3,#2]
+ 220 006a 1846     	 mov r0,r3
+ 221 006c FFF7FEFF 	 bl ptr_to_mem
+ 222 0070 B860     	 str r0,[r7,#8]
+ 500:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (pmem != mem && pmem->used == 0) {
+ 223              	 .loc 1 500 0
+ 224 0072 BA68     	 ldr r2,[r7,#8]
+ 225 0074 7B68     	 ldr r3,[r7,#4]
+ 226 0076 9A42     	 cmp r2,r3
+ 227 0078 1FD0     	 beq .L9
+ 228              	 .loc 1 500 0 is_stmt 0 discriminator 1
+ 229 007a BB68     	 ldr r3,[r7,#8]
+ 230 007c 1B79     	 ldrb r3,[r3,#4]
+ 231 007e 002B     	 cmp r3,#0
+ 232 0080 1BD1     	 bne .L9
+ 501:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* if mem->prev is unused, combine mem and mem->prev */
+ 502:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (lfree == mem) {
+ 233              	 .loc 1 502 0 is_stmt 1
+ 234 0082 104B     	 ldr r3,.L14+4
+ 235 0084 1A68     	 ldr r2,[r3]
+ 236 0086 7B68     	 ldr r3,[r7,#4]
+ 237 0088 9A42     	 cmp r2,r3
+ 238 008a 02D1     	 bne .L13
+ 503:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       lfree = pmem;
+ 239              	 .loc 1 503 0
+ 240 008c 0D4A     	 ldr r2,.L14+4
+ 241 008e BB68     	 ldr r3,[r7,#8]
+ 242 0090 1360     	 str r3,[r2]
+ 243              	.L13:
+ 504:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 505:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     pmem->next = mem->next;
+ 244              	 .loc 1 505 0
+ 245 0092 7B68     	 ldr r3,[r7,#4]
+ 246 0094 1A88     	 ldrh r2,[r3]
+ 247 0096 BB68     	 ldr r3,[r7,#8]
+ 248 0098 1A80     	 strh r2,[r3]
+ 506:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (mem->next != MEM_SIZE_ALIGNED) {
+ 249              	 .loc 1 506 0
+ 250 009a 7B68     	 ldr r3,[r7,#4]
+ 251 009c 1B88     	 ldrh r3,[r3]
+ 252 009e B3F5C86F 	 cmp r3,#1600
+ 253 00a2 0AD0     	 beq .L9
+ 507:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ptr_to_mem(mem->next)->prev = mem_to_ptr(pmem);
+ 254              	 .loc 1 507 0
+ 255 00a4 7B68     	 ldr r3,[r7,#4]
+ 256 00a6 1B88     	 ldrh r3,[r3]
+ 257 00a8 1846     	 mov r0,r3
+ 258 00aa FFF7FEFF 	 bl ptr_to_mem
+ 259 00ae 0446     	 mov r4,r0
+ 260 00b0 B868     	 ldr r0,[r7,#8]
+ 261 00b2 FFF7FEFF 	 bl mem_to_ptr
+ 262 00b6 0346     	 mov r3,r0
+ 263 00b8 6380     	 strh r3,[r4,#2]
+ 264              	.L9:
+ 508:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 509:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 510:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 265              	 .loc 1 510 0
+ 266 00ba 1437     	 adds r7,r7,#20
+ 267              	.LCFI15:
+ 268              	 .cfi_def_cfa_offset 12
+ 269 00bc BD46     	 mov sp,r7
+ 270              	.LCFI16:
+ 271              	 .cfi_def_cfa_register 13
+ 272              	 
+ 273 00be 90BD     	 pop {r4,r7,pc}
+ 274              	.L15:
+ 275              	 .align 2
+ 276              	.L14:
+ 277 00c0 00000000 	 .word ram_end
+ 278 00c4 00000000 	 .word lfree
+ 279              	 .cfi_endproc
+ 280              	.LFE139:
+ 282              	 .section .text.mem_init,"ax",%progbits
+ 283              	 .align 2
+ 284              	 .global mem_init
+ 285              	 .thumb
+ 286              	 .thumb_func
+ 288              	mem_init:
+ 289              	.LFB140:
+ 511:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 512:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 513:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Zero the heap and initialize start, end and lowest-free
+ 514:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 515:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+ 516:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_init(void)
+ 517:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 290              	 .loc 1 517 0
+ 291              	 .cfi_startproc
+ 292              	 
+ 293              	 
+ 294 0000 80B5     	 push {r7,lr}
+ 295              	.LCFI17:
+ 296              	 .cfi_def_cfa_offset 8
+ 297              	 .cfi_offset 7,-8
+ 298              	 .cfi_offset 14,-4
+ 299 0002 82B0     	 sub sp,sp,#8
+ 300              	.LCFI18:
+ 301              	 .cfi_def_cfa_offset 16
+ 302 0004 00AF     	 add r7,sp,#0
+ 303              	.LCFI19:
+ 304              	 .cfi_def_cfa_register 7
+ 518:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *mem;
+ 519:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 520:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("Sanity check alignment",
+ 521:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****               (SIZEOF_STRUCT_MEM & (MEM_ALIGNMENT - 1)) == 0);
+ 522:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 523:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* align the heap */
+ 524:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ram = (u8_t *)LWIP_MEM_ALIGN(LWIP_RAM_HEAP_POINTER);
+ 305              	 .loc 1 524 0
+ 306 0006 184B     	 ldr r3,.L17
+ 307 0008 0333     	 adds r3,r3,#3
+ 308 000a 23F00303 	 bic r3,r3,#3
+ 309 000e 1A46     	 mov r2,r3
+ 310 0010 164B     	 ldr r3,.L17+4
+ 311 0012 1A60     	 str r2,[r3]
+ 525:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* initialize the start of the heap */
+ 526:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem = (struct mem *)(void *)ram;
+ 312              	 .loc 1 526 0
+ 313 0014 154B     	 ldr r3,.L17+4
+ 314 0016 1B68     	 ldr r3,[r3]
+ 315 0018 7B60     	 str r3,[r7,#4]
+ 527:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem->next = MEM_SIZE_ALIGNED;
+ 316              	 .loc 1 527 0
+ 317 001a 7B68     	 ldr r3,[r7,#4]
+ 318 001c 4FF4C862 	 mov r2,#1600
+ 319 0020 1A80     	 strh r2,[r3]
+ 528:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem->prev = 0;
+ 320              	 .loc 1 528 0
+ 321 0022 7B68     	 ldr r3,[r7,#4]
+ 322 0024 0022     	 movs r2,#0
+ 323 0026 5A80     	 strh r2,[r3,#2]
+ 529:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem->used = 0;
+ 324              	 .loc 1 529 0
+ 325 0028 7B68     	 ldr r3,[r7,#4]
+ 326 002a 0022     	 movs r2,#0
+ 327 002c 1A71     	 strb r2,[r3,#4]
+ 530:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* initialize the end of the heap */
+ 531:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ram_end = ptr_to_mem(MEM_SIZE_ALIGNED);
+ 328              	 .loc 1 531 0
+ 329 002e 4FF4C860 	 mov r0,#1600
+ 330 0032 FFF7FEFF 	 bl ptr_to_mem
+ 331 0036 0246     	 mov r2,r0
+ 332 0038 0D4B     	 ldr r3,.L17+8
+ 333 003a 1A60     	 str r2,[r3]
+ 532:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ram_end->used = 1;
+ 334              	 .loc 1 532 0
+ 335 003c 0C4B     	 ldr r3,.L17+8
+ 336 003e 1B68     	 ldr r3,[r3]
+ 337 0040 0122     	 movs r2,#1
+ 338 0042 1A71     	 strb r2,[r3,#4]
+ 533:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ram_end->next = MEM_SIZE_ALIGNED;
+ 339              	 .loc 1 533 0
+ 340 0044 0A4B     	 ldr r3,.L17+8
+ 341 0046 1B68     	 ldr r3,[r3]
+ 342 0048 4FF4C862 	 mov r2,#1600
+ 343 004c 1A80     	 strh r2,[r3]
+ 534:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ram_end->prev = MEM_SIZE_ALIGNED;
+ 344              	 .loc 1 534 0
+ 345 004e 084B     	 ldr r3,.L17+8
+ 346 0050 1B68     	 ldr r3,[r3]
+ 347 0052 4FF4C862 	 mov r2,#1600
+ 348 0056 5A80     	 strh r2,[r3,#2]
+ 535:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_SANITY();
+ 536:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 537:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* initialize the lowest-free pointer to the start of the heap */
+ 538:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   lfree = (struct mem *)(void *)ram;
+ 349              	 .loc 1 538 0
+ 350 0058 044B     	 ldr r3,.L17+4
+ 351 005a 1B68     	 ldr r3,[r3]
+ 352 005c 054A     	 ldr r2,.L17+12
+ 353 005e 1360     	 str r3,[r2]
+ 539:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 540:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_STATS_AVAIL(avail, MEM_SIZE_ALIGNED);
+ 541:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 542:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (sys_mutex_new(&mem_mutex) != ERR_OK) {
+ 543:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("failed to create mem_mutex", 0);
+ 544:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 545:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 354              	 .loc 1 545 0
+ 355 0060 0837     	 adds r7,r7,#8
+ 356              	.LCFI20:
+ 357              	 .cfi_def_cfa_offset 8
+ 358 0062 BD46     	 mov sp,r7
+ 359              	.LCFI21:
+ 360              	 .cfi_def_cfa_register 13
+ 361              	 
+ 362 0064 80BD     	 pop {r7,pc}
+ 363              	.L18:
+ 364 0066 00BF     	 .align 2
+ 365              	.L17:
+ 366 0068 00000000 	 .word ram_heap
+ 367 006c 00000000 	 .word ram
+ 368 0070 00000000 	 .word ram_end
+ 369 0074 00000000 	 .word lfree
+ 370              	 .cfi_endproc
+ 371              	.LFE140:
+ 373              	 .section .text.mem_link_valid,"ax",%progbits
+ 374              	 .align 2
+ 375              	 .thumb
+ 376              	 .thumb_func
+ 378              	mem_link_valid:
+ 379              	.LFB141:
+ 546:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 547:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /* Check if a struct mem is correctly linked.
+ 548:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * If not, double-free is a possible reason.
+ 549:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 550:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static int
+ 551:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_link_valid(struct mem *mem)
+ 552:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 380              	 .loc 1 552 0
+ 381              	 .cfi_startproc
+ 382              	 
+ 383              	 
+ 384 0000 80B5     	 push {r7,lr}
+ 385              	.LCFI22:
+ 386              	 .cfi_def_cfa_offset 8
+ 387              	 .cfi_offset 7,-8
+ 388              	 .cfi_offset 14,-4
+ 389 0002 86B0     	 sub sp,sp,#24
+ 390              	.LCFI23:
+ 391              	 .cfi_def_cfa_offset 32
+ 392 0004 00AF     	 add r7,sp,#0
+ 393              	.LCFI24:
+ 394              	 .cfi_def_cfa_register 7
+ 395 0006 7860     	 str r0,[r7,#4]
+ 553:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *nmem, *pmem;
+ 554:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t rmem_idx;
+ 555:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   rmem_idx = mem_to_ptr(mem);
+ 396              	 .loc 1 555 0
+ 397 0008 7868     	 ldr r0,[r7,#4]
+ 398 000a FFF7FEFF 	 bl mem_to_ptr
+ 399 000e 0346     	 mov r3,r0
+ 400 0010 FB82     	 strh r3,[r7,#22]
+ 556:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   nmem = ptr_to_mem(mem->next);
+ 401              	 .loc 1 556 0
+ 402 0012 7B68     	 ldr r3,[r7,#4]
+ 403 0014 1B88     	 ldrh r3,[r3]
+ 404 0016 1846     	 mov r0,r3
+ 405 0018 FFF7FEFF 	 bl ptr_to_mem
+ 406 001c 3861     	 str r0,[r7,#16]
+ 557:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   pmem = ptr_to_mem(mem->prev);
+ 407              	 .loc 1 557 0
+ 408 001e 7B68     	 ldr r3,[r7,#4]
+ 409 0020 5B88     	 ldrh r3,[r3,#2]
+ 410 0022 1846     	 mov r0,r3
+ 411 0024 FFF7FEFF 	 bl ptr_to_mem
+ 412 0028 F860     	 str r0,[r7,#12]
+ 558:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((mem->next > MEM_SIZE_ALIGNED) || (mem->prev > MEM_SIZE_ALIGNED) ||
+ 413              	 .loc 1 558 0
+ 414 002a 7B68     	 ldr r3,[r7,#4]
+ 415 002c 1B88     	 ldrh r3,[r3]
+ 416 002e B3F5C86F 	 cmp r3,#1600
+ 417 0032 18D8     	 bhi .L20
+ 418              	 .loc 1 558 0 is_stmt 0 discriminator 1
+ 419 0034 7B68     	 ldr r3,[r7,#4]
+ 420 0036 5B88     	 ldrh r3,[r3,#2]
+ 421 0038 B3F5C86F 	 cmp r3,#1600
+ 422 003c 13D8     	 bhi .L20
+ 559:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ((mem->prev != rmem_idx) && (pmem->next != rmem_idx)) ||
+ 423              	 .loc 1 559 0 is_stmt 1 discriminator 2
+ 424 003e 7B68     	 ldr r3,[r7,#4]
+ 425 0040 5B88     	 ldrh r3,[r3,#2]
+ 558:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((mem->next > MEM_SIZE_ALIGNED) || (mem->prev > MEM_SIZE_ALIGNED) ||
+ 426              	 .loc 1 558 0 discriminator 2
+ 427 0042 FA8A     	 ldrh r2,[r7,#22]
+ 428 0044 9A42     	 cmp r2,r3
+ 429 0046 04D0     	 beq .L21
+ 430              	 .loc 1 559 0
+ 431 0048 FB68     	 ldr r3,[r7,#12]
+ 432 004a 1B88     	 ldrh r3,[r3]
+ 433 004c FA8A     	 ldrh r2,[r7,#22]
+ 434 004e 9A42     	 cmp r2,r3
+ 435 0050 09D1     	 bne .L20
+ 436              	.L21:
+ 560:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ((nmem != ram_end) && (nmem->prev != rmem_idx))) {
+ 437              	 .loc 1 560 0 discriminator 1
+ 438 0052 084B     	 ldr r3,.L24
+ 439 0054 1B68     	 ldr r3,[r3]
+ 559:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ((mem->prev != rmem_idx) && (pmem->next != rmem_idx)) ||
+ 440              	 .loc 1 559 0 discriminator 1
+ 441 0056 3A69     	 ldr r2,[r7,#16]
+ 442 0058 9A42     	 cmp r2,r3
+ 443 005a 06D0     	 beq .L22
+ 444              	 .loc 1 560 0
+ 445 005c 3B69     	 ldr r3,[r7,#16]
+ 446 005e 5B88     	 ldrh r3,[r3,#2]
+ 447 0060 FA8A     	 ldrh r2,[r7,#22]
+ 448 0062 9A42     	 cmp r2,r3
+ 449 0064 01D0     	 beq .L22
+ 450              	.L20:
+ 561:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return 0;
+ 451              	 .loc 1 561 0
+ 452 0066 0023     	 movs r3,#0
+ 453 0068 00E0     	 b .L23
+ 454              	.L22:
+ 562:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 563:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return 1;
+ 455              	 .loc 1 563 0
+ 456 006a 0123     	 movs r3,#1
+ 457              	.L23:
+ 564:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 458              	 .loc 1 564 0
+ 459 006c 1846     	 mov r0,r3
+ 460 006e 1837     	 adds r7,r7,#24
+ 461              	.LCFI25:
+ 462              	 .cfi_def_cfa_offset 8
+ 463 0070 BD46     	 mov sp,r7
+ 464              	.LCFI26:
+ 465              	 .cfi_def_cfa_register 13
+ 466              	 
+ 467 0072 80BD     	 pop {r7,pc}
+ 468              	.L25:
+ 469              	 .align 2
+ 470              	.L24:
+ 471 0074 00000000 	 .word ram_end
+ 472              	 .cfi_endproc
+ 473              	.LFE141:
+ 475              	 .section .text.mem_free,"ax",%progbits
+ 476              	 .align 2
+ 477              	 .global mem_free
+ 478              	 .thumb
+ 479              	 .thumb_func
+ 481              	mem_free:
+ 482              	.LFB142:
+ 565:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 566:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_SANITY_CHECK
+ 567:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** static void
+ 568:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_sanity(void)
+ 569:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 570:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *mem;
+ 571:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   u8_t last_used;
+ 572:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 573:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* begin with first element here */
+ 574:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem = (struct mem *)ram;
+ 575:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element used valid", (mem->used == 0) || (mem->used == 1));
+ 576:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   last_used = mem->used;
+ 577:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element prev ptr valid", mem->prev == 0);
+ 578:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element next ptr valid", mem->next <= MEM_SIZE_ALIGNED);
+ 579:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element next ptr aligned", LWIP_MEM_ALIGN(ptr_to_mem(mem->next) == ptr_to_mem(m
+ 580:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 581:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* check all elements before the end of the heap */
+ 582:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   for (mem = ptr_to_mem(mem->next);
+ 583:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****        ((u8_t *)mem > ram) && (mem < ram_end);
+ 584:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****        mem = ptr_to_mem(mem->next)) {
+ 585:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("heap element aligned", LWIP_MEM_ALIGN(mem) == mem);
+ 586:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("heap element prev ptr valid", mem->prev <= MEM_SIZE_ALIGNED);
+ 587:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("heap element next ptr valid", mem->next <= MEM_SIZE_ALIGNED);
+ 588:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("heap element prev ptr aligned", LWIP_MEM_ALIGN(ptr_to_mem(mem->prev) == ptr_to_mem
+ 589:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("heap element next ptr aligned", LWIP_MEM_ALIGN(ptr_to_mem(mem->next) == ptr_to_mem
+ 590:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 591:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (last_used == 0) {
+ 592:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       /* 2 unused elements in a row? */
+ 593:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_ASSERT("heap element unused?", mem->used == 1);
+ 594:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     } else {
+ 595:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_ASSERT("heap element unused member", (mem->used == 0) || (mem->used == 1));
+ 596:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 597:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 598:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("heap element link valid", mem_link_valid(mem));
+ 599:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 600:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* used/unused altering */
+ 601:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     last_used = mem->used;
+ 602:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 603:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap end ptr sanity", mem == ptr_to_mem(MEM_SIZE_ALIGNED));
+ 604:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element used valid", mem->used == 1);
+ 605:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element prev ptr valid", mem->prev == MEM_SIZE_ALIGNED);
+ 606:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("heap element next ptr valid", mem->next == MEM_SIZE_ALIGNED);
+ 607:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 608:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_SANITY_CHECK */
+ 609:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 610:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 611:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Put a struct mem back on the heap
+ 612:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 613:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param rmem is the data portion of a struct mem as returned by a previous
+ 614:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *             call to mem_malloc()
+ 615:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 616:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void
+ 617:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_free(void *rmem)
+ 618:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 483              	 .loc 1 618 0
+ 484              	 .cfi_startproc
+ 485              	 
+ 486              	 
+ 487 0000 80B5     	 push {r7,lr}
+ 488              	.LCFI27:
+ 489              	 .cfi_def_cfa_offset 8
+ 490              	 .cfi_offset 7,-8
+ 491              	 .cfi_offset 14,-4
+ 492 0002 84B0     	 sub sp,sp,#16
+ 493              	.LCFI28:
+ 494              	 .cfi_def_cfa_offset 24
+ 495 0004 00AF     	 add r7,sp,#0
+ 496              	.LCFI29:
+ 497              	 .cfi_def_cfa_register 7
+ 498 0006 7860     	 str r0,[r7,#4]
+ 619:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *mem;
+ 620:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_FREE_DECL_PROTECT();
+ 621:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 622:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (rmem == NULL) {
+ 499              	 .loc 1 622 0
+ 500 0008 7B68     	 ldr r3,[r7,#4]
+ 501 000a 002B     	 cmp r3,#0
+ 502 000c 00D1     	 bne .L27
+ 623:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_SERIOUS, ("mem_free(p == NULL) was call
+ 624:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return;
+ 503              	 .loc 1 624 0
+ 504 000e 2FE0     	 b .L26
+ 505              	.L27:
+ 625:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 626:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((((mem_ptr_t)rmem) & (MEM_ALIGNMENT - 1)) != 0) {
+ 506              	 .loc 1 626 0
+ 507 0010 7B68     	 ldr r3,[r7,#4]
+ 508 0012 03F00303 	 and r3,r3,#3
+ 509 0016 002B     	 cmp r3,#0
+ 510 0018 00D0     	 beq .L29
+ 627:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_MEM_ILLEGAL_FREE("mem_free: sanity check alignment");
+ 628:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SEVERE, ("mem_free: sanity check alignment\n"));
+ 629:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* protect mem stats from concurrent access */
+ 630:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(illegal);
+ 631:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return;
+ 511              	 .loc 1 631 0 discriminator 2
+ 512 001a 29E0     	 b .L26
+ 513              	.L29:
+ 632:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 633:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 634:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* Get the corresponding struct mem: */
+ 635:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* cast through void* to get rid of alignment warnings */
+ 636:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem = (struct mem *)(void *)((u8_t *)rmem - (SIZEOF_STRUCT_MEM + MEM_SANITY_OFFSET));
+ 514              	 .loc 1 636 0
+ 515 001c 7B68     	 ldr r3,[r7,#4]
+ 516 001e 083B     	 subs r3,r3,#8
+ 517 0020 FB60     	 str r3,[r7,#12]
+ 637:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 638:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((u8_t *)mem < ram || (u8_t *)rmem + MIN_SIZE_ALIGNED > (u8_t *)ram_end) {
+ 518              	 .loc 1 638 0
+ 519 0022 154B     	 ldr r3,.L35
+ 520 0024 1B68     	 ldr r3,[r3]
+ 521 0026 FA68     	 ldr r2,[r7,#12]
+ 522 0028 9A42     	 cmp r2,r3
+ 523 002a 06D3     	 bcc .L30
+ 524              	 .loc 1 638 0 is_stmt 0 discriminator 1
+ 525 002c 7B68     	 ldr r3,[r7,#4]
+ 526 002e 03F10C02 	 add r2,r3,#12
+ 527 0032 124B     	 ldr r3,.L35+4
+ 528 0034 1B68     	 ldr r3,[r3]
+ 529 0036 9A42     	 cmp r2,r3
+ 530 0038 00D9     	 bls .L31
+ 531              	.L30:
+ 639:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_MEM_ILLEGAL_FREE("mem_free: illegal memory");
+ 640:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SEVERE, ("mem_free: illegal memory\n"));
+ 641:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* protect mem stats from concurrent access */
+ 642:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(illegal);
+ 643:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return;
+ 532              	 .loc 1 643 0 is_stmt 1 discriminator 3
+ 533 003a 19E0     	 b .L26
+ 534              	.L31:
+ 644:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 645:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 646:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_overflow_check_element(mem);
+ 647:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 648:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* protect the heap from concurrent access */
+ 649:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_FREE_PROTECT();
+ 650:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* mem has to be in a used state */
+ 651:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (!mem->used) {
+ 535              	 .loc 1 651 0
+ 536 003c FB68     	 ldr r3,[r7,#12]
+ 537 003e 1B79     	 ldrb r3,[r3,#4]
+ 538 0040 002B     	 cmp r3,#0
+ 539 0042 00D1     	 bne .L32
+ 652:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_MEM_ILLEGAL_FREE("mem_free: illegal memory: double free");
+ 653:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_MEM_FREE_UNPROTECT();
+ 654:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SEVERE, ("mem_free: illegal memory: double free?\n"));
+ 655:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* protect mem stats from concurrent access */
+ 656:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(illegal);
+ 657:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return;
+ 540              	 .loc 1 657 0 discriminator 4
+ 541 0044 14E0     	 b .L26
+ 542              	.L32:
+ 658:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 659:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 660:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (!mem_link_valid(mem)) {
+ 543              	 .loc 1 660 0
+ 544 0046 F868     	 ldr r0,[r7,#12]
+ 545 0048 FFF7FEFF 	 bl mem_link_valid
+ 546 004c 0346     	 mov r3,r0
+ 547 004e 002B     	 cmp r3,#0
+ 548 0050 00D1     	 bne .L33
+ 661:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_MEM_ILLEGAL_FREE("mem_free: illegal memory: non-linked: double free");
+ 662:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_MEM_FREE_UNPROTECT();
+ 663:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SEVERE, ("mem_free: illegal memory: non-linked: double f
+ 664:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* protect mem stats from concurrent access */
+ 665:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(illegal);
+ 666:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return;
+ 549              	 .loc 1 666 0 discriminator 5
+ 550 0052 0DE0     	 b .L26
+ 551              	.L33:
+ 667:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 668:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 669:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* mem is now unused. */
+ 670:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem->used = 0;
+ 552              	 .loc 1 670 0
+ 553 0054 FB68     	 ldr r3,[r7,#12]
+ 554 0056 0022     	 movs r2,#0
+ 555 0058 1A71     	 strb r2,[r3,#4]
+ 671:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 672:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (mem < lfree) {
+ 556              	 .loc 1 672 0
+ 557 005a 094B     	 ldr r3,.L35+8
+ 558 005c 1B68     	 ldr r3,[r3]
+ 559 005e FA68     	 ldr r2,[r7,#12]
+ 560 0060 9A42     	 cmp r2,r3
+ 561 0062 02D2     	 bcs .L34
+ 673:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* the newly freed struct is now the lowest */
+ 674:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     lfree = mem;
+ 562              	 .loc 1 674 0
+ 563 0064 064A     	 ldr r2,.L35+8
+ 564 0066 FB68     	 ldr r3,[r7,#12]
+ 565 0068 1360     	 str r3,[r2]
+ 566              	.L34:
+ 675:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 676:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 677:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_STATS_DEC_USED(used, mem->next - (mem_size_t)(((u8_t *)mem - ram)));
+ 678:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 679:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* finally, see if prev or next are free also */
+ 680:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   plug_holes(mem);
+ 567              	 .loc 1 680 0
+ 568 006a F868     	 ldr r0,[r7,#12]
+ 569 006c FFF7FEFF 	 bl plug_holes
+ 570              	.L26:
+ 681:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_SANITY();
+ 682:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 683:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_free_count = 1;
+ 684:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 685:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_FREE_UNPROTECT();
+ 686:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 571              	 .loc 1 686 0
+ 572 0070 1037     	 adds r7,r7,#16
+ 573              	.LCFI30:
+ 574              	 .cfi_def_cfa_offset 8
+ 575 0072 BD46     	 mov sp,r7
+ 576              	.LCFI31:
+ 577              	 .cfi_def_cfa_register 13
+ 578              	 
+ 579 0074 80BD     	 pop {r7,pc}
+ 580              	.L36:
+ 581 0076 00BF     	 .align 2
+ 582              	.L35:
+ 583 0078 00000000 	 .word ram
+ 584 007c 00000000 	 .word ram_end
+ 585 0080 00000000 	 .word lfree
+ 586              	 .cfi_endproc
+ 587              	.LFE142:
+ 589              	 .section .text.mem_trim,"ax",%progbits
+ 590              	 .align 2
+ 591              	 .global mem_trim
+ 592              	 .thumb
+ 593              	 .thumb_func
+ 595              	mem_trim:
+ 596              	.LFB143:
+ 687:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 688:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 689:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Shrink memory returned by mem_malloc().
+ 690:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 691:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param rmem pointer to memory allocated by mem_malloc the is to be shrinked
+ 692:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param new_size required size after shrinking (needs to be smaller than or
+ 693:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *                equal to the previous size)
+ 694:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @return for compatibility reasons: is always == rmem, at the moment
+ 695:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *         or NULL if newsize is > old size, in which case rmem is NOT touched
+ 696:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *         or freed!
+ 697:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 698:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 699:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_trim(void *rmem, mem_size_t new_size)
+ 700:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 597              	 .loc 1 700 0
+ 598              	 .cfi_startproc
+ 599              	 
+ 600              	 
+ 601 0000 80B5     	 push {r7,lr}
+ 602              	.LCFI32:
+ 603              	 .cfi_def_cfa_offset 8
+ 604              	 .cfi_offset 7,-8
+ 605              	 .cfi_offset 14,-4
+ 606 0002 88B0     	 sub sp,sp,#32
+ 607              	.LCFI33:
+ 608              	 .cfi_def_cfa_offset 40
+ 609 0004 00AF     	 add r7,sp,#0
+ 610              	.LCFI34:
+ 611              	 .cfi_def_cfa_register 7
+ 612 0006 7860     	 str r0,[r7,#4]
+ 613 0008 0B46     	 mov r3,r1
+ 614 000a 7B80     	 strh r3,[r7,#2]
+ 701:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t size, newsize;
+ 702:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t ptr, ptr2;
+ 703:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *mem, *mem2;
+ 704:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* use the FREE_PROTECT here: it protects with sem OR SYS_ARCH_PROTECT */
+ 705:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_FREE_DECL_PROTECT();
+ 706:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 707:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* Expand the size of the allocated memory region so that we can
+ 708:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      adjust for alignment. */
+ 709:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   newsize = (mem_size_t)LWIP_MEM_ALIGN_SIZE(new_size);
+ 615              	 .loc 1 709 0
+ 616 000c 7B88     	 ldrh r3,[r7,#2]
+ 617 000e 0333     	 adds r3,r3,#3
+ 618 0010 9BB2     	 uxth r3,r3
+ 619 0012 23F00303 	 bic r3,r3,#3
+ 620 0016 FB83     	 strh r3,[r7,#30]
+ 710:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (newsize < MIN_SIZE_ALIGNED) {
+ 621              	 .loc 1 710 0
+ 622 0018 FB8B     	 ldrh r3,[r7,#30]
+ 623 001a 0B2B     	 cmp r3,#11
+ 624 001c 01D8     	 bhi .L38
+ 711:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* every data block must be at least MIN_SIZE_ALIGNED long */
+ 712:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     newsize = MIN_SIZE_ALIGNED;
+ 625              	 .loc 1 712 0
+ 626 001e 0C23     	 movs r3,#12
+ 627 0020 FB83     	 strh r3,[r7,#30]
+ 628              	.L38:
+ 713:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 714:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 715:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   newsize += MEM_SANITY_REGION_BEFORE_ALIGNED + MEM_SANITY_REGION_AFTER_ALIGNED;
+ 716:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 717:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((newsize > MEM_SIZE_ALIGNED) || (newsize < new_size)) {
+ 629              	 .loc 1 717 0
+ 630 0022 FB8B     	 ldrh r3,[r7,#30]
+ 631 0024 B3F5C86F 	 cmp r3,#1600
+ 632 0028 03D8     	 bhi .L39
+ 633              	 .loc 1 717 0 is_stmt 0 discriminator 1
+ 634 002a FA8B     	 ldrh r2,[r7,#30]
+ 635 002c 7B88     	 ldrh r3,[r7,#2]
+ 636 002e 9A42     	 cmp r2,r3
+ 637 0030 01D2     	 bcs .L40
+ 638              	.L39:
+ 718:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return NULL;
+ 639              	 .loc 1 718 0 is_stmt 1
+ 640 0032 0023     	 movs r3,#0
+ 641 0034 99E0     	 b .L41
+ 642              	.L40:
+ 719:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 720:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 721:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("mem_trim: legal memory", (u8_t *)rmem >= (u8_t *)ram &&
+ 722:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****               (u8_t *)rmem < (u8_t *)ram_end);
+ 723:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 724:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((u8_t *)rmem < (u8_t *)ram || (u8_t *)rmem >= (u8_t *)ram_end) {
+ 643              	 .loc 1 724 0
+ 644 0036 4F4B     	 ldr r3,.L51
+ 645 0038 1B68     	 ldr r3,[r3]
+ 646 003a 7A68     	 ldr r2,[r7,#4]
+ 647 003c 9A42     	 cmp r2,r3
+ 648 003e 04D3     	 bcc .L42
+ 649              	 .loc 1 724 0 is_stmt 0 discriminator 1
+ 650 0040 4D4B     	 ldr r3,.L51+4
+ 651 0042 1B68     	 ldr r3,[r3]
+ 652 0044 7A68     	 ldr r2,[r7,#4]
+ 653 0046 9A42     	 cmp r2,r3
+ 654 0048 01D3     	 bcc .L43
+ 655              	.L42:
+ 725:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SEVERE, ("mem_trim: illegal memory\n"));
+ 726:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* protect mem stats from concurrent access */
+ 727:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_INC_LOCKED(illegal);
+ 728:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return rmem;
+ 656              	 .loc 1 728 0 is_stmt 1
+ 657 004a 7B68     	 ldr r3,[r7,#4]
+ 658 004c 8DE0     	 b .L41
+ 659              	.L43:
+ 729:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 730:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* Get the corresponding struct mem ... */
+ 731:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* cast through void* to get rid of alignment warnings */
+ 732:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem = (struct mem *)(void *)((u8_t *)rmem - (SIZEOF_STRUCT_MEM + MEM_SANITY_OFFSET));
+ 660              	 .loc 1 732 0
+ 661 004e 7B68     	 ldr r3,[r7,#4]
+ 662 0050 083B     	 subs r3,r3,#8
+ 663 0052 BB61     	 str r3,[r7,#24]
+ 733:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 734:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_overflow_check_element(mem);
+ 735:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 736:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* ... and its offset pointer */
+ 737:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   ptr = mem_to_ptr(mem);
+ 664              	 .loc 1 737 0
+ 665 0054 B869     	 ldr r0,[r7,#24]
+ 666 0056 FFF7FEFF 	 bl mem_to_ptr
+ 667 005a 0346     	 mov r3,r0
+ 668 005c FB82     	 strh r3,[r7,#22]
+ 738:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 739:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   size = (mem_size_t)((mem_size_t)(mem->next - ptr) - (SIZEOF_STRUCT_MEM + MEM_SANITY_OVERHEAD));
+ 669              	 .loc 1 739 0
+ 670 005e BB69     	 ldr r3,[r7,#24]
+ 671 0060 1A88     	 ldrh r2,[r3]
+ 672 0062 FB8A     	 ldrh r3,[r7,#22]
+ 673 0064 D31A     	 subs r3,r2,r3
+ 674 0066 9BB2     	 uxth r3,r3
+ 675 0068 083B     	 subs r3,r3,#8
+ 676 006a BB82     	 strh r3,[r7,#20]
+ 740:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_ASSERT("mem_trim can only shrink memory", newsize <= size);
+ 741:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (newsize > size) {
+ 677              	 .loc 1 741 0
+ 678 006c FA8B     	 ldrh r2,[r7,#30]
+ 679 006e BB8A     	 ldrh r3,[r7,#20]
+ 680 0070 9A42     	 cmp r2,r3
+ 681 0072 01D9     	 bls .L44
+ 742:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* not supported */
+ 743:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return NULL;
+ 682              	 .loc 1 743 0
+ 683 0074 0023     	 movs r3,#0
+ 684 0076 78E0     	 b .L41
+ 685              	.L44:
+ 744:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 745:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (newsize == size) {
+ 686              	 .loc 1 745 0
+ 687 0078 FA8B     	 ldrh r2,[r7,#30]
+ 688 007a BB8A     	 ldrh r3,[r7,#20]
+ 689 007c 9A42     	 cmp r2,r3
+ 690 007e 01D1     	 bne .L45
+ 746:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* No change in size, simply return */
+ 747:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return rmem;
+ 691              	 .loc 1 747 0
+ 692 0080 7B68     	 ldr r3,[r7,#4]
+ 693 0082 72E0     	 b .L41
+ 694              	.L45:
+ 748:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 749:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 750:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* protect the heap from concurrent access */
+ 751:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_FREE_PROTECT();
+ 752:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 753:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem2 = ptr_to_mem(mem->next);
+ 695              	 .loc 1 753 0
+ 696 0084 BB69     	 ldr r3,[r7,#24]
+ 697 0086 1B88     	 ldrh r3,[r3]
+ 698 0088 1846     	 mov r0,r3
+ 699 008a FFF7FEFF 	 bl ptr_to_mem
+ 700 008e 3861     	 str r0,[r7,#16]
+ 754:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (mem2->used == 0) {
+ 701              	 .loc 1 754 0
+ 702 0090 3B69     	 ldr r3,[r7,#16]
+ 703 0092 1B79     	 ldrb r3,[r3,#4]
+ 704 0094 002B     	 cmp r3,#0
+ 705 0096 34D1     	 bne .L46
+ 706              	.LBB2:
+ 755:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* The next struct is unused, we can simply move it at little */
+ 756:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem_size_t next;
+ 757:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("invalid next ptr", mem->next != MEM_SIZE_ALIGNED);
+ 758:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* remember the old next pointer */
+ 759:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     next = mem2->next;
+ 707              	 .loc 1 759 0
+ 708 0098 3B69     	 ldr r3,[r7,#16]
+ 709 009a 1B88     	 ldrh r3,[r3]
+ 710 009c FB81     	 strh r3,[r7,#14]
+ 760:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* create new struct mem which is moved directly after the shrinked mem */
+ 761:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     ptr2 = (mem_size_t)(ptr + SIZEOF_STRUCT_MEM + newsize);
+ 711              	 .loc 1 761 0
+ 712 009e FA8A     	 ldrh r2,[r7,#22]
+ 713 00a0 FB8B     	 ldrh r3,[r7,#30]
+ 714 00a2 1344     	 add r3,r3,r2
+ 715 00a4 9BB2     	 uxth r3,r3
+ 716 00a6 0833     	 adds r3,r3,#8
+ 717 00a8 BB81     	 strh r3,[r7,#12]
+ 762:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (lfree == mem2) {
+ 718              	 .loc 1 762 0
+ 719 00aa 344B     	 ldr r3,.L51+8
+ 720 00ac 1A68     	 ldr r2,[r3]
+ 721 00ae 3B69     	 ldr r3,[r7,#16]
+ 722 00b0 9A42     	 cmp r2,r3
+ 723 00b2 06D1     	 bne .L47
+ 763:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       lfree = ptr_to_mem(ptr2);
+ 724              	 .loc 1 763 0
+ 725 00b4 BB89     	 ldrh r3,[r7,#12]
+ 726 00b6 1846     	 mov r0,r3
+ 727 00b8 FFF7FEFF 	 bl ptr_to_mem
+ 728 00bc 0246     	 mov r2,r0
+ 729 00be 2F4B     	 ldr r3,.L51+8
+ 730 00c0 1A60     	 str r2,[r3]
+ 731              	.L47:
+ 764:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 765:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2 = ptr_to_mem(ptr2);
+ 732              	 .loc 1 765 0
+ 733 00c2 BB89     	 ldrh r3,[r7,#12]
+ 734 00c4 1846     	 mov r0,r3
+ 735 00c6 FFF7FEFF 	 bl ptr_to_mem
+ 736 00ca 3861     	 str r0,[r7,#16]
+ 766:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2->used = 0;
+ 737              	 .loc 1 766 0
+ 738 00cc 3B69     	 ldr r3,[r7,#16]
+ 739 00ce 0022     	 movs r2,#0
+ 740 00d0 1A71     	 strb r2,[r3,#4]
+ 767:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* restore the next pointer */
+ 768:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2->next = next;
+ 741              	 .loc 1 768 0
+ 742 00d2 3B69     	 ldr r3,[r7,#16]
+ 743 00d4 FA89     	 ldrh r2,[r7,#14]
+ 744 00d6 1A80     	 strh r2,[r3]
+ 769:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* link it back to mem */
+ 770:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2->prev = ptr;
+ 745              	 .loc 1 770 0
+ 746 00d8 3B69     	 ldr r3,[r7,#16]
+ 747 00da FA8A     	 ldrh r2,[r7,#22]
+ 748 00dc 5A80     	 strh r2,[r3,#2]
+ 771:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* link mem to it */
+ 772:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem->next = ptr2;
+ 749              	 .loc 1 772 0
+ 750 00de BB69     	 ldr r3,[r7,#24]
+ 751 00e0 BA89     	 ldrh r2,[r7,#12]
+ 752 00e2 1A80     	 strh r2,[r3]
+ 773:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* last thing to restore linked list: as we have moved mem2,
+ 774:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * let 'mem2->next->prev' point to mem2 again. but only if mem2->next is not
+ 775:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * the end of the heap */
+ 776:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (mem2->next != MEM_SIZE_ALIGNED) {
+ 753              	 .loc 1 776 0
+ 754 00e4 3B69     	 ldr r3,[r7,#16]
+ 755 00e6 1B88     	 ldrh r3,[r3]
+ 756 00e8 B3F5C86F 	 cmp r3,#1600
+ 757 00ec 08D0     	 beq .L48
+ 777:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ptr_to_mem(mem2->next)->prev = ptr2;
+ 758              	 .loc 1 777 0
+ 759 00ee 3B69     	 ldr r3,[r7,#16]
+ 760 00f0 1B88     	 ldrh r3,[r3]
+ 761 00f2 1846     	 mov r0,r3
+ 762 00f4 FFF7FEFF 	 bl ptr_to_mem
+ 763 00f8 0246     	 mov r2,r0
+ 764 00fa BB89     	 ldrh r3,[r7,#12]
+ 765 00fc 5380     	 strh r3,[r2,#2]
+ 766              	.LBE2:
+ 767 00fe 33E0     	 b .L49
+ 768              	.L48:
+ 769 0100 32E0     	 b .L49
+ 770              	.L46:
+ 778:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 779:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_DEC_USED(used, (size - newsize));
+ 780:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* no need to plug holes, we've already done that */
+ 781:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   } else if (newsize + SIZEOF_STRUCT_MEM + MIN_SIZE_ALIGNED <= size) {
+ 771              	 .loc 1 781 0
+ 772 0102 FB8B     	 ldrh r3,[r7,#30]
+ 773 0104 03F11402 	 add r2,r3,#20
+ 774 0108 BB8A     	 ldrh r3,[r7,#20]
+ 775 010a 9A42     	 cmp r2,r3
+ 776 010c 2CD8     	 bhi .L49
+ 782:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* Next struct is used but there's room for another struct mem with
+ 783:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * at least MIN_SIZE_ALIGNED of data.
+ 784:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * Old size ('size') must be big enough to contain at least 'newsize' plus a struct mem
+ 785:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * ('SIZEOF_STRUCT_MEM') with some data ('MIN_SIZE_ALIGNED').
+ 786:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * @todo we could leave out MIN_SIZE_ALIGNED. We would create an empty
+ 787:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      *       region that couldn't hold data, but when mem->next gets freed,
+ 788:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      *       the 2 regions would be combined, resulting in more free memory */
+ 789:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     ptr2 = (mem_size_t)(ptr + SIZEOF_STRUCT_MEM + newsize);
+ 777              	 .loc 1 789 0
+ 778 010e FA8A     	 ldrh r2,[r7,#22]
+ 779 0110 FB8B     	 ldrh r3,[r7,#30]
+ 780 0112 1344     	 add r3,r3,r2
+ 781 0114 9BB2     	 uxth r3,r3
+ 782 0116 0833     	 adds r3,r3,#8
+ 783 0118 BB81     	 strh r3,[r7,#12]
+ 790:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_ASSERT("invalid next ptr", mem->next != MEM_SIZE_ALIGNED);
+ 791:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2 = ptr_to_mem(ptr2);
+ 784              	 .loc 1 791 0
+ 785 011a BB89     	 ldrh r3,[r7,#12]
+ 786 011c 1846     	 mov r0,r3
+ 787 011e FFF7FEFF 	 bl ptr_to_mem
+ 788 0122 3861     	 str r0,[r7,#16]
+ 792:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (mem2 < lfree) {
+ 789              	 .loc 1 792 0
+ 790 0124 154B     	 ldr r3,.L51+8
+ 791 0126 1B68     	 ldr r3,[r3]
+ 792 0128 3A69     	 ldr r2,[r7,#16]
+ 793 012a 9A42     	 cmp r2,r3
+ 794 012c 02D2     	 bcs .L50
+ 793:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       lfree = mem2;
+ 795              	 .loc 1 793 0
+ 796 012e 134A     	 ldr r2,.L51+8
+ 797 0130 3B69     	 ldr r3,[r7,#16]
+ 798 0132 1360     	 str r3,[r2]
+ 799              	.L50:
+ 794:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 795:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2->used = 0;
+ 800              	 .loc 1 795 0
+ 801 0134 3B69     	 ldr r3,[r7,#16]
+ 802 0136 0022     	 movs r2,#0
+ 803 0138 1A71     	 strb r2,[r3,#4]
+ 796:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2->next = mem->next;
+ 804              	 .loc 1 796 0
+ 805 013a BB69     	 ldr r3,[r7,#24]
+ 806 013c 1A88     	 ldrh r2,[r3]
+ 807 013e 3B69     	 ldr r3,[r7,#16]
+ 808 0140 1A80     	 strh r2,[r3]
+ 797:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem2->prev = ptr;
+ 809              	 .loc 1 797 0
+ 810 0142 3B69     	 ldr r3,[r7,#16]
+ 811 0144 FA8A     	 ldrh r2,[r7,#22]
+ 812 0146 5A80     	 strh r2,[r3,#2]
+ 798:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     mem->next = ptr2;
+ 813              	 .loc 1 798 0
+ 814 0148 BB69     	 ldr r3,[r7,#24]
+ 815 014a BA89     	 ldrh r2,[r7,#12]
+ 816 014c 1A80     	 strh r2,[r3]
+ 799:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     if (mem2->next != MEM_SIZE_ALIGNED) {
+ 817              	 .loc 1 799 0
+ 818 014e 3B69     	 ldr r3,[r7,#16]
+ 819 0150 1B88     	 ldrh r3,[r3]
+ 820 0152 B3F5C86F 	 cmp r3,#1600
+ 821 0156 07D0     	 beq .L49
+ 800:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       ptr_to_mem(mem2->next)->prev = ptr2;
+ 822              	 .loc 1 800 0
+ 823 0158 3B69     	 ldr r3,[r7,#16]
+ 824 015a 1B88     	 ldrh r3,[r3]
+ 825 015c 1846     	 mov r0,r3
+ 826 015e FFF7FEFF 	 bl ptr_to_mem
+ 827 0162 0246     	 mov r2,r0
+ 828 0164 BB89     	 ldrh r3,[r7,#12]
+ 829 0166 5380     	 strh r3,[r2,#2]
+ 830              	.L49:
+ 801:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 802:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     MEM_STATS_DEC_USED(used, (size - newsize));
+ 803:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* the original mem->next is used, so no need to plug holes! */
+ 804:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 805:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* else {
+ 806:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     next struct mem is used but size between mem and mem2 is not big enough
+ 807:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     to create another struct mem
+ 808:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     -> don't do anyhting.
+ 809:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     -> the remaining space stays unused since it is too small
+ 810:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   } */
+ 811:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 812:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_overflow_init_element(mem, new_size);
+ 813:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 814:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_SANITY();
+ 815:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 816:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_free_count = 1;
+ 817:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 818:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_FREE_UNPROTECT();
+ 819:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return rmem;
+ 831              	 .loc 1 819 0
+ 832 0168 7B68     	 ldr r3,[r7,#4]
+ 833              	.L41:
+ 820:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 834              	 .loc 1 820 0
+ 835 016a 1846     	 mov r0,r3
+ 836 016c 2037     	 adds r7,r7,#32
+ 837              	.LCFI35:
+ 838              	 .cfi_def_cfa_offset 8
+ 839 016e BD46     	 mov sp,r7
+ 840              	.LCFI36:
+ 841              	 .cfi_def_cfa_register 13
+ 842              	 
+ 843 0170 80BD     	 pop {r7,pc}
+ 844              	.L52:
+ 845 0172 00BF     	 .align 2
+ 846              	.L51:
+ 847 0174 00000000 	 .word ram
+ 848 0178 00000000 	 .word ram_end
+ 849 017c 00000000 	 .word lfree
+ 850              	 .cfi_endproc
+ 851              	.LFE143:
+ 853              	 .section .text.mem_malloc,"ax",%progbits
+ 854              	 .align 2
+ 855              	 .global mem_malloc
+ 856              	 .thumb
+ 857              	 .thumb_func
+ 859              	mem_malloc:
+ 860              	.LFB144:
+ 821:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 822:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 823:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Allocate a block of memory with a minimum of 'size' bytes.
+ 824:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 825:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param size_in is the minimum size of the requested block in bytes.
+ 826:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @return pointer to allocated memory or NULL if no free memory was found.
+ 827:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 828:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Note that the returned value will always be aligned (as defined by MEM_ALIGNMENT).
+ 829:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 830:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 831:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_malloc(mem_size_t size_in)
+ 832:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 861              	 .loc 1 832 0
+ 862              	 .cfi_startproc
+ 863              	 
+ 864              	 
+ 865 0000 80B5     	 push {r7,lr}
+ 866              	.LCFI37:
+ 867              	 .cfi_def_cfa_offset 8
+ 868              	 .cfi_offset 7,-8
+ 869              	 .cfi_offset 14,-4
+ 870 0002 88B0     	 sub sp,sp,#32
+ 871              	.LCFI38:
+ 872              	 .cfi_def_cfa_offset 40
+ 873 0004 00AF     	 add r7,sp,#0
+ 874              	.LCFI39:
+ 875              	 .cfi_def_cfa_register 7
+ 876 0006 0346     	 mov r3,r0
+ 877 0008 FB80     	 strh r3,[r7,#6]
+ 833:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   mem_size_t ptr, ptr2, size;
+ 834:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   struct mem *mem, *mem2;
+ 835:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 836:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   u8_t local_mem_free_count = 0;
+ 837:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 838:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_ALLOC_DECL_PROTECT();
+ 839:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 840:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (size_in == 0) {
+ 878              	 .loc 1 840 0
+ 879 000a FB88     	 ldrh r3,[r7,#6]
+ 880 000c 002B     	 cmp r3,#0
+ 881 000e 01D1     	 bne .L54
+ 841:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return NULL;
+ 882              	 .loc 1 841 0
+ 883 0010 0023     	 movs r3,#0
+ 884 0012 92E0     	 b .L55
+ 885              	.L54:
+ 842:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 843:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 844:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* Expand the size of the allocated memory region so that we can
+ 845:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      adjust for alignment. */
+ 846:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   size = (mem_size_t)LWIP_MEM_ALIGN_SIZE(size_in);
+ 886              	 .loc 1 846 0
+ 887 0014 FB88     	 ldrh r3,[r7,#6]
+ 888 0016 0333     	 adds r3,r3,#3
+ 889 0018 9BB2     	 uxth r3,r3
+ 890 001a 23F00303 	 bic r3,r3,#3
+ 891 001e BB83     	 strh r3,[r7,#28]
+ 847:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (size < MIN_SIZE_ALIGNED) {
+ 892              	 .loc 1 847 0
+ 893 0020 BB8B     	 ldrh r3,[r7,#28]
+ 894 0022 0B2B     	 cmp r3,#11
+ 895 0024 01D8     	 bhi .L56
+ 848:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* every data block must be at least MIN_SIZE_ALIGNED long */
+ 849:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     size = MIN_SIZE_ALIGNED;
+ 896              	 .loc 1 849 0
+ 897 0026 0C23     	 movs r3,#12
+ 898 0028 BB83     	 strh r3,[r7,#28]
+ 899              	.L56:
+ 850:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 851:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 852:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   size += MEM_SANITY_REGION_BEFORE_ALIGNED + MEM_SANITY_REGION_AFTER_ALIGNED;
+ 853:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 854:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((size > MEM_SIZE_ALIGNED) || (size < size_in)) {
+ 900              	 .loc 1 854 0
+ 901 002a BB8B     	 ldrh r3,[r7,#28]
+ 902 002c B3F5C86F 	 cmp r3,#1600
+ 903 0030 03D8     	 bhi .L57
+ 904              	 .loc 1 854 0 is_stmt 0 discriminator 1
+ 905 0032 BA8B     	 ldrh r2,[r7,#28]
+ 906 0034 FB88     	 ldrh r3,[r7,#6]
+ 907 0036 9A42     	 cmp r2,r3
+ 908 0038 01D2     	 bcs .L58
+ 909              	.L57:
+ 855:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return NULL;
+ 910              	 .loc 1 855 0 is_stmt 1
+ 911 003a 0023     	 movs r3,#0
+ 912 003c 7DE0     	 b .L55
+ 913              	.L58:
+ 856:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+ 857:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 858:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* protect the heap from concurrent access */
+ 859:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   sys_mutex_lock(&mem_mutex);
+ 860:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_ALLOC_PROTECT();
+ 861:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 862:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* run as long as a mem_free disturbed mem_malloc or mem_trim */
+ 863:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   do {
+ 864:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     local_mem_free_count = 0;
+ 865:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 866:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 867:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* Scan through the heap searching for a free block that is big enough,
+ 868:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      * beginning with the lowest free block.
+ 869:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****      */
+ 870:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     for (ptr = mem_to_ptr(lfree); ptr < MEM_SIZE_ALIGNED - size;
+ 914              	 .loc 1 870 0
+ 915 003e 414B     	 ldr r3,.L69
+ 916 0040 1B68     	 ldr r3,[r3]
+ 917 0042 1846     	 mov r0,r3
+ 918 0044 FFF7FEFF 	 bl mem_to_ptr
+ 919 0048 0346     	 mov r3,r0
+ 920 004a FB83     	 strh r3,[r7,#30]
+ 921 004c 6EE0     	 b .L59
+ 922              	.L68:
+ 871:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****          ptr = ptr_to_mem(ptr)->next) {
+ 872:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       mem = ptr_to_mem(ptr);
+ 923              	 .loc 1 872 0
+ 924 004e FB8B     	 ldrh r3,[r7,#30]
+ 925 0050 1846     	 mov r0,r3
+ 926 0052 FFF7FEFF 	 bl ptr_to_mem
+ 927 0056 7861     	 str r0,[r7,#20]
+ 873:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 874:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       mem_free_count = 0;
+ 875:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_MEM_ALLOC_UNPROTECT();
+ 876:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       /* allow mem_free or mem_trim to run */
+ 877:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       LWIP_MEM_ALLOC_PROTECT();
+ 878:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       if (mem_free_count != 0) {
+ 879:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         /* If mem_free or mem_trim have run, we have to restart since they
+ 880:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            could have altered our current struct mem. */
+ 881:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         local_mem_free_count = 1;
+ 882:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         break;
+ 883:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       }
+ 884:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 885:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 886:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       if ((!mem->used) &&
+ 928              	 .loc 1 886 0
+ 929 0058 7B69     	 ldr r3,[r7,#20]
+ 930 005a 1B79     	 ldrb r3,[r3,#4]
+ 931 005c 002B     	 cmp r3,#0
+ 932 005e 5ED1     	 bne .L60
+ 887:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           (mem->next - (ptr + SIZEOF_STRUCT_MEM)) >= size) {
+ 933              	 .loc 1 887 0 discriminator 1
+ 934 0060 7B69     	 ldr r3,[r7,#20]
+ 935 0062 1B88     	 ldrh r3,[r3]
+ 936 0064 1A46     	 mov r2,r3
+ 937 0066 FB8B     	 ldrh r3,[r7,#30]
+ 938 0068 D31A     	 subs r3,r2,r3
+ 939 006a A3F10802 	 sub r2,r3,#8
+ 940 006e BB8B     	 ldrh r3,[r7,#28]
+ 886:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           (mem->next - (ptr + SIZEOF_STRUCT_MEM)) >= size) {
+ 941              	 .loc 1 886 0 discriminator 1
+ 942 0070 9A42     	 cmp r2,r3
+ 943 0072 54D3     	 bcc .L60
+ 888:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         /* mem is not used and at least perfect fit is possible:
+ 889:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****          * mem->next - (ptr + SIZEOF_STRUCT_MEM) gives us the 'user data size' of mem */
+ 890:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 891:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         if (mem->next - (ptr + SIZEOF_STRUCT_MEM) >= (size + SIZEOF_STRUCT_MEM + MIN_SIZE_ALIGNED))
+ 944              	 .loc 1 891 0
+ 945 0074 7B69     	 ldr r3,[r7,#20]
+ 946 0076 1B88     	 ldrh r3,[r3]
+ 947 0078 1A46     	 mov r2,r3
+ 948 007a FB8B     	 ldrh r3,[r7,#30]
+ 949 007c D31A     	 subs r3,r2,r3
+ 950 007e A3F10802 	 sub r2,r3,#8
+ 951 0082 BB8B     	 ldrh r3,[r7,#28]
+ 952 0084 1433     	 adds r3,r3,#20
+ 953 0086 9A42     	 cmp r2,r3
+ 954 0088 28D3     	 bcc .L61
+ 892:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           /* (in addition to the above, we test if another struct mem (SIZEOF_STRUCT_MEM) containin
+ 893:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * at least MIN_SIZE_ALIGNED of data also fits in the 'user data space' of 'mem')
+ 894:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * -> split large block, create empty remainder,
+ 895:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * remainder must be large enough to contain MIN_SIZE_ALIGNED data: if
+ 896:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * mem->next - (ptr + (2*SIZEOF_STRUCT_MEM)) == size,
+ 897:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * struct mem would fit in but no data between mem2 and mem2->next
+ 898:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * @todo we could leave out MIN_SIZE_ALIGNED. We would create an empty
+ 899:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            *       region that couldn't hold data, but when mem->next gets freed,
+ 900:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            *       the 2 regions would be combined, resulting in more free memory
+ 901:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            */
+ 902:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           ptr2 = (mem_size_t)(ptr + SIZEOF_STRUCT_MEM + size);
+ 955              	 .loc 1 902 0
+ 956 008a FA8B     	 ldrh r2,[r7,#30]
+ 957 008c BB8B     	 ldrh r3,[r7,#28]
+ 958 008e 1344     	 add r3,r3,r2
+ 959 0090 9BB2     	 uxth r3,r3
+ 960 0092 0833     	 adds r3,r3,#8
+ 961 0094 7B82     	 strh r3,[r7,#18]
+ 903:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           LWIP_ASSERT("invalid next ptr",ptr2 != MEM_SIZE_ALIGNED);
+ 904:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           /* create mem2 struct */
+ 905:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem2 = ptr_to_mem(ptr2);
+ 962              	 .loc 1 905 0
+ 963 0096 7B8A     	 ldrh r3,[r7,#18]
+ 964 0098 1846     	 mov r0,r3
+ 965 009a FFF7FEFF 	 bl ptr_to_mem
+ 966 009e F860     	 str r0,[r7,#12]
+ 906:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem2->used = 0;
+ 967              	 .loc 1 906 0
+ 968 00a0 FB68     	 ldr r3,[r7,#12]
+ 969 00a2 0022     	 movs r2,#0
+ 970 00a4 1A71     	 strb r2,[r3,#4]
+ 907:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem2->next = mem->next;
+ 971              	 .loc 1 907 0
+ 972 00a6 7B69     	 ldr r3,[r7,#20]
+ 973 00a8 1A88     	 ldrh r2,[r3]
+ 974 00aa FB68     	 ldr r3,[r7,#12]
+ 975 00ac 1A80     	 strh r2,[r3]
+ 908:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem2->prev = ptr;
+ 976              	 .loc 1 908 0
+ 977 00ae FB68     	 ldr r3,[r7,#12]
+ 978 00b0 FA8B     	 ldrh r2,[r7,#30]
+ 979 00b2 5A80     	 strh r2,[r3,#2]
+ 909:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           /* and insert it between mem and mem->next */
+ 910:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem->next = ptr2;
+ 980              	 .loc 1 910 0
+ 981 00b4 7B69     	 ldr r3,[r7,#20]
+ 982 00b6 7A8A     	 ldrh r2,[r7,#18]
+ 983 00b8 1A80     	 strh r2,[r3]
+ 911:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem->used = 1;
+ 984              	 .loc 1 911 0
+ 985 00ba 7B69     	 ldr r3,[r7,#20]
+ 986 00bc 0122     	 movs r2,#1
+ 987 00be 1A71     	 strb r2,[r3,#4]
+ 912:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 913:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           if (mem2->next != MEM_SIZE_ALIGNED) {
+ 988              	 .loc 1 913 0
+ 989 00c0 FB68     	 ldr r3,[r7,#12]
+ 990 00c2 1B88     	 ldrh r3,[r3]
+ 991 00c4 B3F5C86F 	 cmp r3,#1600
+ 992 00c8 0BD0     	 beq .L63
+ 914:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             ptr_to_mem(mem2->next)->prev = ptr2;
+ 993              	 .loc 1 914 0
+ 994 00ca FB68     	 ldr r3,[r7,#12]
+ 995 00cc 1B88     	 ldrh r3,[r3]
+ 996 00ce 1846     	 mov r0,r3
+ 997 00d0 FFF7FEFF 	 bl ptr_to_mem
+ 998 00d4 0246     	 mov r2,r0
+ 999 00d6 7B8A     	 ldrh r3,[r7,#18]
+ 1000 00d8 5380     	 strh r3,[r2,#2]
+ 1001 00da 02E0     	 b .L63
+ 1002              	.L61:
+ 915:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           }
+ 916:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           MEM_STATS_INC_USED(used, (size + SIZEOF_STRUCT_MEM));
+ 917:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         } else {
+ 918:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           /* (a mem2 struct does no fit into the user data space of mem and mem->next will always
+ 919:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * be used at this point: if not we have 2 unused structs in a row, plug_holes should hav
+ 920:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * take care of this).
+ 921:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * -> near fit or exact fit: do not split, no mem2 creation
+ 922:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * also can't move mem->next directly behind mem, since mem->next
+ 923:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            * will always be used at this point!
+ 924:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****            */
+ 925:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           mem->used = 1;
+ 1003              	 .loc 1 925 0
+ 1004 00dc 7B69     	 ldr r3,[r7,#20]
+ 1005 00de 0122     	 movs r2,#1
+ 1006 00e0 1A71     	 strb r2,[r3,#4]
+ 1007              	.L63:
+ 926:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           MEM_STATS_INC_USED(used, mem->next - mem_to_ptr(mem));
+ 927:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         }
+ 928:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 929:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_malloc_adjust_lfree:
+ 930:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 931:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         if (mem == lfree) {
+ 1008              	 .loc 1 931 0
+ 1009 00e2 184B     	 ldr r3,.L69
+ 1010 00e4 1B68     	 ldr r3,[r3]
+ 1011 00e6 7A69     	 ldr r2,[r7,#20]
+ 1012 00e8 9A42     	 cmp r2,r3
+ 1013 00ea 15D1     	 bne .L64
+ 1014              	.LBB3:
+ 932:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           struct mem *cur = lfree;
+ 1015              	 .loc 1 932 0
+ 1016 00ec 154B     	 ldr r3,.L69
+ 1017 00ee 1B68     	 ldr r3,[r3]
+ 1018 00f0 BB61     	 str r3,[r7,#24]
+ 933:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           /* Find next free block after mem and update lowest free pointer */
+ 934:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           while (cur->used && cur != ram_end) {
+ 1019              	 .loc 1 934 0
+ 1020 00f2 05E0     	 b .L65
+ 1021              	.L67:
+ 935:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 936:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             mem_free_count = 0;
+ 937:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             LWIP_MEM_ALLOC_UNPROTECT();
+ 938:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             /* prevent high interrupt latency... */
+ 939:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             LWIP_MEM_ALLOC_PROTECT();
+ 940:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             if (mem_free_count != 0) {
+ 941:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****               /* If mem_free or mem_trim have run, we have to restart since they
+ 942:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****                  could have altered our current struct mem or lfree. */
+ 943:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****               goto mem_malloc_adjust_lfree;
+ 944:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             }
+ 945:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 946:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****             cur = ptr_to_mem(cur->next);
+ 1022              	 .loc 1 946 0
+ 1023 00f4 BB69     	 ldr r3,[r7,#24]
+ 1024 00f6 1B88     	 ldrh r3,[r3]
+ 1025 00f8 1846     	 mov r0,r3
+ 1026 00fa FFF7FEFF 	 bl ptr_to_mem
+ 1027 00fe B861     	 str r0,[r7,#24]
+ 1028              	.L65:
+ 934:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 1029              	 .loc 1 934 0
+ 1030 0100 BB69     	 ldr r3,[r7,#24]
+ 1031 0102 1B79     	 ldrb r3,[r3,#4]
+ 1032 0104 002B     	 cmp r3,#0
+ 1033 0106 04D0     	 beq .L66
+ 934:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 1034              	 .loc 1 934 0 is_stmt 0 discriminator 1
+ 1035 0108 0F4B     	 ldr r3,.L69+4
+ 1036 010a 1B68     	 ldr r3,[r3]
+ 1037 010c BA69     	 ldr r2,[r7,#24]
+ 1038 010e 9A42     	 cmp r2,r3
+ 1039 0110 F0D1     	 bne .L67
+ 1040              	.L66:
+ 947:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           }
+ 948:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           lfree = cur;
+ 1041              	 .loc 1 948 0 is_stmt 1
+ 1042 0112 0C4A     	 ldr r2,.L69
+ 1043 0114 BB69     	 ldr r3,[r7,#24]
+ 1044 0116 1360     	 str r3,[r2]
+ 1045              	.L64:
+ 1046              	.LBE3:
+ 949:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****           LWIP_ASSERT("mem_malloc: !lfree->used", ((lfree == ram_end) || (!lfree->used)));
+ 950:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         }
+ 951:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         LWIP_MEM_ALLOC_UNPROTECT();
+ 952:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         sys_mutex_unlock(&mem_mutex);
+ 953:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         LWIP_ASSERT("mem_malloc: allocated memory not above ram_end.",
+ 954:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****                     (mem_ptr_t)mem + SIZEOF_STRUCT_MEM + size <= (mem_ptr_t)ram_end);
+ 955:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         LWIP_ASSERT("mem_malloc: allocated memory properly aligned.",
+ 956:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****                     ((mem_ptr_t)mem + SIZEOF_STRUCT_MEM) % MEM_ALIGNMENT == 0);
+ 957:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         LWIP_ASSERT("mem_malloc: sanity check alignment",
+ 958:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****                     (((mem_ptr_t)mem) & (MEM_ALIGNMENT - 1)) == 0);
+ 959:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 960:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_OVERFLOW_CHECK
+ 961:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         mem_overflow_init_element(mem, size_in);
+ 962:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif
+ 963:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         MEM_SANITY();
+ 964:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****         return (u8_t *)mem + SIZEOF_STRUCT_MEM + MEM_SANITY_OFFSET;
+ 1047              	 .loc 1 964 0
+ 1048 0118 7B69     	 ldr r3,[r7,#20]
+ 1049 011a 0833     	 adds r3,r3,#8
+ 1050 011c 0DE0     	 b .L55
+ 1051              	.L60:
+ 871:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       mem = ptr_to_mem(ptr);
+ 1052              	 .loc 1 871 0
+ 1053 011e FB8B     	 ldrh r3,[r7,#30]
+ 1054 0120 1846     	 mov r0,r3
+ 1055 0122 FFF7FEFF 	 bl ptr_to_mem
+ 1056 0126 0346     	 mov r3,r0
+ 1057 0128 1B88     	 ldrh r3,[r3]
+ 1058 012a FB83     	 strh r3,[r7,#30]
+ 1059              	.L59:
+ 870:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****          ptr = ptr_to_mem(ptr)->next) {
+ 1060              	 .loc 1 870 0 discriminator 1
+ 1061 012c FA8B     	 ldrh r2,[r7,#30]
+ 1062 012e BB8B     	 ldrh r3,[r7,#28]
+ 1063 0130 C3F5C863 	 rsb r3,r3,#1600
+ 1064 0134 9A42     	 cmp r2,r3
+ 1065 0136 8AD3     	 bcc .L68
+ 965:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****       }
+ 966:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     }
+ 967:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 968:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* if we got interrupted by a mem_free, try again */
+ 969:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   } while (local_mem_free_count != 0);
+ 970:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT */
+ 971:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   MEM_STATS_INC(err);
+ 972:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_MEM_ALLOC_UNPROTECT();
+ 973:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   sys_mutex_unlock(&mem_mutex);
+ 974:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("mem_malloc: could not allocate %"S16_F" bytes\n
+ 975:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return NULL;
+ 1066              	 .loc 1 975 0
+ 1067 0138 0023     	 movs r3,#0
+ 1068              	.L55:
+ 976:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 1069              	 .loc 1 976 0
+ 1070 013a 1846     	 mov r0,r3
+ 1071 013c 2037     	 adds r7,r7,#32
+ 1072              	.LCFI40:
+ 1073              	 .cfi_def_cfa_offset 8
+ 1074 013e BD46     	 mov sp,r7
+ 1075              	.LCFI41:
+ 1076              	 .cfi_def_cfa_register 13
+ 1077              	 
+ 1078 0140 80BD     	 pop {r7,pc}
+ 1079              	.L70:
+ 1080 0142 00BF     	 .align 2
+ 1081              	.L69:
+ 1082 0144 00000000 	 .word lfree
+ 1083 0148 00000000 	 .word ram_end
+ 1084              	 .cfi_endproc
+ 1085              	.LFE144:
+ 1087              	 .section .text.mem_calloc,"ax",%progbits
+ 1088              	 .align 2
+ 1089              	 .global mem_calloc
+ 1090              	 .thumb
+ 1091              	 .thumb_func
+ 1093              	mem_calloc:
+ 1094              	.LFB145:
+ 977:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 978:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #endif /* MEM_USE_POOLS */
+ 979:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 980:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #if MEM_LIBC_MALLOC && (!LWIP_STATS || !MEM_STATS)
+ 981:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 982:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_calloc(mem_size_t count, mem_size_t size)
+ 983:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 984:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return mem_clib_calloc(count, size);
+ 985:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 986:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+ 987:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** #else /* MEM_LIBC_MALLOC && (!LWIP_STATS || !MEM_STATS) */
+ 988:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** /**
+ 989:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * Contiguously allocates enough space for count objects that are size bytes
+ 990:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * of memory each and returns a pointer to the allocated memory.
+ 991:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 992:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * The allocated memory is filled with bytes of value zero.
+ 993:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  *
+ 994:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param count number of objects to allocate
+ 995:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @param size size of the objects to allocate
+ 996:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  * @return pointer to allocated memory / NULL pointer if there is an error
+ 997:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****  */
+ 998:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** void *
+ 999:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** mem_calloc(mem_size_t count, mem_size_t size)
+1000:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** {
+ 1095              	 .loc 1 1000 0
+ 1096              	 .cfi_startproc
+ 1097              	 
+ 1098              	 
+ 1099 0000 80B5     	 push {r7,lr}
+ 1100              	.LCFI42:
+ 1101              	 .cfi_def_cfa_offset 8
+ 1102              	 .cfi_offset 7,-8
+ 1103              	 .cfi_offset 14,-4
+ 1104 0002 84B0     	 sub sp,sp,#16
+ 1105              	.LCFI43:
+ 1106              	 .cfi_def_cfa_offset 24
+ 1107 0004 00AF     	 add r7,sp,#0
+ 1108              	.LCFI44:
+ 1109              	 .cfi_def_cfa_register 7
+ 1110 0006 0346     	 mov r3,r0
+ 1111 0008 0A46     	 mov r2,r1
+ 1112 000a FB80     	 strh r3,[r7,#6]
+ 1113 000c 1346     	 mov r3,r2
+ 1114 000e BB80     	 strh r3,[r7,#4]
+1001:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   void *p;
+1002:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   size_t alloc_size = (size_t)count * (size_t)size;
+ 1115              	 .loc 1 1002 0
+ 1116 0010 FB88     	 ldrh r3,[r7,#6]
+ 1117 0012 BA88     	 ldrh r2,[r7,#4]
+ 1118 0014 02FB03F3 	 mul r3,r2,r3
+ 1119 0018 FB60     	 str r3,[r7,#12]
+1003:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+1004:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if ((size_t)(mem_size_t)alloc_size != alloc_size) {
+ 1120              	 .loc 1 1004 0
+ 1121 001a FB68     	 ldr r3,[r7,#12]
+ 1122 001c 9BB2     	 uxth r3,r3
+ 1123 001e 1A46     	 mov r2,r3
+ 1124 0020 FB68     	 ldr r3,[r7,#12]
+ 1125 0022 9A42     	 cmp r2,r3
+ 1126 0024 01D0     	 beq .L72
+1005:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     LWIP_DEBUGF(MEM_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("mem_calloc: could not allocate %"SZT_F" bytes
+1006:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     return NULL;
+ 1127              	 .loc 1 1006 0
+ 1128 0026 0023     	 movs r3,#0
+ 1129 0028 0EE0     	 b .L73
+ 1130              	.L72:
+1007:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+1008:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** 
+1009:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   /* allocate 'count' objects of size 'size' */
+1010:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   p = mem_malloc((mem_size_t)alloc_size);
+ 1131              	 .loc 1 1010 0
+ 1132 002a FB68     	 ldr r3,[r7,#12]
+ 1133 002c 9BB2     	 uxth r3,r3
+ 1134 002e 1846     	 mov r0,r3
+ 1135 0030 FFF7FEFF 	 bl mem_malloc
+ 1136 0034 B860     	 str r0,[r7,#8]
+1011:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   if (p) {
+ 1137              	 .loc 1 1011 0
+ 1138 0036 BB68     	 ldr r3,[r7,#8]
+ 1139 0038 002B     	 cmp r3,#0
+ 1140 003a 04D0     	 beq .L74
+1012:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     /* zero the memory */
+1013:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****     memset(p, 0, alloc_size);
+ 1141              	 .loc 1 1013 0
+ 1142 003c B868     	 ldr r0,[r7,#8]
+ 1143 003e 0021     	 movs r1,#0
+ 1144 0040 FA68     	 ldr r2,[r7,#12]
+ 1145 0042 FFF7FEFF 	 bl memset
+ 1146              	.L74:
+1014:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   }
+1015:../Dave/Generated/ETH_LWIP/lwip/core/mem.c ****   return p;
+ 1147              	 .loc 1 1015 0
+ 1148 0046 BB68     	 ldr r3,[r7,#8]
+ 1149              	.L73:
+1016:../Dave/Generated/ETH_LWIP/lwip/core/mem.c **** }
+ 1150              	 .loc 1 1016 0
+ 1151 0048 1846     	 mov r0,r3
+ 1152 004a 1037     	 adds r7,r7,#16
+ 1153              	.LCFI45:
+ 1154              	 .cfi_def_cfa_offset 8
+ 1155 004c BD46     	 mov sp,r7
+ 1156              	.LCFI46:
+ 1157              	 .cfi_def_cfa_register 13
+ 1158              	 
+ 1159 004e 80BD     	 pop {r7,pc}
+ 1160              	 .cfi_endproc
+ 1161              	.LFE145:
+ 1163              	 .text
+ 1164              	.Letext0:
+ 1165              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\lib\\gcc\\arm-none-eabi\\4.9.3\\include\\stddef.h"
+ 1166              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1167              	 .file 4 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 1168              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 1169              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/mem.h"
+ 1170              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 1171              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
+ 1172              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 1173              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 mem.c
+                            *COM*:00000653 ram_heap
+    {standard input}:21     .bss.ram:00000000 $d
+    {standard input}:24     .bss.ram:00000000 ram
+    {standard input}:27     .bss.ram_end:00000000 $d
+    {standard input}:30     .bss.ram_end:00000000 ram_end
+    {standard input}:33     .bss.lfree:00000000 $d
+    {standard input}:36     .bss.lfree:00000000 lfree
+    {standard input}:39     .text.ptr_to_mem:00000000 $t
+    {standard input}:43     .text.ptr_to_mem:00000000 ptr_to_mem
+    {standard input}:85     .text.ptr_to_mem:00000020 $d
+    {standard input}:90     .text.mem_to_ptr:00000000 $t
+    {standard input}:94     .text.mem_to_ptr:00000000 mem_to_ptr
+    {standard input}:135    .text.mem_to_ptr:00000020 $d
+    {standard input}:140    .text.plug_holes:00000000 $t
+    {standard input}:144    .text.plug_holes:00000000 plug_holes
+    {standard input}:277    .text.plug_holes:000000c0 $d
+    {standard input}:283    .text.mem_init:00000000 $t
+    {standard input}:288    .text.mem_init:00000000 mem_init
+    {standard input}:366    .text.mem_init:00000068 $d
+    {standard input}:374    .text.mem_link_valid:00000000 $t
+    {standard input}:378    .text.mem_link_valid:00000000 mem_link_valid
+    {standard input}:471    .text.mem_link_valid:00000074 $d
+    {standard input}:476    .text.mem_free:00000000 $t
+    {standard input}:481    .text.mem_free:00000000 mem_free
+    {standard input}:583    .text.mem_free:00000078 $d
+    {standard input}:590    .text.mem_trim:00000000 $t
+    {standard input}:595    .text.mem_trim:00000000 mem_trim
+    {standard input}:847    .text.mem_trim:00000174 $d
+    {standard input}:854    .text.mem_malloc:00000000 $t
+    {standard input}:859    .text.mem_malloc:00000000 mem_malloc
+    {standard input}:1082   .text.mem_malloc:00000144 $d
+    {standard input}:1088   .text.mem_calloc:00000000 $t
+    {standard input}:1093   .text.mem_calloc:00000000 mem_calloc
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+memset

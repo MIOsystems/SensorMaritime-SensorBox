@@ -1,0 +1,1249 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "ip4_addr.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .global ip_addr_any
+  20              	 .section .rodata.ip_addr_any,"a",%progbits
+  21              	 .align 2
+  24              	ip_addr_any:
+  25 0000 00000000 	 .space 4
+  26              	 .global ip_addr_broadcast
+  27              	 .section .rodata.ip_addr_broadcast,"a",%progbits
+  28              	 .align 2
+  31              	ip_addr_broadcast:
+  32 0000 FFFFFFFF 	 .word -1
+  33              	 .section .text.ip4_addr_isbroadcast_u32,"ax",%progbits
+  34              	 .align 2
+  35              	 .global ip4_addr_isbroadcast_u32
+  36              	 .thumb
+  37              	 .thumb_func
+  39              	ip4_addr_isbroadcast_u32:
+  40              	.LFB137:
+  41              	 .file 1 "../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c"
+   1:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /**
+   2:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @file
+   3:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * This is the IPv4 address tools implementation.
+   4:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+   5:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+   6:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+   7:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /*
+   8:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+   9:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * All rights reserved.
+  10:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  11:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  12:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * are permitted provided that the following conditions are met:
+  13:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  14:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  15:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *    this list of conditions and the following disclaimer.
+  16:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  17:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *    this list of conditions and the following disclaimer in the documentation
+  18:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *    and/or other materials provided with the distribution.
+  19:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * 3. The name of the author may not be used to endorse or promote products
+  20:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *    derived from this software without specific prior written permission.
+  21:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  22:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  23:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  24:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  25:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  26:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  27:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  30:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  31:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * OF SUCH DAMAGE.
+  32:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  33:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * This file is part of the lwIP TCP/IP stack.
+  34:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  35:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Author: Adam Dunkels <adam@sics.se>
+  36:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  37:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+  38:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  39:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** #include "ETH_LWIP/lwip/include/lwip/opt.h"
+  40:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  41:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** #if LWIP_IPV4
+  42:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  43:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** #include "ETH_LWIP/lwip/include/lwip/ip_addr.h"
+  44:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** #include "ETH_LWIP/lwip/include/lwip/netif.h"
+  45:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  46:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /* used by IP4_ADDR_ANY and IP_ADDR_BROADCAST in ip_addr.h */
+  47:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** const ip_addr_t ip_addr_any = IPADDR4_INIT(IPADDR_ANY);
+  48:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** const ip_addr_t ip_addr_broadcast = IPADDR4_INIT(IPADDR_BROADCAST);
+  49:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  50:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /**
+  51:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Determine if an address is a broadcast address on a network interface
+  52:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  53:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param addr address to be checked
+  54:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param netif the network interface against which the address is checked
+  55:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @return returns non-zero if the address is a broadcast address
+  56:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+  57:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** u8_t
+  58:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** ip4_addr_isbroadcast_u32(u32_t addr, const struct netif *netif)
+  59:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** {
+  42              	 .loc 1 59 0
+  43              	 .cfi_startproc
+  44              	 
+  45              	 
+  46              	 
+  47 0000 80B4     	 push {r7}
+  48              	.LCFI0:
+  49              	 .cfi_def_cfa_offset 4
+  50              	 .cfi_offset 7,-4
+  51 0002 85B0     	 sub sp,sp,#20
+  52              	.LCFI1:
+  53              	 .cfi_def_cfa_offset 24
+  54 0004 00AF     	 add r7,sp,#0
+  55              	.LCFI2:
+  56              	 .cfi_def_cfa_register 7
+  57 0006 7860     	 str r0,[r7,#4]
+  58 0008 3960     	 str r1,[r7]
+  60:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   ip4_addr_t ipaddr;
+  61:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   ip4_addr_set_u32(&ipaddr, addr);
+  59              	 .loc 1 61 0
+  60 000a 7B68     	 ldr r3,[r7,#4]
+  61 000c FB60     	 str r3,[r7,#12]
+  62:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  63:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /* all ones (broadcast) or all zeroes (old skool broadcast) */
+  64:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   if ((~addr == IPADDR_ANY) ||
+  62              	 .loc 1 64 0
+  63 000e 7B68     	 ldr r3,[r7,#4]
+  64 0010 B3F1FF3F 	 cmp r3,#-1
+  65 0014 02D0     	 beq .L2
+  66              	 .loc 1 64 0 is_stmt 0 discriminator 1
+  67 0016 7B68     	 ldr r3,[r7,#4]
+  68 0018 002B     	 cmp r3,#0
+  69 001a 01D1     	 bne .L3
+  70              	.L2:
+  65:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       (addr == IPADDR_ANY)) {
+  66:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return 1;
+  71              	 .loc 1 66 0 is_stmt 1
+  72 001c 0123     	 movs r3,#1
+  73 001e 2AE0     	 b .L8
+  74              	.L3:
+  67:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     /* no broadcast support on this network interface? */
+  68:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   } else if ((netif->flags & NETIF_FLAG_BROADCAST) == 0) {
+  75              	 .loc 1 68 0
+  76 0020 3B68     	 ldr r3,[r7]
+  77 0022 93F82D30 	 ldrb r3,[r3,#45]
+  78 0026 03F00203 	 and r3,r3,#2
+  79 002a 002B     	 cmp r3,#0
+  80 002c 01D1     	 bne .L5
+  69:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     /* the given address cannot be a broadcast address
+  70:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****      * nor can we check against any broadcast addresses */
+  71:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return 0;
+  81              	 .loc 1 71 0
+  82 002e 0023     	 movs r3,#0
+  83 0030 21E0     	 b .L8
+  84              	.L5:
+  72:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     /* address matches network interface address exactly? => no broadcast */
+  73:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   } else if (addr == ip4_addr_get_u32(netif_ip4_addr(netif))) {
+  85              	 .loc 1 73 0
+  86 0032 3B68     	 ldr r3,[r7]
+  87 0034 0433     	 adds r3,r3,#4
+  88 0036 1A68     	 ldr r2,[r3]
+  89 0038 7B68     	 ldr r3,[r7,#4]
+  90 003a 9A42     	 cmp r2,r3
+  91 003c 01D1     	 bne .L6
+  74:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return 0;
+  92              	 .loc 1 74 0
+  93 003e 0023     	 movs r3,#0
+  94 0040 19E0     	 b .L8
+  95              	.L6:
+  75:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     /*  on the same (sub) network... */
+  76:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   } else if (ip4_addr_netcmp(&ipaddr, netif_ip4_addr(netif), netif_ip4_netmask(netif))
+  96              	 .loc 1 76 0
+  97 0042 FA68     	 ldr r2,[r7,#12]
+  98 0044 3B68     	 ldr r3,[r7]
+  99 0046 0433     	 adds r3,r3,#4
+ 100 0048 1B68     	 ldr r3,[r3]
+ 101 004a 5A40     	 eors r2,r2,r3
+ 102 004c 3B68     	 ldr r3,[r7]
+ 103 004e 0833     	 adds r3,r3,#8
+ 104 0050 1B68     	 ldr r3,[r3]
+ 105 0052 1340     	 ands r3,r3,r2
+ 106 0054 002B     	 cmp r3,#0
+ 107 0056 0DD1     	 bne .L7
+  77:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****              /* ...and host identifier bits are all ones? =>... */
+  78:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****              && ((addr & ~ip4_addr_get_u32(netif_ip4_netmask(netif))) ==
+ 108              	 .loc 1 78 0
+ 109 0058 3B68     	 ldr r3,[r7]
+ 110 005a 0833     	 adds r3,r3,#8
+ 111 005c 1B68     	 ldr r3,[r3]
+ 112 005e DA43     	 mvns r2,r3
+ 113 0060 7B68     	 ldr r3,[r7,#4]
+ 114 0062 1A40     	 ands r2,r2,r3
+  79:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****                  (IPADDR_BROADCAST & ~ip4_addr_get_u32(netif_ip4_netmask(netif))))) {
+ 115              	 .loc 1 79 0
+ 116 0064 3B68     	 ldr r3,[r7]
+ 117 0066 0833     	 adds r3,r3,#8
+ 118 0068 1B68     	 ldr r3,[r3]
+ 119 006a DB43     	 mvns r3,r3
+  78:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****                  (IPADDR_BROADCAST & ~ip4_addr_get_u32(netif_ip4_netmask(netif))))) {
+ 120              	 .loc 1 78 0
+ 121 006c 9A42     	 cmp r2,r3
+ 122 006e 01D1     	 bne .L7
+  80:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     /* => network broadcast address */
+  81:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return 1;
+ 123              	 .loc 1 81 0
+ 124 0070 0123     	 movs r3,#1
+ 125 0072 00E0     	 b .L8
+ 126              	.L7:
+  82:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   } else {
+  83:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return 0;
+ 127              	 .loc 1 83 0
+ 128 0074 0023     	 movs r3,#0
+ 129              	.L8:
+  84:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+  85:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** }
+ 130              	 .loc 1 85 0 discriminator 1
+ 131 0076 1846     	 mov r0,r3
+ 132 0078 1437     	 adds r7,r7,#20
+ 133              	.LCFI3:
+ 134              	 .cfi_def_cfa_offset 4
+ 135 007a BD46     	 mov sp,r7
+ 136              	.LCFI4:
+ 137              	 .cfi_def_cfa_register 13
+ 138              	 
+ 139 007c 5DF8047B 	 ldr r7,[sp],#4
+ 140              	.LCFI5:
+ 141              	 .cfi_restore 7
+ 142              	 .cfi_def_cfa_offset 0
+ 143 0080 7047     	 bx lr
+ 144              	 .cfi_endproc
+ 145              	.LFE137:
+ 147 0082 00BF     	 .section .text.ip4_addr_netmask_valid,"ax",%progbits
+ 148              	 .align 2
+ 149              	 .global ip4_addr_netmask_valid
+ 150              	 .thumb
+ 151              	 .thumb_func
+ 153              	ip4_addr_netmask_valid:
+ 154              	.LFB138:
+  86:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  87:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /** Checks if a netmask is valid (starting with ones, then only zeros)
+  88:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+  89:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param netmask the IPv4 netmask to check (in network byte order!)
+  90:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @return 1 if the netmask is valid, 0 if it is not
+  91:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+  92:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** u8_t
+  93:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** ip4_addr_netmask_valid(u32_t netmask)
+  94:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** {
+ 155              	 .loc 1 94 0
+ 156              	 .cfi_startproc
+ 157              	 
+ 158              	 
+ 159 0000 80B5     	 push {r7,lr}
+ 160              	.LCFI6:
+ 161              	 .cfi_def_cfa_offset 8
+ 162              	 .cfi_offset 7,-8
+ 163              	 .cfi_offset 14,-4
+ 164 0002 84B0     	 sub sp,sp,#16
+ 165              	.LCFI7:
+ 166              	 .cfi_def_cfa_offset 24
+ 167 0004 00AF     	 add r7,sp,#0
+ 168              	.LCFI8:
+ 169              	 .cfi_def_cfa_register 7
+ 170 0006 7860     	 str r0,[r7,#4]
+  95:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u32_t mask;
+  96:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u32_t nm_hostorder = lwip_htonl(netmask);
+ 171              	 .loc 1 96 0
+ 172 0008 7868     	 ldr r0,[r7,#4]
+ 173 000a FFF7FEFF 	 bl lwip_htonl
+ 174 000e B860     	 str r0,[r7,#8]
+  97:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+  98:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /* first, check for the first zero */
+  99:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   for (mask = 1UL << 31 ; mask != 0; mask >>= 1) {
+ 175              	 .loc 1 99 0
+ 176 0010 4FF00043 	 mov r3,#-2147483648
+ 177 0014 FB60     	 str r3,[r7,#12]
+ 178 0016 08E0     	 b .L10
+ 179              	.L13:
+ 100:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if ((nm_hostorder & mask) == 0) {
+ 180              	 .loc 1 100 0
+ 181 0018 BA68     	 ldr r2,[r7,#8]
+ 182 001a FB68     	 ldr r3,[r7,#12]
+ 183 001c 1340     	 ands r3,r3,r2
+ 184 001e 002B     	 cmp r3,#0
+ 185 0020 00D1     	 bne .L11
+ 101:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 186              	 .loc 1 101 0
+ 187 0022 05E0     	 b .L12
+ 188              	.L11:
+  99:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if ((nm_hostorder & mask) == 0) {
+ 189              	 .loc 1 99 0 discriminator 2
+ 190 0024 FB68     	 ldr r3,[r7,#12]
+ 191 0026 5B08     	 lsrs r3,r3,#1
+ 192 0028 FB60     	 str r3,[r7,#12]
+ 193              	.L10:
+  99:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if ((nm_hostorder & mask) == 0) {
+ 194              	 .loc 1 99 0 is_stmt 0 discriminator 1
+ 195 002a FB68     	 ldr r3,[r7,#12]
+ 196 002c 002B     	 cmp r3,#0
+ 197 002e F3D1     	 bne .L13
+ 198              	.L12:
+ 102:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 103:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 104:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /* then check that there is no one */
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   for (; mask != 0; mask >>= 1) {
+ 199              	 .loc 1 105 0 is_stmt 1 discriminator 1
+ 200 0030 09E0     	 b .L14
+ 201              	.L17:
+ 106:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if ((nm_hostorder & mask) != 0) {
+ 202              	 .loc 1 106 0
+ 203 0032 BA68     	 ldr r2,[r7,#8]
+ 204 0034 FB68     	 ldr r3,[r7,#12]
+ 205 0036 1340     	 ands r3,r3,r2
+ 206 0038 002B     	 cmp r3,#0
+ 207 003a 01D0     	 beq .L15
+ 107:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       /* there is a one after the first zero -> invalid */
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       return 0;
+ 208              	 .loc 1 108 0
+ 209 003c 0023     	 movs r3,#0
+ 210 003e 06E0     	 b .L16
+ 211              	.L15:
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if ((nm_hostorder & mask) != 0) {
+ 212              	 .loc 1 105 0
+ 213 0040 FB68     	 ldr r3,[r7,#12]
+ 214 0042 5B08     	 lsrs r3,r3,#1
+ 215 0044 FB60     	 str r3,[r7,#12]
+ 216              	.L14:
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if ((nm_hostorder & mask) != 0) {
+ 217              	 .loc 1 105 0 is_stmt 0 discriminator 1
+ 218 0046 FB68     	 ldr r3,[r7,#12]
+ 219 0048 002B     	 cmp r3,#0
+ 220 004a F2D1     	 bne .L17
+ 109:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 110:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 111:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /* no one after the first zero -> valid */
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   return 1;
+ 221              	 .loc 1 112 0 is_stmt 1
+ 222 004c 0123     	 movs r3,#1
+ 223              	.L16:
+ 113:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** }
+ 224              	 .loc 1 113 0
+ 225 004e 1846     	 mov r0,r3
+ 226 0050 1037     	 adds r7,r7,#16
+ 227              	.LCFI9:
+ 228              	 .cfi_def_cfa_offset 8
+ 229 0052 BD46     	 mov sp,r7
+ 230              	.LCFI10:
+ 231              	 .cfi_def_cfa_register 13
+ 232              	 
+ 233 0054 80BD     	 pop {r7,pc}
+ 234              	 .cfi_endproc
+ 235              	.LFE138:
+ 237 0056 00BF     	 .section .text.ipaddr_addr,"ax",%progbits
+ 238              	 .align 2
+ 239              	 .global ipaddr_addr
+ 240              	 .thumb
+ 241              	 .thumb_func
+ 243              	ipaddr_addr:
+ 244              	.LFB139:
+ 114:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 115:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /**
+ 116:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Ascii internet address interpretation routine.
+ 117:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * The value returned is in network order.
+ 118:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+ 119:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param cp IP address in ascii representation (e.g. "127.0.0.1")
+ 120:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @return ip address in network order
+ 121:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+ 122:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** u32_t
+ 123:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** ipaddr_addr(const char *cp)
+ 124:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** {
+ 245              	 .loc 1 124 0
+ 246              	 .cfi_startproc
+ 247              	 
+ 248              	 
+ 249 0000 80B5     	 push {r7,lr}
+ 250              	.LCFI11:
+ 251              	 .cfi_def_cfa_offset 8
+ 252              	 .cfi_offset 7,-8
+ 253              	 .cfi_offset 14,-4
+ 254 0002 84B0     	 sub sp,sp,#16
+ 255              	.LCFI12:
+ 256              	 .cfi_def_cfa_offset 24
+ 257 0004 00AF     	 add r7,sp,#0
+ 258              	.LCFI13:
+ 259              	 .cfi_def_cfa_register 7
+ 260 0006 7860     	 str r0,[r7,#4]
+ 125:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   ip4_addr_t val;
+ 126:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 127:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   if (ip4addr_aton(cp, &val)) {
+ 261              	 .loc 1 127 0
+ 262 0008 07F10C03 	 add r3,r7,#12
+ 263 000c 7868     	 ldr r0,[r7,#4]
+ 264 000e 1946     	 mov r1,r3
+ 265 0010 FFF7FEFF 	 bl ip4addr_aton
+ 266 0014 0346     	 mov r3,r0
+ 267 0016 002B     	 cmp r3,#0
+ 268 0018 01D0     	 beq .L19
+ 128:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return ip4_addr_get_u32(&val);
+ 269              	 .loc 1 128 0
+ 270 001a FB68     	 ldr r3,[r7,#12]
+ 271 001c 01E0     	 b .L21
+ 272              	.L19:
+ 129:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 130:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   return (IPADDR_NONE);
+ 273              	 .loc 1 130 0
+ 274 001e 4FF0FF33 	 mov r3,#-1
+ 275              	.L21:
+ 131:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** }
+ 276              	 .loc 1 131 0 discriminator 1
+ 277 0022 1846     	 mov r0,r3
+ 278 0024 1037     	 adds r7,r7,#16
+ 279              	.LCFI14:
+ 280              	 .cfi_def_cfa_offset 8
+ 281 0026 BD46     	 mov sp,r7
+ 282              	.LCFI15:
+ 283              	 .cfi_def_cfa_register 13
+ 284              	 
+ 285 0028 80BD     	 pop {r7,pc}
+ 286              	 .cfi_endproc
+ 287              	.LFE139:
+ 289 002a 00BF     	 .section .text.ip4addr_aton,"ax",%progbits
+ 290              	 .align 2
+ 291              	 .global ip4addr_aton
+ 292              	 .thumb
+ 293              	 .thumb_func
+ 295              	ip4addr_aton:
+ 296              	.LFB140:
+ 132:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 133:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /**
+ 134:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Check whether "cp" is a valid ascii representation
+ 135:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * of an Internet address and convert to a binary address.
+ 136:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Returns 1 if the address is valid, 0 if not.
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * This replaces inet_addr, the return value from which
+ 138:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * cannot distinguish between failure and a local broadcast address.
+ 139:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+ 140:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param cp IP address in ascii representation (e.g. "127.0.0.1")
+ 141:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param addr pointer to which to save the ip address in network order
+ 142:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @return 1 if cp could be converted to addr, 0 on failure
+ 143:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+ 144:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** int
+ 145:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** ip4addr_aton(const char *cp, ip4_addr_t *addr)
+ 146:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** {
+ 297              	 .loc 1 146 0
+ 298              	 .cfi_startproc
+ 299              	 
+ 300              	 
+ 301 0000 80B5     	 push {r7,lr}
+ 302              	.LCFI16:
+ 303              	 .cfi_def_cfa_offset 8
+ 304              	 .cfi_offset 7,-8
+ 305              	 .cfi_offset 14,-4
+ 306 0002 8AB0     	 sub sp,sp,#40
+ 307              	.LCFI17:
+ 308              	 .cfi_def_cfa_offset 48
+ 309 0004 00AF     	 add r7,sp,#0
+ 310              	.LCFI18:
+ 311              	 .cfi_def_cfa_register 7
+ 312 0006 7860     	 str r0,[r7,#4]
+ 313 0008 3960     	 str r1,[r7]
+ 147:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u32_t val;
+ 148:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u8_t base;
+ 149:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   char c;
+ 150:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u32_t parts[4];
+ 151:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u32_t *pp = parts;
+ 314              	 .loc 1 151 0
+ 315 000a 07F10C03 	 add r3,r7,#12
+ 316 000e FB61     	 str r3,[r7,#28]
+ 152:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 153:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   c = *cp;
+ 317              	 .loc 1 153 0
+ 318 0010 7B68     	 ldr r3,[r7,#4]
+ 319 0012 1B78     	 ldrb r3,[r3]
+ 320 0014 87F82230 	 strb r3,[r7,#34]
+ 321              	.L37:
+ 154:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   for (;;) {
+ 155:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     /*
+ 156:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****      * Collect number up to ``.''.
+ 157:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****      * Values are specified as for C:
+ 158:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****      * 0x=hex, 0=octal, 1-9=decimal.
+ 159:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****      */
+ 160:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if (!lwip_isdigit(c)) {
+ 322              	 .loc 1 160 0
+ 323 0018 8A4B     	 ldr r3,.L60
+ 324 001a 1A68     	 ldr r2,[r3]
+ 325 001c 97F82230 	 ldrb r3,[r7,#34]
+ 326 0020 0133     	 adds r3,r3,#1
+ 327 0022 1344     	 add r3,r3,r2
+ 328 0024 1B78     	 ldrb r3,[r3]
+ 329 0026 03F00403 	 and r3,r3,#4
+ 330 002a 002B     	 cmp r3,#0
+ 331 002c 01D1     	 bne .L23
+ 161:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       return 0;
+ 332              	 .loc 1 161 0
+ 333 002e 0023     	 movs r3,#0
+ 334 0030 03E1     	 b .L56
+ 335              	.L23:
+ 162:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 163:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     val = 0;
+ 336              	 .loc 1 163 0
+ 337 0032 0023     	 movs r3,#0
+ 338 0034 7B62     	 str r3,[r7,#36]
+ 164:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     base = 10;
+ 339              	 .loc 1 164 0
+ 340 0036 0A23     	 movs r3,#10
+ 341 0038 87F82330 	 strb r3,[r7,#35]
+ 165:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if (c == '0') {
+ 342              	 .loc 1 165 0
+ 343 003c 97F82230 	 ldrb r3,[r7,#34]
+ 344 0040 302B     	 cmp r3,#48
+ 345 0042 1CD1     	 bne .L25
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       c = *++cp;
+ 346              	 .loc 1 166 0
+ 347 0044 7B68     	 ldr r3,[r7,#4]
+ 348 0046 0133     	 adds r3,r3,#1
+ 349 0048 7B60     	 str r3,[r7,#4]
+ 350 004a 7B68     	 ldr r3,[r7,#4]
+ 351 004c 1B78     	 ldrb r3,[r3]
+ 352 004e 87F82230 	 strb r3,[r7,#34]
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (c == 'x' || c == 'X') {
+ 353              	 .loc 1 167 0
+ 354 0052 97F82230 	 ldrb r3,[r7,#34]
+ 355 0056 782B     	 cmp r3,#120
+ 356 0058 03D0     	 beq .L26
+ 357              	 .loc 1 167 0 is_stmt 0 discriminator 1
+ 358 005a 97F82230 	 ldrb r3,[r7,#34]
+ 359 005e 582B     	 cmp r3,#88
+ 360 0060 0AD1     	 bne .L27
+ 361              	.L26:
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         base = 16;
+ 362              	 .loc 1 168 0 is_stmt 1
+ 363 0062 1023     	 movs r3,#16
+ 364 0064 87F82330 	 strb r3,[r7,#35]
+ 169:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         c = *++cp;
+ 365              	 .loc 1 169 0
+ 366 0068 7B68     	 ldr r3,[r7,#4]
+ 367 006a 0133     	 adds r3,r3,#1
+ 368 006c 7B60     	 str r3,[r7,#4]
+ 369 006e 7B68     	 ldr r3,[r7,#4]
+ 370 0070 1B78     	 ldrb r3,[r3]
+ 371 0072 87F82230 	 strb r3,[r7,#34]
+ 372 0076 02E0     	 b .L25
+ 373              	.L27:
+ 170:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       } else {
+ 171:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         base = 8;
+ 374              	 .loc 1 171 0
+ 375 0078 0823     	 movs r3,#8
+ 376 007a 87F82330 	 strb r3,[r7,#35]
+ 377              	.L25:
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 173:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 174:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     for (;;) {
+ 175:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (lwip_isdigit(c)) {
+ 378              	 .loc 1 175 0
+ 379 007e 714B     	 ldr r3,.L60
+ 380 0080 1A68     	 ldr r2,[r3]
+ 381 0082 97F82230 	 ldrb r3,[r7,#34]
+ 382 0086 0133     	 adds r3,r3,#1
+ 383 0088 1344     	 add r3,r3,r2
+ 384 008a 1B78     	 ldrb r3,[r3]
+ 385 008c 03F00403 	 and r3,r3,#4
+ 386 0090 002B     	 cmp r3,#0
+ 387 0092 11D0     	 beq .L28
+ 176:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         val = (val * base) + (u32_t)(c - '0');
+ 388              	 .loc 1 176 0
+ 389 0094 97F82330 	 ldrb r3,[r7,#35]
+ 390 0098 7A6A     	 ldr r2,[r7,#36]
+ 391 009a 02FB03F2 	 mul r2,r2,r3
+ 392 009e 97F82230 	 ldrb r3,[r7,#34]
+ 393 00a2 1344     	 add r3,r3,r2
+ 394 00a4 303B     	 subs r3,r3,#48
+ 395 00a6 7B62     	 str r3,[r7,#36]
+ 177:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         c = *++cp;
+ 396              	 .loc 1 177 0
+ 397 00a8 7B68     	 ldr r3,[r7,#4]
+ 398 00aa 0133     	 adds r3,r3,#1
+ 399 00ac 7B60     	 str r3,[r7,#4]
+ 400 00ae 7B68     	 ldr r3,[r7,#4]
+ 401 00b0 1B78     	 ldrb r3,[r3]
+ 402 00b2 87F82230 	 strb r3,[r7,#34]
+ 403 00b6 2CE0     	 b .L29
+ 404              	.L28:
+ 178:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       } else if (base == 16 && lwip_isxdigit(c)) {
+ 405              	 .loc 1 178 0
+ 406 00b8 97F82330 	 ldrb r3,[r7,#35]
+ 407 00bc 102B     	 cmp r3,#16
+ 408 00be 29D1     	 bne .L30
+ 409              	 .loc 1 178 0 is_stmt 0 discriminator 1
+ 410 00c0 604B     	 ldr r3,.L60
+ 411 00c2 1A68     	 ldr r2,[r3]
+ 412 00c4 97F82230 	 ldrb r3,[r7,#34]
+ 413 00c8 0133     	 adds r3,r3,#1
+ 414 00ca 1344     	 add r3,r3,r2
+ 415 00cc 1B78     	 ldrb r3,[r3]
+ 416 00ce 03F04403 	 and r3,r3,#68
+ 417 00d2 002B     	 cmp r3,#0
+ 418 00d4 1ED0     	 beq .L30
+ 179:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         val = (val << 4) | (u32_t)(c + 10 - (lwip_islower(c) ? 'a' : 'A'));
+ 419              	 .loc 1 179 0 is_stmt 1
+ 420 00d6 7B6A     	 ldr r3,[r7,#36]
+ 421 00d8 1B01     	 lsls r3,r3,#4
+ 422 00da 97F82220 	 ldrb r2,[r7,#34]
+ 423 00de 02F10A01 	 add r1,r2,#10
+ 424 00e2 584A     	 ldr r2,.L60
+ 425 00e4 1068     	 ldr r0,[r2]
+ 426 00e6 97F82220 	 ldrb r2,[r7,#34]
+ 427 00ea 0132     	 adds r2,r2,#1
+ 428 00ec 0244     	 add r2,r2,r0
+ 429 00ee 1278     	 ldrb r2,[r2]
+ 430 00f0 02F00302 	 and r2,r2,#3
+ 431 00f4 022A     	 cmp r2,#2
+ 432 00f6 01D1     	 bne .L31
+ 433              	 .loc 1 179 0 is_stmt 0 discriminator 1
+ 434 00f8 6122     	 movs r2,#97
+ 435 00fa 00E0     	 b .L32
+ 436              	.L31:
+ 437              	 .loc 1 179 0 discriminator 2
+ 438 00fc 4122     	 movs r2,#65
+ 439              	.L32:
+ 440              	 .loc 1 179 0 discriminator 4
+ 441 00fe 8A1A     	 subs r2,r1,r2
+ 442 0100 1343     	 orrs r3,r3,r2
+ 443 0102 7B62     	 str r3,[r7,#36]
+ 180:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         c = *++cp;
+ 444              	 .loc 1 180 0 is_stmt 1 discriminator 4
+ 445 0104 7B68     	 ldr r3,[r7,#4]
+ 446 0106 0133     	 adds r3,r3,#1
+ 447 0108 7B60     	 str r3,[r7,#4]
+ 448 010a 7B68     	 ldr r3,[r7,#4]
+ 449 010c 1B78     	 ldrb r3,[r3]
+ 450 010e 87F82230 	 strb r3,[r7,#34]
+ 451              	.L29:
+ 181:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       } else {
+ 182:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         break;
+ 183:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 184:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 452              	 .loc 1 184 0
+ 453 0112 B4E7     	 b .L25
+ 454              	.L30:
+ 185:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if (c == '.') {
+ 455              	 .loc 1 185 0
+ 456 0114 97F82230 	 ldrb r3,[r7,#34]
+ 457 0118 2E2B     	 cmp r3,#46
+ 458 011a 14D1     	 bne .L33
+ 186:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       /*
+ 187:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****        * Internet format:
+ 188:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****        *  a.b.c.d
+ 189:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****        *  a.b.c   (with c treated as 16 bits)
+ 190:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****        *  a.b (with b treated as 24 bits)
+ 191:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****        */
+ 192:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (pp >= parts + 3) {
+ 459              	 .loc 1 192 0
+ 460 011c 07F10C03 	 add r3,r7,#12
+ 461 0120 0C33     	 adds r3,r3,#12
+ 462 0122 FA69     	 ldr r2,[r7,#28]
+ 463 0124 9A42     	 cmp r2,r3
+ 464 0126 01D3     	 bcc .L34
+ 193:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 465              	 .loc 1 193 0
+ 466 0128 0023     	 movs r3,#0
+ 467 012a 86E0     	 b .L56
+ 468              	.L34:
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 195:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       *pp++ = val;
+ 469              	 .loc 1 195 0
+ 470 012c FB69     	 ldr r3,[r7,#28]
+ 471 012e 1A1D     	 adds r2,r3,#4
+ 472 0130 FA61     	 str r2,[r7,#28]
+ 473 0132 7A6A     	 ldr r2,[r7,#36]
+ 474 0134 1A60     	 str r2,[r3]
+ 196:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       c = *++cp;
+ 475              	 .loc 1 196 0
+ 476 0136 7B68     	 ldr r3,[r7,#4]
+ 477 0138 0133     	 adds r3,r3,#1
+ 478 013a 7B60     	 str r3,[r7,#4]
+ 479 013c 7B68     	 ldr r3,[r7,#4]
+ 480 013e 1B78     	 ldrb r3,[r3]
+ 481 0140 87F82230 	 strb r3,[r7,#34]
+ 482 0144 05E0     	 b .L57
+ 483              	.L33:
+ 197:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     } else {
+ 198:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 484              	 .loc 1 198 0
+ 485 0146 00BF     	 nop
+ 199:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 201:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /*
+ 202:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****    * Check for trailing characters.
+ 203:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****    */
+ 204:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   if (c != '\0' && !lwip_isspace(c)) {
+ 486              	 .loc 1 204 0
+ 487 0148 97F82230 	 ldrb r3,[r7,#34]
+ 488 014c 002B     	 cmp r3,#0
+ 489 014e 0ED0     	 beq .L38
+ 490 0150 00E0     	 b .L58
+ 491              	.L57:
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /*
+ 492              	 .loc 1 200 0
+ 493 0152 61E7     	 b .L37
+ 494              	.L58:
+ 495              	 .loc 1 204 0 discriminator 1
+ 496 0154 3B4B     	 ldr r3,.L60
+ 497 0156 1A68     	 ldr r2,[r3]
+ 498 0158 97F82230 	 ldrb r3,[r7,#34]
+ 499 015c 0133     	 adds r3,r3,#1
+ 500 015e 1344     	 add r3,r3,r2
+ 501 0160 1B78     	 ldrb r3,[r3]
+ 502 0162 03F00803 	 and r3,r3,#8
+ 503 0166 002B     	 cmp r3,#0
+ 504 0168 01D1     	 bne .L38
+ 205:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     return 0;
+ 505              	 .loc 1 205 0
+ 506 016a 0023     	 movs r3,#0
+ 507 016c 65E0     	 b .L56
+ 508              	.L38:
+ 206:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 207:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   /*
+ 208:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****    * Concoct the address according to
+ 209:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****    * the number of parts specified.
+ 210:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****    */
+ 211:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   switch (pp - parts + 1) {
+ 509              	 .loc 1 211 0
+ 510 016e FA69     	 ldr r2,[r7,#28]
+ 511 0170 07F10C03 	 add r3,r7,#12
+ 512 0174 D31A     	 subs r3,r2,r3
+ 513 0176 9B10     	 asrs r3,r3,#2
+ 514 0178 0133     	 adds r3,r3,#1
+ 515 017a 042B     	 cmp r3,#4
+ 516 017c 52D8     	 bhi .L59
+ 517 017e 01A2     	 adr r2,.L41
+ 518 0180 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+ 519              	 .p2align 2
+ 520              	.L41:
+ 521 0184 99010000 	 .word .L40+1
+ 522 0188 25020000 	 .word .L59+1
+ 523 018c 9D010000 	 .word .L43+1
+ 524 0190 BF010000 	 .word .L44+1
+ 525 0194 ED010000 	 .word .L45+1
+ 526              	 .p2align 1
+ 527              	.L40:
+ 212:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     case 0:
+ 214:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       return 0;       /* initial nondigit */
+ 528              	 .loc 1 214 0
+ 529 0198 0023     	 movs r3,#0
+ 530 019a 4EE0     	 b .L56
+ 531              	.L43:
+ 215:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 216:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     case 1:             /* a -- 32 bits */
+ 217:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 218:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 219:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     case 2:             /* a.b -- 8.24 bits */
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (val > 0xffffffUL) {
+ 532              	 .loc 1 220 0
+ 533 019c 7B6A     	 ldr r3,[r7,#36]
+ 534 019e B3F1807F 	 cmp r3,#16777216
+ 535 01a2 01D3     	 bcc .L47
+ 221:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 536              	 .loc 1 221 0
+ 537 01a4 0023     	 movs r3,#0
+ 538 01a6 48E0     	 b .L56
+ 539              	.L47:
+ 222:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 223:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (parts[0] > 0xff) {
+ 540              	 .loc 1 223 0
+ 541 01a8 FB68     	 ldr r3,[r7,#12]
+ 542 01aa FF2B     	 cmp r3,#255
+ 543 01ac 01D9     	 bls .L48
+ 224:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 544              	 .loc 1 224 0
+ 545 01ae 0023     	 movs r3,#0
+ 546 01b0 43E0     	 b .L56
+ 547              	.L48:
+ 225:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 226:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       val |= parts[0] << 24;
+ 548              	 .loc 1 226 0
+ 549 01b2 FB68     	 ldr r3,[r7,#12]
+ 550 01b4 1B06     	 lsls r3,r3,#24
+ 551 01b6 7A6A     	 ldr r2,[r7,#36]
+ 552 01b8 1343     	 orrs r3,r3,r2
+ 553 01ba 7B62     	 str r3,[r7,#36]
+ 227:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 554              	 .loc 1 227 0
+ 555 01bc 33E0     	 b .L46
+ 556              	.L44:
+ 228:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     case 3:             /* a.b.c -- 8.8.16 bits */
+ 230:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (val > 0xffff) {
+ 557              	 .loc 1 230 0
+ 558 01be 7B6A     	 ldr r3,[r7,#36]
+ 559 01c0 B3F5803F 	 cmp r3,#65536
+ 560 01c4 01D3     	 bcc .L49
+ 231:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 561              	 .loc 1 231 0
+ 562 01c6 0023     	 movs r3,#0
+ 563 01c8 37E0     	 b .L56
+ 564              	.L49:
+ 232:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 233:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if ((parts[0] > 0xff) || (parts[1] > 0xff)) {
+ 565              	 .loc 1 233 0
+ 566 01ca FB68     	 ldr r3,[r7,#12]
+ 567 01cc FF2B     	 cmp r3,#255
+ 568 01ce 02D8     	 bhi .L50
+ 569              	 .loc 1 233 0 is_stmt 0 discriminator 1
+ 570 01d0 3B69     	 ldr r3,[r7,#16]
+ 571 01d2 FF2B     	 cmp r3,#255
+ 572 01d4 01D9     	 bls .L51
+ 573              	.L50:
+ 234:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 574              	 .loc 1 234 0 is_stmt 1
+ 575 01d6 0023     	 movs r3,#0
+ 576 01d8 2FE0     	 b .L56
+ 577              	.L51:
+ 235:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 236:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       val |= (parts[0] << 24) | (parts[1] << 16);
+ 578              	 .loc 1 236 0
+ 579 01da FB68     	 ldr r3,[r7,#12]
+ 580 01dc 1A06     	 lsls r2,r3,#24
+ 581 01de 3B69     	 ldr r3,[r7,#16]
+ 582 01e0 1B04     	 lsls r3,r3,#16
+ 583 01e2 1343     	 orrs r3,r3,r2
+ 584 01e4 7A6A     	 ldr r2,[r7,#36]
+ 585 01e6 1343     	 orrs r3,r3,r2
+ 586 01e8 7B62     	 str r3,[r7,#36]
+ 237:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 587              	 .loc 1 237 0
+ 588 01ea 1CE0     	 b .L46
+ 589              	.L45:
+ 238:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 239:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     case 4:             /* a.b.c.d -- 8.8.8.8 bits */
+ 240:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (val > 0xff) {
+ 590              	 .loc 1 240 0
+ 591 01ec 7B6A     	 ldr r3,[r7,#36]
+ 592 01ee FF2B     	 cmp r3,#255
+ 593 01f0 01D9     	 bls .L52
+ 241:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 594              	 .loc 1 241 0
+ 595 01f2 0023     	 movs r3,#0
+ 596 01f4 21E0     	 b .L56
+ 597              	.L52:
+ 242:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 243:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if ((parts[0] > 0xff) || (parts[1] > 0xff) || (parts[2] > 0xff)) {
+ 598              	 .loc 1 243 0
+ 599 01f6 FB68     	 ldr r3,[r7,#12]
+ 600 01f8 FF2B     	 cmp r3,#255
+ 601 01fa 05D8     	 bhi .L53
+ 602              	 .loc 1 243 0 is_stmt 0 discriminator 1
+ 603 01fc 3B69     	 ldr r3,[r7,#16]
+ 604 01fe FF2B     	 cmp r3,#255
+ 605 0200 02D8     	 bhi .L53
+ 606              	 .loc 1 243 0 discriminator 2
+ 607 0202 7B69     	 ldr r3,[r7,#20]
+ 608 0204 FF2B     	 cmp r3,#255
+ 609 0206 01D9     	 bls .L54
+ 610              	.L53:
+ 244:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return 0;
+ 611              	 .loc 1 244 0 is_stmt 1
+ 612 0208 0023     	 movs r3,#0
+ 613 020a 16E0     	 b .L56
+ 614              	.L54:
+ 245:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 246:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       val |= (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8);
+ 615              	 .loc 1 246 0
+ 616 020c FB68     	 ldr r3,[r7,#12]
+ 617 020e 1A06     	 lsls r2,r3,#24
+ 618 0210 3B69     	 ldr r3,[r7,#16]
+ 619 0212 1B04     	 lsls r3,r3,#16
+ 620 0214 1A43     	 orrs r2,r2,r3
+ 621 0216 7B69     	 ldr r3,[r7,#20]
+ 622 0218 1B02     	 lsls r3,r3,#8
+ 623 021a 1343     	 orrs r3,r3,r2
+ 624 021c 7A6A     	 ldr r2,[r7,#36]
+ 625 021e 1343     	 orrs r3,r3,r2
+ 626 0220 7B62     	 str r3,[r7,#36]
+ 247:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 627              	 .loc 1 247 0
+ 628 0222 00E0     	 b .L46
+ 629              	.L59:
+ 248:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     default:
+ 249:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       LWIP_ASSERT("unhandled", 0);
+ 250:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       break;
+ 630              	 .loc 1 250 0
+ 631 0224 00BF     	 nop
+ 632              	.L46:
+ 251:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 252:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   if (addr) {
+ 633              	 .loc 1 252 0
+ 634 0226 3B68     	 ldr r3,[r7]
+ 635 0228 002B     	 cmp r3,#0
+ 636 022a 05D0     	 beq .L55
+ 253:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     ip4_addr_set_u32(addr, lwip_htonl(val));
+ 637              	 .loc 1 253 0
+ 638 022c 786A     	 ldr r0,[r7,#36]
+ 639 022e FFF7FEFF 	 bl lwip_htonl
+ 640 0232 0246     	 mov r2,r0
+ 641 0234 3B68     	 ldr r3,[r7]
+ 642 0236 1A60     	 str r2,[r3]
+ 643              	.L55:
+ 254:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 255:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   return 1;
+ 644              	 .loc 1 255 0
+ 645 0238 0123     	 movs r3,#1
+ 646              	.L56:
+ 256:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** }
+ 647              	 .loc 1 256 0 discriminator 1
+ 648 023a 1846     	 mov r0,r3
+ 649 023c 2837     	 adds r7,r7,#40
+ 650              	.LCFI19:
+ 651              	 .cfi_def_cfa_offset 8
+ 652 023e BD46     	 mov sp,r7
+ 653              	.LCFI20:
+ 654              	 .cfi_def_cfa_register 13
+ 655              	 
+ 656 0240 80BD     	 pop {r7,pc}
+ 657              	.L61:
+ 658 0242 00BF     	 .align 2
+ 659              	.L60:
+ 660 0244 00000000 	 .word __ctype_ptr__
+ 661              	 .cfi_endproc
+ 662              	.LFE140:
+ 664              	 .section .text.ip4addr_ntoa,"ax",%progbits
+ 665              	 .align 2
+ 666              	 .global ip4addr_ntoa
+ 667              	 .thumb
+ 668              	 .thumb_func
+ 670              	ip4addr_ntoa:
+ 671              	.LFB141:
+ 257:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 258:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /**
+ 259:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Convert numeric IP address into decimal dotted ASCII representation.
+ 260:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * returns ptr to static buffer; not reentrant!
+ 261:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+ 262:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param addr ip address in network order to convert
+ 263:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @return pointer to a global static (!) buffer that holds the ASCII
+ 264:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *         representation of addr
+ 265:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+ 266:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** char *
+ 267:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** ip4addr_ntoa(const ip4_addr_t *addr)
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** {
+ 672              	 .loc 1 268 0
+ 673              	 .cfi_startproc
+ 674              	 
+ 675              	 
+ 676 0000 80B5     	 push {r7,lr}
+ 677              	.LCFI21:
+ 678              	 .cfi_def_cfa_offset 8
+ 679              	 .cfi_offset 7,-8
+ 680              	 .cfi_offset 14,-4
+ 681 0002 82B0     	 sub sp,sp,#8
+ 682              	.LCFI22:
+ 683              	 .cfi_def_cfa_offset 16
+ 684 0004 00AF     	 add r7,sp,#0
+ 685              	.LCFI23:
+ 686              	 .cfi_def_cfa_register 7
+ 687 0006 7860     	 str r0,[r7,#4]
+ 269:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   static char str[IP4ADDR_STRLEN_MAX];
+ 270:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   return ip4addr_ntoa_r(addr, str, IP4ADDR_STRLEN_MAX);
+ 688              	 .loc 1 270 0
+ 689 0008 7868     	 ldr r0,[r7,#4]
+ 690 000a 0449     	 ldr r1,.L64
+ 691 000c 1022     	 movs r2,#16
+ 692 000e FFF7FEFF 	 bl ip4addr_ntoa_r
+ 693 0012 0346     	 mov r3,r0
+ 271:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** }
+ 694              	 .loc 1 271 0
+ 695 0014 1846     	 mov r0,r3
+ 696 0016 0837     	 adds r7,r7,#8
+ 697              	.LCFI24:
+ 698              	 .cfi_def_cfa_offset 8
+ 699 0018 BD46     	 mov sp,r7
+ 700              	.LCFI25:
+ 701              	 .cfi_def_cfa_register 13
+ 702              	 
+ 703 001a 80BD     	 pop {r7,pc}
+ 704              	.L65:
+ 705              	 .align 2
+ 706              	.L64:
+ 707 001c 00000000 	 .word str.7944
+ 708              	 .cfi_endproc
+ 709              	.LFE141:
+ 711              	 .section .text.ip4addr_ntoa_r,"ax",%progbits
+ 712              	 .align 2
+ 713              	 .global ip4addr_ntoa_r
+ 714              	 .thumb
+ 715              	 .thumb_func
+ 717              	ip4addr_ntoa_r:
+ 718              	.LFB142:
+ 272:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 273:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** /**
+ 274:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * Same as ip4addr_ntoa, but reentrant since a user-supplied buffer is used.
+ 275:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *
+ 276:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param addr ip address in network order to convert
+ 277:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param buf target buffer where the string is stored
+ 278:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @param buflen length of buf
+ 279:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  * @return either pointer to buf which now holds the ASCII
+ 280:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  *         representation of addr or NULL if buf was too small
+ 281:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****  */
+ 282:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** char *
+ 283:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** ip4addr_ntoa_r(const ip4_addr_t *addr, char *buf, int buflen)
+ 284:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** {
+ 719              	 .loc 1 284 0
+ 720              	 .cfi_startproc
+ 721              	 
+ 722              	 
+ 723              	 
+ 724 0000 80B4     	 push {r7}
+ 725              	.LCFI26:
+ 726              	 .cfi_def_cfa_offset 4
+ 727              	 .cfi_offset 7,-4
+ 728 0002 8DB0     	 sub sp,sp,#52
+ 729              	.LCFI27:
+ 730              	 .cfi_def_cfa_offset 56
+ 731 0004 00AF     	 add r7,sp,#0
+ 732              	.LCFI28:
+ 733              	 .cfi_def_cfa_register 7
+ 734 0006 F860     	 str r0,[r7,#12]
+ 735 0008 B960     	 str r1,[r7,#8]
+ 736 000a 7A60     	 str r2,[r7,#4]
+ 285:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u32_t s_addr;
+ 286:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   char inv[3];
+ 287:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   char *rp;
+ 288:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u8_t *ap;
+ 289:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u8_t rem;
+ 290:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u8_t n;
+ 291:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   u8_t i;
+ 292:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   int len = 0;
+ 737              	 .loc 1 292 0
+ 738 000c 0023     	 movs r3,#0
+ 739 000e 3B62     	 str r3,[r7,#32]
+ 293:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 294:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   s_addr = ip4_addr_get_u32(addr);
+ 740              	 .loc 1 294 0
+ 741 0010 FB68     	 ldr r3,[r7,#12]
+ 742 0012 1B68     	 ldr r3,[r3]
+ 743 0014 BB61     	 str r3,[r7,#24]
+ 295:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** 
+ 296:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   rp = buf;
+ 744              	 .loc 1 296 0
+ 745 0016 BB68     	 ldr r3,[r7,#8]
+ 746 0018 FB62     	 str r3,[r7,#44]
+ 297:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   ap = (u8_t *)&s_addr;
+ 747              	 .loc 1 297 0
+ 748 001a 07F11803 	 add r3,r7,#24
+ 749 001e BB62     	 str r3,[r7,#40]
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   for (n = 0; n < 4; n++) {
+ 750              	 .loc 1 298 0
+ 751 0020 0023     	 movs r3,#0
+ 752 0022 87F82730 	 strb r3,[r7,#39]
+ 753 0026 59E0     	 b .L67
+ 754              	.L74:
+ 299:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     i = 0;
+ 755              	 .loc 1 299 0
+ 756 0028 0023     	 movs r3,#0
+ 757 002a 87F82630 	 strb r3,[r7,#38]
+ 758              	.L68:
+ 300:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     do {
+ 301:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       rem = *ap % (u8_t)10;
+ 759              	 .loc 1 301 0 discriminator 1
+ 760 002e BB6A     	 ldr r3,[r7,#40]
+ 761 0030 1A78     	 ldrb r2,[r3]
+ 762 0032 334B     	 ldr r3,.L76
+ 763 0034 A3FB0213 	 umull r1,r3,r3,r2
+ 764 0038 D908     	 lsrs r1,r3,#3
+ 765 003a 0B46     	 mov r3,r1
+ 766 003c 9B00     	 lsls r3,r3,#2
+ 767 003e 0B44     	 add r3,r3,r1
+ 768 0040 5B00     	 lsls r3,r3,#1
+ 769 0042 D31A     	 subs r3,r2,r3
+ 770 0044 FB77     	 strb r3,[r7,#31]
+ 302:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       *ap /= (u8_t)10;
+ 771              	 .loc 1 302 0 discriminator 1
+ 772 0046 BB6A     	 ldr r3,[r7,#40]
+ 773 0048 1B78     	 ldrb r3,[r3]
+ 774 004a 2D4A     	 ldr r2,.L76
+ 775 004c A2FB0323 	 umull r2,r3,r2,r3
+ 776 0050 DB08     	 lsrs r3,r3,#3
+ 777 0052 DAB2     	 uxtb r2,r3
+ 778 0054 BB6A     	 ldr r3,[r7,#40]
+ 779 0056 1A70     	 strb r2,[r3]
+ 303:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       inv[i++] = (char)('0' + rem);
+ 780              	 .loc 1 303 0 discriminator 1
+ 781 0058 97F82630 	 ldrb r3,[r7,#38]
+ 782 005c 5A1C     	 adds r2,r3,#1
+ 783 005e 87F82620 	 strb r2,[r7,#38]
+ 784 0062 1946     	 mov r1,r3
+ 785 0064 FB7F     	 ldrb r3,[r7,#31]
+ 786 0066 3033     	 adds r3,r3,#48
+ 787 0068 DAB2     	 uxtb r2,r3
+ 788 006a 07F13003 	 add r3,r7,#48
+ 789 006e 0B44     	 add r3,r3,r1
+ 790 0070 03F81C2C 	 strb r2,[r3,#-28]
+ 304:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     } while (*ap);
+ 791              	 .loc 1 304 0 discriminator 1
+ 792 0074 BB6A     	 ldr r3,[r7,#40]
+ 793 0076 1B78     	 ldrb r3,[r3]
+ 794 0078 002B     	 cmp r3,#0
+ 795 007a D8D1     	 bne .L68
+ 305:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     while (i--) {
+ 796              	 .loc 1 305 0
+ 797 007c 12E0     	 b .L69
+ 798              	.L72:
+ 306:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (len++ >= buflen) {
+ 799              	 .loc 1 306 0
+ 800 007e 3B6A     	 ldr r3,[r7,#32]
+ 801 0080 5A1C     	 adds r2,r3,#1
+ 802 0082 3A62     	 str r2,[r7,#32]
+ 803 0084 7A68     	 ldr r2,[r7,#4]
+ 804 0086 9342     	 cmp r3,r2
+ 805 0088 01DB     	 blt .L70
+ 307:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****         return NULL;
+ 806              	 .loc 1 307 0
+ 807 008a 0023     	 movs r3,#0
+ 808 008c 31E0     	 b .L75
+ 809              	.L70:
+ 308:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       }
+ 309:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       *rp++ = inv[i];
+ 810              	 .loc 1 309 0
+ 811 008e FB6A     	 ldr r3,[r7,#44]
+ 812 0090 5A1C     	 adds r2,r3,#1
+ 813 0092 FA62     	 str r2,[r7,#44]
+ 814 0094 97F82620 	 ldrb r2,[r7,#38]
+ 815 0098 07F13001 	 add r1,r7,#48
+ 816 009c 0A44     	 add r2,r2,r1
+ 817 009e 12F81C2C 	 ldrb r2,[r2,#-28]
+ 818 00a2 1A70     	 strb r2,[r3]
+ 819              	.L69:
+ 305:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       if (len++ >= buflen) {
+ 820              	 .loc 1 305 0
+ 821 00a4 97F82630 	 ldrb r3,[r7,#38]
+ 822 00a8 5A1E     	 subs r2,r3,#1
+ 823 00aa 87F82620 	 strb r2,[r7,#38]
+ 824 00ae 002B     	 cmp r3,#0
+ 825 00b0 E5D1     	 bne .L72
+ 310:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 311:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     if (len++ >= buflen) {
+ 826              	 .loc 1 311 0
+ 827 00b2 3B6A     	 ldr r3,[r7,#32]
+ 828 00b4 5A1C     	 adds r2,r3,#1
+ 829 00b6 3A62     	 str r2,[r7,#32]
+ 830 00b8 7A68     	 ldr r2,[r7,#4]
+ 831 00ba 9342     	 cmp r3,r2
+ 832 00bc 01DB     	 blt .L73
+ 312:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****       return NULL;
+ 833              	 .loc 1 312 0
+ 834 00be 0023     	 movs r3,#0
+ 835 00c0 17E0     	 b .L75
+ 836              	.L73:
+ 313:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     }
+ 314:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     *rp++ = '.';
+ 837              	 .loc 1 314 0 discriminator 2
+ 838 00c2 FB6A     	 ldr r3,[r7,#44]
+ 839 00c4 5A1C     	 adds r2,r3,#1
+ 840 00c6 FA62     	 str r2,[r7,#44]
+ 841 00c8 2E22     	 movs r2,#46
+ 842 00ca 1A70     	 strb r2,[r3]
+ 315:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     ap++;
+ 843              	 .loc 1 315 0 discriminator 2
+ 844 00cc BB6A     	 ldr r3,[r7,#40]
+ 845 00ce 0133     	 adds r3,r3,#1
+ 846 00d0 BB62     	 str r3,[r7,#40]
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     i = 0;
+ 847              	 .loc 1 298 0 discriminator 2
+ 848 00d2 97F82730 	 ldrb r3,[r7,#39]
+ 849 00d6 0133     	 adds r3,r3,#1
+ 850 00d8 87F82730 	 strb r3,[r7,#39]
+ 851              	.L67:
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****     i = 0;
+ 852              	 .loc 1 298 0 is_stmt 0 discriminator 1
+ 853 00dc 97F82730 	 ldrb r3,[r7,#39]
+ 854 00e0 032B     	 cmp r3,#3
+ 855 00e2 A1D9     	 bls .L74
+ 316:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   }
+ 317:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   *--rp = 0;
+ 856              	 .loc 1 317 0 is_stmt 1
+ 857 00e4 FB6A     	 ldr r3,[r7,#44]
+ 858 00e6 013B     	 subs r3,r3,#1
+ 859 00e8 FB62     	 str r3,[r7,#44]
+ 860 00ea FB6A     	 ldr r3,[r7,#44]
+ 861 00ec 0022     	 movs r2,#0
+ 862 00ee 1A70     	 strb r2,[r3]
+ 318:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c ****   return buf;
+ 863              	 .loc 1 318 0
+ 864 00f0 BB68     	 ldr r3,[r7,#8]
+ 865              	.L75:
+ 319:../Dave/Generated/ETH_LWIP/lwip/core/ipv4/ip4_addr.c **** }
+ 866              	 .loc 1 319 0 discriminator 1
+ 867 00f2 1846     	 mov r0,r3
+ 868 00f4 3437     	 adds r7,r7,#52
+ 869              	.LCFI29:
+ 870              	 .cfi_def_cfa_offset 4
+ 871 00f6 BD46     	 mov sp,r7
+ 872              	.LCFI30:
+ 873              	 .cfi_def_cfa_register 13
+ 874              	 
+ 875 00f8 5DF8047B 	 ldr r7,[sp],#4
+ 876              	.LCFI31:
+ 877              	 .cfi_restore 7
+ 878              	 .cfi_def_cfa_offset 0
+ 879 00fc 7047     	 bx lr
+ 880              	.L77:
+ 881 00fe 00BF     	 .align 2
+ 882              	.L76:
+ 883 0100 CDCCCCCC 	 .word -858993459
+ 884              	 .cfi_endproc
+ 885              	.LFE142:
+ 887              	 .section .bss.str.7944,"aw",%nobits
+ 888              	 .align 2
+ 891              	str.7944:
+ 892 0000 00000000 	 .space 16
+ 892      00000000 
+ 892      00000000 
+ 892      00000000 
+ 893              	 .text
+ 894              	.Letext0:
+ 895              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 896              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 897              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 898              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
+ 899              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
+ 900              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
+ 901              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
+ 902              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/netif.h"
+ 903              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 904              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+ 905              	 .file 12 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\ctype.h"
+ 906              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 ip4_addr.c
+    {standard input}:24     .rodata.ip_addr_any:00000000 ip_addr_any
+    {standard input}:21     .rodata.ip_addr_any:00000000 $d
+    {standard input}:31     .rodata.ip_addr_broadcast:00000000 ip_addr_broadcast
+    {standard input}:28     .rodata.ip_addr_broadcast:00000000 $d
+    {standard input}:34     .text.ip4_addr_isbroadcast_u32:00000000 $t
+    {standard input}:39     .text.ip4_addr_isbroadcast_u32:00000000 ip4_addr_isbroadcast_u32
+    {standard input}:148    .text.ip4_addr_netmask_valid:00000000 $t
+    {standard input}:153    .text.ip4_addr_netmask_valid:00000000 ip4_addr_netmask_valid
+    {standard input}:238    .text.ipaddr_addr:00000000 $t
+    {standard input}:243    .text.ipaddr_addr:00000000 ipaddr_addr
+    {standard input}:295    .text.ip4addr_aton:00000000 ip4addr_aton
+    {standard input}:290    .text.ip4addr_aton:00000000 $t
+    {standard input}:521    .text.ip4addr_aton:00000184 $d
+    {standard input}:526    .text.ip4addr_aton:00000198 $t
+    {standard input}:660    .text.ip4addr_aton:00000244 $d
+    {standard input}:665    .text.ip4addr_ntoa:00000000 $t
+    {standard input}:670    .text.ip4addr_ntoa:00000000 ip4addr_ntoa
+    {standard input}:717    .text.ip4addr_ntoa_r:00000000 ip4addr_ntoa_r
+    {standard input}:707    .text.ip4addr_ntoa:0000001c $d
+    {standard input}:891    .bss.str.7944:00000000 str.7944
+    {standard input}:712    .text.ip4addr_ntoa_r:00000000 $t
+    {standard input}:883    .text.ip4addr_ntoa_r:00000100 $d
+    {standard input}:888    .bss.str.7944:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+lwip_htonl
+__ctype_ptr__

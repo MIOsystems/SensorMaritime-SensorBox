@@ -1,0 +1,960 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "xmc_eth_phy_ksz8081rnl.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .section .text.XMC_ETH_PHY_IsDeviceIdValid,"ax",%progbits
+  20              	 .align 2
+  21              	 .thumb
+  22              	 .thumb_func
+  24              	XMC_ETH_PHY_IsDeviceIdValid:
+  25              	.LFB193:
+  26              	 .file 1 "../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c"
+   1:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /**
+   2:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * @file xmc_eth_phy_ksz8081rnb.c
+   3:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * @date 2015-12-15 
+   4:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *
+   5:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * @cond
+   6:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  **************************************************************************************************
+   7:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * XMClib v2.1.12 - XMC Peripheral Driver Library
+   8:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *
+   9:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Copyright (c) 2015-2017, Infineon Technologies AG
+  10:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * All rights reserved.                        
+  11:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *                                             
+  12:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
+  13:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * following conditions are met:   
+  14:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *                                                                              
+  15:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
+  16:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * disclaimer.                        
+  17:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * 
+  18:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
+  19:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
+  20:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * 
+  21:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
+  22:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * products derived from this software without specific prior written permission.                  
+  23:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *                                                                              
+  24:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
+  25:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
+  26:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
+  27:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
+  28:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
+  29:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+  30:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
+  31:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *                                                                              
+  32:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
+  33:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Infineon Technologies AG dave@infineon.com).                                                    
+  34:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  **************************************************************************************************
+  35:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *
+  36:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * Change History
+  37:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * --------------
+  38:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *
+  39:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * 2015-06-20:
+  40:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *     - Initial
+  41:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *
+  42:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * 2015-12-15:
+  43:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *     - Added Reset and exit power down
+  44:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *     - Reset function called in Init function
+  45:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *
+  46:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * @endcond
+  47:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  */
+  48:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  49:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /*******************************************************************************
+  50:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * HEADER FILES
+  51:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *******************************************************************************/
+  52:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #include "eth_lwip_conf.h"
+  53:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #if (PHY_DEVICE_NAME == PHY_KSZ8081RNB)
+  54:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #include <xmc_eth_phy.h>
+  55:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  56:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /*******************************************************************************
+  57:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * MACROS
+  58:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *******************************************************************************/
+  59:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  60:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Basic Registers */
+  61:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_BMCR                (0x00U)        /* Basic Mode Control Register       */
+  62:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_BMSR                (0x01U)        /* Basic Mode Status Register        */
+  63:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_PHYIDR1             (0x02U)        /* PHY Identifier 1                  */
+  64:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_PHYIDR2             (0x03U)        /* PHY Identifier 2                  */
+  65:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_ANAR                (0x04U)        /* Auto-Negotiation Advertisement    */
+  66:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_ANLPAR              (0x05U)        /* Auto-Neg. Link Partner Abitily    */
+  67:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_ANER                (0x06U)        /* Auto-Neg. Expansion Register      */
+  68:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_ANNPTR              (0x07U)        /* Auto-Neg. Next Page TX            */
+  69:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  70:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Extended Registers */
+  71:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define REG_PHYCTRL1            (0x1eU)        /* PHY control 1 Register            */
+  72:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  73:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Basic Mode Control Register */
+  74:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_RESET              (0x8000U)      /* Software Reset                    */
+  75:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_LOOPBACK           (0x4000U)      /* Loopback mode                     */
+  76:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_SPEED_SEL          (0x2000U)      /* Speed Select (1=100Mb/s)          */
+  77:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_ANEG_EN            (0x1000U)      /* Auto Negotiation Enable           */
+  78:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_POWER_DOWN         (0x0800U)      /* Power Down                        */
+  79:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_ISOLATE            (0x0400U)      /* Isolate Media interface           */
+  80:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_REST_ANEG          (0x0200U)      /* Restart Auto Negotiation          */
+  81:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_DUPLEX             (0x0100U)      /* Duplex Mode (1=Full duplex)       */
+  82:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMCR_COL_TEST           (0x0080U)      /* Collision Test                    */
+  83:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  84:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Basic Mode Status Register */
+  85:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_100B_T4            (0x8000U)      /* 100BASE-T4 Capable                */
+  86:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_100B_TX_FD         (0x4000U)      /* 100BASE-TX Full Duplex Capable    */
+  87:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_100B_TX_HD         (0x2000U)      /* 100BASE-TX Half Duplex Capable    */
+  88:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_10B_T_FD           (0x1000U)      /* 10BASE-T Full Duplex Capable      */
+  89:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_10B_T_HD           (0x0800U)      /* 10BASE-T Half Duplex Capable      */
+  90:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_MF_PRE_SUP         (0x0040U)      /* Preamble suppression Capable      */
+  91:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_ANEG_COMPL         (0x0020U)      /* Auto Negotiation Complete         */
+  92:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_REM_FAULT          (0x0010U)      /* Remote Fault                      */
+  93:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_ANEG_ABIL          (0x0008U)      /* Auto Negotiation Ability          */
+  94:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_LINK_STAT          (0x0004U)      /* Link Status (1=established)       */
+  95:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_JABBER_DET         (0x0002U)      /* Jaber Detect                      */
+  96:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define BMSR_EXT_CAPAB          (0x0001U)      /* Extended Capability               */
+  97:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+  98:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* PHY control 1 Register */
+  99:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define PHYCTRL1_OPMODE_SPEED   (0x0003U)
+ 100:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define PHYCTRL1_OPMODE_DUPLEX  (0x0004U)
+ 101:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 102:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* PHY Identifier Registers */
+ 103:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define PHY_ID1                 (0x0022U)      /* KSZ8031 Device Identifier MSB */
+ 104:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** #define PHY_ID2                 (0x1560U)      /* KSZ8031 Device Identifier LSB */
+ 105:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 106:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /*******************************************************************************
+ 107:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  * API IMPLEMENTATION
+ 108:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  *******************************************************************************/
+ 109:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 110:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****  /* Check if the device identifier is valid */
+ 111:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** static int32_t XMC_ETH_PHY_IsDeviceIdValid(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 112:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+  27              	 .loc 1 112 0
+  28              	 .cfi_startproc
+  29              	 
+  30              	 
+  31 0000 80B5     	 push {r7,lr}
+  32              	.LCFI0:
+  33              	 .cfi_def_cfa_offset 8
+  34              	 .cfi_offset 7,-8
+  35              	 .cfi_offset 14,-4
+  36 0002 84B0     	 sub sp,sp,#16
+  37              	.LCFI1:
+  38              	 .cfi_def_cfa_offset 24
+  39 0004 00AF     	 add r7,sp,#0
+  40              	.LCFI2:
+  41              	 .cfi_def_cfa_register 7
+  42 0006 7860     	 str r0,[r7,#4]
+  43 0008 0B46     	 mov r3,r1
+  44 000a FB70     	 strb r3,[r7,#3]
+ 113:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t phy_id1;
+ 114:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t phy_id2;
+ 115:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   XMC_ETH_PHY_STATUS_t status;
+ 116:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 117:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   /* Check Device Identification. */
+ 118:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   if ((XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYIDR1, &phy_id1) == XMC_ETH_MAC_STATUS_OK) &&
+  45              	 .loc 1 118 0
+  46 000c FA78     	 ldrb r2,[r7,#3]
+  47 000e 07F10C03 	 add r3,r7,#12
+  48 0012 7868     	 ldr r0,[r7,#4]
+  49 0014 1146     	 mov r1,r2
+  50 0016 0222     	 movs r2,#2
+  51 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+  52 001c 0346     	 mov r3,r0
+  53 001e 002B     	 cmp r3,#0
+  54 0020 1BD1     	 bne .L2
+ 119:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       (XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYIDR2, &phy_id2) == XMC_ETH_MAC_STATUS_OK))
+  55              	 .loc 1 119 0 discriminator 1
+  56 0022 FA78     	 ldrb r2,[r7,#3]
+  57 0024 07F10A03 	 add r3,r7,#10
+  58 0028 7868     	 ldr r0,[r7,#4]
+  59 002a 1146     	 mov r1,r2
+  60 002c 0322     	 movs r2,#3
+  61 002e FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+  62 0032 0346     	 mov r3,r0
+ 118:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       (XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYIDR2, &phy_id2) == XMC_ETH_MAC_STATUS_OK))
+  63              	 .loc 1 118 0 discriminator 1
+  64 0034 002B     	 cmp r3,#0
+  65 0036 10D1     	 bne .L2
+ 120:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   {
+ 121:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     if ((phy_id1 == PHY_ID1) && ((phy_id2 & (uint16_t)0xfff0) == PHY_ID2))
+  66              	 .loc 1 121 0
+  67 0038 BB89     	 ldrh r3,[r7,#12]
+  68 003a 222B     	 cmp r3,#34
+  69 003c 0AD1     	 bne .L3
+  70              	 .loc 1 121 0 is_stmt 0 discriminator 1
+  71 003e 7B89     	 ldrh r3,[r7,#10]
+  72 0040 1A46     	 mov r2,r3
+  73 0042 4FF6F073 	 movw r3,#65520
+  74 0046 1340     	 ands r3,r3,r2
+  75 0048 B3F5AB5F 	 cmp r3,#5472
+  76 004c 02D1     	 bne .L3
+ 122:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     {
+ 123:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       status = XMC_ETH_PHY_STATUS_OK;
+  77              	 .loc 1 123 0 is_stmt 1
+  78 004e 0023     	 movs r3,#0
+  79 0050 FB73     	 strb r3,[r7,#15]
+ 121:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     {
+  80              	 .loc 1 121 0
+  81 0052 04E0     	 b .L5
+  82              	.L3:
+ 124:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     }
+ 125:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     else
+ 126:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     {
+ 127:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       status = XMC_ETH_PHY_STATUS_ERROR_DEVICE_ID;
+  83              	 .loc 1 127 0
+  84 0054 0323     	 movs r3,#3
+  85 0056 FB73     	 strb r3,[r7,#15]
+ 121:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     {
+  86              	 .loc 1 121 0
+  87 0058 01E0     	 b .L5
+  88              	.L2:
+ 128:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     }
+ 129:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   }
+ 130:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   else
+ 131:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   {
+ 132:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     status = XMC_ETH_PHY_STATUS_ERROR_TIMEOUT;
+  89              	 .loc 1 132 0
+  90 005a 0423     	 movs r3,#4
+  91 005c FB73     	 strb r3,[r7,#15]
+  92              	.L5:
+ 133:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   }
+ 134:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 135:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return (int32_t)status;
+  93              	 .loc 1 135 0
+  94 005e FB7B     	 ldrb r3,[r7,#15]
+ 136:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+  95              	 .loc 1 136 0
+  96 0060 1846     	 mov r0,r3
+  97 0062 1037     	 adds r7,r7,#16
+  98              	.LCFI3:
+  99              	 .cfi_def_cfa_offset 8
+ 100 0064 BD46     	 mov sp,r7
+ 101              	.LCFI4:
+ 102              	 .cfi_def_cfa_register 13
+ 103              	 
+ 104 0066 80BD     	 pop {r7,pc}
+ 105              	 .cfi_endproc
+ 106              	.LFE193:
+ 108              	 .section .text.XMC_ETH_PHY_Init,"ax",%progbits
+ 109              	 .align 2
+ 110              	 .global XMC_ETH_PHY_Init
+ 111              	 .thumb
+ 112              	 .thumb_func
+ 114              	XMC_ETH_PHY_Init:
+ 115              	.LFB194:
+ 137:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 138:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* PHY initialize */
+ 139:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** int32_t XMC_ETH_PHY_Init(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr, const XMC_ETH_PHY_CONFIG_t
+ 140:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 116              	 .loc 1 140 0
+ 117              	 .cfi_startproc
+ 118              	 
+ 119              	 
+ 120 0000 80B5     	 push {r7,lr}
+ 121              	.LCFI5:
+ 122              	 .cfi_def_cfa_offset 8
+ 123              	 .cfi_offset 7,-8
+ 124              	 .cfi_offset 14,-4
+ 125 0002 88B0     	 sub sp,sp,#32
+ 126              	.LCFI6:
+ 127              	 .cfi_def_cfa_offset 40
+ 128 0004 00AF     	 add r7,sp,#0
+ 129              	.LCFI7:
+ 130              	 .cfi_def_cfa_register 7
+ 131 0006 F860     	 str r0,[r7,#12]
+ 132 0008 0B46     	 mov r3,r1
+ 133 000a 7A60     	 str r2,[r7,#4]
+ 134 000c FB72     	 strb r3,[r7,#11]
+ 141:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint32_t retries = 0xffffffffUL;
+ 135              	 .loc 1 141 0
+ 136 000e 4FF0FF33 	 mov r3,#-1
+ 137 0012 FB61     	 str r3,[r7,#28]
+ 138              	.L9:
+ 142:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   int32_t status;
+ 143:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t reg_bmcr;
+ 144:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 145:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   while (((status = XMC_ETH_PHY_IsDeviceIdValid(eth_mac, phy_addr)) != XMC_ETH_PHY_STATUS_OK) && --
+ 139              	 .loc 1 145 0 discriminator 2
+ 140 0014 FB7A     	 ldrb r3,[r7,#11]
+ 141 0016 F868     	 ldr r0,[r7,#12]
+ 142 0018 1946     	 mov r1,r3
+ 143 001a FFF7FEFF 	 bl XMC_ETH_PHY_IsDeviceIdValid
+ 144 001e B861     	 str r0,[r7,#24]
+ 145 0020 BB69     	 ldr r3,[r7,#24]
+ 146 0022 002B     	 cmp r3,#0
+ 147 0024 05D0     	 beq .L8
+ 148              	 .loc 1 145 0 is_stmt 0 discriminator 1
+ 149 0026 FB69     	 ldr r3,[r7,#28]
+ 150 0028 013B     	 subs r3,r3,#1
+ 151 002a FB61     	 str r3,[r7,#28]
+ 152 002c FB69     	 ldr r3,[r7,#28]
+ 153 002e 002B     	 cmp r3,#0
+ 154 0030 F0D1     	 bne .L9
+ 155              	.L8:
+ 146:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 147:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   if (status == (int32_t)XMC_ETH_PHY_STATUS_OK)
+ 156              	 .loc 1 147 0 is_stmt 1
+ 157 0032 BB69     	 ldr r3,[r7,#24]
+ 158 0034 002B     	 cmp r3,#0
+ 159 0036 35D1     	 bne .L10
+ 148:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   {
+ 149:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     status = XMC_ETH_PHY_Reset(eth_mac, phy_addr);
+ 160              	 .loc 1 149 0
+ 161 0038 FB7A     	 ldrb r3,[r7,#11]
+ 162 003a F868     	 ldr r0,[r7,#12]
+ 163 003c 1946     	 mov r1,r3
+ 164 003e FFF7FEFF 	 bl XMC_ETH_PHY_Reset
+ 165 0042 B861     	 str r0,[r7,#24]
+ 150:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     
+ 151:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     if (status == (int32_t)XMC_ETH_PHY_STATUS_OK)
+ 166              	 .loc 1 151 0
+ 167 0044 BB69     	 ldr r3,[r7,#24]
+ 168 0046 002B     	 cmp r3,#0
+ 169 0048 2CD1     	 bne .L10
+ 152:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     {
+ 153:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       reg_bmcr = 0U;
+ 170              	 .loc 1 153 0
+ 171 004a 0023     	 movs r3,#0
+ 172 004c FB82     	 strh r3,[r7,#22]
+ 154:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       if (config->speed == XMC_ETH_LINK_SPEED_100M)
+ 173              	 .loc 1 154 0
+ 174 004e 7B68     	 ldr r3,[r7,#4]
+ 175 0050 5B88     	 ldrh r3,[r3,#2]
+ 176 0052 B3F5804F 	 cmp r3,#16384
+ 177 0056 03D1     	 bne .L11
+ 155:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       {
+ 156:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****         reg_bmcr |= BMCR_SPEED_SEL;
+ 178              	 .loc 1 156 0
+ 179 0058 FB8A     	 ldrh r3,[r7,#22]
+ 180 005a 43F40053 	 orr r3,r3,#8192
+ 181 005e FB82     	 strh r3,[r7,#22]
+ 182              	.L11:
+ 157:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       }
+ 158:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 159:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       if (config->duplex == XMC_ETH_LINK_DUPLEX_FULL)
+ 183              	 .loc 1 159 0
+ 184 0060 7B68     	 ldr r3,[r7,#4]
+ 185 0062 9B88     	 ldrh r3,[r3,#4]
+ 186 0064 B3F5006F 	 cmp r3,#2048
+ 187 0068 03D1     	 bne .L12
+ 160:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       {
+ 161:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****         reg_bmcr |= BMCR_DUPLEX;
+ 188              	 .loc 1 161 0
+ 189 006a FB8A     	 ldrh r3,[r7,#22]
+ 190 006c 43F48073 	 orr r3,r3,#256
+ 191 0070 FB82     	 strh r3,[r7,#22]
+ 192              	.L12:
+ 162:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       }
+ 163:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 164:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       if (config->enable_auto_negotiate == true)
+ 193              	 .loc 1 164 0
+ 194 0072 7B68     	 ldr r3,[r7,#4]
+ 195 0074 9B79     	 ldrb r3,[r3,#6]
+ 196 0076 002B     	 cmp r3,#0
+ 197 0078 03D0     	 beq .L13
+ 165:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       {
+ 166:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****         reg_bmcr |= BMCR_ANEG_EN;
+ 198              	 .loc 1 166 0
+ 199 007a FB8A     	 ldrh r3,[r7,#22]
+ 200 007c 43F48053 	 orr r3,r3,#4096
+ 201 0080 FB82     	 strh r3,[r7,#22]
+ 202              	.L13:
+ 167:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       }
+ 168:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 169:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       if (config->enable_loop_back == true)
+ 203              	 .loc 1 169 0
+ 204 0082 7B68     	 ldr r3,[r7,#4]
+ 205 0084 DB79     	 ldrb r3,[r3,#7]
+ 206 0086 002B     	 cmp r3,#0
+ 207 0088 03D0     	 beq .L14
+ 170:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       {
+ 171:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****         reg_bmcr |= BMCR_LOOPBACK;
+ 208              	 .loc 1 171 0
+ 209 008a FB8A     	 ldrh r3,[r7,#22]
+ 210 008c 43F48043 	 orr r3,r3,#16384
+ 211 0090 FB82     	 strh r3,[r7,#22]
+ 212              	.L14:
+ 172:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       }
+ 173:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 174:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       status = (int32_t)XMC_ETH_MAC_WritePhy(eth_mac, phy_addr, REG_BMCR, reg_bmcr);
+ 213              	 .loc 1 174 0
+ 214 0092 FA7A     	 ldrb r2,[r7,#11]
+ 215 0094 FB8A     	 ldrh r3,[r7,#22]
+ 216 0096 F868     	 ldr r0,[r7,#12]
+ 217 0098 1146     	 mov r1,r2
+ 218 009a 0022     	 movs r2,#0
+ 219 009c FFF7FEFF 	 bl XMC_ETH_MAC_WritePhy
+ 220 00a0 0346     	 mov r3,r0
+ 221 00a2 BB61     	 str r3,[r7,#24]
+ 222              	.L10:
+ 175:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     }
+ 176:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   }
+ 177:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 178:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return status;
+ 223              	 .loc 1 178 0
+ 224 00a4 BB69     	 ldr r3,[r7,#24]
+ 179:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 225              	 .loc 1 179 0
+ 226 00a6 1846     	 mov r0,r3
+ 227 00a8 2037     	 adds r7,r7,#32
+ 228              	.LCFI8:
+ 229              	 .cfi_def_cfa_offset 8
+ 230 00aa BD46     	 mov sp,r7
+ 231              	.LCFI9:
+ 232              	 .cfi_def_cfa_register 13
+ 233              	 
+ 234 00ac 80BD     	 pop {r7,pc}
+ 235              	 .cfi_endproc
+ 236              	.LFE194:
+ 238 00ae 00BF     	 .section .text.XMC_ETH_PHY_Reset,"ax",%progbits
+ 239              	 .align 2
+ 240              	 .global XMC_ETH_PHY_Reset
+ 241              	 .thumb
+ 242              	 .thumb_func
+ 244              	XMC_ETH_PHY_Reset:
+ 245              	.LFB195:
+ 180:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 181:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Reset */
+ 182:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** int32_t XMC_ETH_PHY_Reset(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 183:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 246              	 .loc 1 183 0
+ 247              	 .cfi_startproc
+ 248              	 
+ 249              	 
+ 250 0000 80B5     	 push {r7,lr}
+ 251              	.LCFI10:
+ 252              	 .cfi_def_cfa_offset 8
+ 253              	 .cfi_offset 7,-8
+ 254              	 .cfi_offset 14,-4
+ 255 0002 84B0     	 sub sp,sp,#16
+ 256              	.LCFI11:
+ 257              	 .cfi_def_cfa_offset 24
+ 258 0004 00AF     	 add r7,sp,#0
+ 259              	.LCFI12:
+ 260              	 .cfi_def_cfa_register 7
+ 261 0006 7860     	 str r0,[r7,#4]
+ 262 0008 0B46     	 mov r3,r1
+ 263 000a FB70     	 strb r3,[r7,#3]
+ 184:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   int32_t status;
+ 185:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t reg_bmcr;
+ 186:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 187:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   /* Reset PHY*/
+ 188:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   status = (int32_t)XMC_ETH_MAC_WritePhy(eth_mac, phy_addr, REG_BMCR, BMCR_RESET);
+ 264              	 .loc 1 188 0
+ 265 000c FB78     	 ldrb r3,[r7,#3]
+ 266 000e 7868     	 ldr r0,[r7,#4]
+ 267 0010 1946     	 mov r1,r3
+ 268 0012 0022     	 movs r2,#0
+ 269 0014 4FF40043 	 mov r3,#32768
+ 270 0018 FFF7FEFF 	 bl XMC_ETH_MAC_WritePhy
+ 271 001c 0346     	 mov r3,r0
+ 272 001e FB60     	 str r3,[r7,#12]
+ 189:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   if (status == (int32_t)XMC_ETH_PHY_STATUS_OK)
+ 273              	 .loc 1 189 0
+ 274 0020 FB68     	 ldr r3,[r7,#12]
+ 275 0022 002B     	 cmp r3,#0
+ 276 0024 0ED1     	 bne .L17
+ 277              	.L18:
+ 190:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   {      
+ 191:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     /* Wait for the reset to complete */
+ 192:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     do 
+ 193:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     {
+ 194:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****       status = XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMCR, &reg_bmcr);
+ 278              	 .loc 1 194 0 discriminator 1
+ 279 0026 FA78     	 ldrb r2,[r7,#3]
+ 280 0028 07F10A03 	 add r3,r7,#10
+ 281 002c 7868     	 ldr r0,[r7,#4]
+ 282 002e 1146     	 mov r1,r2
+ 283 0030 0022     	 movs r2,#0
+ 284 0032 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 285 0036 0346     	 mov r3,r0
+ 286 0038 FB60     	 str r3,[r7,#12]
+ 195:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     } while ((reg_bmcr & BMCR_RESET) != 0);
+ 287              	 .loc 1 195 0 discriminator 1
+ 288 003a 7B89     	 ldrh r3,[r7,#10]
+ 289 003c 9BB2     	 uxth r3,r3
+ 290 003e 1BB2     	 sxth r3,r3
+ 291 0040 002B     	 cmp r3,#0
+ 292 0042 F0DB     	 blt .L18
+ 293              	.L17:
+ 196:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   }
+ 197:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     
+ 198:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return status;
+ 294              	 .loc 1 198 0
+ 295 0044 FB68     	 ldr r3,[r7,#12]
+ 199:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 296              	 .loc 1 199 0
+ 297 0046 1846     	 mov r0,r3
+ 298 0048 1037     	 adds r7,r7,#16
+ 299              	.LCFI13:
+ 300              	 .cfi_def_cfa_offset 8
+ 301 004a BD46     	 mov sp,r7
+ 302              	.LCFI14:
+ 303              	 .cfi_def_cfa_register 13
+ 304              	 
+ 305 004c 80BD     	 pop {r7,pc}
+ 306              	 .cfi_endproc
+ 307              	.LFE195:
+ 309 004e 00BF     	 .section .text.XMC_ETH_PHY_PowerDown,"ax",%progbits
+ 310              	 .align 2
+ 311              	 .global XMC_ETH_PHY_PowerDown
+ 312              	 .thumb
+ 313              	 .thumb_func
+ 315              	XMC_ETH_PHY_PowerDown:
+ 316              	.LFB196:
+ 200:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 201:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Initiate power down */
+ 202:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** int32_t XMC_ETH_PHY_PowerDown(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 203:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 317              	 .loc 1 203 0
+ 318              	 .cfi_startproc
+ 319              	 
+ 320              	 
+ 321 0000 80B5     	 push {r7,lr}
+ 322              	.LCFI15:
+ 323              	 .cfi_def_cfa_offset 8
+ 324              	 .cfi_offset 7,-8
+ 325              	 .cfi_offset 14,-4
+ 326 0002 84B0     	 sub sp,sp,#16
+ 327              	.LCFI16:
+ 328              	 .cfi_def_cfa_offset 24
+ 329 0004 00AF     	 add r7,sp,#0
+ 330              	.LCFI17:
+ 331              	 .cfi_def_cfa_register 7
+ 332 0006 7860     	 str r0,[r7,#4]
+ 333 0008 0B46     	 mov r3,r1
+ 334 000a FB70     	 strb r3,[r7,#3]
+ 204:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   int32_t status;
+ 205:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t reg_bmcr;
+ 206:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 207:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   status = XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMCR, &reg_bmcr);
+ 335              	 .loc 1 207 0
+ 336 000c FA78     	 ldrb r2,[r7,#3]
+ 337 000e 07F10A03 	 add r3,r7,#10
+ 338 0012 7868     	 ldr r0,[r7,#4]
+ 339 0014 1146     	 mov r1,r2
+ 340 0016 0022     	 movs r2,#0
+ 341 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 342 001c 0346     	 mov r3,r0
+ 343 001e FB60     	 str r3,[r7,#12]
+ 208:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   if (status == (int32_t)XMC_ETH_PHY_STATUS_OK)
+ 344              	 .loc 1 208 0
+ 345 0020 FB68     	 ldr r3,[r7,#12]
+ 346 0022 002B     	 cmp r3,#0
+ 347 0024 0DD1     	 bne .L21
+ 209:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   {      
+ 210:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     reg_bmcr |= BMCR_POWER_DOWN;
+ 348              	 .loc 1 210 0
+ 349 0026 7B89     	 ldrh r3,[r7,#10]
+ 350 0028 43F40063 	 orr r3,r3,#2048
+ 351 002c 9BB2     	 uxth r3,r3
+ 352 002e 7B81     	 strh r3,[r7,#10]
+ 211:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     status = (int32_t)XMC_ETH_MAC_WritePhy(eth_mac, phy_addr, REG_BMCR, reg_bmcr);
+ 353              	 .loc 1 211 0
+ 354 0030 7B89     	 ldrh r3,[r7,#10]
+ 355 0032 FA78     	 ldrb r2,[r7,#3]
+ 356 0034 7868     	 ldr r0,[r7,#4]
+ 357 0036 1146     	 mov r1,r2
+ 358 0038 0022     	 movs r2,#0
+ 359 003a FFF7FEFF 	 bl XMC_ETH_MAC_WritePhy
+ 360 003e 0346     	 mov r3,r0
+ 361 0040 FB60     	 str r3,[r7,#12]
+ 362              	.L21:
+ 212:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   }
+ 213:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return status;
+ 363              	 .loc 1 213 0
+ 364 0042 FB68     	 ldr r3,[r7,#12]
+ 214:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 365              	 .loc 1 214 0
+ 366 0044 1846     	 mov r0,r3
+ 367 0046 1037     	 adds r7,r7,#16
+ 368              	.LCFI18:
+ 369              	 .cfi_def_cfa_offset 8
+ 370 0048 BD46     	 mov sp,r7
+ 371              	.LCFI19:
+ 372              	 .cfi_def_cfa_register 13
+ 373              	 
+ 374 004a 80BD     	 pop {r7,pc}
+ 375              	 .cfi_endproc
+ 376              	.LFE196:
+ 378              	 .section .text.XMC_ETH_PHY_ExitPowerDown,"ax",%progbits
+ 379              	 .align 2
+ 380              	 .global XMC_ETH_PHY_ExitPowerDown
+ 381              	 .thumb
+ 382              	 .thumb_func
+ 384              	XMC_ETH_PHY_ExitPowerDown:
+ 385              	.LFB197:
+ 215:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 216:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Exit power down */
+ 217:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** int32_t XMC_ETH_PHY_ExitPowerDown(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 218:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 386              	 .loc 1 218 0
+ 387              	 .cfi_startproc
+ 388              	 
+ 389              	 
+ 390 0000 80B5     	 push {r7,lr}
+ 391              	.LCFI20:
+ 392              	 .cfi_def_cfa_offset 8
+ 393              	 .cfi_offset 7,-8
+ 394              	 .cfi_offset 14,-4
+ 395 0002 84B0     	 sub sp,sp,#16
+ 396              	.LCFI21:
+ 397              	 .cfi_def_cfa_offset 24
+ 398 0004 00AF     	 add r7,sp,#0
+ 399              	.LCFI22:
+ 400              	 .cfi_def_cfa_register 7
+ 401 0006 7860     	 str r0,[r7,#4]
+ 402 0008 0B46     	 mov r3,r1
+ 403 000a FB70     	 strb r3,[r7,#3]
+ 219:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   int32_t status;
+ 220:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t reg_bmcr;
+ 221:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 222:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   status = XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMCR, &reg_bmcr);  
+ 404              	 .loc 1 222 0
+ 405 000c FA78     	 ldrb r2,[r7,#3]
+ 406 000e 07F10A03 	 add r3,r7,#10
+ 407 0012 7868     	 ldr r0,[r7,#4]
+ 408 0014 1146     	 mov r1,r2
+ 409 0016 0022     	 movs r2,#0
+ 410 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 411 001c 0346     	 mov r3,r0
+ 412 001e FB60     	 str r3,[r7,#12]
+ 223:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   if (status == (int32_t)XMC_ETH_PHY_STATUS_OK)
+ 413              	 .loc 1 223 0
+ 414 0020 FB68     	 ldr r3,[r7,#12]
+ 415 0022 002B     	 cmp r3,#0
+ 416 0024 0DD1     	 bne .L24
+ 224:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   {      
+ 225:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     reg_bmcr &= ~BMCR_POWER_DOWN;
+ 417              	 .loc 1 225 0
+ 418 0026 7B89     	 ldrh r3,[r7,#10]
+ 419 0028 23F40063 	 bic r3,r3,#2048
+ 420 002c 9BB2     	 uxth r3,r3
+ 421 002e 7B81     	 strh r3,[r7,#10]
+ 226:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****     status = (int32_t)XMC_ETH_MAC_WritePhy(eth_mac, phy_addr, REG_BMCR, reg_bmcr);
+ 422              	 .loc 1 226 0
+ 423 0030 7B89     	 ldrh r3,[r7,#10]
+ 424 0032 FA78     	 ldrb r2,[r7,#3]
+ 425 0034 7868     	 ldr r0,[r7,#4]
+ 426 0036 1146     	 mov r1,r2
+ 427 0038 0022     	 movs r2,#0
+ 428 003a FFF7FEFF 	 bl XMC_ETH_MAC_WritePhy
+ 429 003e 0346     	 mov r3,r0
+ 430 0040 FB60     	 str r3,[r7,#12]
+ 431              	.L24:
+ 227:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   }
+ 228:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return status;
+ 432              	 .loc 1 228 0
+ 433 0042 FB68     	 ldr r3,[r7,#12]
+ 229:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 434              	 .loc 1 229 0
+ 435 0044 1846     	 mov r0,r3
+ 436 0046 1037     	 adds r7,r7,#16
+ 437              	.LCFI23:
+ 438              	 .cfi_def_cfa_offset 8
+ 439 0048 BD46     	 mov sp,r7
+ 440              	.LCFI24:
+ 441              	 .cfi_def_cfa_register 13
+ 442              	 
+ 443 004a 80BD     	 pop {r7,pc}
+ 444              	 .cfi_endproc
+ 445              	.LFE197:
+ 447              	 .section .text.XMC_ETH_PHY_GetLinkStatus,"ax",%progbits
+ 448              	 .align 2
+ 449              	 .global XMC_ETH_PHY_GetLinkStatus
+ 450              	 .thumb
+ 451              	 .thumb_func
+ 453              	XMC_ETH_PHY_GetLinkStatus:
+ 454              	.LFB198:
+ 230:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 231:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Get link status */
+ 232:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** XMC_ETH_LINK_STATUS_t XMC_ETH_PHY_GetLinkStatus(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 233:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 455              	 .loc 1 233 0
+ 456              	 .cfi_startproc
+ 457              	 
+ 458              	 
+ 459 0000 80B5     	 push {r7,lr}
+ 460              	.LCFI25:
+ 461              	 .cfi_def_cfa_offset 8
+ 462              	 .cfi_offset 7,-8
+ 463              	 .cfi_offset 14,-4
+ 464 0002 84B0     	 sub sp,sp,#16
+ 465              	.LCFI26:
+ 466              	 .cfi_def_cfa_offset 24
+ 467 0004 00AF     	 add r7,sp,#0
+ 468              	.LCFI27:
+ 469              	 .cfi_def_cfa_register 7
+ 470 0006 7860     	 str r0,[r7,#4]
+ 471 0008 0B46     	 mov r3,r1
+ 472 000a FB70     	 strb r3,[r7,#3]
+ 234:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t val;
+ 235:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 236:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMSR, &val);
+ 473              	 .loc 1 236 0
+ 474 000c FA78     	 ldrb r2,[r7,#3]
+ 475 000e 07F10E03 	 add r3,r7,#14
+ 476 0012 7868     	 ldr r0,[r7,#4]
+ 477 0014 1146     	 mov r1,r2
+ 478 0016 0122     	 movs r2,#1
+ 479 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 237:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 238:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return (XMC_ETH_LINK_STATUS_t)((val & BMSR_LINK_STAT) ? XMC_ETH_LINK_STATUS_UP : XMC_ETH_LINK_STA
+ 480              	 .loc 1 238 0
+ 481 001c FB89     	 ldrh r3,[r7,#14]
+ 482 001e 03F00403 	 and r3,r3,#4
+ 483 0022 002B     	 cmp r3,#0
+ 484 0024 01D0     	 beq .L27
+ 485              	 .loc 1 238 0 is_stmt 0 discriminator 1
+ 486 0026 0123     	 movs r3,#1
+ 487 0028 00E0     	 b .L28
+ 488              	.L27:
+ 489              	 .loc 1 238 0 discriminator 2
+ 490 002a 0023     	 movs r3,#0
+ 491              	.L28:
+ 239:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 492              	 .loc 1 239 0 is_stmt 1 discriminator 4
+ 493 002c 1846     	 mov r0,r3
+ 494 002e 1037     	 adds r7,r7,#16
+ 495              	.LCFI28:
+ 496              	 .cfi_def_cfa_offset 8
+ 497 0030 BD46     	 mov sp,r7
+ 498              	.LCFI29:
+ 499              	 .cfi_def_cfa_register 13
+ 500              	 
+ 501 0032 80BD     	 pop {r7,pc}
+ 502              	 .cfi_endproc
+ 503              	.LFE198:
+ 505              	 .section .text.XMC_ETH_PHY_GetLinkSpeed,"ax",%progbits
+ 506              	 .align 2
+ 507              	 .global XMC_ETH_PHY_GetLinkSpeed
+ 508              	 .thumb
+ 509              	 .thumb_func
+ 511              	XMC_ETH_PHY_GetLinkSpeed:
+ 512              	.LFB199:
+ 240:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 241:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Get link speed */
+ 242:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** XMC_ETH_LINK_SPEED_t XMC_ETH_PHY_GetLinkSpeed(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 243:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 513              	 .loc 1 243 0
+ 514              	 .cfi_startproc
+ 515              	 
+ 516              	 
+ 517 0000 80B5     	 push {r7,lr}
+ 518              	.LCFI30:
+ 519              	 .cfi_def_cfa_offset 8
+ 520              	 .cfi_offset 7,-8
+ 521              	 .cfi_offset 14,-4
+ 522 0002 84B0     	 sub sp,sp,#16
+ 523              	.LCFI31:
+ 524              	 .cfi_def_cfa_offset 24
+ 525 0004 00AF     	 add r7,sp,#0
+ 526              	.LCFI32:
+ 527              	 .cfi_def_cfa_register 7
+ 528 0006 7860     	 str r0,[r7,#4]
+ 529 0008 0B46     	 mov r3,r1
+ 530 000a FB70     	 strb r3,[r7,#3]
+ 244:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t val;
+ 245:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 246:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYCTRL1, &val);
+ 531              	 .loc 1 246 0
+ 532 000c FA78     	 ldrb r2,[r7,#3]
+ 533 000e 07F10E03 	 add r3,r7,#14
+ 534 0012 7868     	 ldr r0,[r7,#4]
+ 535 0014 1146     	 mov r1,r2
+ 536 0016 1E22     	 movs r2,#30
+ 537 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 247:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 248:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return (XMC_ETH_LINK_SPEED_t)(((val & PHYCTRL1_OPMODE_SPEED) - 1U) ? XMC_ETH_LINK_SPEED_100M : XM
+ 538              	 .loc 1 248 0
+ 539 001c FB89     	 ldrh r3,[r7,#14]
+ 540 001e 03F00303 	 and r3,r3,#3
+ 541 0022 012B     	 cmp r3,#1
+ 542 0024 02D0     	 beq .L31
+ 543              	 .loc 1 248 0 is_stmt 0 discriminator 1
+ 544 0026 4FF48043 	 mov r3,#16384
+ 545 002a 00E0     	 b .L32
+ 546              	.L31:
+ 547              	 .loc 1 248 0 discriminator 2
+ 548 002c 0023     	 movs r3,#0
+ 549              	.L32:
+ 249:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 550              	 .loc 1 249 0 is_stmt 1 discriminator 4
+ 551 002e 1846     	 mov r0,r3
+ 552 0030 1037     	 adds r7,r7,#16
+ 553              	.LCFI33:
+ 554              	 .cfi_def_cfa_offset 8
+ 555 0032 BD46     	 mov sp,r7
+ 556              	.LCFI34:
+ 557              	 .cfi_def_cfa_register 13
+ 558              	 
+ 559 0034 80BD     	 pop {r7,pc}
+ 560              	 .cfi_endproc
+ 561              	.LFE199:
+ 563 0036 00BF     	 .section .text.XMC_ETH_PHY_GetLinkDuplex,"ax",%progbits
+ 564              	 .align 2
+ 565              	 .global XMC_ETH_PHY_GetLinkDuplex
+ 566              	 .thumb
+ 567              	 .thumb_func
+ 569              	XMC_ETH_PHY_GetLinkDuplex:
+ 570              	.LFB200:
+ 250:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 251:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** /* Get link duplex settings */
+ 252:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** XMC_ETH_LINK_DUPLEX_t XMC_ETH_PHY_GetLinkDuplex(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 253:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 571              	 .loc 1 253 0
+ 572              	 .cfi_startproc
+ 573              	 
+ 574              	 
+ 575 0000 80B5     	 push {r7,lr}
+ 576              	.LCFI35:
+ 577              	 .cfi_def_cfa_offset 8
+ 578              	 .cfi_offset 7,-8
+ 579              	 .cfi_offset 14,-4
+ 580 0002 84B0     	 sub sp,sp,#16
+ 581              	.LCFI36:
+ 582              	 .cfi_def_cfa_offset 24
+ 583 0004 00AF     	 add r7,sp,#0
+ 584              	.LCFI37:
+ 585              	 .cfi_def_cfa_register 7
+ 586 0006 7860     	 str r0,[r7,#4]
+ 587 0008 0B46     	 mov r3,r1
+ 588 000a FB70     	 strb r3,[r7,#3]
+ 254:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t val;
+ 255:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 256:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYCTRL1, &val);
+ 589              	 .loc 1 256 0
+ 590 000c FA78     	 ldrb r2,[r7,#3]
+ 591 000e 07F10E03 	 add r3,r7,#14
+ 592 0012 7868     	 ldr r0,[r7,#4]
+ 593 0014 1146     	 mov r1,r2
+ 594 0016 1E22     	 movs r2,#30
+ 595 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 257:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 258:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return (XMC_ETH_LINK_DUPLEX_t)((val & PHYCTRL1_OPMODE_DUPLEX) ? XMC_ETH_LINK_DUPLEX_FULL : XMC_ET
+ 596              	 .loc 1 258 0
+ 597 001c FB89     	 ldrh r3,[r7,#14]
+ 598 001e 03F00403 	 and r3,r3,#4
+ 599 0022 002B     	 cmp r3,#0
+ 600 0024 02D0     	 beq .L35
+ 601              	 .loc 1 258 0 is_stmt 0 discriminator 1
+ 602 0026 4FF40063 	 mov r3,#2048
+ 603 002a 00E0     	 b .L36
+ 604              	.L35:
+ 605              	 .loc 1 258 0 discriminator 2
+ 606 002c 0023     	 movs r3,#0
+ 607              	.L36:
+ 259:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 608              	 .loc 1 259 0 is_stmt 1 discriminator 4
+ 609 002e 1846     	 mov r0,r3
+ 610 0030 1037     	 adds r7,r7,#16
+ 611              	.LCFI38:
+ 612              	 .cfi_def_cfa_offset 8
+ 613 0032 BD46     	 mov sp,r7
+ 614              	.LCFI39:
+ 615              	 .cfi_def_cfa_register 13
+ 616              	 
+ 617 0034 80BD     	 pop {r7,pc}
+ 618              	 .cfi_endproc
+ 619              	.LFE200:
+ 621 0036 00BF     	 .section .text.XMC_ETH_PHY_IsAutonegotiationCompleted,"ax",%progbits
+ 622              	 .align 2
+ 623              	 .global XMC_ETH_PHY_IsAutonegotiationCompleted
+ 624              	 .thumb
+ 625              	 .thumb_func
+ 627              	XMC_ETH_PHY_IsAutonegotiationCompleted:
+ 628              	.LFB201:
+ 260:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 261:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** bool XMC_ETH_PHY_IsAutonegotiationCompleted(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
+ 262:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** {
+ 629              	 .loc 1 262 0
+ 630              	 .cfi_startproc
+ 631              	 
+ 632              	 
+ 633 0000 80B5     	 push {r7,lr}
+ 634              	.LCFI40:
+ 635              	 .cfi_def_cfa_offset 8
+ 636              	 .cfi_offset 7,-8
+ 637              	 .cfi_offset 14,-4
+ 638 0002 84B0     	 sub sp,sp,#16
+ 639              	.LCFI41:
+ 640              	 .cfi_def_cfa_offset 24
+ 641 0004 00AF     	 add r7,sp,#0
+ 642              	.LCFI42:
+ 643              	 .cfi_def_cfa_register 7
+ 644 0006 7860     	 str r0,[r7,#4]
+ 645 0008 0B46     	 mov r3,r1
+ 646 000a FB70     	 strb r3,[r7,#3]
+ 263:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   uint16_t val;
+ 264:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** 
+ 265:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMSR, &val);
+ 647              	 .loc 1 265 0
+ 648 000c FA78     	 ldrb r2,[r7,#3]
+ 649 000e 07F10E03 	 add r3,r7,#14
+ 650 0012 7868     	 ldr r0,[r7,#4]
+ 651 0014 1146     	 mov r1,r2
+ 652 0016 0122     	 movs r2,#1
+ 653 0018 FFF7FEFF 	 bl XMC_ETH_MAC_ReadPhy
+ 266:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c ****   return ((val & BMSR_ANEG_COMPL) == BMSR_ANEG_COMPL);
+ 654              	 .loc 1 266 0
+ 655 001c FB89     	 ldrh r3,[r7,#14]
+ 656 001e 03F02003 	 and r3,r3,#32
+ 657 0022 002B     	 cmp r3,#0
+ 658 0024 14BF     	 ite ne
+ 659 0026 0123     	 movne r3,#1
+ 660 0028 0023     	 moveq r3,#0
+ 661 002a DBB2     	 uxtb r3,r3
+ 267:../Dave/Generated/ETH_LWIP/xmc_eth_phy_ksz8081rnl.c **** }
+ 662              	 .loc 1 267 0
+ 663 002c 1846     	 mov r0,r3
+ 664 002e 1037     	 adds r7,r7,#16
+ 665              	.LCFI43:
+ 666              	 .cfi_def_cfa_offset 8
+ 667 0030 BD46     	 mov sp,r7
+ 668              	.LCFI44:
+ 669              	 .cfi_def_cfa_register 13
+ 670              	 
+ 671 0032 80BD     	 pop {r7,pc}
+ 672              	 .cfi_endproc
+ 673              	.LFE201:
+ 675              	 .text
+ 676              	.Letext0:
+ 677              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 678              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 679              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/XMC4800.h"
+ 680              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_eth_mac.h"
+ 681              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_eth_phy.h"
+ 682              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 683              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 xmc_eth_phy_ksz8081rnl.c
+    {standard input}:20     .text.XMC_ETH_PHY_IsDeviceIdValid:00000000 $t
+    {standard input}:24     .text.XMC_ETH_PHY_IsDeviceIdValid:00000000 XMC_ETH_PHY_IsDeviceIdValid
+    {standard input}:109    .text.XMC_ETH_PHY_Init:00000000 $t
+    {standard input}:114    .text.XMC_ETH_PHY_Init:00000000 XMC_ETH_PHY_Init
+    {standard input}:244    .text.XMC_ETH_PHY_Reset:00000000 XMC_ETH_PHY_Reset
+    {standard input}:239    .text.XMC_ETH_PHY_Reset:00000000 $t
+    {standard input}:310    .text.XMC_ETH_PHY_PowerDown:00000000 $t
+    {standard input}:315    .text.XMC_ETH_PHY_PowerDown:00000000 XMC_ETH_PHY_PowerDown
+    {standard input}:379    .text.XMC_ETH_PHY_ExitPowerDown:00000000 $t
+    {standard input}:384    .text.XMC_ETH_PHY_ExitPowerDown:00000000 XMC_ETH_PHY_ExitPowerDown
+    {standard input}:448    .text.XMC_ETH_PHY_GetLinkStatus:00000000 $t
+    {standard input}:453    .text.XMC_ETH_PHY_GetLinkStatus:00000000 XMC_ETH_PHY_GetLinkStatus
+    {standard input}:506    .text.XMC_ETH_PHY_GetLinkSpeed:00000000 $t
+    {standard input}:511    .text.XMC_ETH_PHY_GetLinkSpeed:00000000 XMC_ETH_PHY_GetLinkSpeed
+    {standard input}:564    .text.XMC_ETH_PHY_GetLinkDuplex:00000000 $t
+    {standard input}:569    .text.XMC_ETH_PHY_GetLinkDuplex:00000000 XMC_ETH_PHY_GetLinkDuplex
+    {standard input}:622    .text.XMC_ETH_PHY_IsAutonegotiationCompleted:00000000 $t
+    {standard input}:627    .text.XMC_ETH_PHY_IsAutonegotiationCompleted:00000000 XMC_ETH_PHY_IsAutonegotiationCompleted
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+XMC_ETH_MAC_ReadPhy
+XMC_ETH_MAC_WritePhy

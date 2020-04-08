@@ -1,0 +1,883 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "def.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .section .text.lwip_htons,"ax",%progbits
+  20              	 .align 2
+  21              	 .global lwip_htons
+  22              	 .thumb
+  23              	 .thumb_func
+  25              	lwip_htons:
+  26              	.LFB137:
+  27              	 .file 1 "../Dave/Generated/ETH_LWIP/lwip/core/def.c"
+   1:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+   2:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @file
+   3:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Common functions used throughout the stack.
+   4:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+   5:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * These are reference implementations of the byte swapping functions.
+   6:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Again with the aim of being simple, correct and fully portable.
+   7:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Byte swapping is the second thing you would want to optimize. You will
+   8:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * need to port it to your architecture and in your cc.h:
+   9:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  10:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * \#define lwip_htons(x) your_htons
+  11:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * \#define lwip_htonl(x) your_htonl
+  12:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  13:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Note lwip_ntohs() and lwip_ntohl() are merely references to the htonx counterparts.
+  14:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  15:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * If you \#define them to htons() and htonl(), you should
+  16:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * \#define LWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS to prevent lwIP from
+  17:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * defining htonx/ntohx compatibility macros.
+  18:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  19:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @defgroup sys_nonstandard Non-standard functions
+  20:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @ingroup sys_layer
+  21:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * lwIP provides default implementations for non-standard functions.
+  22:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * These can be mapped to OS functions to reduce code footprint if desired.
+  23:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * All defines related to this section must not be placed in lwipopts.h,
+  24:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * but in arch/cc.h!
+  25:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * These options cannot be \#defined in lwipopts.h since they are not options
+  26:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * of lwIP itself, but options of the lwIP port to your system.
+  27:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+  28:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  29:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /*
+  30:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  31:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * All rights reserved.
+  32:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  33:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  34:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * are permitted provided that the following conditions are met:
+  35:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  36:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  37:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *    this list of conditions and the following disclaimer.
+  38:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  39:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *    this list of conditions and the following disclaimer in the documentation
+  40:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *    and/or other materials provided with the distribution.
+  41:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * 3. The name of the author may not be used to endorse or promote products
+  42:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *    derived from this software without specific prior written permission.
+  43:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  44:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  45:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  46:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  47:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  48:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  49:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  50:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  51:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  52:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  53:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * OF SUCH DAMAGE.
+  54:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  55:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * This file is part of the lwIP TCP/IP stack.
+  56:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  57:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Author: Simon Goldschmidt
+  58:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  59:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+  60:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  61:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #include "ETH_LWIP/lwip/include/lwip/opt.h"
+  62:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #include "ETH_LWIP/lwip/include/lwip/def.h"
+  63:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  64:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #include <string.h>
+  65:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  66:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #if BYTE_ORDER == LITTLE_ENDIAN
+  67:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  68:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #if !defined(lwip_htons)
+  69:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+  70:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Convert an u16_t from host- to network byte order.
+  71:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  72:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @param n u16_t in host byte order
+  73:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @return n in network byte order
+  74:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+  75:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** u16_t
+  76:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** lwip_htons(u16_t n)
+  77:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** {
+  28              	 .loc 1 77 0
+  29              	 .cfi_startproc
+  30              	 
+  31              	 
+  32              	 
+  33 0000 80B4     	 push {r7}
+  34              	.LCFI0:
+  35              	 .cfi_def_cfa_offset 4
+  36              	 .cfi_offset 7,-4
+  37 0002 83B0     	 sub sp,sp,#12
+  38              	.LCFI1:
+  39              	 .cfi_def_cfa_offset 16
+  40 0004 00AF     	 add r7,sp,#0
+  41              	.LCFI2:
+  42              	 .cfi_def_cfa_register 7
+  43 0006 0346     	 mov r3,r0
+  44 0008 FB80     	 strh r3,[r7,#6]
+  78:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   return PP_HTONS(n);
+  45              	 .loc 1 78 0
+  46 000a FB88     	 ldrh r3,[r7,#6]
+  47 000c 1B02     	 lsls r3,r3,#8
+  48 000e 9AB2     	 uxth r2,r3
+  49 0010 FB88     	 ldrh r3,[r7,#6]
+  50 0012 1B0A     	 lsrs r3,r3,#8
+  51 0014 9BB2     	 uxth r3,r3
+  52 0016 9BB2     	 uxth r3,r3
+  53 0018 1343     	 orrs r3,r3,r2
+  54 001a 9BB2     	 uxth r3,r3
+  55 001c 9BB2     	 uxth r3,r3
+  79:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** }
+  56              	 .loc 1 79 0
+  57 001e 1846     	 mov r0,r3
+  58 0020 0C37     	 adds r7,r7,#12
+  59              	.LCFI3:
+  60              	 .cfi_def_cfa_offset 4
+  61 0022 BD46     	 mov sp,r7
+  62              	.LCFI4:
+  63              	 .cfi_def_cfa_register 13
+  64              	 
+  65 0024 5DF8047B 	 ldr r7,[sp],#4
+  66              	.LCFI5:
+  67              	 .cfi_restore 7
+  68              	 .cfi_def_cfa_offset 0
+  69 0028 7047     	 bx lr
+  70              	 .cfi_endproc
+  71              	.LFE137:
+  73 002a 00BF     	 .section .text.lwip_htonl,"ax",%progbits
+  74              	 .align 2
+  75              	 .global lwip_htonl
+  76              	 .thumb
+  77              	 .thumb_func
+  79              	lwip_htonl:
+  80              	.LFB138:
+  80:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #endif /* lwip_htons */
+  81:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  82:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #if !defined(lwip_htonl)
+  83:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+  84:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * Convert an u32_t from host- to network byte order.
+  85:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  *
+  86:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @param n u32_t in host byte order
+  87:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @return n in network byte order
+  88:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+  89:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** u32_t
+  90:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** lwip_htonl(u32_t n)
+  91:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** {
+  81              	 .loc 1 91 0
+  82              	 .cfi_startproc
+  83              	 
+  84              	 
+  85              	 
+  86 0000 80B4     	 push {r7}
+  87              	.LCFI6:
+  88              	 .cfi_def_cfa_offset 4
+  89              	 .cfi_offset 7,-4
+  90 0002 83B0     	 sub sp,sp,#12
+  91              	.LCFI7:
+  92              	 .cfi_def_cfa_offset 16
+  93 0004 00AF     	 add r7,sp,#0
+  94              	.LCFI8:
+  95              	 .cfi_def_cfa_register 7
+  96 0006 7860     	 str r0,[r7,#4]
+  92:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   return PP_HTONL(n);
+  97              	 .loc 1 92 0
+  98 0008 7B68     	 ldr r3,[r7,#4]
+  99 000a 1A06     	 lsls r2,r3,#24
+ 100 000c 7B68     	 ldr r3,[r7,#4]
+ 101 000e 03F47F43 	 and r3,r3,#65280
+ 102 0012 1B02     	 lsls r3,r3,#8
+ 103 0014 1A43     	 orrs r2,r2,r3
+ 104 0016 7B68     	 ldr r3,[r7,#4]
+ 105 0018 03F47F03 	 and r3,r3,#16711680
+ 106 001c 1B0A     	 lsrs r3,r3,#8
+ 107 001e 1A43     	 orrs r2,r2,r3
+ 108 0020 7B68     	 ldr r3,[r7,#4]
+ 109 0022 1B0E     	 lsrs r3,r3,#24
+ 110 0024 1343     	 orrs r3,r3,r2
+  93:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** }
+ 111              	 .loc 1 93 0
+ 112 0026 1846     	 mov r0,r3
+ 113 0028 0C37     	 adds r7,r7,#12
+ 114              	.LCFI9:
+ 115              	 .cfi_def_cfa_offset 4
+ 116 002a BD46     	 mov sp,r7
+ 117              	.LCFI10:
+ 118              	 .cfi_def_cfa_register 13
+ 119              	 
+ 120 002c 5DF8047B 	 ldr r7,[sp],#4
+ 121              	.LCFI11:
+ 122              	 .cfi_restore 7
+ 123              	 .cfi_def_cfa_offset 0
+ 124 0030 7047     	 bx lr
+ 125              	 .cfi_endproc
+ 126              	.LFE138:
+ 128 0032 00BF     	 .section .text.lwip_strnstr,"ax",%progbits
+ 129              	 .align 2
+ 130              	 .global lwip_strnstr
+ 131              	 .thumb
+ 132              	 .thumb_func
+ 134              	lwip_strnstr:
+ 135              	.LFB139:
+  94:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #endif /* lwip_htonl */
+  95:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  96:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #endif /* BYTE_ORDER == LITTLE_ENDIAN */
+  97:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+  98:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #ifndef lwip_strnstr
+  99:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+ 100:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @ingroup sys_nonstandard
+ 101:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * lwIP default implementation for strnstr() non-standard function.
+ 102:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * This can be \#defined to strnstr() depending on your platform port.
+ 103:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+ 104:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** char *
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** lwip_strnstr(const char *buffer, const char *token, size_t n)
+ 106:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** {
+ 136              	 .loc 1 106 0
+ 137              	 .cfi_startproc
+ 138              	 
+ 139              	 
+ 140 0000 80B5     	 push {r7,lr}
+ 141              	.LCFI12:
+ 142              	 .cfi_def_cfa_offset 8
+ 143              	 .cfi_offset 7,-8
+ 144              	 .cfi_offset 14,-4
+ 145 0002 86B0     	 sub sp,sp,#24
+ 146              	.LCFI13:
+ 147              	 .cfi_def_cfa_offset 32
+ 148 0004 00AF     	 add r7,sp,#0
+ 149              	.LCFI14:
+ 150              	 .cfi_def_cfa_register 7
+ 151 0006 F860     	 str r0,[r7,#12]
+ 152 0008 B960     	 str r1,[r7,#8]
+ 153 000a 7A60     	 str r2,[r7,#4]
+ 107:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   const char *p;
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   size_t tokenlen = strlen(token);
+ 154              	 .loc 1 108 0
+ 155 000c B868     	 ldr r0,[r7,#8]
+ 156 000e FFF7FEFF 	 bl strlen
+ 157 0012 3861     	 str r0,[r7,#16]
+ 109:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   if (tokenlen == 0) {
+ 158              	 .loc 1 109 0
+ 159 0014 3B69     	 ldr r3,[r7,#16]
+ 160 0016 002B     	 cmp r3,#0
+ 161 0018 01D1     	 bne .L6
+ 110:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     return LWIP_CONST_CAST(char *, buffer);
+ 162              	 .loc 1 110 0
+ 163 001a FB68     	 ldr r3,[r7,#12]
+ 164 001c 22E0     	 b .L7
+ 165              	.L6:
+ 111:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   for (p = buffer; *p && (p + tokenlen <= buffer + n); p++) {
+ 166              	 .loc 1 112 0
+ 167 001e FB68     	 ldr r3,[r7,#12]
+ 168 0020 7B61     	 str r3,[r7,#20]
+ 169 0022 12E0     	 b .L8
+ 170              	.L11:
+ 113:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if ((*p == *token) && (strncmp(p, token, tokenlen) == 0)) {
+ 171              	 .loc 1 113 0
+ 172 0024 7B69     	 ldr r3,[r7,#20]
+ 173 0026 1A78     	 ldrb r2,[r3]
+ 174 0028 BB68     	 ldr r3,[r7,#8]
+ 175 002a 1B78     	 ldrb r3,[r3]
+ 176 002c 9A42     	 cmp r2,r3
+ 177 002e 09D1     	 bne .L9
+ 178              	 .loc 1 113 0 is_stmt 0 discriminator 1
+ 179 0030 7869     	 ldr r0,[r7,#20]
+ 180 0032 B968     	 ldr r1,[r7,#8]
+ 181 0034 3A69     	 ldr r2,[r7,#16]
+ 182 0036 FFF7FEFF 	 bl strncmp
+ 183 003a 0346     	 mov r3,r0
+ 184 003c 002B     	 cmp r3,#0
+ 185 003e 01D1     	 bne .L9
+ 114:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       return LWIP_CONST_CAST(char *, p);
+ 186              	 .loc 1 114 0 is_stmt 1
+ 187 0040 7B69     	 ldr r3,[r7,#20]
+ 188 0042 0FE0     	 b .L7
+ 189              	.L9:
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if ((*p == *token) && (strncmp(p, token, tokenlen) == 0)) {
+ 190              	 .loc 1 112 0 discriminator 2
+ 191 0044 7B69     	 ldr r3,[r7,#20]
+ 192 0046 0133     	 adds r3,r3,#1
+ 193 0048 7B61     	 str r3,[r7,#20]
+ 194              	.L8:
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if ((*p == *token) && (strncmp(p, token, tokenlen) == 0)) {
+ 195              	 .loc 1 112 0 is_stmt 0 discriminator 1
+ 196 004a 7B69     	 ldr r3,[r7,#20]
+ 197 004c 1B78     	 ldrb r3,[r3]
+ 198 004e 002B     	 cmp r3,#0
+ 199 0050 07D0     	 beq .L10
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if ((*p == *token) && (strncmp(p, token, tokenlen) == 0)) {
+ 200              	 .loc 1 112 0 discriminator 3
+ 201 0052 7A69     	 ldr r2,[r7,#20]
+ 202 0054 3B69     	 ldr r3,[r7,#16]
+ 203 0056 1A44     	 add r2,r2,r3
+ 204 0058 F968     	 ldr r1,[r7,#12]
+ 205 005a 7B68     	 ldr r3,[r7,#4]
+ 206 005c 0B44     	 add r3,r3,r1
+ 207 005e 9A42     	 cmp r2,r3
+ 208 0060 E0D9     	 bls .L11
+ 209              	.L10:
+ 115:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     }
+ 116:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 117:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   return NULL;
+ 210              	 .loc 1 117 0 is_stmt 1
+ 211 0062 0023     	 movs r3,#0
+ 212              	.L7:
+ 118:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** }
+ 213              	 .loc 1 118 0
+ 214 0064 1846     	 mov r0,r3
+ 215 0066 1837     	 adds r7,r7,#24
+ 216              	.LCFI15:
+ 217              	 .cfi_def_cfa_offset 8
+ 218 0068 BD46     	 mov sp,r7
+ 219              	.LCFI16:
+ 220              	 .cfi_def_cfa_register 13
+ 221              	 
+ 222 006a 80BD     	 pop {r7,pc}
+ 223              	 .cfi_endproc
+ 224              	.LFE139:
+ 226              	 .section .text.lwip_stricmp,"ax",%progbits
+ 227              	 .align 2
+ 228              	 .global lwip_stricmp
+ 229              	 .thumb
+ 230              	 .thumb_func
+ 232              	lwip_stricmp:
+ 233              	.LFB140:
+ 119:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #endif
+ 120:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 121:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #ifndef lwip_stricmp
+ 122:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+ 123:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @ingroup sys_nonstandard
+ 124:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * lwIP default implementation for stricmp() non-standard function.
+ 125:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * This can be \#defined to stricmp() depending on your platform port.
+ 126:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+ 127:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** int
+ 128:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** lwip_stricmp(const char *str1, const char *str2)
+ 129:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** {
+ 234              	 .loc 1 129 0
+ 235              	 .cfi_startproc
+ 236              	 
+ 237              	 
+ 238              	 
+ 239 0000 80B4     	 push {r7}
+ 240              	.LCFI17:
+ 241              	 .cfi_def_cfa_offset 4
+ 242              	 .cfi_offset 7,-4
+ 243 0002 85B0     	 sub sp,sp,#20
+ 244              	.LCFI18:
+ 245              	 .cfi_def_cfa_offset 24
+ 246 0004 00AF     	 add r7,sp,#0
+ 247              	.LCFI19:
+ 248              	 .cfi_def_cfa_register 7
+ 249 0006 7860     	 str r0,[r7,#4]
+ 250 0008 3960     	 str r1,[r7]
+ 251              	.L17:
+ 130:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   char c1, c2;
+ 131:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 132:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   do {
+ 133:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     c1 = *str1++;
+ 252              	 .loc 1 133 0
+ 253 000a 7B68     	 ldr r3,[r7,#4]
+ 254 000c 5A1C     	 adds r2,r3,#1
+ 255 000e 7A60     	 str r2,[r7,#4]
+ 256 0010 1B78     	 ldrb r3,[r3]
+ 257 0012 FB73     	 strb r3,[r7,#15]
+ 134:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     c2 = *str2++;
+ 258              	 .loc 1 134 0
+ 259 0014 3B68     	 ldr r3,[r7]
+ 260 0016 5A1C     	 adds r2,r3,#1
+ 261 0018 3A60     	 str r2,[r7]
+ 262 001a 1B78     	 ldrb r3,[r3]
+ 263 001c BB73     	 strb r3,[r7,#14]
+ 135:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if (c1 != c2) {
+ 264              	 .loc 1 135 0
+ 265 001e FA7B     	 ldrb r2,[r7,#15]
+ 266 0020 BB7B     	 ldrb r3,[r7,#14]
+ 267 0022 9A42     	 cmp r2,r3
+ 268 0024 16D0     	 beq .L13
+ 269              	.LBB2:
+ 136:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       char c1_upc = c1 | 0x20;
+ 270              	 .loc 1 136 0
+ 271 0026 FB7B     	 ldrb r3,[r7,#15]
+ 272 0028 43F02003 	 orr r3,r3,#32
+ 273 002c 7B73     	 strb r3,[r7,#13]
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       if ((c1_upc >= 'a') && (c1_upc <= 'z')) {
+ 274              	 .loc 1 137 0
+ 275 002e 7B7B     	 ldrb r3,[r7,#13]
+ 276 0030 602B     	 cmp r3,#96
+ 277 0032 0DD9     	 bls .L14
+ 278              	 .loc 1 137 0 is_stmt 0 discriminator 1
+ 279 0034 7B7B     	 ldrb r3,[r7,#13]
+ 280 0036 7A2B     	 cmp r3,#122
+ 281 0038 0AD8     	 bhi .L14
+ 282              	.LBB3:
+ 138:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         /* characters are not equal an one is in the alphabet range:
+ 139:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         downcase both chars and check again */
+ 140:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         char c2_upc = c2 | 0x20;
+ 283              	 .loc 1 140 0 is_stmt 1
+ 284 003a BB7B     	 ldrb r3,[r7,#14]
+ 285 003c 43F02003 	 orr r3,r3,#32
+ 286 0040 3B73     	 strb r3,[r7,#12]
+ 141:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         if (c1_upc != c2_upc) {
+ 287              	 .loc 1 141 0
+ 288 0042 7A7B     	 ldrb r2,[r7,#13]
+ 289 0044 3B7B     	 ldrb r3,[r7,#12]
+ 290 0046 9A42     	 cmp r2,r3
+ 291 0048 01D0     	 beq .L15
+ 142:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****           /* still not equal */
+ 143:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****           /* don't care for < or > */
+ 144:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****           return 1;
+ 292              	 .loc 1 144 0
+ 293 004a 0123     	 movs r3,#1
+ 294 004c 06E0     	 b .L16
+ 295              	.L15:
+ 296              	.LBE3:
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         /* characters are not equal an one is in the alphabet range:
+ 297              	 .loc 1 137 0
+ 298 004e 01E0     	 b .L13
+ 299              	.L14:
+ 145:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         }
+ 146:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       } else {
+ 147:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         /* characters are not equal but none is in the alphabet range */
+ 148:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         return 1;
+ 300              	 .loc 1 148 0
+ 301 0050 0123     	 movs r3,#1
+ 302 0052 03E0     	 b .L16
+ 303              	.L13:
+ 304              	.LBE2:
+ 149:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       }
+ 150:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     }
+ 151:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   } while (c1 != 0);
+ 305              	 .loc 1 151 0
+ 306 0054 FB7B     	 ldrb r3,[r7,#15]
+ 307 0056 002B     	 cmp r3,#0
+ 308 0058 D7D1     	 bne .L17
+ 152:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   return 0;
+ 309              	 .loc 1 152 0
+ 310 005a 0023     	 movs r3,#0
+ 311              	.L16:
+ 153:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** }
+ 312              	 .loc 1 153 0
+ 313 005c 1846     	 mov r0,r3
+ 314 005e 1437     	 adds r7,r7,#20
+ 315              	.LCFI20:
+ 316              	 .cfi_def_cfa_offset 4
+ 317 0060 BD46     	 mov sp,r7
+ 318              	.LCFI21:
+ 319              	 .cfi_def_cfa_register 13
+ 320              	 
+ 321 0062 5DF8047B 	 ldr r7,[sp],#4
+ 322              	.LCFI22:
+ 323              	 .cfi_restore 7
+ 324              	 .cfi_def_cfa_offset 0
+ 325 0066 7047     	 bx lr
+ 326              	 .cfi_endproc
+ 327              	.LFE140:
+ 329              	 .section .text.lwip_strnicmp,"ax",%progbits
+ 330              	 .align 2
+ 331              	 .global lwip_strnicmp
+ 332              	 .thumb
+ 333              	 .thumb_func
+ 335              	lwip_strnicmp:
+ 336              	.LFB141:
+ 154:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #endif
+ 155:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 156:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #ifndef lwip_strnicmp
+ 157:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+ 158:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @ingroup sys_nonstandard
+ 159:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * lwIP default implementation for strnicmp() non-standard function.
+ 160:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * This can be \#defined to strnicmp() depending on your platform port.
+ 161:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+ 162:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** int
+ 163:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** lwip_strnicmp(const char *str1, const char *str2, size_t len)
+ 164:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** {
+ 337              	 .loc 1 164 0
+ 338              	 .cfi_startproc
+ 339              	 
+ 340              	 
+ 341              	 
+ 342 0000 80B4     	 push {r7}
+ 343              	.LCFI23:
+ 344              	 .cfi_def_cfa_offset 4
+ 345              	 .cfi_offset 7,-4
+ 346 0002 87B0     	 sub sp,sp,#28
+ 347              	.LCFI24:
+ 348              	 .cfi_def_cfa_offset 32
+ 349 0004 00AF     	 add r7,sp,#0
+ 350              	.LCFI25:
+ 351              	 .cfi_def_cfa_register 7
+ 352 0006 F860     	 str r0,[r7,#12]
+ 353 0008 B960     	 str r1,[r7,#8]
+ 354 000a 7A60     	 str r2,[r7,#4]
+ 355              	.L24:
+ 165:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   char c1, c2;
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   do {
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     c1 = *str1++;
+ 356              	 .loc 1 168 0
+ 357 000c FB68     	 ldr r3,[r7,#12]
+ 358 000e 5A1C     	 adds r2,r3,#1
+ 359 0010 FA60     	 str r2,[r7,#12]
+ 360 0012 1B78     	 ldrb r3,[r3]
+ 361 0014 FB75     	 strb r3,[r7,#23]
+ 169:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     c2 = *str2++;
+ 362              	 .loc 1 169 0
+ 363 0016 BB68     	 ldr r3,[r7,#8]
+ 364 0018 5A1C     	 adds r2,r3,#1
+ 365 001a BA60     	 str r2,[r7,#8]
+ 366 001c 1B78     	 ldrb r3,[r3]
+ 367 001e BB75     	 strb r3,[r7,#22]
+ 170:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if (c1 != c2) {
+ 368              	 .loc 1 170 0
+ 369 0020 FA7D     	 ldrb r2,[r7,#23]
+ 370 0022 BB7D     	 ldrb r3,[r7,#22]
+ 371 0024 9A42     	 cmp r2,r3
+ 372 0026 16D0     	 beq .L19
+ 373              	.LBB4:
+ 171:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       char c1_upc = c1 | 0x20;
+ 374              	 .loc 1 171 0
+ 375 0028 FB7D     	 ldrb r3,[r7,#23]
+ 376 002a 43F02003 	 orr r3,r3,#32
+ 377 002e 7B75     	 strb r3,[r7,#21]
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       if ((c1_upc >= 'a') && (c1_upc <= 'z')) {
+ 378              	 .loc 1 172 0
+ 379 0030 7B7D     	 ldrb r3,[r7,#21]
+ 380 0032 602B     	 cmp r3,#96
+ 381 0034 0DD9     	 bls .L20
+ 382              	 .loc 1 172 0 is_stmt 0 discriminator 1
+ 383 0036 7B7D     	 ldrb r3,[r7,#21]
+ 384 0038 7A2B     	 cmp r3,#122
+ 385 003a 0AD8     	 bhi .L20
+ 386              	.LBB5:
+ 173:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         /* characters are not equal an one is in the alphabet range:
+ 174:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         downcase both chars and check again */
+ 175:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         char c2_upc = c2 | 0x20;
+ 387              	 .loc 1 175 0 is_stmt 1
+ 388 003c BB7D     	 ldrb r3,[r7,#22]
+ 389 003e 43F02003 	 orr r3,r3,#32
+ 390 0042 3B75     	 strb r3,[r7,#20]
+ 176:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         if (c1_upc != c2_upc) {
+ 391              	 .loc 1 176 0
+ 392 0044 7A7D     	 ldrb r2,[r7,#21]
+ 393 0046 3B7D     	 ldrb r3,[r7,#20]
+ 394 0048 9A42     	 cmp r2,r3
+ 395 004a 01D0     	 beq .L21
+ 177:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****           /* still not equal */
+ 178:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****           /* don't care for < or > */
+ 179:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****           return 1;
+ 396              	 .loc 1 179 0
+ 397 004c 0123     	 movs r3,#1
+ 398 004e 0CE0     	 b .L22
+ 399              	.L21:
+ 400              	.LBE5:
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         /* characters are not equal an one is in the alphabet range:
+ 401              	 .loc 1 172 0
+ 402 0050 01E0     	 b .L19
+ 403              	.L20:
+ 180:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         }
+ 181:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       } else {
+ 182:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         /* characters are not equal but none is in the alphabet range */
+ 183:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****         return 1;
+ 404              	 .loc 1 183 0
+ 405 0052 0123     	 movs r3,#1
+ 406 0054 09E0     	 b .L22
+ 407              	.L19:
+ 408              	.LBE4:
+ 184:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       }
+ 185:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     }
+ 186:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     len--;
+ 409              	 .loc 1 186 0
+ 410 0056 7B68     	 ldr r3,[r7,#4]
+ 411 0058 013B     	 subs r3,r3,#1
+ 412 005a 7B60     	 str r3,[r7,#4]
+ 187:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   } while ((len != 0) && (c1 != 0));
+ 413              	 .loc 1 187 0
+ 414 005c 7B68     	 ldr r3,[r7,#4]
+ 415 005e 002B     	 cmp r3,#0
+ 416 0060 02D0     	 beq .L23
+ 417              	 .loc 1 187 0 is_stmt 0 discriminator 1
+ 418 0062 FB7D     	 ldrb r3,[r7,#23]
+ 419 0064 002B     	 cmp r3,#0
+ 420 0066 D1D1     	 bne .L24
+ 421              	.L23:
+ 188:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   return 0;
+ 422              	 .loc 1 188 0 is_stmt 1
+ 423 0068 0023     	 movs r3,#0
+ 424              	.L22:
+ 189:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** }
+ 425              	 .loc 1 189 0
+ 426 006a 1846     	 mov r0,r3
+ 427 006c 1C37     	 adds r7,r7,#28
+ 428              	.LCFI26:
+ 429              	 .cfi_def_cfa_offset 4
+ 430 006e BD46     	 mov sp,r7
+ 431              	.LCFI27:
+ 432              	 .cfi_def_cfa_register 13
+ 433              	 
+ 434 0070 5DF8047B 	 ldr r7,[sp],#4
+ 435              	.LCFI28:
+ 436              	 .cfi_restore 7
+ 437              	 .cfi_def_cfa_offset 0
+ 438 0074 7047     	 bx lr
+ 439              	 .cfi_endproc
+ 440              	.LFE141:
+ 442 0076 00BF     	 .section .text.lwip_itoa,"ax",%progbits
+ 443              	 .align 2
+ 444              	 .global lwip_itoa
+ 445              	 .thumb
+ 446              	 .thumb_func
+ 448              	lwip_itoa:
+ 449              	.LFB142:
+ 190:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #endif
+ 191:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 192:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** #ifndef lwip_itoa
+ 193:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** /**
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * @ingroup sys_nonstandard
+ 195:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * lwIP default implementation for itoa() non-standard function.
+ 196:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  * This can be \#defined to itoa() or snprintf(result, bufsize, "%d", number) depending on your pla
+ 197:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****  */
+ 198:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** void
+ 199:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** lwip_itoa(char *result, size_t bufsize, int number)
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** {
+ 450              	 .loc 1 200 0
+ 451              	 .cfi_startproc
+ 452              	 
+ 453              	 
+ 454 0000 80B5     	 push {r7,lr}
+ 455              	.LCFI29:
+ 456              	 .cfi_def_cfa_offset 8
+ 457              	 .cfi_offset 7,-8
+ 458              	 .cfi_offset 14,-4
+ 459 0002 88B0     	 sub sp,sp,#32
+ 460              	.LCFI30:
+ 461              	 .cfi_def_cfa_offset 40
+ 462 0004 00AF     	 add r7,sp,#0
+ 463              	.LCFI31:
+ 464              	 .cfi_def_cfa_register 7
+ 465 0006 F860     	 str r0,[r7,#12]
+ 466 0008 B960     	 str r1,[r7,#8]
+ 467 000a 7A60     	 str r2,[r7,#4]
+ 201:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   char *res = result;
+ 468              	 .loc 1 201 0
+ 469 000c FB68     	 ldr r3,[r7,#12]
+ 470 000e FB61     	 str r3,[r7,#28]
+ 202:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   char *tmp = result + bufsize - 1;
+ 471              	 .loc 1 202 0
+ 472 0010 BB68     	 ldr r3,[r7,#8]
+ 473 0012 013B     	 subs r3,r3,#1
+ 474 0014 FA68     	 ldr r2,[r7,#12]
+ 475 0016 1344     	 add r3,r3,r2
+ 476 0018 BB61     	 str r3,[r7,#24]
+ 203:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   int n = (number >= 0) ? number : -number;
+ 477              	 .loc 1 203 0
+ 478 001a 7B68     	 ldr r3,[r7,#4]
+ 479 001c 002B     	 cmp r3,#0
+ 480 001e B8BF     	 it lt
+ 481 0020 5B42     	 rsblt r3,r3,#0
+ 482 0022 7B61     	 str r3,[r7,#20]
+ 204:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 205:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   /* handle invalid bufsize */
+ 206:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   if (bufsize < 2) {
+ 483              	 .loc 1 206 0
+ 484 0024 BB68     	 ldr r3,[r7,#8]
+ 485 0026 012B     	 cmp r3,#1
+ 486 0028 07D8     	 bhi .L26
+ 207:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     if (bufsize == 1) {
+ 487              	 .loc 1 207 0
+ 488 002a BB68     	 ldr r3,[r7,#8]
+ 489 002c 012B     	 cmp r3,#1
+ 490 002e 03D1     	 bne .L27
+ 208:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****       *result = 0;
+ 491              	 .loc 1 208 0
+ 492 0030 FB68     	 ldr r3,[r7,#12]
+ 493 0032 0022     	 movs r2,#0
+ 494 0034 1A70     	 strb r2,[r3]
+ 209:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     }
+ 210:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     return;
+ 495              	 .loc 1 210 0
+ 496 0036 51E0     	 b .L25
+ 497              	.L27:
+ 498 0038 50E0     	 b .L25
+ 499              	.L26:
+ 211:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 212:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** 
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   /* First, add sign */
+ 214:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   if (number < 0) {
+ 500              	 .loc 1 214 0
+ 501 003a 7B68     	 ldr r3,[r7,#4]
+ 502 003c 002B     	 cmp r3,#0
+ 503 003e 04DA     	 bge .L29
+ 215:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     *res++ = '-';
+ 504              	 .loc 1 215 0
+ 505 0040 FB69     	 ldr r3,[r7,#28]
+ 506 0042 5A1C     	 adds r2,r3,#1
+ 507 0044 FA61     	 str r2,[r7,#28]
+ 508 0046 2D22     	 movs r2,#45
+ 509 0048 1A70     	 strb r2,[r3]
+ 510              	.L29:
+ 216:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 217:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   /* Then create the string from the end and stop if buffer full,
+ 218:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****      and ensure output string is zero terminated */
+ 219:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   *tmp = 0;
+ 511              	 .loc 1 219 0
+ 512 004a BB69     	 ldr r3,[r7,#24]
+ 513 004c 0022     	 movs r2,#0
+ 514 004e 1A70     	 strb r2,[r3]
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   while ((n != 0) && (tmp > res)) {
+ 515              	 .loc 1 220 0
+ 516 0050 1CE0     	 b .L30
+ 517              	.L32:
+ 518              	.LBB6:
+ 221:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     char val = (char)('0' + (n % 10));
+ 519              	 .loc 1 221 0
+ 520 0052 7A69     	 ldr r2,[r7,#20]
+ 521 0054 234B     	 ldr r3,.L35
+ 522 0056 83FB0213 	 smull r1,r3,r3,r2
+ 523 005a 9910     	 asrs r1,r3,#2
+ 524 005c D317     	 asrs r3,r2,#31
+ 525 005e C91A     	 subs r1,r1,r3
+ 526 0060 0B46     	 mov r3,r1
+ 527 0062 9B00     	 lsls r3,r3,#2
+ 528 0064 0B44     	 add r3,r3,r1
+ 529 0066 5B00     	 lsls r3,r3,#1
+ 530 0068 D11A     	 subs r1,r2,r3
+ 531 006a CBB2     	 uxtb r3,r1
+ 532 006c 3033     	 adds r3,r3,#48
+ 533 006e FB74     	 strb r3,[r7,#19]
+ 222:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     tmp--;
+ 534              	 .loc 1 222 0
+ 535 0070 BB69     	 ldr r3,[r7,#24]
+ 536 0072 013B     	 subs r3,r3,#1
+ 537 0074 BB61     	 str r3,[r7,#24]
+ 223:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     *tmp = val;
+ 538              	 .loc 1 223 0
+ 539 0076 BB69     	 ldr r3,[r7,#24]
+ 540 0078 FA7C     	 ldrb r2,[r7,#19]
+ 541 007a 1A70     	 strb r2,[r3]
+ 224:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     n = n / 10;
+ 542              	 .loc 1 224 0
+ 543 007c 7B69     	 ldr r3,[r7,#20]
+ 544 007e 194A     	 ldr r2,.L35
+ 545 0080 82FB0312 	 smull r1,r2,r2,r3
+ 546 0084 9210     	 asrs r2,r2,#2
+ 547 0086 DB17     	 asrs r3,r3,#31
+ 548 0088 D31A     	 subs r3,r2,r3
+ 549 008a 7B61     	 str r3,[r7,#20]
+ 550              	.L30:
+ 551              	.LBE6:
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     char val = (char)('0' + (n % 10));
+ 552              	 .loc 1 220 0
+ 553 008c 7B69     	 ldr r3,[r7,#20]
+ 554 008e 002B     	 cmp r3,#0
+ 555 0090 03D0     	 beq .L31
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     char val = (char)('0' + (n % 10));
+ 556              	 .loc 1 220 0 is_stmt 0 discriminator 1
+ 557 0092 BA69     	 ldr r2,[r7,#24]
+ 558 0094 FB69     	 ldr r3,[r7,#28]
+ 559 0096 9A42     	 cmp r2,r3
+ 560 0098 DBD8     	 bhi .L32
+ 561              	.L31:
+ 225:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 226:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   if (n) {
+ 562              	 .loc 1 226 0 is_stmt 1
+ 563 009a 7B69     	 ldr r3,[r7,#20]
+ 564 009c 002B     	 cmp r3,#0
+ 565 009e 03D0     	 beq .L33
+ 227:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     /* buffer is too small */
+ 228:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     *result = 0;
+ 566              	 .loc 1 228 0
+ 567 00a0 FB68     	 ldr r3,[r7,#12]
+ 568 00a2 0022     	 movs r2,#0
+ 569 00a4 1A70     	 strb r2,[r3]
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     return;
+ 570              	 .loc 1 229 0
+ 571 00a6 19E0     	 b .L25
+ 572              	.L33:
+ 230:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 231:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   if (*tmp == 0) {
+ 573              	 .loc 1 231 0
+ 574 00a8 BB69     	 ldr r3,[r7,#24]
+ 575 00aa 1B78     	 ldrb r3,[r3]
+ 576 00ac 002B     	 cmp r3,#0
+ 577 00ae 0AD1     	 bne .L34
+ 232:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     /* Nothing added? */
+ 233:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     *res++ = '0';
+ 578              	 .loc 1 233 0
+ 579 00b0 FB69     	 ldr r3,[r7,#28]
+ 580 00b2 5A1C     	 adds r2,r3,#1
+ 581 00b4 FA61     	 str r2,[r7,#28]
+ 582 00b6 3022     	 movs r2,#48
+ 583 00b8 1A70     	 strb r2,[r3]
+ 234:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     *res++ = 0;
+ 584              	 .loc 1 234 0
+ 585 00ba FB69     	 ldr r3,[r7,#28]
+ 586 00bc 5A1C     	 adds r2,r3,#1
+ 587 00be FA61     	 str r2,[r7,#28]
+ 588 00c0 0022     	 movs r2,#0
+ 589 00c2 1A70     	 strb r2,[r3]
+ 235:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****     return;
+ 590              	 .loc 1 235 0
+ 591 00c4 0AE0     	 b .L25
+ 592              	.L34:
+ 236:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   }
+ 237:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   /* move from temporary buffer to output buffer (sign is not moved) */
+ 238:../Dave/Generated/ETH_LWIP/lwip/core/def.c ****   memmove(res, tmp, (size_t)((result + bufsize) - tmp));
+ 593              	 .loc 1 238 0
+ 594 00c6 FA68     	 ldr r2,[r7,#12]
+ 595 00c8 BB68     	 ldr r3,[r7,#8]
+ 596 00ca 1344     	 add r3,r3,r2
+ 597 00cc 1A46     	 mov r2,r3
+ 598 00ce BB69     	 ldr r3,[r7,#24]
+ 599 00d0 D31A     	 subs r3,r2,r3
+ 600 00d2 F869     	 ldr r0,[r7,#28]
+ 601 00d4 B969     	 ldr r1,[r7,#24]
+ 602 00d6 1A46     	 mov r2,r3
+ 603 00d8 FFF7FEFF 	 bl memmove
+ 604              	.L25:
+ 239:../Dave/Generated/ETH_LWIP/lwip/core/def.c **** }
+ 605              	 .loc 1 239 0
+ 606 00dc 2037     	 adds r7,r7,#32
+ 607              	.LCFI32:
+ 608              	 .cfi_def_cfa_offset 8
+ 609 00de BD46     	 mov sp,r7
+ 610              	.LCFI33:
+ 611              	 .cfi_def_cfa_register 13
+ 612              	 
+ 613 00e0 80BD     	 pop {r7,pc}
+ 614              	.L36:
+ 615 00e2 00BF     	 .align 2
+ 616              	.L35:
+ 617 00e4 67666666 	 .word 1717986919
+ 618              	 .cfi_endproc
+ 619              	.LFE142:
+ 621              	 .text
+ 622              	.Letext0:
+ 623              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\lib\\gcc\\arm-none-eabi\\4.9.3\\include\\stddef.h"
+ 624              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 625              	 .file 4 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 626              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 627              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 628              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 def.c
+    {standard input}:20     .text.lwip_htons:00000000 $t
+    {standard input}:25     .text.lwip_htons:00000000 lwip_htons
+    {standard input}:74     .text.lwip_htonl:00000000 $t
+    {standard input}:79     .text.lwip_htonl:00000000 lwip_htonl
+    {standard input}:129    .text.lwip_strnstr:00000000 $t
+    {standard input}:134    .text.lwip_strnstr:00000000 lwip_strnstr
+    {standard input}:227    .text.lwip_stricmp:00000000 $t
+    {standard input}:232    .text.lwip_stricmp:00000000 lwip_stricmp
+    {standard input}:330    .text.lwip_strnicmp:00000000 $t
+    {standard input}:335    .text.lwip_strnicmp:00000000 lwip_strnicmp
+    {standard input}:443    .text.lwip_itoa:00000000 $t
+    {standard input}:448    .text.lwip_itoa:00000000 lwip_itoa
+    {standard input}:617    .text.lwip_itoa:000000e4 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+strlen
+strncmp
+memmove

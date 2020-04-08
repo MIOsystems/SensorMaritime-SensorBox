@@ -1,0 +1,2016 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "raw.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .section .bss.raw_pcbs,"aw",%nobits
+  20              	 .align 2
+  23              	raw_pcbs:
+  24 0000 00000000 	 .space 4
+  25              	 .section .text.raw_input_local_match,"ax",%progbits
+  26              	 .align 2
+  27              	 .thumb
+  28              	 .thumb_func
+  30              	raw_input_local_match:
+  31              	.LFB137:
+  32              	 .file 1 "../Dave/Generated/ETH_LWIP/lwip/core/raw.c"
+   1:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+   2:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @file
+   3:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Implementation of raw protocol PCBs for low-level handling of
+   4:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * different types of protocols besides (or overriding) those
+   5:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * already available in lwIP.\n
+   6:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * See also @ref raw_raw
+   7:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+   8:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @defgroup raw_raw RAW
+   9:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup callbackstyle_api
+  10:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Implementation of raw protocol PCBs for low-level handling of
+  11:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * different types of protocols besides (or overriding) those
+  12:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * already available in lwIP.\n
+  13:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see @ref api
+  14:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+  15:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  16:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /*
+  17:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  18:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * All rights reserved.
+  19:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+  20:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  21:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * are permitted provided that the following conditions are met:
+  22:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+  23:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  24:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *    this list of conditions and the following disclaimer.
+  25:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  26:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *    this list of conditions and the following disclaimer in the documentation
+  27:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *    and/or other materials provided with the distribution.
+  28:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * 3. The name of the author may not be used to endorse or promote products
+  29:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *    derived from this software without specific prior written permission.
+  30:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+  31:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  32:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  33:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  34:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  35:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  36:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  37:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  38:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  39:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  40:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * OF SUCH DAMAGE.
+  41:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+  42:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * This file is part of the lwIP TCP/IP stack.
+  43:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+  44:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Author: Adam Dunkels <adam@sics.se>
+  45:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+  46:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+  47:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  48:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/opt.h"
+  49:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  50:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_RAW /* don't build if not configured for use in lwipopts.h */
+  51:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  52:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/def.h"
+  53:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/memp.h"
+  54:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/ip_addr.h"
+  55:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/netif.h"
+  56:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/raw.h"
+  57:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/priv/raw_priv.h"
+  58:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/stats.h"
+  59:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/ip6.h"
+  60:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/ip6_addr.h"
+  61:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include "ETH_LWIP/lwip/include/lwip/inet_chksum.h"
+  62:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  63:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #include <string.h>
+  64:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  65:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /** The list of RAW PCBs */
+  66:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** static struct raw_pcb *raw_pcbs;
+  67:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  68:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** static u8_t
+  69:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_input_local_match(struct raw_pcb *pcb, u8_t broadcast)
+  70:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+  33              	 .loc 1 70 0
+  34              	 .cfi_startproc
+  35              	 
+  36              	 
+  37              	 
+  38 0000 80B4     	 push {r7}
+  39              	.LCFI0:
+  40              	 .cfi_def_cfa_offset 4
+  41              	 .cfi_offset 7,-4
+  42 0002 83B0     	 sub sp,sp,#12
+  43              	.LCFI1:
+  44              	 .cfi_def_cfa_offset 16
+  45 0004 00AF     	 add r7,sp,#0
+  46              	.LCFI2:
+  47              	 .cfi_def_cfa_register 7
+  48 0006 7860     	 str r0,[r7,#4]
+  49 0008 0B46     	 mov r3,r1
+  50 000a FB70     	 strb r3,[r7,#3]
+  71:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_UNUSED_ARG(broadcast); /* in IPv6 only case */
+  72:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  73:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* check if PCB is bound to specific netif */
+  74:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if ((pcb->netif_idx != NETIF_NO_INDEX) &&
+  51              	 .loc 1 74 0
+  52 000c 7B68     	 ldr r3,[r7,#4]
+  53 000e 1B7A     	 ldrb r3,[r3,#8]
+  54 0010 002B     	 cmp r3,#0
+  55 0012 0BD0     	 beq .L2
+  75:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       (pcb->netif_idx != netif_get_index(ip_data.current_input_netif))) {
+  56              	 .loc 1 75 0 discriminator 1
+  57 0014 7B68     	 ldr r3,[r7,#4]
+  58 0016 1A7A     	 ldrb r2,[r3,#8]
+  59 0018 154B     	 ldr r3,.L8
+  60 001a 5B68     	 ldr r3,[r3,#4]
+  61 001c 93F83030 	 ldrb r3,[r3,#48]
+  62 0020 0133     	 adds r3,r3,#1
+  63 0022 DBB2     	 uxtb r3,r3
+  74:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       (pcb->netif_idx != netif_get_index(ip_data.current_input_netif))) {
+  64              	 .loc 1 74 0 discriminator 1
+  65 0024 9A42     	 cmp r2,r3
+  66 0026 01D0     	 beq .L2
+  76:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return 0;
+  67              	 .loc 1 76 0
+  68 0028 0023     	 movs r3,#0
+  69 002a 1BE0     	 b .L3
+  70              	.L2:
+  77:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+  78:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  79:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4 && LWIP_IPV6
+  80:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* Dual-stack: PCBs listening to any IP type also listen to any IP address */
+  81:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_IS_ANY_TYPE_VAL(pcb->local_ip)) {
+  82:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if IP_SOF_BROADCAST_RECV
+  83:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if ((broadcast != 0) && !ip_get_option(pcb, SOF_BROADCAST)) {
+  84:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       return 0;
+  85:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+  86:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* IP_SOF_BROADCAST_RECV */
+  87:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return 1;
+  88:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+  89:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV4 && LWIP_IPV6 */
+  90:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+  91:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* Only need to check PCB if incoming IP version matches PCB IP version */
+  92:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_ADDR_PCB_VERSION_MATCH_EXACT(pcb, ip_current_dest_addr())) {
+  93:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4
+  94:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* Special case: IPv4 broadcast: receive all broadcasts
+  95:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****      * Note: broadcast variable can only be 1 if it is an IPv4 broadcast */
+  96:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (broadcast != 0) {
+  71              	 .loc 1 96 0
+  72 002c FB78     	 ldrb r3,[r7,#3]
+  73 002e 002B     	 cmp r3,#0
+  74 0030 08D0     	 beq .L4
+  97:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if IP_SOF_BROADCAST_RECV
+  98:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       if (ip_get_option(pcb, SOF_BROADCAST))
+  99:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* IP_SOF_BROADCAST_RECV */
+ 100:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       {
+ 101:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         if (ip4_addr_isany(ip_2_ip4(&pcb->local_ip))) {
+  75              	 .loc 1 101 0
+  76 0032 7B68     	 ldr r3,[r7,#4]
+  77 0034 002B     	 cmp r3,#0
+  78 0036 03D0     	 beq .L5
+  79              	 .loc 1 101 0 is_stmt 0 discriminator 1
+  80 0038 7B68     	 ldr r3,[r7,#4]
+  81 003a 1B68     	 ldr r3,[r3]
+  82 003c 002B     	 cmp r3,#0
+  83 003e 10D1     	 bne .L6
+  84              	.L5:
+ 102:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           return 1;
+  85              	 .loc 1 102 0 is_stmt 1
+  86 0040 0123     	 movs r3,#1
+  87 0042 0FE0     	 b .L3
+  88              	.L4:
+ 103:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         }
+ 104:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       }
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     } else
+ 106:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV4 */
+ 107:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* Handle IPv4 and IPv6: catch all or exact match */
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       if (ip_addr_isany(&pcb->local_ip) ||
+  89              	 .loc 1 108 0
+  90 0044 7B68     	 ldr r3,[r7,#4]
+  91 0046 002B     	 cmp r3,#0
+  92 0048 09D0     	 beq .L7
+  93              	 .loc 1 108 0 is_stmt 0 discriminator 1
+  94 004a 7B68     	 ldr r3,[r7,#4]
+  95 004c 1B68     	 ldr r3,[r3]
+  96 004e 002B     	 cmp r3,#0
+  97 0050 05D0     	 beq .L7
+ 109:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           ip_addr_cmp(&pcb->local_ip, ip_current_dest_addr())) {
+  98              	 .loc 1 109 0 is_stmt 1 discriminator 2
+  99 0052 7B68     	 ldr r3,[r7,#4]
+ 100 0054 1A68     	 ldr r2,[r3]
+ 101 0056 064B     	 ldr r3,.L8
+ 102 0058 5B69     	 ldr r3,[r3,#20]
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           ip_addr_cmp(&pcb->local_ip, ip_current_dest_addr())) {
+ 103              	 .loc 1 108 0 discriminator 2
+ 104 005a 9A42     	 cmp r2,r3
+ 105 005c 01D1     	 bne .L6
+ 106              	.L7:
+ 110:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         return 1;
+ 107              	 .loc 1 110 0
+ 108 005e 0123     	 movs r3,#1
+ 109 0060 00E0     	 b .L3
+ 110              	.L6:
+ 111:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       }
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 113:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 114:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return 0;
+ 111              	 .loc 1 114 0
+ 112 0062 0023     	 movs r3,#0
+ 113              	.L3:
+ 115:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 114              	 .loc 1 115 0
+ 115 0064 1846     	 mov r0,r3
+ 116 0066 0C37     	 adds r7,r7,#12
+ 117              	.LCFI3:
+ 118              	 .cfi_def_cfa_offset 4
+ 119 0068 BD46     	 mov sp,r7
+ 120              	.LCFI4:
+ 121              	 .cfi_def_cfa_register 13
+ 122              	 
+ 123 006a 5DF8047B 	 ldr r7,[sp],#4
+ 124              	.LCFI5:
+ 125              	 .cfi_restore 7
+ 126              	 .cfi_def_cfa_offset 0
+ 127 006e 7047     	 bx lr
+ 128              	.L9:
+ 129              	 .align 2
+ 130              	.L8:
+ 131 0070 00000000 	 .word ip_data
+ 132              	 .cfi_endproc
+ 133              	.LFE137:
+ 135              	 .section .text.raw_input,"ax",%progbits
+ 136              	 .align 2
+ 137              	 .global raw_input
+ 138              	 .thumb
+ 139              	 .thumb_func
+ 141              	raw_input:
+ 142              	.LFB138:
+ 116:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 117:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 118:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Determine if in incoming IP packet is covered by a RAW PCB
+ 119:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * and if so, pass it to a user-provided receive callback function.
+ 120:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 121:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Given an incoming IP datagram (as a chain of pbufs) this function
+ 122:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * finds a corresponding RAW PCB and calls the corresponding receive
+ 123:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * callback function.
+ 124:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 125:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param p pbuf to be demultiplexed to a RAW PCB.
+ 126:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param inp network interface on which the datagram was received.
+ 127:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @return - 1 if the packet has been eaten by a RAW PCB receive
+ 128:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *           callback function. The caller MAY NOT not reference the
+ 129:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *           packet any longer, and MAY NOT call pbuf_free().
+ 130:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @return - 0 if packet is not eaten (pbuf is still referenced by the
+ 131:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *           caller).
+ 132:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 133:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 134:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_input_state_t
+ 135:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_input(struct pbuf *p, struct netif *inp)
+ 136:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 143              	 .loc 1 136 0
+ 144              	 .cfi_startproc
+ 145              	 
+ 146              	 
+ 147 0000 90B5     	 push {r4,r7,lr}
+ 148              	.LCFI6:
+ 149              	 .cfi_def_cfa_offset 12
+ 150              	 .cfi_offset 4,-12
+ 151              	 .cfi_offset 7,-8
+ 152              	 .cfi_offset 14,-4
+ 153 0002 87B0     	 sub sp,sp,#28
+ 154              	.LCFI7:
+ 155              	 .cfi_def_cfa_offset 40
+ 156 0004 00AF     	 add r7,sp,#0
+ 157              	.LCFI8:
+ 158              	 .cfi_def_cfa_register 7
+ 159 0006 7860     	 str r0,[r7,#4]
+ 160 0008 3960     	 str r1,[r7]
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct raw_pcb *pcb, *prev;
+ 138:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   s16_t proto;
+ 139:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   raw_input_state_t ret = RAW_INPUT_NONE;
+ 161              	 .loc 1 139 0
+ 162 000a 0023     	 movs r3,#0
+ 163 000c FB73     	 strb r3,[r7,#15]
+ 140:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   u8_t broadcast = ip_addr_isbroadcast(ip_current_dest_addr(), ip_current_netif());
+ 164              	 .loc 1 140 0
+ 165 000e 314B     	 ldr r3,.L17
+ 166 0010 5A69     	 ldr r2,[r3,#20]
+ 167 0012 304B     	 ldr r3,.L17
+ 168 0014 1B68     	 ldr r3,[r3]
+ 169 0016 1046     	 mov r0,r2
+ 170 0018 1946     	 mov r1,r3
+ 171 001a FFF7FEFF 	 bl ip4_addr_isbroadcast_u32
+ 172 001e 0346     	 mov r3,r0
+ 173 0020 BB73     	 strb r3,[r7,#14]
+ 141:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 142:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_UNUSED_ARG(inp);
+ 143:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 144:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV6
+ 145:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4
+ 146:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_HDR_GET_VERSION(p->payload) == 6)
+ 147:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV4 */
+ 148:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   {
+ 149:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     struct ip6_hdr *ip6hdr = (struct ip6_hdr *)p->payload;
+ 150:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     proto = IP6H_NEXTH(ip6hdr);
+ 151:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 152:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4
+ 153:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   else
+ 154:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV4 */
+ 155:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV6 */
+ 156:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4
+ 157:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   {
+ 158:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     proto = IPH_PROTO((struct ip_hdr *)p->payload);
+ 174              	 .loc 1 158 0
+ 175 0022 7B68     	 ldr r3,[r7,#4]
+ 176 0024 5B68     	 ldr r3,[r3,#4]
+ 177 0026 5B7A     	 ldrb r3,[r3,#9]
+ 178 0028 BB81     	 strh r3,[r7,#12]
+ 159:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 160:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV4 */
+ 161:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 162:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   prev = NULL;
+ 179              	 .loc 1 162 0
+ 180 002a 0023     	 movs r3,#0
+ 181 002c 3B61     	 str r3,[r7,#16]
+ 163:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   pcb = raw_pcbs;
+ 182              	 .loc 1 163 0
+ 183 002e 2A4B     	 ldr r3,.L17+4
+ 184 0030 1B68     	 ldr r3,[r3]
+ 185 0032 7B61     	 str r3,[r7,#20]
+ 164:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* loop through all raw pcbs until the packet is eaten by one */
+ 165:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* this allows multiple pcbs to match against the packet by design */
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   while (pcb != NULL) {
+ 186              	 .loc 1 166 0
+ 187 0034 45E0     	 b .L11
+ 188              	.L16:
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if ((pcb->protocol == proto) && raw_input_local_match(pcb, broadcast) &&
+ 189              	 .loc 1 167 0
+ 190 0036 7B69     	 ldr r3,[r7,#20]
+ 191 0038 1B7C     	 ldrb r3,[r3,#16]
+ 192 003a 1A46     	 mov r2,r3
+ 193 003c B7F90C30 	 ldrsh r3,[r7,#12]
+ 194 0040 9A42     	 cmp r2,r3
+ 195 0042 39D1     	 bne .L12
+ 196              	 .loc 1 167 0 is_stmt 0 discriminator 1
+ 197 0044 BB7B     	 ldrb r3,[r7,#14]
+ 198 0046 7869     	 ldr r0,[r7,#20]
+ 199 0048 1946     	 mov r1,r3
+ 200 004a FFF7FEFF 	 bl raw_input_local_match
+ 201 004e 0346     	 mov r3,r0
+ 202 0050 002B     	 cmp r3,#0
+ 203 0052 31D0     	 beq .L12
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         (((pcb->flags & RAW_FLAGS_CONNECTED) == 0) ||
+ 204              	 .loc 1 168 0 is_stmt 1 discriminator 2
+ 205 0054 7B69     	 ldr r3,[r7,#20]
+ 206 0056 5B7C     	 ldrb r3,[r3,#17]
+ 207 0058 03F00103 	 and r3,r3,#1
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if ((pcb->protocol == proto) && raw_input_local_match(pcb, broadcast) &&
+ 208              	 .loc 1 167 0 discriminator 2
+ 209 005c 002B     	 cmp r3,#0
+ 210 005e 05D0     	 beq .L13
+ 169:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****          ip_addr_cmp(&pcb->remote_ip, ip_current_src_addr()))) {
+ 211              	 .loc 1 169 0
+ 212 0060 7B69     	 ldr r3,[r7,#20]
+ 213 0062 5A68     	 ldr r2,[r3,#4]
+ 214 0064 1B4B     	 ldr r3,.L17
+ 215 0066 1B69     	 ldr r3,[r3,#16]
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         (((pcb->flags & RAW_FLAGS_CONNECTED) == 0) ||
+ 216              	 .loc 1 168 0
+ 217 0068 9A42     	 cmp r2,r3
+ 218 006a 25D1     	 bne .L12
+ 219              	.L13:
+ 170:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* receive callback function available? */
+ 171:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       if (pcb->recv != NULL) {
+ 220              	 .loc 1 171 0
+ 221 006c 7B69     	 ldr r3,[r7,#20]
+ 222 006e 5B69     	 ldr r3,[r3,#20]
+ 223 0070 002B     	 cmp r3,#0
+ 224 0072 21D0     	 beq .L12
+ 225              	.LBB2:
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         u8_t eaten;
+ 173:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #ifndef LWIP_NOASSERT
+ 174:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         void *old_payload = p->payload;
+ 175:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif
+ 176:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         ret = RAW_INPUT_DELIVERED;
+ 226              	 .loc 1 176 0
+ 227 0074 0223     	 movs r3,#2
+ 228 0076 FB73     	 strb r3,[r7,#15]
+ 177:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         /* the receive callback function did not eat the packet? */
+ 178:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         eaten = pcb->recv(pcb->recv_arg, pcb, p, ip_current_src_addr());
+ 229              	 .loc 1 178 0
+ 230 0078 7B69     	 ldr r3,[r7,#20]
+ 231 007a 5C69     	 ldr r4,[r3,#20]
+ 232 007c 7B69     	 ldr r3,[r7,#20]
+ 233 007e 9B69     	 ldr r3,[r3,#24]
+ 234 0080 1846     	 mov r0,r3
+ 235 0082 7969     	 ldr r1,[r7,#20]
+ 236 0084 7A68     	 ldr r2,[r7,#4]
+ 237 0086 154B     	 ldr r3,.L17+8
+ 238 0088 A047     	 blx r4
+ 239 008a 0346     	 mov r3,r0
+ 240 008c FB72     	 strb r3,[r7,#11]
+ 179:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         if (eaten != 0) {
+ 241              	 .loc 1 179 0
+ 242 008e FB7A     	 ldrb r3,[r7,#11]
+ 243 0090 002B     	 cmp r3,#0
+ 244 0092 11D0     	 beq .L12
+ 180:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           /* receive function ate the packet */
+ 181:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           p = NULL;
+ 245              	 .loc 1 181 0
+ 246 0094 0023     	 movs r3,#0
+ 247 0096 7B60     	 str r3,[r7,#4]
+ 182:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           if (prev != NULL) {
+ 248              	 .loc 1 182 0
+ 249 0098 3B69     	 ldr r3,[r7,#16]
+ 250 009a 002B     	 cmp r3,#0
+ 251 009c 0AD0     	 beq .L14
+ 183:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****             /* move the pcb to the front of raw_pcbs so that is
+ 184:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****                found faster next time */
+ 185:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****             prev->next = pcb->next;
+ 252              	 .loc 1 185 0
+ 253 009e 7B69     	 ldr r3,[r7,#20]
+ 254 00a0 DA68     	 ldr r2,[r3,#12]
+ 255 00a2 3B69     	 ldr r3,[r7,#16]
+ 256 00a4 DA60     	 str r2,[r3,#12]
+ 186:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****             pcb->next = raw_pcbs;
+ 257              	 .loc 1 186 0
+ 258 00a6 0C4B     	 ldr r3,.L17+4
+ 259 00a8 1A68     	 ldr r2,[r3]
+ 260 00aa 7B69     	 ldr r3,[r7,#20]
+ 261 00ac DA60     	 str r2,[r3,#12]
+ 187:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****             raw_pcbs = pcb;
+ 262              	 .loc 1 187 0
+ 263 00ae 0A4A     	 ldr r2,.L17+4
+ 264 00b0 7B69     	 ldr r3,[r7,#20]
+ 265 00b2 1360     	 str r3,[r2]
+ 266              	.L14:
+ 188:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           }
+ 189:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           return RAW_INPUT_EATEN;
+ 267              	 .loc 1 189 0
+ 268 00b4 0123     	 movs r3,#1
+ 269 00b6 08E0     	 b .L15
+ 270              	.L12:
+ 271              	.LBE2:
+ 190:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         } else {
+ 191:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           /* sanity-check that the receive callback did not alter the pbuf */
+ 192:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****           LWIP_ASSERT("raw pcb recv callback altered pbuf payload pointer without eating packet",
+ 193:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****                       p->payload == old_payload);
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         }
+ 195:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       }
+ 196:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* no receive callback function was set for this raw PCB */
+ 197:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 198:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* drop the packet */
+ 199:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     prev = pcb;
+ 272              	 .loc 1 199 0
+ 273 00b8 7B69     	 ldr r3,[r7,#20]
+ 274 00ba 3B61     	 str r3,[r7,#16]
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pcb = pcb->next;
+ 275              	 .loc 1 200 0
+ 276 00bc 7B69     	 ldr r3,[r7,#20]
+ 277 00be DB68     	 ldr r3,[r3,#12]
+ 278 00c0 7B61     	 str r3,[r7,#20]
+ 279              	.L11:
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if ((pcb->protocol == proto) && raw_input_local_match(pcb, broadcast) &&
+ 280              	 .loc 1 166 0
+ 281 00c2 7B69     	 ldr r3,[r7,#20]
+ 282 00c4 002B     	 cmp r3,#0
+ 283 00c6 B6D1     	 bne .L16
+ 201:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 202:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return ret;
+ 284              	 .loc 1 202 0
+ 285 00c8 FB7B     	 ldrb r3,[r7,#15]
+ 286              	.L15:
+ 203:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 287              	 .loc 1 203 0
+ 288 00ca 1846     	 mov r0,r3
+ 289 00cc 1C37     	 adds r7,r7,#28
+ 290              	.LCFI9:
+ 291              	 .cfi_def_cfa_offset 12
+ 292 00ce BD46     	 mov sp,r7
+ 293              	.LCFI10:
+ 294              	 .cfi_def_cfa_register 13
+ 295              	 
+ 296 00d0 90BD     	 pop {r4,r7,pc}
+ 297              	.L18:
+ 298 00d2 00BF     	 .align 2
+ 299              	.L17:
+ 300 00d4 00000000 	 .word ip_data
+ 301 00d8 00000000 	 .word raw_pcbs
+ 302 00dc 10000000 	 .word ip_data+16
+ 303              	 .cfi_endproc
+ 304              	.LFE138:
+ 306              	 .section .text.raw_bind,"ax",%progbits
+ 307              	 .align 2
+ 308              	 .global raw_bind
+ 309              	 .thumb
+ 310              	 .thumb_func
+ 312              	raw_bind:
+ 313              	.LFB139:
+ 204:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 205:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 206:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 207:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Bind a RAW PCB.
+ 208:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 209:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb RAW PCB to be bound with a local address ipaddr.
+ 210:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param ipaddr local IP address to bind with. Use IP4_ADDR_ANY to
+ 211:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * bind to all local interfaces.
+ 212:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @return lwIP error code.
+ 214:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * - ERR_OK. Successful. No error occurred.
+ 215:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * - ERR_USE. The specified IP address is already bound to by
+ 216:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * another RAW PCB.
+ 217:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 218:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see raw_disconnect()
+ 219:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** err_t
+ 221:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_bind(struct raw_pcb *pcb, const ip_addr_t *ipaddr)
+ 222:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 314              	 .loc 1 222 0
+ 315              	 .cfi_startproc
+ 316              	 
+ 317              	 
+ 318              	 
+ 319 0000 80B4     	 push {r7}
+ 320              	.LCFI11:
+ 321              	 .cfi_def_cfa_offset 4
+ 322              	 .cfi_offset 7,-4
+ 323 0002 83B0     	 sub sp,sp,#12
+ 324              	.LCFI12:
+ 325              	 .cfi_def_cfa_offset 16
+ 326 0004 00AF     	 add r7,sp,#0
+ 327              	.LCFI13:
+ 328              	 .cfi_def_cfa_register 7
+ 329 0006 7860     	 str r0,[r7,#4]
+ 330 0008 3960     	 str r1,[r7]
+ 223:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 224:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if ((pcb == NULL) || (ipaddr == NULL)) {
+ 331              	 .loc 1 224 0
+ 332 000a 7B68     	 ldr r3,[r7,#4]
+ 333 000c 002B     	 cmp r3,#0
+ 334 000e 02D0     	 beq .L20
+ 335              	 .loc 1 224 0 is_stmt 0 discriminator 1
+ 336 0010 3B68     	 ldr r3,[r7]
+ 337 0012 002B     	 cmp r3,#0
+ 338 0014 01D1     	 bne .L21
+ 339              	.L20:
+ 225:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return ERR_VAL;
+ 340              	 .loc 1 225 0 is_stmt 1
+ 341 0016 FA23     	 movs r3,#250
+ 342 0018 09E0     	 b .L22
+ 343              	.L21:
+ 226:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 227:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   ip_addr_set_ipaddr(&pcb->local_ip, ipaddr);
+ 344              	 .loc 1 227 0
+ 345 001a 3B68     	 ldr r3,[r7]
+ 346 001c 002B     	 cmp r3,#0
+ 347 001e 02D0     	 beq .L23
+ 348              	 .loc 1 227 0 is_stmt 0 discriminator 1
+ 349 0020 3B68     	 ldr r3,[r7]
+ 350 0022 1B68     	 ldr r3,[r3]
+ 351 0024 00E0     	 b .L24
+ 352              	.L23:
+ 353              	 .loc 1 227 0 discriminator 2
+ 354 0026 0023     	 movs r3,#0
+ 355              	.L24:
+ 356              	 .loc 1 227 0 discriminator 4
+ 357 0028 7A68     	 ldr r2,[r7,#4]
+ 358 002a 1360     	 str r3,[r2]
+ 228:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV6 && LWIP_IPV6_SCOPES
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* If the given IP address should have a zone but doesn't, assign one now.
+ 230:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****    * This is legacy support: scope-aware callers should always provide properly
+ 231:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****    * zoned source addresses. */
+ 232:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_IS_V6(&pcb->local_ip) &&
+ 233:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       ip6_addr_lacks_zone(ip_2_ip6(&pcb->local_ip), IP6_UNKNOWN)) {
+ 234:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     ip6_addr_select_zone(ip_2_ip6(&pcb->local_ip), ip_2_ip6(&pcb->local_ip));
+ 235:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 236:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV6 && LWIP_IPV6_SCOPES */
+ 237:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return ERR_OK;
+ 359              	 .loc 1 237 0 is_stmt 1 discriminator 4
+ 360 002c 0023     	 movs r3,#0
+ 361              	.L22:
+ 362 002e 5BB2     	 sxtb r3,r3
+ 238:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 363              	 .loc 1 238 0
+ 364 0030 1846     	 mov r0,r3
+ 365 0032 0C37     	 adds r7,r7,#12
+ 366              	.LCFI14:
+ 367              	 .cfi_def_cfa_offset 4
+ 368 0034 BD46     	 mov sp,r7
+ 369              	.LCFI15:
+ 370              	 .cfi_def_cfa_register 13
+ 371              	 
+ 372 0036 5DF8047B 	 ldr r7,[sp],#4
+ 373              	.LCFI16:
+ 374              	 .cfi_restore 7
+ 375              	 .cfi_def_cfa_offset 0
+ 376 003a 7047     	 bx lr
+ 377              	 .cfi_endproc
+ 378              	.LFE139:
+ 380              	 .section .text.raw_bind_netif,"ax",%progbits
+ 381              	 .align 2
+ 382              	 .global raw_bind_netif
+ 383              	 .thumb
+ 384              	 .thumb_func
+ 386              	raw_bind_netif:
+ 387              	.LFB140:
+ 239:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 240:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 241:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 242:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Bind an RAW PCB to a specific netif.
+ 243:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * After calling this function, all packets received via this PCB
+ 244:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * are guaranteed to have come in via the specified netif, and all
+ 245:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * outgoing packets will go out via the specified netif.
+ 246:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 247:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb RAW PCB to be bound with netif.
+ 248:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param netif netif to bind to. Can be NULL.
+ 249:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 250:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see raw_disconnect()
+ 251:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 252:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** void
+ 253:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_bind_netif(struct raw_pcb *pcb, const struct netif *netif)
+ 254:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 388              	 .loc 1 254 0
+ 389              	 .cfi_startproc
+ 390              	 
+ 391              	 
+ 392              	 
+ 393 0000 80B4     	 push {r7}
+ 394              	.LCFI17:
+ 395              	 .cfi_def_cfa_offset 4
+ 396              	 .cfi_offset 7,-4
+ 397 0002 83B0     	 sub sp,sp,#12
+ 398              	.LCFI18:
+ 399              	 .cfi_def_cfa_offset 16
+ 400 0004 00AF     	 add r7,sp,#0
+ 401              	.LCFI19:
+ 402              	 .cfi_def_cfa_register 7
+ 403 0006 7860     	 str r0,[r7,#4]
+ 404 0008 3960     	 str r1,[r7]
+ 255:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 256:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (netif != NULL) {
+ 405              	 .loc 1 256 0
+ 406 000a 3B68     	 ldr r3,[r7]
+ 407 000c 002B     	 cmp r3,#0
+ 408 000e 07D0     	 beq .L26
+ 257:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pcb->netif_idx = netif_get_index(netif);
+ 409              	 .loc 1 257 0
+ 410 0010 3B68     	 ldr r3,[r7]
+ 411 0012 93F83030 	 ldrb r3,[r3,#48]
+ 412 0016 0133     	 adds r3,r3,#1
+ 413 0018 DAB2     	 uxtb r2,r3
+ 414 001a 7B68     	 ldr r3,[r7,#4]
+ 415 001c 1A72     	 strb r2,[r3,#8]
+ 416 001e 02E0     	 b .L25
+ 417              	.L26:
+ 258:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   } else {
+ 259:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pcb->netif_idx = NETIF_NO_INDEX;
+ 418              	 .loc 1 259 0
+ 419 0020 7B68     	 ldr r3,[r7,#4]
+ 420 0022 0022     	 movs r2,#0
+ 421 0024 1A72     	 strb r2,[r3,#8]
+ 422              	.L25:
+ 260:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 261:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 423              	 .loc 1 261 0
+ 424 0026 0C37     	 adds r7,r7,#12
+ 425              	.LCFI20:
+ 426              	 .cfi_def_cfa_offset 4
+ 427 0028 BD46     	 mov sp,r7
+ 428              	.LCFI21:
+ 429              	 .cfi_def_cfa_register 13
+ 430              	 
+ 431 002a 5DF8047B 	 ldr r7,[sp],#4
+ 432              	.LCFI22:
+ 433              	 .cfi_restore 7
+ 434              	 .cfi_def_cfa_offset 0
+ 435 002e 7047     	 bx lr
+ 436              	 .cfi_endproc
+ 437              	.LFE140:
+ 439              	 .section .text.raw_connect,"ax",%progbits
+ 440              	 .align 2
+ 441              	 .global raw_connect
+ 442              	 .thumb
+ 443              	 .thumb_func
+ 445              	raw_connect:
+ 446              	.LFB141:
+ 262:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 263:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 264:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 265:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Connect an RAW PCB. This function is required by upper layers
+ 266:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * of lwip. Using the raw api you could use raw_sendto() instead
+ 267:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * This will associate the RAW PCB with the remote address.
+ 269:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 270:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb RAW PCB to be connected with remote address ipaddr and port.
+ 271:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param ipaddr remote IP address to connect with.
+ 272:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 273:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @return lwIP error code
+ 274:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 275:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see raw_disconnect() and raw_sendto()
+ 276:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 277:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** err_t
+ 278:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr)
+ 279:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 447              	 .loc 1 279 0
+ 448              	 .cfi_startproc
+ 449              	 
+ 450              	 
+ 451              	 
+ 452 0000 80B4     	 push {r7}
+ 453              	.LCFI23:
+ 454              	 .cfi_def_cfa_offset 4
+ 455              	 .cfi_offset 7,-4
+ 456 0002 83B0     	 sub sp,sp,#12
+ 457              	.LCFI24:
+ 458              	 .cfi_def_cfa_offset 16
+ 459 0004 00AF     	 add r7,sp,#0
+ 460              	.LCFI25:
+ 461              	 .cfi_def_cfa_register 7
+ 462 0006 7860     	 str r0,[r7,#4]
+ 463 0008 3960     	 str r1,[r7]
+ 280:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 281:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if ((pcb == NULL) || (ipaddr == NULL)) {
+ 464              	 .loc 1 281 0
+ 465 000a 7B68     	 ldr r3,[r7,#4]
+ 466 000c 002B     	 cmp r3,#0
+ 467 000e 02D0     	 beq .L29
+ 468              	 .loc 1 281 0 is_stmt 0 discriminator 1
+ 469 0010 3B68     	 ldr r3,[r7]
+ 470 0012 002B     	 cmp r3,#0
+ 471 0014 01D1     	 bne .L30
+ 472              	.L29:
+ 282:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return ERR_VAL;
+ 473              	 .loc 1 282 0 is_stmt 1
+ 474 0016 FA23     	 movs r3,#250
+ 475 0018 10E0     	 b .L31
+ 476              	.L30:
+ 283:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 284:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   ip_addr_set_ipaddr(&pcb->remote_ip, ipaddr);
+ 477              	 .loc 1 284 0
+ 478 001a 3B68     	 ldr r3,[r7]
+ 479 001c 002B     	 cmp r3,#0
+ 480 001e 02D0     	 beq .L32
+ 481              	 .loc 1 284 0 is_stmt 0 discriminator 1
+ 482 0020 3B68     	 ldr r3,[r7]
+ 483 0022 1B68     	 ldr r3,[r3]
+ 484 0024 00E0     	 b .L33
+ 485              	.L32:
+ 486              	 .loc 1 284 0 discriminator 2
+ 487 0026 0023     	 movs r3,#0
+ 488              	.L33:
+ 489              	 .loc 1 284 0 discriminator 4
+ 490 0028 7A68     	 ldr r2,[r7,#4]
+ 491 002a 5360     	 str r3,[r2,#4]
+ 285:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV6 && LWIP_IPV6_SCOPES
+ 286:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* If the given IP address should have a zone but doesn't, assign one now,
+ 287:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****    * using the bound address to make a more informed decision when possible. */
+ 288:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_IS_V6(&pcb->remote_ip) &&
+ 289:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       ip6_addr_lacks_zone(ip_2_ip6(&pcb->remote_ip), IP6_UNKNOWN)) {
+ 290:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     ip6_addr_select_zone(ip_2_ip6(&pcb->remote_ip), ip_2_ip6(&pcb->local_ip));
+ 291:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 292:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV6 && LWIP_IPV6_SCOPES */
+ 293:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   raw_set_flags(pcb, RAW_FLAGS_CONNECTED);
+ 492              	 .loc 1 293 0 is_stmt 1 discriminator 4
+ 493 002c 7B68     	 ldr r3,[r7,#4]
+ 494 002e 5B7C     	 ldrb r3,[r3,#17]
+ 495 0030 43F00103 	 orr r3,r3,#1
+ 496 0034 DAB2     	 uxtb r2,r3
+ 497 0036 7B68     	 ldr r3,[r7,#4]
+ 498 0038 5A74     	 strb r2,[r3,#17]
+ 294:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return ERR_OK;
+ 499              	 .loc 1 294 0 discriminator 4
+ 500 003a 0023     	 movs r3,#0
+ 501              	.L31:
+ 502 003c 5BB2     	 sxtb r3,r3
+ 295:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 503              	 .loc 1 295 0
+ 504 003e 1846     	 mov r0,r3
+ 505 0040 0C37     	 adds r7,r7,#12
+ 506              	.LCFI26:
+ 507              	 .cfi_def_cfa_offset 4
+ 508 0042 BD46     	 mov sp,r7
+ 509              	.LCFI27:
+ 510              	 .cfi_def_cfa_register 13
+ 511              	 
+ 512 0044 5DF8047B 	 ldr r7,[sp],#4
+ 513              	.LCFI28:
+ 514              	 .cfi_restore 7
+ 515              	 .cfi_def_cfa_offset 0
+ 516 0048 7047     	 bx lr
+ 517              	 .cfi_endproc
+ 518              	.LFE141:
+ 520 004a 00BF     	 .section .text.raw_disconnect,"ax",%progbits
+ 521              	 .align 2
+ 522              	 .global raw_disconnect
+ 523              	 .thumb
+ 524              	 .thumb_func
+ 526              	raw_disconnect:
+ 527              	.LFB142:
+ 296:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 297:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 299:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Disconnect a RAW PCB.
+ 300:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 301:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb the raw pcb to disconnect.
+ 302:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 303:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** void
+ 304:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_disconnect(struct raw_pcb *pcb)
+ 305:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 528              	 .loc 1 305 0
+ 529              	 .cfi_startproc
+ 530              	 
+ 531              	 
+ 532              	 
+ 533 0000 80B4     	 push {r7}
+ 534              	.LCFI29:
+ 535              	 .cfi_def_cfa_offset 4
+ 536              	 .cfi_offset 7,-4
+ 537 0002 83B0     	 sub sp,sp,#12
+ 538              	.LCFI30:
+ 539              	 .cfi_def_cfa_offset 16
+ 540 0004 00AF     	 add r7,sp,#0
+ 541              	.LCFI31:
+ 542              	 .cfi_def_cfa_register 7
+ 543 0006 7860     	 str r0,[r7,#4]
+ 306:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 307:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* reset remote address association */
+ 308:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4 && LWIP_IPV6
+ 309:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_IS_ANY_TYPE_VAL(pcb->local_ip)) {
+ 310:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     ip_addr_copy(pcb->remote_ip, *IP_ANY_TYPE);
+ 311:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   } else {
+ 312:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif
+ 313:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     ip_addr_set_any(IP_IS_V6_VAL(pcb->remote_ip), &pcb->remote_ip);
+ 544              	 .loc 1 313 0
+ 545 0008 7B68     	 ldr r3,[r7,#4]
+ 546 000a 0022     	 movs r2,#0
+ 547 000c 5A60     	 str r2,[r3,#4]
+ 314:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4 && LWIP_IPV6
+ 315:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 316:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif
+ 317:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   pcb->netif_idx = NETIF_NO_INDEX;
+ 548              	 .loc 1 317 0
+ 549 000e 7B68     	 ldr r3,[r7,#4]
+ 550 0010 0022     	 movs r2,#0
+ 551 0012 1A72     	 strb r2,[r3,#8]
+ 318:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* mark PCB as unconnected */
+ 319:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   raw_clear_flags(pcb, RAW_FLAGS_CONNECTED);
+ 552              	 .loc 1 319 0
+ 553 0014 7B68     	 ldr r3,[r7,#4]
+ 554 0016 5B7C     	 ldrb r3,[r3,#17]
+ 555 0018 23F00103 	 bic r3,r3,#1
+ 556 001c DAB2     	 uxtb r2,r3
+ 557 001e 7B68     	 ldr r3,[r7,#4]
+ 558 0020 5A74     	 strb r2,[r3,#17]
+ 320:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 559              	 .loc 1 320 0
+ 560 0022 0C37     	 adds r7,r7,#12
+ 561              	.LCFI32:
+ 562              	 .cfi_def_cfa_offset 4
+ 563 0024 BD46     	 mov sp,r7
+ 564              	.LCFI33:
+ 565              	 .cfi_def_cfa_register 13
+ 566              	 
+ 567 0026 5DF8047B 	 ldr r7,[sp],#4
+ 568              	.LCFI34:
+ 569              	 .cfi_restore 7
+ 570              	 .cfi_def_cfa_offset 0
+ 571 002a 7047     	 bx lr
+ 572              	 .cfi_endproc
+ 573              	.LFE142:
+ 575              	 .section .text.raw_recv,"ax",%progbits
+ 576              	 .align 2
+ 577              	 .global raw_recv
+ 578              	 .thumb
+ 579              	 .thumb_func
+ 581              	raw_recv:
+ 582              	.LFB143:
+ 321:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 322:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 323:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 324:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Set the callback function for received packets that match the
+ 325:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * raw PCB's protocol and binding.
+ 326:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 327:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * The callback function MUST either
+ 328:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * - eat the packet by calling pbuf_free() and returning non-zero. The
+ 329:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *   packet will not be passed to other raw PCBs or other protocol layers.
+ 330:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * - not free the packet, and return zero. The packet will be matched
+ 331:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *   against further PCBs and/or forwarded to another protocol layers.
+ 332:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 333:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** void
+ 334:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg)
+ 335:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 583              	 .loc 1 335 0
+ 584              	 .cfi_startproc
+ 585              	 
+ 586              	 
+ 587              	 
+ 588 0000 80B4     	 push {r7}
+ 589              	.LCFI35:
+ 590              	 .cfi_def_cfa_offset 4
+ 591              	 .cfi_offset 7,-4
+ 592 0002 85B0     	 sub sp,sp,#20
+ 593              	.LCFI36:
+ 594              	 .cfi_def_cfa_offset 24
+ 595 0004 00AF     	 add r7,sp,#0
+ 596              	.LCFI37:
+ 597              	 .cfi_def_cfa_register 7
+ 598 0006 F860     	 str r0,[r7,#12]
+ 599 0008 B960     	 str r1,[r7,#8]
+ 600 000a 7A60     	 str r2,[r7,#4]
+ 336:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 337:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* remember recv() callback and user data */
+ 338:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   pcb->recv = recv;
+ 601              	 .loc 1 338 0
+ 602 000c FB68     	 ldr r3,[r7,#12]
+ 603 000e BA68     	 ldr r2,[r7,#8]
+ 604 0010 5A61     	 str r2,[r3,#20]
+ 339:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   pcb->recv_arg = recv_arg;
+ 605              	 .loc 1 339 0
+ 606 0012 FB68     	 ldr r3,[r7,#12]
+ 607 0014 7A68     	 ldr r2,[r7,#4]
+ 608 0016 9A61     	 str r2,[r3,#24]
+ 340:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 609              	 .loc 1 340 0
+ 610 0018 1437     	 adds r7,r7,#20
+ 611              	.LCFI38:
+ 612              	 .cfi_def_cfa_offset 4
+ 613 001a BD46     	 mov sp,r7
+ 614              	.LCFI39:
+ 615              	 .cfi_def_cfa_register 13
+ 616              	 
+ 617 001c 5DF8047B 	 ldr r7,[sp],#4
+ 618              	.LCFI40:
+ 619              	 .cfi_restore 7
+ 620              	 .cfi_def_cfa_offset 0
+ 621 0020 7047     	 bx lr
+ 622              	 .cfi_endproc
+ 623              	.LFE143:
+ 625 0022 00BF     	 .section .text.raw_sendto,"ax",%progbits
+ 626              	 .align 2
+ 627              	 .global raw_sendto
+ 628              	 .thumb
+ 629              	 .thumb_func
+ 631              	raw_sendto:
+ 632              	.LFB144:
+ 341:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 342:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 343:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 344:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Send the raw IP packet to the given address. An IP header will be prepended
+ 345:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * to the packet, unless the RAW_FLAGS_HDRINCL flag is set on the PCB. In that
+ 346:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * case, the packet must include an IP header, which will then be sent as is.
+ 347:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 348:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb the raw pcb which to send
+ 349:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param p the IP payload to send
+ 350:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param ipaddr the destination address of the IP packet
+ 351:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 352:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 353:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** err_t
+ 354:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *ipaddr)
+ 355:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 633              	 .loc 1 355 0
+ 634              	 .cfi_startproc
+ 635              	 
+ 636              	 
+ 637 0000 80B5     	 push {r7,lr}
+ 638              	.LCFI41:
+ 639              	 .cfi_def_cfa_offset 8
+ 640              	 .cfi_offset 7,-8
+ 641              	 .cfi_offset 14,-4
+ 642 0002 88B0     	 sub sp,sp,#32
+ 643              	.LCFI42:
+ 644              	 .cfi_def_cfa_offset 40
+ 645 0004 02AF     	 add r7,sp,#8
+ 646              	.LCFI43:
+ 647              	 .cfi_def_cfa 7,32
+ 648 0006 F860     	 str r0,[r7,#12]
+ 649 0008 B960     	 str r1,[r7,#8]
+ 650 000a 7A60     	 str r2,[r7,#4]
+ 356:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct netif *netif;
+ 357:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   const ip_addr_t *src_ip;
+ 358:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 359:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if ((pcb == NULL) || (ipaddr == NULL) || !IP_ADDR_PCB_VERSION_MATCH(pcb, ipaddr)) {
+ 651              	 .loc 1 359 0
+ 652 000c FB68     	 ldr r3,[r7,#12]
+ 653 000e 002B     	 cmp r3,#0
+ 654 0010 02D0     	 beq .L37
+ 655              	 .loc 1 359 0 is_stmt 0 discriminator 1
+ 656 0012 7B68     	 ldr r3,[r7,#4]
+ 657 0014 002B     	 cmp r3,#0
+ 658 0016 01D1     	 bne .L38
+ 659              	.L37:
+ 360:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return ERR_VAL;
+ 660              	 .loc 1 360 0 is_stmt 1
+ 661 0018 FA23     	 movs r3,#250
+ 662 001a 34E0     	 b .L39
+ 663              	.L38:
+ 361:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 362:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 363:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_DEBUGF(RAW_DEBUG | LWIP_DBG_TRACE, ("raw_sendto\n"));
+ 364:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 365:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (pcb->netif_idx != NETIF_NO_INDEX) {
+ 664              	 .loc 1 365 0
+ 665 001c FB68     	 ldr r3,[r7,#12]
+ 666 001e 1B7A     	 ldrb r3,[r3,#8]
+ 667 0020 002B     	 cmp r3,#0
+ 668 0022 06D0     	 beq .L40
+ 366:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     netif = netif_get_by_index(pcb->netif_idx);
+ 669              	 .loc 1 366 0
+ 670 0024 FB68     	 ldr r3,[r7,#12]
+ 671 0026 1B7A     	 ldrb r3,[r3,#8]
+ 672 0028 1846     	 mov r0,r3
+ 673 002a FFF7FEFF 	 bl netif_get_by_index
+ 674 002e 7861     	 str r0,[r7,#20]
+ 675 0030 03E0     	 b .L41
+ 676              	.L40:
+ 367:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   } else {
+ 368:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_MULTICAST_TX_OPTIONS
+ 369:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     netif = NULL;
+ 370:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (ip_addr_ismulticast(ipaddr)) {
+ 371:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* For multicast-destined packets, use the user-provided interface index to
+ 372:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****        * determine the outgoing interface, if an interface index is set and a
+ 373:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****        * matching netif can be found. Otherwise, fall back to regular routing. */
+ 374:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       netif = netif_get_by_index(pcb->mcast_ifindex);
+ 375:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 376:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 377:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (netif == NULL)
+ 378:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+ 379:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     {
+ 380:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       netif = ip_route(&pcb->local_ip, ipaddr);
+ 677              	 .loc 1 380 0
+ 678 0032 7868     	 ldr r0,[r7,#4]
+ 679 0034 FFF7FEFF 	 bl ip4_route
+ 680 0038 7861     	 str r0,[r7,#20]
+ 681              	.L41:
+ 381:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 382:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 383:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 384:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (netif == NULL) {
+ 682              	 .loc 1 384 0
+ 683 003a 7B69     	 ldr r3,[r7,#20]
+ 684 003c 002B     	 cmp r3,#0
+ 685 003e 01D1     	 bne .L42
+ 385:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     LWIP_DEBUGF(RAW_DEBUG | LWIP_DBG_LEVEL_WARNING, ("raw_sendto: No route to "));
+ 386:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     ip_addr_debug_print(RAW_DEBUG | LWIP_DBG_LEVEL_WARNING, ipaddr);
+ 387:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return ERR_RTE;
+ 686              	 .loc 1 387 0
+ 687 0040 FC23     	 movs r3,#252
+ 688 0042 20E0     	 b .L39
+ 689              	.L42:
+ 388:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 389:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 390:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (ip_addr_isany(&pcb->local_ip) || ip_addr_ismulticast(&pcb->local_ip)) {
+ 690              	 .loc 1 390 0
+ 691 0044 FB68     	 ldr r3,[r7,#12]
+ 692 0046 002B     	 cmp r3,#0
+ 693 0048 09D0     	 beq .L43
+ 694              	 .loc 1 390 0 is_stmt 0 discriminator 1
+ 695 004a FB68     	 ldr r3,[r7,#12]
+ 696 004c 1B68     	 ldr r3,[r3]
+ 697 004e 002B     	 cmp r3,#0
+ 698 0050 05D0     	 beq .L43
+ 699              	 .loc 1 390 0 discriminator 2
+ 700 0052 FB68     	 ldr r3,[r7,#12]
+ 701 0054 1B68     	 ldr r3,[r3]
+ 702 0056 03F0F003 	 and r3,r3,#240
+ 703 005a E02B     	 cmp r3,#224
+ 704 005c 08D1     	 bne .L44
+ 705              	.L43:
+ 391:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* use outgoing network interface IP address as source address */
+ 392:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     src_ip = ip_netif_get_local_ip(netif, ipaddr);
+ 706              	 .loc 1 392 0 is_stmt 1
+ 707 005e 7B69     	 ldr r3,[r7,#20]
+ 708 0060 002B     	 cmp r3,#0
+ 709 0062 02D0     	 beq .L45
+ 710              	 .loc 1 392 0 is_stmt 0 discriminator 1
+ 711 0064 7B69     	 ldr r3,[r7,#20]
+ 712 0066 0433     	 adds r3,r3,#4
+ 713 0068 00E0     	 b .L46
+ 714              	.L45:
+ 715              	 .loc 1 392 0 discriminator 2
+ 716 006a 0023     	 movs r3,#0
+ 717              	.L46:
+ 718              	 .loc 1 392 0 discriminator 4
+ 719 006c 3B61     	 str r3,[r7,#16]
+ 720 006e 01E0     	 b .L47
+ 721              	.L44:
+ 393:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV6
+ 394:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (src_ip == NULL) {
+ 395:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       return ERR_RTE;
+ 396:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 397:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV6 */
+ 398:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   } else {
+ 399:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* use RAW PCB local IP address as source address */
+ 400:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     src_ip = &pcb->local_ip;
+ 722              	 .loc 1 400 0 is_stmt 1
+ 723 0070 FB68     	 ldr r3,[r7,#12]
+ 724 0072 3B61     	 str r3,[r7,#16]
+ 725              	.L47:
+ 401:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 402:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 403:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return raw_sendto_if_src(pcb, p, ipaddr, netif, src_ip);
+ 726              	 .loc 1 403 0
+ 727 0074 3B69     	 ldr r3,[r7,#16]
+ 728 0076 0093     	 str r3,[sp]
+ 729 0078 F868     	 ldr r0,[r7,#12]
+ 730 007a B968     	 ldr r1,[r7,#8]
+ 731 007c 7A68     	 ldr r2,[r7,#4]
+ 732 007e 7B69     	 ldr r3,[r7,#20]
+ 733 0080 FFF7FEFF 	 bl raw_sendto_if_src
+ 734 0084 0346     	 mov r3,r0
+ 735              	.L39:
+ 736 0086 5BB2     	 sxtb r3,r3
+ 404:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 737              	 .loc 1 404 0
+ 738 0088 1846     	 mov r0,r3
+ 739 008a 1837     	 adds r7,r7,#24
+ 740              	.LCFI44:
+ 741              	 .cfi_def_cfa_offset 8
+ 742 008c BD46     	 mov sp,r7
+ 743              	.LCFI45:
+ 744              	 .cfi_def_cfa_register 13
+ 745              	 
+ 746 008e 80BD     	 pop {r7,pc}
+ 747              	 .cfi_endproc
+ 748              	.LFE144:
+ 750              	 .section .text.raw_sendto_if_src,"ax",%progbits
+ 751              	 .align 2
+ 752              	 .global raw_sendto_if_src
+ 753              	 .thumb
+ 754              	 .thumb_func
+ 756              	raw_sendto_if_src:
+ 757              	.LFB145:
+ 405:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 406:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 407:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 408:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Send the raw IP packet to the given address, using a particular outgoing
+ 409:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * netif and source IP address. An IP header will be prepended to the packet,
+ 410:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * unless the RAW_FLAGS_HDRINCL flag is set on the PCB. In that case, the
+ 411:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * packet must include an IP header, which will then be sent as is.
+ 412:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 413:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb RAW PCB used to send the data
+ 414:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param p chain of pbufs to be sent
+ 415:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param dst_ip destination IP address
+ 416:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param netif the netif used for sending
+ 417:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param src_ip source IP address
+ 418:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 419:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** err_t
+ 420:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_sendto_if_src(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip,
+ 421:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****                   struct netif *netif, const ip_addr_t *src_ip)
+ 422:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 758              	 .loc 1 422 0
+ 759              	 .cfi_startproc
+ 760              	 
+ 761              	 
+ 762 0000 90B5     	 push {r4,r7,lr}
+ 763              	.LCFI46:
+ 764              	 .cfi_def_cfa_offset 12
+ 765              	 .cfi_offset 4,-12
+ 766              	 .cfi_offset 7,-8
+ 767              	 .cfi_offset 14,-4
+ 768 0002 8BB0     	 sub sp,sp,#44
+ 769              	.LCFI47:
+ 770              	 .cfi_def_cfa_offset 56
+ 771 0004 04AF     	 add r7,sp,#16
+ 772              	.LCFI48:
+ 773              	 .cfi_def_cfa 7,40
+ 774 0006 F860     	 str r0,[r7,#12]
+ 775 0008 B960     	 str r1,[r7,#8]
+ 776 000a 7A60     	 str r2,[r7,#4]
+ 777 000c 3B60     	 str r3,[r7]
+ 423:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   err_t err;
+ 424:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct pbuf *q; /* q will be sent down the stack */
+ 425:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   u16_t header_size;
+ 426:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   u8_t ttl;
+ 427:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 428:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 429:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 430:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if ((pcb == NULL) || (dst_ip == NULL) || (netif == NULL) || (src_ip == NULL) ||
+ 778              	 .loc 1 430 0
+ 779 000e FB68     	 ldr r3,[r7,#12]
+ 780 0010 002B     	 cmp r3,#0
+ 781 0012 08D0     	 beq .L49
+ 782              	 .loc 1 430 0 is_stmt 0 discriminator 1
+ 783 0014 7B68     	 ldr r3,[r7,#4]
+ 784 0016 002B     	 cmp r3,#0
+ 785 0018 05D0     	 beq .L49
+ 786              	 .loc 1 430 0 discriminator 2
+ 787 001a 3B68     	 ldr r3,[r7]
+ 788 001c 002B     	 cmp r3,#0
+ 789 001e 02D0     	 beq .L49
+ 431:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       !IP_ADDR_PCB_VERSION_MATCH(pcb, src_ip) || !IP_ADDR_PCB_VERSION_MATCH(pcb, dst_ip)) {
+ 790              	 .loc 1 431 0 is_stmt 1
+ 791 0020 BB6A     	 ldr r3,[r7,#40]
+ 792 0022 002B     	 cmp r3,#0
+ 793 0024 01D1     	 bne .L50
+ 794              	.L49:
+ 432:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return ERR_VAL;
+ 795              	 .loc 1 432 0
+ 796 0026 FA23     	 movs r3,#250
+ 797 0028 6EE0     	 b .L51
+ 798              	.L50:
+ 433:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 434:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 435:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   header_size = (
+ 799              	 .loc 1 435 0
+ 800 002a 1423     	 movs r3,#20
+ 801 002c 7B82     	 strh r3,[r7,#18]
+ 436:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4 && LWIP_IPV6
+ 437:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****                   IP_IS_V6(dst_ip) ? IP6_HLEN : IP_HLEN);
+ 438:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #elif LWIP_IPV4
+ 439:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****                   IP_HLEN);
+ 440:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #else
+ 441:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****                   IP6_HLEN);
+ 442:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif
+ 443:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 444:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* Handle the HDRINCL option as an exception: none of the code below applies
+ 445:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****    * to this case, and sending the packet needs to be done differently too. */
+ 446:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (pcb->flags & RAW_FLAGS_HDRINCL) {
+ 802              	 .loc 1 446 0
+ 803 002e FB68     	 ldr r3,[r7,#12]
+ 804 0030 5B7C     	 ldrb r3,[r3,#17]
+ 805 0032 03F00203 	 and r3,r3,#2
+ 806 0036 002B     	 cmp r3,#0
+ 807 0038 16D0     	 beq .L52
+ 447:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* A full header *must* be present in the first pbuf of the chain, as the
+ 448:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****      * output routines may access its fields directly. */
+ 449:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (p->len < header_size) {
+ 808              	 .loc 1 449 0
+ 809 003a BB68     	 ldr r3,[r7,#8]
+ 810 003c 5B89     	 ldrh r3,[r3,#10]
+ 811 003e 7A8A     	 ldrh r2,[r7,#18]
+ 812 0040 9A42     	 cmp r2,r3
+ 813 0042 01D9     	 bls .L53
+ 450:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       return ERR_VAL;
+ 814              	 .loc 1 450 0
+ 815 0044 FA23     	 movs r3,#250
+ 816 0046 5FE0     	 b .L51
+ 817              	.L53:
+ 451:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 452:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* @todo multicast loop support, if at all desired for this scenario.. */
+ 453:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     NETIF_SET_HINTS(netif, &pcb->netif_hints);
+ 454:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     err = ip_output_if_hdrincl(p, src_ip, dst_ip, netif);
+ 818              	 .loc 1 454 0
+ 819 0048 0023     	 movs r3,#0
+ 820 004a 0093     	 str r3,[sp]
+ 821 004c 0023     	 movs r3,#0
+ 822 004e 0193     	 str r3,[sp,#4]
+ 823 0050 3B68     	 ldr r3,[r7]
+ 824 0052 0293     	 str r3,[sp,#8]
+ 825 0054 B868     	 ldr r0,[r7,#8]
+ 826 0056 B96A     	 ldr r1,[r7,#40]
+ 827 0058 0022     	 movs r2,#0
+ 828 005a 0023     	 movs r3,#0
+ 829 005c FFF7FEFF 	 bl ip4_output_if
+ 830 0060 0346     	 mov r3,r0
+ 831 0062 7B74     	 strb r3,[r7,#17]
+ 455:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     NETIF_RESET_HINTS(netif);
+ 456:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return err;
+ 832              	 .loc 1 456 0
+ 833 0064 7B7C     	 ldrb r3,[r7,#17]
+ 834 0066 4FE0     	 b .L51
+ 835              	.L52:
+ 457:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 458:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 459:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* packet too large to add an IP header without causing an overflow? */
+ 460:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if ((u16_t)(p->tot_len + header_size) < p->tot_len) {
+ 836              	 .loc 1 460 0
+ 837 0068 BB68     	 ldr r3,[r7,#8]
+ 838 006a 1A89     	 ldrh r2,[r3,#8]
+ 839 006c 7B8A     	 ldrh r3,[r7,#18]
+ 840 006e 1344     	 add r3,r3,r2
+ 841 0070 9AB2     	 uxth r2,r3
+ 842 0072 BB68     	 ldr r3,[r7,#8]
+ 843 0074 1B89     	 ldrh r3,[r3,#8]
+ 844 0076 9A42     	 cmp r2,r3
+ 845 0078 01D2     	 bcs .L54
+ 461:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     return ERR_MEM;
+ 846              	 .loc 1 461 0
+ 847 007a FF23     	 movs r3,#255
+ 848 007c 44E0     	 b .L51
+ 849              	.L54:
+ 462:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 463:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* not enough space to add an IP header to first pbuf in given p chain? */
+ 464:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (pbuf_add_header(p, header_size)) {
+ 850              	 .loc 1 464 0
+ 851 007e 7B8A     	 ldrh r3,[r7,#18]
+ 852 0080 B868     	 ldr r0,[r7,#8]
+ 853 0082 1946     	 mov r1,r3
+ 854 0084 FFF7FEFF 	 bl pbuf_add_header
+ 855 0088 0346     	 mov r3,r0
+ 856 008a 002B     	 cmp r3,#0
+ 857 008c 14D0     	 beq .L55
+ 465:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* allocate header in new pbuf */
+ 466:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     q = pbuf_alloc(PBUF_IP, 0, PBUF_RAM);
+ 858              	 .loc 1 466 0
+ 859 008e 2420     	 movs r0,#36
+ 860 0090 0021     	 movs r1,#0
+ 861 0092 4FF42072 	 mov r2,#640
+ 862 0096 FFF7FEFF 	 bl pbuf_alloc
+ 863 009a 7861     	 str r0,[r7,#20]
+ 467:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* new header pbuf could not be allocated? */
+ 468:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (q == NULL) {
+ 864              	 .loc 1 468 0
+ 865 009c 7B69     	 ldr r3,[r7,#20]
+ 866 009e 002B     	 cmp r3,#0
+ 867 00a0 01D1     	 bne .L56
+ 469:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       LWIP_DEBUGF(RAW_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_SERIOUS, ("raw_sendto: could not allo
+ 470:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       return ERR_MEM;
+ 868              	 .loc 1 470 0
+ 869 00a2 FF23     	 movs r3,#255
+ 870 00a4 30E0     	 b .L51
+ 871              	.L56:
+ 471:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 472:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (p->tot_len != 0) {
+ 872              	 .loc 1 472 0
+ 873 00a6 BB68     	 ldr r3,[r7,#8]
+ 874 00a8 1B89     	 ldrh r3,[r3,#8]
+ 875 00aa 002B     	 cmp r3,#0
+ 876 00ac 10D0     	 beq .L58
+ 473:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* chain header q in front of given pbuf p */
+ 474:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       pbuf_chain(q, p);
+ 877              	 .loc 1 474 0
+ 878 00ae 7869     	 ldr r0,[r7,#20]
+ 879 00b0 B968     	 ldr r1,[r7,#8]
+ 880 00b2 FFF7FEFF 	 bl pbuf_chain
+ 881 00b6 0BE0     	 b .L58
+ 882              	.L55:
+ 475:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 476:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* { first pbuf q points to header pbuf } */
+ 477:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     LWIP_DEBUGF(RAW_DEBUG, ("raw_sendto: added header pbuf %p before given pbuf %p\n", (void *)q, (
+ 478:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   } else {
+ 479:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* first pbuf q equals given pbuf */
+ 480:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     q = p;
+ 883              	 .loc 1 480 0
+ 884 00b8 BB68     	 ldr r3,[r7,#8]
+ 885 00ba 7B61     	 str r3,[r7,#20]
+ 481:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (pbuf_remove_header(q, header_size)) {
+ 886              	 .loc 1 481 0
+ 887 00bc 7B8A     	 ldrh r3,[r7,#18]
+ 888 00be 7869     	 ldr r0,[r7,#20]
+ 889 00c0 1946     	 mov r1,r3
+ 890 00c2 FFF7FEFF 	 bl pbuf_remove_header
+ 891 00c6 0346     	 mov r3,r0
+ 892 00c8 002B     	 cmp r3,#0
+ 893 00ca 01D0     	 beq .L58
+ 482:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       LWIP_ASSERT("Can't restore header we just removed!", 0);
+ 483:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       return ERR_MEM;
+ 894              	 .loc 1 483 0
+ 895 00cc FF23     	 movs r3,#255
+ 896 00ce 1BE0     	 b .L51
+ 897              	.L58:
+ 484:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 485:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 486:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 487:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if IP_SOF_BROADCAST
+ 488:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_IS_V4(dst_ip)) {
+ 489:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* broadcast filter? */
+ 490:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     if (!ip_get_option(pcb, SOF_BROADCAST) && ip_addr_isbroadcast(dst_ip, netif)) {
+ 491:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       LWIP_DEBUGF(RAW_DEBUG | LWIP_DBG_LEVEL_WARNING, ("raw_sendto: SOF_BROADCAST not enabled on pc
+ 492:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* free any temporary header pbuf allocated by pbuf_header() */
+ 493:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       if (q != p) {
+ 494:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         pbuf_free(q);
+ 495:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       }
+ 496:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       return ERR_VAL;
+ 497:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 498:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 499:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* IP_SOF_BROADCAST */
+ 500:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 501:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* Multicast Loop? */
+ 502:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_MULTICAST_TX_OPTIONS
+ 503:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (((pcb->flags & RAW_FLAGS_MULTICAST_LOOP) != 0) && ip_addr_ismulticast(dst_ip)) {
+ 504:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     q->flags |= PBUF_FLAG_MCASTLOOP;
+ 505:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 506:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+ 507:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 508:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV6
+ 509:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* If requested, based on the IPV6_CHECKSUM socket option per RFC3542,
+ 510:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****      compute the checksum and update the checksum in the payload. */
+ 511:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (IP_IS_V6(dst_ip) && pcb->chksum_reqd) {
+ 512:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     u16_t chksum = ip6_chksum_pseudo(p, pcb->protocol, p->tot_len, ip_2_ip6(src_ip), ip_2_ip6(dst_i
+ 513:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     LWIP_ASSERT("Checksum must fit into first pbuf", p->len >= (pcb->chksum_offset + 2));
+ 514:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     SMEMCPY(((u8_t *)p->payload) + pcb->chksum_offset, &chksum, sizeof(u16_t));
+ 515:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 516:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif
+ 517:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 518:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* Determine TTL to use */
+ 519:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_MULTICAST_TX_OPTIONS
+ 520:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   ttl = (ip_addr_ismulticast(dst_ip) ? raw_get_multicast_ttl(pcb) : pcb->ttl);
+ 521:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #else /* LWIP_MULTICAST_TX_OPTIONS */
+ 522:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   ttl = pcb->ttl;
+ 898              	 .loc 1 522 0
+ 899 00d0 FB68     	 ldr r3,[r7,#12]
+ 900 00d2 DB7A     	 ldrb r3,[r3,#11]
+ 901 00d4 3B74     	 strb r3,[r7,#16]
+ 523:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+ 524:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 525:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   NETIF_SET_HINTS(netif, &pcb->netif_hints);
+ 526:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   err = ip_output_if(q, src_ip, dst_ip, ttl, pcb->tos, pcb->protocol, netif);
+ 902              	 .loc 1 526 0
+ 903 00d6 FB68     	 ldr r3,[r7,#12]
+ 904 00d8 9A7A     	 ldrb r2,[r3,#10]
+ 905 00da FB68     	 ldr r3,[r7,#12]
+ 906 00dc 1B7C     	 ldrb r3,[r3,#16]
+ 907 00de 3C7C     	 ldrb r4,[r7,#16]
+ 908 00e0 0092     	 str r2,[sp]
+ 909 00e2 0193     	 str r3,[sp,#4]
+ 910 00e4 3B68     	 ldr r3,[r7]
+ 911 00e6 0293     	 str r3,[sp,#8]
+ 912 00e8 7869     	 ldr r0,[r7,#20]
+ 913 00ea B96A     	 ldr r1,[r7,#40]
+ 914 00ec 7A68     	 ldr r2,[r7,#4]
+ 915 00ee 2346     	 mov r3,r4
+ 916 00f0 FFF7FEFF 	 bl ip4_output_if
+ 917 00f4 0346     	 mov r3,r0
+ 918 00f6 7B74     	 strb r3,[r7,#17]
+ 527:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   NETIF_RESET_HINTS(netif);
+ 528:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 529:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* did we chain a header earlier? */
+ 530:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (q != p) {
+ 919              	 .loc 1 530 0
+ 920 00f8 7A69     	 ldr r2,[r7,#20]
+ 921 00fa BB68     	 ldr r3,[r7,#8]
+ 922 00fc 9A42     	 cmp r2,r3
+ 923 00fe 02D0     	 beq .L59
+ 531:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* free the header */
+ 532:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pbuf_free(q);
+ 924              	 .loc 1 532 0
+ 925 0100 7869     	 ldr r0,[r7,#20]
+ 926 0102 FFF7FEFF 	 bl pbuf_free
+ 927              	.L59:
+ 533:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 534:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return err;
+ 928              	 .loc 1 534 0
+ 929 0106 7B7C     	 ldrb r3,[r7,#17]
+ 930              	.L51:
+ 931 0108 5BB2     	 sxtb r3,r3
+ 535:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 932              	 .loc 1 535 0
+ 933 010a 1846     	 mov r0,r3
+ 934 010c 1C37     	 adds r7,r7,#28
+ 935              	.LCFI49:
+ 936              	 .cfi_def_cfa_offset 12
+ 937 010e BD46     	 mov sp,r7
+ 938              	.LCFI50:
+ 939              	 .cfi_def_cfa_register 13
+ 940              	 
+ 941 0110 90BD     	 pop {r4,r7,pc}
+ 942              	 .cfi_endproc
+ 943              	.LFE145:
+ 945 0112 00BF     	 .section .text.raw_send,"ax",%progbits
+ 946              	 .align 2
+ 947              	 .global raw_send
+ 948              	 .thumb
+ 949              	 .thumb_func
+ 951              	raw_send:
+ 952              	.LFB146:
+ 536:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 537:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 538:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 539:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Send the raw IP packet to the address given by raw_connect()
+ 540:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 541:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb the raw pcb which to send
+ 542:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param p the IP payload to send
+ 543:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 544:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 545:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** err_t
+ 546:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_send(struct raw_pcb *pcb, struct pbuf *p)
+ 547:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 953              	 .loc 1 547 0
+ 954              	 .cfi_startproc
+ 955              	 
+ 956              	 
+ 957 0000 80B5     	 push {r7,lr}
+ 958              	.LCFI51:
+ 959              	 .cfi_def_cfa_offset 8
+ 960              	 .cfi_offset 7,-8
+ 961              	 .cfi_offset 14,-4
+ 962 0002 82B0     	 sub sp,sp,#8
+ 963              	.LCFI52:
+ 964              	 .cfi_def_cfa_offset 16
+ 965 0004 00AF     	 add r7,sp,#0
+ 966              	.LCFI53:
+ 967              	 .cfi_def_cfa_register 7
+ 968 0006 7860     	 str r0,[r7,#4]
+ 969 0008 3960     	 str r1,[r7]
+ 548:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return raw_sendto(pcb, p, &pcb->remote_ip);
+ 970              	 .loc 1 548 0
+ 971 000a 7B68     	 ldr r3,[r7,#4]
+ 972 000c 0433     	 adds r3,r3,#4
+ 973 000e 7868     	 ldr r0,[r7,#4]
+ 974 0010 3968     	 ldr r1,[r7]
+ 975 0012 1A46     	 mov r2,r3
+ 976 0014 FFF7FEFF 	 bl raw_sendto
+ 977 0018 0346     	 mov r3,r0
+ 549:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 978              	 .loc 1 549 0
+ 979 001a 1846     	 mov r0,r3
+ 980 001c 0837     	 adds r7,r7,#8
+ 981              	.LCFI54:
+ 982              	 .cfi_def_cfa_offset 8
+ 983 001e BD46     	 mov sp,r7
+ 984              	.LCFI55:
+ 985              	 .cfi_def_cfa_register 13
+ 986              	 
+ 987 0020 80BD     	 pop {r7,pc}
+ 988              	 .cfi_endproc
+ 989              	.LFE146:
+ 991 0022 00BF     	 .section .text.raw_remove,"ax",%progbits
+ 992              	 .align 2
+ 993              	 .global raw_remove
+ 994              	 .thumb
+ 995              	 .thumb_func
+ 997              	raw_remove:
+ 998              	.LFB147:
+ 550:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 551:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 552:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 553:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Remove an RAW PCB.
+ 554:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 555:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param pcb RAW PCB to be removed. The PCB is removed from the list of
+ 556:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * RAW PCB's and the data structure is freed from memory.
+ 557:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 558:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see raw_new()
+ 559:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 560:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** void
+ 561:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_remove(struct raw_pcb *pcb)
+ 562:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 999              	 .loc 1 562 0
+ 1000              	 .cfi_startproc
+ 1001              	 
+ 1002              	 
+ 1003 0000 80B5     	 push {r7,lr}
+ 1004              	.LCFI56:
+ 1005              	 .cfi_def_cfa_offset 8
+ 1006              	 .cfi_offset 7,-8
+ 1007              	 .cfi_offset 14,-4
+ 1008 0002 84B0     	 sub sp,sp,#16
+ 1009              	.LCFI57:
+ 1010              	 .cfi_def_cfa_offset 24
+ 1011 0004 00AF     	 add r7,sp,#0
+ 1012              	.LCFI58:
+ 1013              	 .cfi_def_cfa_register 7
+ 1014 0006 7860     	 str r0,[r7,#4]
+ 563:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct raw_pcb *pcb2;
+ 564:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 565:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* pcb to be removed is first in list? */
+ 566:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (raw_pcbs == pcb) {
+ 1015              	 .loc 1 566 0
+ 1016 0008 144B     	 ldr r3,.L68
+ 1017 000a 1A68     	 ldr r2,[r3]
+ 1018 000c 7B68     	 ldr r3,[r7,#4]
+ 1019 000e 9A42     	 cmp r2,r3
+ 1020 0010 05D1     	 bne .L63
+ 567:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* make list start at 2nd pcb */
+ 568:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     raw_pcbs = raw_pcbs->next;
+ 1021              	 .loc 1 568 0
+ 1022 0012 124B     	 ldr r3,.L68
+ 1023 0014 1B68     	 ldr r3,[r3]
+ 1024 0016 DB68     	 ldr r3,[r3,#12]
+ 1025 0018 104A     	 ldr r2,.L68
+ 1026 001a 1360     	 str r3,[r2]
+ 1027 001c 17E0     	 b .L64
+ 1028              	.L63:
+ 569:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* pcb not 1st in list */
+ 570:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   } else {
+ 571:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     for (pcb2 = raw_pcbs; pcb2 != NULL; pcb2 = pcb2->next) {
+ 1029              	 .loc 1 571 0
+ 1030 001e 0F4B     	 ldr r3,.L68
+ 1031 0020 1B68     	 ldr r3,[r3]
+ 1032 0022 FB60     	 str r3,[r7,#12]
+ 1033 0024 10E0     	 b .L65
+ 1034              	.L67:
+ 572:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* find pcb in raw_pcbs list */
+ 573:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       if (pcb2->next != NULL && pcb2->next == pcb) {
+ 1035              	 .loc 1 573 0
+ 1036 0026 FB68     	 ldr r3,[r7,#12]
+ 1037 0028 DB68     	 ldr r3,[r3,#12]
+ 1038 002a 002B     	 cmp r3,#0
+ 1039 002c 09D0     	 beq .L66
+ 1040              	 .loc 1 573 0 is_stmt 0 discriminator 1
+ 1041 002e FB68     	 ldr r3,[r7,#12]
+ 1042 0030 DA68     	 ldr r2,[r3,#12]
+ 1043 0032 7B68     	 ldr r3,[r7,#4]
+ 1044 0034 9A42     	 cmp r2,r3
+ 1045 0036 04D1     	 bne .L66
+ 574:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         /* remove pcb from list */
+ 575:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         pcb2->next = pcb->next;
+ 1046              	 .loc 1 575 0 is_stmt 1
+ 1047 0038 7B68     	 ldr r3,[r7,#4]
+ 1048 003a DA68     	 ldr r2,[r3,#12]
+ 1049 003c FB68     	 ldr r3,[r7,#12]
+ 1050 003e DA60     	 str r2,[r3,#12]
+ 576:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         break;
+ 1051              	 .loc 1 576 0
+ 1052 0040 05E0     	 b .L64
+ 1053              	.L66:
+ 571:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* find pcb in raw_pcbs list */
+ 1054              	 .loc 1 571 0 discriminator 2
+ 1055 0042 FB68     	 ldr r3,[r7,#12]
+ 1056 0044 DB68     	 ldr r3,[r3,#12]
+ 1057 0046 FB60     	 str r3,[r7,#12]
+ 1058              	.L65:
+ 571:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* find pcb in raw_pcbs list */
+ 1059              	 .loc 1 571 0 is_stmt 0 discriminator 1
+ 1060 0048 FB68     	 ldr r3,[r7,#12]
+ 1061 004a 002B     	 cmp r3,#0
+ 1062 004c EBD1     	 bne .L67
+ 1063              	.L64:
+ 577:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       }
+ 578:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 579:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 580:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   memp_free(MEMP_RAW_PCB, pcb);
+ 1064              	 .loc 1 580 0 is_stmt 1
+ 1065 004e 0020     	 movs r0,#0
+ 1066 0050 7968     	 ldr r1,[r7,#4]
+ 1067 0052 FFF7FEFF 	 bl memp_free
+ 581:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 1068              	 .loc 1 581 0
+ 1069 0056 1037     	 adds r7,r7,#16
+ 1070              	.LCFI59:
+ 1071              	 .cfi_def_cfa_offset 8
+ 1072 0058 BD46     	 mov sp,r7
+ 1073              	.LCFI60:
+ 1074              	 .cfi_def_cfa_register 13
+ 1075              	 
+ 1076 005a 80BD     	 pop {r7,pc}
+ 1077              	.L69:
+ 1078              	 .align 2
+ 1079              	.L68:
+ 1080 005c 00000000 	 .word raw_pcbs
+ 1081              	 .cfi_endproc
+ 1082              	.LFE147:
+ 1084              	 .section .text.raw_new,"ax",%progbits
+ 1085              	 .align 2
+ 1086              	 .global raw_new
+ 1087              	 .thumb
+ 1088              	 .thumb_func
+ 1090              	raw_new:
+ 1091              	.LFB148:
+ 582:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 583:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 584:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 585:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Create a RAW PCB.
+ 586:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 587:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @return The RAW PCB which was created. NULL if the PCB data structure
+ 588:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * could not be allocated.
+ 589:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 590:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param proto the protocol number of the IPs payload (e.g. IP_PROTO_ICMP)
+ 591:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 592:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see raw_remove()
+ 593:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 594:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** struct raw_pcb *
+ 595:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_new(u8_t proto)
+ 596:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 1092              	 .loc 1 596 0
+ 1093              	 .cfi_startproc
+ 1094              	 
+ 1095              	 
+ 1096 0000 80B5     	 push {r7,lr}
+ 1097              	.LCFI61:
+ 1098              	 .cfi_def_cfa_offset 8
+ 1099              	 .cfi_offset 7,-8
+ 1100              	 .cfi_offset 14,-4
+ 1101 0002 84B0     	 sub sp,sp,#16
+ 1102              	.LCFI62:
+ 1103              	 .cfi_def_cfa_offset 24
+ 1104 0004 00AF     	 add r7,sp,#0
+ 1105              	.LCFI63:
+ 1106              	 .cfi_def_cfa_register 7
+ 1107 0006 0346     	 mov r3,r0
+ 1108 0008 FB71     	 strb r3,[r7,#7]
+ 597:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct raw_pcb *pcb;
+ 598:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 599:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_DEBUGF(RAW_DEBUG | LWIP_DBG_TRACE, ("raw_new\n"));
+ 600:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 601:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 602:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   pcb = (struct raw_pcb *)memp_malloc(MEMP_RAW_PCB);
+ 1109              	 .loc 1 602 0
+ 1110 000a 0020     	 movs r0,#0
+ 1111 000c FFF7FEFF 	 bl memp_malloc
+ 1112 0010 F860     	 str r0,[r7,#12]
+ 603:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   /* could allocate RAW PCB? */
+ 604:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (pcb != NULL) {
+ 1113              	 .loc 1 604 0
+ 1114 0012 FB68     	 ldr r3,[r7,#12]
+ 1115 0014 002B     	 cmp r3,#0
+ 1116 0016 11D0     	 beq .L71
+ 605:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     /* initialize PCB to all zeroes */
+ 606:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     memset(pcb, 0, sizeof(struct raw_pcb));
+ 1117              	 .loc 1 606 0
+ 1118 0018 F868     	 ldr r0,[r7,#12]
+ 1119 001a 0021     	 movs r1,#0
+ 1120 001c 1C22     	 movs r2,#28
+ 1121 001e FFF7FEFF 	 bl memset
+ 607:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pcb->protocol = proto;
+ 1122              	 .loc 1 607 0
+ 1123 0022 FB68     	 ldr r3,[r7,#12]
+ 1124 0024 FA79     	 ldrb r2,[r7,#7]
+ 1125 0026 1A74     	 strb r2,[r3,#16]
+ 608:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pcb->ttl = RAW_TTL;
+ 1126              	 .loc 1 608 0
+ 1127 0028 FB68     	 ldr r3,[r7,#12]
+ 1128 002a FF22     	 movs r2,#255
+ 1129 002c DA72     	 strb r2,[r3,#11]
+ 609:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_MULTICAST_TX_OPTIONS
+ 610:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     raw_set_multicast_ttl(pcb, RAW_TTL);
+ 611:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+ 612:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     pcb->next = raw_pcbs;
+ 1130              	 .loc 1 612 0
+ 1131 002e 064B     	 ldr r3,.L73
+ 1132 0030 1A68     	 ldr r2,[r3]
+ 1133 0032 FB68     	 ldr r3,[r7,#12]
+ 1134 0034 DA60     	 str r2,[r3,#12]
+ 613:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     raw_pcbs = pcb;
+ 1135              	 .loc 1 613 0
+ 1136 0036 044A     	 ldr r2,.L73
+ 1137 0038 FB68     	 ldr r3,[r7,#12]
+ 1138 003a 1360     	 str r3,[r2]
+ 1139              	.L71:
+ 614:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 615:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return pcb;
+ 1140              	 .loc 1 615 0
+ 1141 003c FB68     	 ldr r3,[r7,#12]
+ 616:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 1142              	 .loc 1 616 0
+ 1143 003e 1846     	 mov r0,r3
+ 1144 0040 1037     	 adds r7,r7,#16
+ 1145              	.LCFI64:
+ 1146              	 .cfi_def_cfa_offset 8
+ 1147 0042 BD46     	 mov sp,r7
+ 1148              	.LCFI65:
+ 1149              	 .cfi_def_cfa_register 13
+ 1150              	 
+ 1151 0044 80BD     	 pop {r7,pc}
+ 1152              	.L74:
+ 1153 0046 00BF     	 .align 2
+ 1154              	.L73:
+ 1155 0048 00000000 	 .word raw_pcbs
+ 1156              	 .cfi_endproc
+ 1157              	.LFE148:
+ 1159              	 .section .text.raw_new_ip_type,"ax",%progbits
+ 1160              	 .align 2
+ 1161              	 .global raw_new_ip_type
+ 1162              	 .thumb
+ 1163              	 .thumb_func
+ 1165              	raw_new_ip_type:
+ 1166              	.LFB149:
+ 617:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 618:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /**
+ 619:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @ingroup raw_raw
+ 620:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * Create a RAW PCB for specific IP type.
+ 621:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 622:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @return The RAW PCB which was created. NULL if the PCB data structure
+ 623:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * could not be allocated.
+ 624:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 625:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param type IP address type, see @ref lwip_ip_addr_type definitions.
+ 626:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * If you want to listen to IPv4 and IPv6 (dual-stack) packets,
+ 627:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * supply @ref IPADDR_TYPE_ANY as argument and bind to @ref IP_ANY_TYPE.
+ 628:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param proto the protocol number (next header) of the IPv6 packet payload
+ 629:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *              (e.g. IP6_NEXTH_ICMP6)
+ 630:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 631:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @see raw_remove()
+ 632:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 633:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** struct raw_pcb *
+ 634:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** raw_new_ip_type(u8_t type, u8_t proto)
+ 635:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 1167              	 .loc 1 635 0
+ 1168              	 .cfi_startproc
+ 1169              	 
+ 1170              	 
+ 1171 0000 80B5     	 push {r7,lr}
+ 1172              	.LCFI66:
+ 1173              	 .cfi_def_cfa_offset 8
+ 1174              	 .cfi_offset 7,-8
+ 1175              	 .cfi_offset 14,-4
+ 1176 0002 84B0     	 sub sp,sp,#16
+ 1177              	.LCFI67:
+ 1178              	 .cfi_def_cfa_offset 24
+ 1179 0004 00AF     	 add r7,sp,#0
+ 1180              	.LCFI68:
+ 1181              	 .cfi_def_cfa_register 7
+ 1182 0006 0346     	 mov r3,r0
+ 1183 0008 0A46     	 mov r2,r1
+ 1184 000a FB71     	 strb r3,[r7,#7]
+ 1185 000c 1346     	 mov r3,r2
+ 1186 000e BB71     	 strb r3,[r7,#6]
+ 636:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct raw_pcb *pcb;
+ 637:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 638:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   pcb = raw_new(proto);
+ 1187              	 .loc 1 638 0
+ 1188 0010 BB79     	 ldrb r3,[r7,#6]
+ 1189 0012 1846     	 mov r0,r3
+ 1190 0014 FFF7FEFF 	 bl raw_new
+ 1191 0018 F860     	 str r0,[r7,#12]
+ 639:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #if LWIP_IPV4 && LWIP_IPV6
+ 640:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (pcb != NULL) {
+ 641:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     IP_SET_TYPE_VAL(pcb->local_ip,  type);
+ 642:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     IP_SET_TYPE_VAL(pcb->remote_ip, type);
+ 643:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 644:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #else /* LWIP_IPV4 && LWIP_IPV6 */
+ 645:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   LWIP_UNUSED_ARG(type);
+ 646:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** #endif /* LWIP_IPV4 && LWIP_IPV6 */
+ 647:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   return pcb;
+ 1192              	 .loc 1 647 0
+ 1193 001a FB68     	 ldr r3,[r7,#12]
+ 648:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 1194              	 .loc 1 648 0
+ 1195 001c 1846     	 mov r0,r3
+ 1196 001e 1037     	 adds r7,r7,#16
+ 1197              	.LCFI69:
+ 1198              	 .cfi_def_cfa_offset 8
+ 1199 0020 BD46     	 mov sp,r7
+ 1200              	.LCFI70:
+ 1201              	 .cfi_def_cfa_register 13
+ 1202              	 
+ 1203 0022 80BD     	 pop {r7,pc}
+ 1204              	 .cfi_endproc
+ 1205              	.LFE149:
+ 1207              	 .section .text.raw_netif_ip_addr_changed,"ax",%progbits
+ 1208              	 .align 2
+ 1209              	 .global raw_netif_ip_addr_changed
+ 1210              	 .thumb
+ 1211              	 .thumb_func
+ 1213              	raw_netif_ip_addr_changed:
+ 1214              	.LFB150:
+ 649:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 650:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** /** This function is called from netif.c when address is changed
+ 651:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  *
+ 652:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param old_addr IP address of the netif before change
+ 653:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  * @param new_addr IP address of the netif after change
+ 654:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****  */
+ 655:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** void raw_netif_ip_addr_changed(const ip_addr_t *old_addr, const ip_addr_t *new_addr)
+ 656:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** {
+ 1215              	 .loc 1 656 0
+ 1216              	 .cfi_startproc
+ 1217              	 
+ 1218              	 
+ 1219              	 
+ 1220 0000 80B4     	 push {r7}
+ 1221              	.LCFI71:
+ 1222              	 .cfi_def_cfa_offset 4
+ 1223              	 .cfi_offset 7,-4
+ 1224 0002 85B0     	 sub sp,sp,#20
+ 1225              	.LCFI72:
+ 1226              	 .cfi_def_cfa_offset 24
+ 1227 0004 00AF     	 add r7,sp,#0
+ 1228              	.LCFI73:
+ 1229              	 .cfi_def_cfa_register 7
+ 1230 0006 7860     	 str r0,[r7,#4]
+ 1231 0008 3960     	 str r1,[r7]
+ 657:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   struct raw_pcb *rpcb;
+ 658:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** 
+ 659:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   if (!ip_addr_isany(old_addr) && !ip_addr_isany(new_addr)) {
+ 1232              	 .loc 1 659 0
+ 1233 000a 7B68     	 ldr r3,[r7,#4]
+ 1234 000c 002B     	 cmp r3,#0
+ 1235 000e 1ED0     	 beq .L77
+ 1236              	 .loc 1 659 0 is_stmt 0 discriminator 1
+ 1237 0010 7B68     	 ldr r3,[r7,#4]
+ 1238 0012 1B68     	 ldr r3,[r3]
+ 1239 0014 002B     	 cmp r3,#0
+ 1240 0016 1AD0     	 beq .L77
+ 1241              	 .loc 1 659 0 discriminator 2
+ 1242 0018 3B68     	 ldr r3,[r7]
+ 1243 001a 002B     	 cmp r3,#0
+ 1244 001c 17D0     	 beq .L77
+ 1245              	 .loc 1 659 0 discriminator 3
+ 1246 001e 3B68     	 ldr r3,[r7]
+ 1247 0020 1B68     	 ldr r3,[r3]
+ 1248 0022 002B     	 cmp r3,#0
+ 1249 0024 13D0     	 beq .L77
+ 660:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     for (rpcb = raw_pcbs; rpcb != NULL; rpcb = rpcb->next) {
+ 1250              	 .loc 1 660 0 is_stmt 1
+ 1251 0026 0C4B     	 ldr r3,.L82
+ 1252 0028 1B68     	 ldr r3,[r3]
+ 1253 002a FB60     	 str r3,[r7,#12]
+ 1254 002c 0CE0     	 b .L79
+ 1255              	.L81:
+ 661:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* PCB bound to current local interface address? */
+ 662:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       if (ip_addr_cmp(&rpcb->local_ip, old_addr)) {
+ 1256              	 .loc 1 662 0
+ 1257 002e FB68     	 ldr r3,[r7,#12]
+ 1258 0030 1A68     	 ldr r2,[r3]
+ 1259 0032 7B68     	 ldr r3,[r7,#4]
+ 1260 0034 1B68     	 ldr r3,[r3]
+ 1261 0036 9A42     	 cmp r2,r3
+ 1262 0038 03D1     	 bne .L80
+ 663:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         /* The PCB is bound to the old ipaddr and
+ 664:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****          * is set to bound to the new one instead */
+ 665:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****         ip_addr_copy(rpcb->local_ip, *new_addr);
+ 1263              	 .loc 1 665 0
+ 1264 003a 3B68     	 ldr r3,[r7]
+ 1265 003c 1A68     	 ldr r2,[r3]
+ 1266 003e FB68     	 ldr r3,[r7,#12]
+ 1267 0040 1A60     	 str r2,[r3]
+ 1268              	.L80:
+ 660:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* PCB bound to current local interface address? */
+ 1269              	 .loc 1 660 0 discriminator 2
+ 1270 0042 FB68     	 ldr r3,[r7,#12]
+ 1271 0044 DB68     	 ldr r3,[r3,#12]
+ 1272 0046 FB60     	 str r3,[r7,#12]
+ 1273              	.L79:
+ 660:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       /* PCB bound to current local interface address? */
+ 1274              	 .loc 1 660 0 is_stmt 0 discriminator 1
+ 1275 0048 FB68     	 ldr r3,[r7,#12]
+ 1276 004a 002B     	 cmp r3,#0
+ 1277 004c EFD1     	 bne .L81
+ 1278              	.L77:
+ 666:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****       }
+ 667:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****     }
+ 668:../Dave/Generated/ETH_LWIP/lwip/core/raw.c ****   }
+ 669:../Dave/Generated/ETH_LWIP/lwip/core/raw.c **** }
+ 1279              	 .loc 1 669 0 is_stmt 1
+ 1280 004e 1437     	 adds r7,r7,#20
+ 1281              	.LCFI74:
+ 1282              	 .cfi_def_cfa_offset 4
+ 1283 0050 BD46     	 mov sp,r7
+ 1284              	.LCFI75:
+ 1285              	 .cfi_def_cfa_register 13
+ 1286              	 
+ 1287 0052 5DF8047B 	 ldr r7,[sp],#4
+ 1288              	.LCFI76:
+ 1289              	 .cfi_restore 7
+ 1290              	 .cfi_def_cfa_offset 0
+ 1291 0056 7047     	 bx lr
+ 1292              	.L83:
+ 1293              	 .align 2
+ 1294              	.L82:
+ 1295 0058 00000000 	 .word raw_pcbs
+ 1296              	 .cfi_endproc
+ 1297              	.LFE150:
+ 1299              	 .text
+ 1300              	.Letext0:
+ 1301              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1302              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 1303              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 1304              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
+ 1305              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
+ 1306              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 1307              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
+ 1308              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
+ 1309              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/netif.h"
+ 1310              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/prot/ip4.h"
+ 1311              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip.h"
+ 1312              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/raw.h"
+ 1313              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/priv/raw_priv.h"
+ 1314              	 .file 15 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 1315              	 .file 16 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 raw.c
+    {standard input}:20     .bss.raw_pcbs:00000000 $d
+    {standard input}:23     .bss.raw_pcbs:00000000 raw_pcbs
+    {standard input}:26     .text.raw_input_local_match:00000000 $t
+    {standard input}:30     .text.raw_input_local_match:00000000 raw_input_local_match
+    {standard input}:131    .text.raw_input_local_match:00000070 $d
+    {standard input}:136    .text.raw_input:00000000 $t
+    {standard input}:141    .text.raw_input:00000000 raw_input
+    {standard input}:300    .text.raw_input:000000d4 $d
+    {standard input}:307    .text.raw_bind:00000000 $t
+    {standard input}:312    .text.raw_bind:00000000 raw_bind
+    {standard input}:381    .text.raw_bind_netif:00000000 $t
+    {standard input}:386    .text.raw_bind_netif:00000000 raw_bind_netif
+    {standard input}:440    .text.raw_connect:00000000 $t
+    {standard input}:445    .text.raw_connect:00000000 raw_connect
+    {standard input}:521    .text.raw_disconnect:00000000 $t
+    {standard input}:526    .text.raw_disconnect:00000000 raw_disconnect
+    {standard input}:576    .text.raw_recv:00000000 $t
+    {standard input}:581    .text.raw_recv:00000000 raw_recv
+    {standard input}:626    .text.raw_sendto:00000000 $t
+    {standard input}:631    .text.raw_sendto:00000000 raw_sendto
+    {standard input}:756    .text.raw_sendto_if_src:00000000 raw_sendto_if_src
+    {standard input}:751    .text.raw_sendto_if_src:00000000 $t
+    {standard input}:946    .text.raw_send:00000000 $t
+    {standard input}:951    .text.raw_send:00000000 raw_send
+    {standard input}:992    .text.raw_remove:00000000 $t
+    {standard input}:997    .text.raw_remove:00000000 raw_remove
+    {standard input}:1080   .text.raw_remove:0000005c $d
+    {standard input}:1085   .text.raw_new:00000000 $t
+    {standard input}:1090   .text.raw_new:00000000 raw_new
+    {standard input}:1155   .text.raw_new:00000048 $d
+    {standard input}:1160   .text.raw_new_ip_type:00000000 $t
+    {standard input}:1165   .text.raw_new_ip_type:00000000 raw_new_ip_type
+    {standard input}:1208   .text.raw_netif_ip_addr_changed:00000000 $t
+    {standard input}:1213   .text.raw_netif_ip_addr_changed:00000000 raw_netif_ip_addr_changed
+    {standard input}:1295   .text.raw_netif_ip_addr_changed:00000058 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+ip_data
+ip4_addr_isbroadcast_u32
+netif_get_by_index
+ip4_route
+ip4_output_if
+pbuf_add_header
+pbuf_alloc
+pbuf_chain
+pbuf_remove_header
+pbuf_free
+memp_free
+memp_malloc
+memset

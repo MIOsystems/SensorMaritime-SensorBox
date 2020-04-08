@@ -1,0 +1,1383 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "timeouts.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .global lwip_cyclic_timers
+  20              	 .section .rodata.lwip_cyclic_timers,"a",%progbits
+  21              	 .align 2
+  24              	lwip_cyclic_timers:
+  25 0000 FA000000 	 .word 250
+  26 0004 00000000 	 .word tcp_tmr
+  27 0008 E8030000 	 .word 1000
+  28 000c 00000000 	 .word etharp_tmr
+  29              	 .global lwip_num_cyclic_timers
+  30              	 .section .rodata.lwip_num_cyclic_timers,"a",%progbits
+  31              	 .align 2
+  34              	lwip_num_cyclic_timers:
+  35 0000 02000000 	 .word 2
+  36              	 .section .bss.next_timeout,"aw",%nobits
+  37              	 .align 2
+  40              	next_timeout:
+  41 0000 00000000 	 .space 4
+  42              	 .section .bss.current_timeout_due_time,"aw",%nobits
+  43              	 .align 2
+  46              	current_timeout_due_time:
+  47 0000 00000000 	 .space 4
+  48              	 .section .bss.tcpip_tcp_timer_active,"aw",%nobits
+  49              	 .align 2
+  52              	tcpip_tcp_timer_active:
+  53 0000 00000000 	 .space 4
+  54              	 .section .text.tcpip_tcp_timer,"ax",%progbits
+  55              	 .align 2
+  56              	 .thumb
+  57              	 .thumb_func
+  59              	tcpip_tcp_timer:
+  60              	.LFB137:
+  61              	 .file 1 "../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c"
+   1:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+   2:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @file
+   3:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Stack-internal timers implementation.
+   4:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * This file includes timer callbacks for stack-internal timers as well as
+   5:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * functions to set up or stop timers and check for expired timers.
+   6:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+   7:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+   8:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+   9:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /*
+  10:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  11:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * All rights reserved.
+  12:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+  13:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  14:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * are permitted provided that the following conditions are met:
+  15:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+  16:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  17:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *    this list of conditions and the following disclaimer.
+  18:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *    and/or other materials provided with the distribution.
+  21:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * 3. The name of the author may not be used to endorse or promote products
+  22:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *    derived from this software without specific prior written permission.
+  23:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+  24:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  25:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  26:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  27:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  28:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  29:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  30:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  31:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  32:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  33:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * OF SUCH DAMAGE.
+  34:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+  35:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * This file is part of the lwIP TCP/IP stack.
+  36:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+  37:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Author: Adam Dunkels <adam@sics.se>
+  38:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *         Simon Goldschmidt
+  39:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+  40:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+  41:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  42:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/opt.h"
+  43:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  44:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/timeouts.h"
+  45:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/priv/tcp_priv.h"
+  46:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  47:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/def.h"
+  48:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/memp.h"
+  49:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/priv/tcpip_priv.h"
+  50:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  51:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/ip4_frag.h"
+  52:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/etharp.h"
+  53:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/dhcp.h"
+  54:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/autoip.h"
+  55:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/igmp.h"
+  56:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/dns.h"
+  57:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/nd6.h"
+  58:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/ip6_frag.h"
+  59:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/mld6.h"
+  60:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/dhcp6.h"
+  61:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/sys.h"
+  62:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #include "ETH_LWIP/lwip/include/lwip/pbuf.h"
+  63:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  64:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+  65:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #define HANDLER(x) x, #x
+  66:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #else /* LWIP_DEBUG_TIMERNAMES */
+  67:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #define HANDLER(x) x
+  68:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+  69:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  70:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #define LWIP_MAX_TIMEOUT  0x7fffffff
+  71:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  72:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /* Check if timer's expiry time is greater than time and care about u32_t wraparounds */
+  73:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #define TIME_LESS_THAN(t, compare_to) ( (((u32_t)((t)-(compare_to))) > LWIP_MAX_TIMEOUT) ? 1 : 0 )
+  74:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+  75:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /** This array contains all stack-internal cyclic timers. To get the number of
+  76:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * timers, use LWIP_ARRAYSIZE() */
+  77:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** const struct lwip_cyclic_timer lwip_cyclic_timers[] = {
+  78:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_TCP
+  79:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   /* The TCP timer is a special case: it does not have to run always and
+  80:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****      is triggered to start from TCP using tcp_timer_needed() */
+  81:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {TCP_TMR_INTERVAL, HANDLER(tcp_tmr)},
+  82:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_TCP */
+  83:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_IPV4
+  84:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if IP_REASSEMBLY
+  85:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {IP_TMR_INTERVAL, HANDLER(ip_reass_tmr)},
+  86:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* IP_REASSEMBLY */
+  87:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_ARP
+  88:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {ARP_TMR_INTERVAL, HANDLER(etharp_tmr)},
+  89:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_ARP */
+  90:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DHCP
+  91:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {DHCP_COARSE_TIMER_MSECS, HANDLER(dhcp_coarse_tmr)},
+  92:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {DHCP_FINE_TIMER_MSECS, HANDLER(dhcp_fine_tmr)},
+  93:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_DHCP */
+  94:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_AUTOIP
+  95:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {AUTOIP_TMR_INTERVAL, HANDLER(autoip_tmr)},
+  96:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_AUTOIP */
+  97:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_IGMP
+  98:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {IGMP_TMR_INTERVAL, HANDLER(igmp_tmr)},
+  99:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_IGMP */
+ 100:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_IPV4 */
+ 101:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DNS
+ 102:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {DNS_TMR_INTERVAL, HANDLER(dns_tmr)},
+ 103:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_DNS */
+ 104:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_IPV6
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {ND6_TMR_INTERVAL, HANDLER(nd6_tmr)},
+ 106:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_IPV6_REASS
+ 107:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {IP6_REASS_TMR_INTERVAL, HANDLER(ip6_reass_tmr)},
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_IPV6_REASS */
+ 109:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_IPV6_MLD
+ 110:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {MLD6_TMR_INTERVAL, HANDLER(mld6_tmr)},
+ 111:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_IPV6_MLD */
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_IPV6_DHCP6
+ 113:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   {DHCP6_TIMER_MSECS, HANDLER(dhcp6_tmr)},
+ 114:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_IPV6_DHCP6 */
+ 115:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_IPV6 */
+ 116:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** };
+ 117:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** const int lwip_num_cyclic_timers = LWIP_ARRAYSIZE(lwip_cyclic_timers);
+ 118:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 119:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_TIMERS && !LWIP_TIMERS_CUSTOM
+ 120:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 121:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /** The one and only timeout list */
+ 122:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** static struct sys_timeo *next_timeout;
+ 123:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 124:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** static u32_t current_timeout_due_time;
+ 125:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 126:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_TESTMODE
+ 127:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** struct sys_timeo**
+ 128:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_timeouts_get_next_timeout(void)
+ 129:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 130:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   return &next_timeout;
+ 131:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 132:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 133:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 134:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_TCP
+ 135:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /** global variable that shows if the tcp timer is currently scheduled or not */
+ 136:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** static int tcpip_tcp_timer_active;
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 138:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+ 139:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Timer callback function that calls tcp_tmr() and reschedules itself.
+ 140:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+ 141:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param arg unused argument
+ 142:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 143:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** static void
+ 144:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** tcpip_tcp_timer(void *arg)
+ 145:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+  62              	 .loc 1 145 0
+  63              	 .cfi_startproc
+  64              	 
+  65              	 
+  66 0000 80B5     	 push {r7,lr}
+  67              	.LCFI0:
+  68              	 .cfi_def_cfa_offset 8
+  69              	 .cfi_offset 7,-8
+  70              	 .cfi_offset 14,-4
+  71 0002 82B0     	 sub sp,sp,#8
+  72              	.LCFI1:
+  73              	 .cfi_def_cfa_offset 16
+  74 0004 00AF     	 add r7,sp,#0
+  75              	.LCFI2:
+  76              	 .cfi_def_cfa_register 7
+  77 0006 7860     	 str r0,[r7,#4]
+ 146:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_UNUSED_ARG(arg);
+ 147:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 148:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   /* call TCP timer handler */
+ 149:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   tcp_tmr();
+  78              	 .loc 1 149 0
+  79 0008 FFF7FEFF 	 bl tcp_tmr
+ 150:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   /* timer still needed? */
+ 151:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (tcp_active_pcbs || tcp_tw_pcbs) {
+  80              	 .loc 1 151 0
+  81 000c 094B     	 ldr r3,.L5
+  82 000e 1B68     	 ldr r3,[r3]
+  83 0010 002B     	 cmp r3,#0
+  84 0012 03D1     	 bne .L2
+  85              	 .loc 1 151 0 is_stmt 0 discriminator 1
+  86 0014 084B     	 ldr r3,.L5+4
+  87 0016 1B68     	 ldr r3,[r3]
+  88 0018 002B     	 cmp r3,#0
+  89 001a 05D0     	 beq .L3
+  90              	.L2:
+ 152:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* restart timer */
+ 153:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout(TCP_TMR_INTERVAL, tcpip_tcp_timer, NULL);
+  91              	 .loc 1 153 0 is_stmt 1
+  92 001c FA20     	 movs r0,#250
+  93 001e 0749     	 ldr r1,.L5+8
+  94 0020 0022     	 movs r2,#0
+  95 0022 FFF7FEFF 	 bl sys_timeout
+  96 0026 02E0     	 b .L1
+  97              	.L3:
+ 154:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   } else {
+ 155:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* disable timer */
+ 156:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     tcpip_tcp_timer_active = 0;
+  98              	 .loc 1 156 0
+  99 0028 054B     	 ldr r3,.L5+12
+ 100 002a 0022     	 movs r2,#0
+ 101 002c 1A60     	 str r2,[r3]
+ 102              	.L1:
+ 157:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 158:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 103              	 .loc 1 158 0
+ 104 002e 0837     	 adds r7,r7,#8
+ 105              	.LCFI3:
+ 106              	 .cfi_def_cfa_offset 8
+ 107 0030 BD46     	 mov sp,r7
+ 108              	.LCFI4:
+ 109              	 .cfi_def_cfa_register 13
+ 110              	 
+ 111 0032 80BD     	 pop {r7,pc}
+ 112              	.L6:
+ 113              	 .align 2
+ 114              	.L5:
+ 115 0034 00000000 	 .word tcp_active_pcbs
+ 116 0038 00000000 	 .word tcp_tw_pcbs
+ 117 003c 00000000 	 .word tcpip_tcp_timer
+ 118 0040 00000000 	 .word tcpip_tcp_timer_active
+ 119              	 .cfi_endproc
+ 120              	.LFE137:
+ 122              	 .section .text.tcp_timer_needed,"ax",%progbits
+ 123              	 .align 2
+ 124              	 .global tcp_timer_needed
+ 125              	 .thumb
+ 126              	 .thumb_func
+ 128              	tcp_timer_needed:
+ 129              	.LFB138:
+ 159:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 160:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+ 161:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Called from TCP_REG when registering a new PCB:
+ 162:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * the reason is to have the TCP timer only running when
+ 163:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * there are active (or time-wait) PCBs.
+ 164:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 165:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** tcp_timer_needed(void)
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 130              	 .loc 1 167 0
+ 131              	 .cfi_startproc
+ 132              	 
+ 133              	 
+ 134 0000 80B5     	 push {r7,lr}
+ 135              	.LCFI5:
+ 136              	 .cfi_def_cfa_offset 8
+ 137              	 .cfi_offset 7,-8
+ 138              	 .cfi_offset 14,-4
+ 139 0002 00AF     	 add r7,sp,#0
+ 140              	.LCFI6:
+ 141              	 .cfi_def_cfa_register 7
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 169:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 170:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   /* timer is off but needed again? */
+ 171:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (!tcpip_tcp_timer_active && (tcp_active_pcbs || tcp_tw_pcbs)) {
+ 142              	 .loc 1 171 0
+ 143 0004 0A4B     	 ldr r3,.L10
+ 144 0006 1B68     	 ldr r3,[r3]
+ 145 0008 002B     	 cmp r3,#0
+ 146 000a 0FD1     	 bne .L7
+ 147              	 .loc 1 171 0 is_stmt 0 discriminator 1
+ 148 000c 094B     	 ldr r3,.L10+4
+ 149 000e 1B68     	 ldr r3,[r3]
+ 150 0010 002B     	 cmp r3,#0
+ 151 0012 03D1     	 bne .L9
+ 152              	 .loc 1 171 0 discriminator 2
+ 153 0014 084B     	 ldr r3,.L10+8
+ 154 0016 1B68     	 ldr r3,[r3]
+ 155 0018 002B     	 cmp r3,#0
+ 156 001a 07D0     	 beq .L7
+ 157              	.L9:
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* enable and start timer */
+ 173:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     tcpip_tcp_timer_active = 1;
+ 158              	 .loc 1 173 0 is_stmt 1
+ 159 001c 044B     	 ldr r3,.L10
+ 160 001e 0122     	 movs r2,#1
+ 161 0020 1A60     	 str r2,[r3]
+ 174:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout(TCP_TMR_INTERVAL, tcpip_tcp_timer, NULL);
+ 162              	 .loc 1 174 0
+ 163 0022 FA20     	 movs r0,#250
+ 164 0024 0549     	 ldr r1,.L10+12
+ 165 0026 0022     	 movs r2,#0
+ 166 0028 FFF7FEFF 	 bl sys_timeout
+ 167              	.L7:
+ 175:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 176:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 168              	 .loc 1 176 0
+ 169 002c 80BD     	 pop {r7,pc}
+ 170              	.L11:
+ 171 002e 00BF     	 .align 2
+ 172              	.L10:
+ 173 0030 00000000 	 .word tcpip_tcp_timer_active
+ 174 0034 00000000 	 .word tcp_active_pcbs
+ 175 0038 00000000 	 .word tcp_tw_pcbs
+ 176 003c 00000000 	 .word tcpip_tcp_timer
+ 177              	 .cfi_endproc
+ 178              	.LFE138:
+ 180              	 .section .text.sys_timeout_abs,"ax",%progbits
+ 181              	 .align 2
+ 182              	 .thumb
+ 183              	 .thumb_func
+ 185              	sys_timeout_abs:
+ 186              	.LFB139:
+ 177:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_TCP */
+ 178:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 179:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** static void
+ 180:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 181:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_timeout_abs(u32_t abs_time, sys_timeout_handler handler, void *arg, const char *handler_name)
+ 182:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #else /* LWIP_DEBUG_TIMERNAMES */
+ 183:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_timeout_abs(u32_t abs_time, sys_timeout_handler handler, void *arg)
+ 184:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 185:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 187              	 .loc 1 185 0
+ 188              	 .cfi_startproc
+ 189              	 
+ 190              	 
+ 191 0000 80B5     	 push {r7,lr}
+ 192              	.LCFI7:
+ 193              	 .cfi_def_cfa_offset 8
+ 194              	 .cfi_offset 7,-8
+ 195              	 .cfi_offset 14,-4
+ 196 0002 86B0     	 sub sp,sp,#24
+ 197              	.LCFI8:
+ 198              	 .cfi_def_cfa_offset 32
+ 199 0004 00AF     	 add r7,sp,#0
+ 200              	.LCFI9:
+ 201              	 .cfi_def_cfa_register 7
+ 202 0006 F860     	 str r0,[r7,#12]
+ 203 0008 B960     	 str r1,[r7,#8]
+ 204 000a 7A60     	 str r2,[r7,#4]
+ 186:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   struct sys_timeo *timeout, *t;
+ 187:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 188:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   timeout = (struct sys_timeo *)memp_malloc(MEMP_SYS_TIMEOUT);
+ 205              	 .loc 1 188 0
+ 206 000c 0520     	 movs r0,#5
+ 207 000e FFF7FEFF 	 bl memp_malloc
+ 208 0012 3861     	 str r0,[r7,#16]
+ 189:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (timeout == NULL) {
+ 209              	 .loc 1 189 0
+ 210 0014 3B69     	 ldr r3,[r7,#16]
+ 211 0016 002B     	 cmp r3,#0
+ 212 0018 00D1     	 bne .L13
+ 190:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     LWIP_ASSERT("sys_timeout: timeout != NULL, pool MEMP_SYS_TIMEOUT is empty", timeout != NULL);
+ 191:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return;
+ 213              	 .loc 1 191 0
+ 214 001a 41E0     	 b .L12
+ 215              	.L13:
+ 192:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 193:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   timeout->next = NULL;
+ 216              	 .loc 1 194 0
+ 217 001c 3B69     	 ldr r3,[r7,#16]
+ 218 001e 0022     	 movs r2,#0
+ 219 0020 1A60     	 str r2,[r3]
+ 195:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   timeout->h = handler;
+ 220              	 .loc 1 195 0
+ 221 0022 3B69     	 ldr r3,[r7,#16]
+ 222 0024 BA68     	 ldr r2,[r7,#8]
+ 223 0026 9A60     	 str r2,[r3,#8]
+ 196:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   timeout->arg = arg;
+ 224              	 .loc 1 196 0
+ 225 0028 3B69     	 ldr r3,[r7,#16]
+ 226 002a 7A68     	 ldr r2,[r7,#4]
+ 227 002c DA60     	 str r2,[r3,#12]
+ 197:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   timeout->time = abs_time;
+ 228              	 .loc 1 197 0
+ 229 002e 3B69     	 ldr r3,[r7,#16]
+ 230 0030 FA68     	 ldr r2,[r7,#12]
+ 231 0032 5A60     	 str r2,[r3,#4]
+ 198:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 199:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   timeout->handler_name = handler_name;
+ 201:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_DEBUGF(TIMERS_DEBUG, ("sys_timeout: %p abs_time=%"U32_F" handler=%s arg=%p\n",
+ 202:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****                              (void *)timeout, abs_time, handler_name, (void *)arg));
+ 203:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+ 204:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 205:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (next_timeout == NULL) {
+ 232              	 .loc 1 205 0
+ 233 0034 1C4B     	 ldr r3,.L21
+ 234 0036 1B68     	 ldr r3,[r3]
+ 235 0038 002B     	 cmp r3,#0
+ 236 003a 03D1     	 bne .L15
+ 206:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     next_timeout = timeout;
+ 237              	 .loc 1 206 0
+ 238 003c 1A4A     	 ldr r2,.L21
+ 239 003e 3B69     	 ldr r3,[r7,#16]
+ 240 0040 1360     	 str r3,[r2]
+ 207:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return;
+ 241              	 .loc 1 207 0
+ 242 0042 2DE0     	 b .L12
+ 243              	.L15:
+ 208:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 209:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (TIME_LESS_THAN(timeout->time, next_timeout->time)) {
+ 244              	 .loc 1 209 0
+ 245 0044 3B69     	 ldr r3,[r7,#16]
+ 246 0046 5A68     	 ldr r2,[r3,#4]
+ 247 0048 174B     	 ldr r3,.L21
+ 248 004a 1B68     	 ldr r3,[r3]
+ 249 004c 5B68     	 ldr r3,[r3,#4]
+ 250 004e D31A     	 subs r3,r2,r3
+ 251 0050 002B     	 cmp r3,#0
+ 252 0052 07DA     	 bge .L16
+ 210:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     timeout->next = next_timeout;
+ 253              	 .loc 1 210 0
+ 254 0054 144B     	 ldr r3,.L21
+ 255 0056 1A68     	 ldr r2,[r3]
+ 256 0058 3B69     	 ldr r3,[r7,#16]
+ 257 005a 1A60     	 str r2,[r3]
+ 211:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     next_timeout = timeout;
+ 258              	 .loc 1 211 0
+ 259 005c 124A     	 ldr r2,.L21
+ 260 005e 3B69     	 ldr r3,[r7,#16]
+ 261 0060 1360     	 str r3,[r2]
+ 262 0062 1DE0     	 b .L12
+ 263              	.L16:
+ 212:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   } else {
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     for (t = next_timeout; t != NULL; t = t->next) {
+ 264              	 .loc 1 213 0
+ 265 0064 104B     	 ldr r3,.L21
+ 266 0066 1B68     	 ldr r3,[r3]
+ 267 0068 7B61     	 str r3,[r7,#20]
+ 268 006a 16E0     	 b .L17
+ 269              	.L20:
+ 214:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       if ((t->next == NULL) || TIME_LESS_THAN(timeout->time, t->next->time)) {
+ 270              	 .loc 1 214 0
+ 271 006c 7B69     	 ldr r3,[r7,#20]
+ 272 006e 1B68     	 ldr r3,[r3]
+ 273 0070 002B     	 cmp r3,#0
+ 274 0072 07D0     	 beq .L18
+ 275              	 .loc 1 214 0 is_stmt 0 discriminator 1
+ 276 0074 3B69     	 ldr r3,[r7,#16]
+ 277 0076 5A68     	 ldr r2,[r3,#4]
+ 278 0078 7B69     	 ldr r3,[r7,#20]
+ 279 007a 1B68     	 ldr r3,[r3]
+ 280 007c 5B68     	 ldr r3,[r3,#4]
+ 281 007e D31A     	 subs r3,r2,r3
+ 282 0080 002B     	 cmp r3,#0
+ 283 0082 07DA     	 bge .L19
+ 284              	.L18:
+ 215:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****         timeout->next = t->next;
+ 285              	 .loc 1 215 0 is_stmt 1
+ 286 0084 7B69     	 ldr r3,[r7,#20]
+ 287 0086 1A68     	 ldr r2,[r3]
+ 288 0088 3B69     	 ldr r3,[r7,#16]
+ 289 008a 1A60     	 str r2,[r3]
+ 216:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****         t->next = timeout;
+ 290              	 .loc 1 216 0
+ 291 008c 7B69     	 ldr r3,[r7,#20]
+ 292 008e 3A69     	 ldr r2,[r7,#16]
+ 293 0090 1A60     	 str r2,[r3]
+ 217:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****         break;
+ 294              	 .loc 1 217 0
+ 295 0092 05E0     	 b .L12
+ 296              	.L19:
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       if ((t->next == NULL) || TIME_LESS_THAN(timeout->time, t->next->time)) {
+ 297              	 .loc 1 213 0 discriminator 2
+ 298 0094 7B69     	 ldr r3,[r7,#20]
+ 299 0096 1B68     	 ldr r3,[r3]
+ 300 0098 7B61     	 str r3,[r7,#20]
+ 301              	.L17:
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       if ((t->next == NULL) || TIME_LESS_THAN(timeout->time, t->next->time)) {
+ 302              	 .loc 1 213 0 is_stmt 0 discriminator 1
+ 303 009a 7B69     	 ldr r3,[r7,#20]
+ 304 009c 002B     	 cmp r3,#0
+ 305 009e E5D1     	 bne .L20
+ 306              	.L12:
+ 218:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       }
+ 219:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     }
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 221:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 307              	 .loc 1 221 0 is_stmt 1
+ 308 00a0 1837     	 adds r7,r7,#24
+ 309              	.LCFI10:
+ 310              	 .cfi_def_cfa_offset 8
+ 311 00a2 BD46     	 mov sp,r7
+ 312              	.LCFI11:
+ 313              	 .cfi_def_cfa_register 13
+ 314              	 
+ 315 00a4 80BD     	 pop {r7,pc}
+ 316              	.L22:
+ 317 00a6 00BF     	 .align 2
+ 318              	.L21:
+ 319 00a8 00000000 	 .word next_timeout
+ 320              	 .cfi_endproc
+ 321              	.LFE139:
+ 323              	 .section .text.lwip_cyclic_timer,"ax",%progbits
+ 324              	 .align 2
+ 325              	 .thumb
+ 326              	 .thumb_func
+ 328              	lwip_cyclic_timer:
+ 329              	.LFB140:
+ 222:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 223:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+ 224:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Timer callback function that calls cyclic->handler() and reschedules itself.
+ 225:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+ 226:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param arg unused argument
+ 227:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 228:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if !LWIP_TESTMODE
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** static
+ 230:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 231:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 232:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** lwip_cyclic_timer(void *arg)
+ 233:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 330              	 .loc 1 233 0
+ 331              	 .cfi_startproc
+ 332              	 
+ 333              	 
+ 334 0000 80B5     	 push {r7,lr}
+ 335              	.LCFI12:
+ 336              	 .cfi_def_cfa_offset 8
+ 337              	 .cfi_offset 7,-8
+ 338              	 .cfi_offset 14,-4
+ 339 0002 86B0     	 sub sp,sp,#24
+ 340              	.LCFI13:
+ 341              	 .cfi_def_cfa_offset 32
+ 342 0004 00AF     	 add r7,sp,#0
+ 343              	.LCFI14:
+ 344              	 .cfi_def_cfa_register 7
+ 345 0006 7860     	 str r0,[r7,#4]
+ 234:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t now;
+ 235:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t next_timeout_time;
+ 236:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   const struct lwip_cyclic_timer *cyclic = (const struct lwip_cyclic_timer *)arg;
+ 346              	 .loc 1 236 0
+ 347 0008 7B68     	 ldr r3,[r7,#4]
+ 348 000a 7B61     	 str r3,[r7,#20]
+ 237:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 238:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 239:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_DEBUGF(TIMERS_DEBUG, ("tcpip: %s()\n", cyclic->handler_name));
+ 240:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 241:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   cyclic->handler();
+ 349              	 .loc 1 241 0
+ 350 000c 7B69     	 ldr r3,[r7,#20]
+ 351 000e 5B68     	 ldr r3,[r3,#4]
+ 352 0010 9847     	 blx r3
+ 242:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 243:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   now = sys_now();
+ 353              	 .loc 1 243 0
+ 354 0012 FFF7FEFF 	 bl sys_now
+ 355 0016 3861     	 str r0,[r7,#16]
+ 244:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   next_timeout_time = (u32_t)(current_timeout_due_time + cyclic->interval_ms);  /* overflow handled
+ 356              	 .loc 1 244 0
+ 357 0018 7B69     	 ldr r3,[r7,#20]
+ 358 001a 1A68     	 ldr r2,[r3]
+ 359 001c 0D4B     	 ldr r3,.L26
+ 360 001e 1B68     	 ldr r3,[r3]
+ 361 0020 1344     	 add r3,r3,r2
+ 362 0022 FB60     	 str r3,[r7,#12]
+ 245:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (TIME_LESS_THAN(next_timeout_time, now)) {
+ 363              	 .loc 1 245 0
+ 364 0024 FA68     	 ldr r2,[r7,#12]
+ 365 0026 3B69     	 ldr r3,[r7,#16]
+ 366 0028 D31A     	 subs r3,r2,r3
+ 367 002a 002B     	 cmp r3,#0
+ 368 002c 09DA     	 bge .L24
+ 246:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* timer would immediately expire again -> "overload" -> restart without any correction */
+ 247:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 248:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout_abs((u32_t)(now + cyclic->interval_ms), lwip_cyclic_timer, arg, cyclic->handler_nam
+ 249:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #else
+ 250:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout_abs((u32_t)(now + cyclic->interval_ms), lwip_cyclic_timer, arg);
+ 369              	 .loc 1 250 0
+ 370 002e 7B69     	 ldr r3,[r7,#20]
+ 371 0030 1A68     	 ldr r2,[r3]
+ 372 0032 3B69     	 ldr r3,[r7,#16]
+ 373 0034 1344     	 add r3,r3,r2
+ 374 0036 1846     	 mov r0,r3
+ 375 0038 0749     	 ldr r1,.L26+4
+ 376 003a 7A68     	 ldr r2,[r7,#4]
+ 377 003c FFF7FEFF 	 bl sys_timeout_abs
+ 378 0040 04E0     	 b .L23
+ 379              	.L24:
+ 251:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 252:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 253:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   } else {
+ 254:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* correct cyclic interval with handler execution delay and sys_check_timeouts jitter */
+ 255:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 256:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout_abs(next_timeout_time, lwip_cyclic_timer, arg, cyclic->handler_name);
+ 257:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #else
+ 258:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout_abs(next_timeout_time, lwip_cyclic_timer, arg);
+ 380              	 .loc 1 258 0
+ 381 0042 F868     	 ldr r0,[r7,#12]
+ 382 0044 0449     	 ldr r1,.L26+4
+ 383 0046 7A68     	 ldr r2,[r7,#4]
+ 384 0048 FFF7FEFF 	 bl sys_timeout_abs
+ 385              	.L23:
+ 259:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 260:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 261:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 386              	 .loc 1 261 0
+ 387 004c 1837     	 adds r7,r7,#24
+ 388              	.LCFI15:
+ 389              	 .cfi_def_cfa_offset 8
+ 390 004e BD46     	 mov sp,r7
+ 391              	.LCFI16:
+ 392              	 .cfi_def_cfa_register 13
+ 393              	 
+ 394 0050 80BD     	 pop {r7,pc}
+ 395              	.L27:
+ 396 0052 00BF     	 .align 2
+ 397              	.L26:
+ 398 0054 00000000 	 .word current_timeout_due_time
+ 399 0058 00000000 	 .word lwip_cyclic_timer
+ 400              	 .cfi_endproc
+ 401              	.LFE140:
+ 403              	 .section .text.sys_timeouts_init,"ax",%progbits
+ 404              	 .align 2
+ 405              	 .global sys_timeouts_init
+ 406              	 .thumb
+ 407              	 .thumb_func
+ 409              	sys_timeouts_init:
+ 410              	.LFB141:
+ 262:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 263:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /** Initialize this module */
+ 264:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void sys_timeouts_init(void)
+ 265:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 411              	 .loc 1 265 0
+ 412              	 .cfi_startproc
+ 413              	 
+ 414              	 
+ 415 0000 80B5     	 push {r7,lr}
+ 416              	.LCFI17:
+ 417              	 .cfi_def_cfa_offset 8
+ 418              	 .cfi_offset 7,-8
+ 419              	 .cfi_offset 14,-4
+ 420 0002 82B0     	 sub sp,sp,#8
+ 421              	.LCFI18:
+ 422              	 .cfi_def_cfa_offset 16
+ 423 0004 00AF     	 add r7,sp,#0
+ 424              	.LCFI19:
+ 425              	 .cfi_def_cfa_register 7
+ 266:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   size_t i;
+ 267:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   /* tcp_tmr() at index 0 is started on demand */
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   for (i = (LWIP_TCP ? 1 : 0); i < LWIP_ARRAYSIZE(lwip_cyclic_timers); i++) {
+ 426              	 .loc 1 268 0
+ 427 0006 0123     	 movs r3,#1
+ 428 0008 7B60     	 str r3,[r7,#4]
+ 429 000a 0FE0     	 b .L29
+ 430              	.L30:
+ 269:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* we have to cast via size_t to get rid of const warning
+ 270:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       (this is OK as cyclic_timer() casts back to const* */
+ 271:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout(lwip_cyclic_timers[i].interval_ms, lwip_cyclic_timer, LWIP_CONST_CAST(void *, &lwip
+ 431              	 .loc 1 271 0 discriminator 3
+ 432 000c 0A4A     	 ldr r2,.L31
+ 433 000e 7B68     	 ldr r3,[r7,#4]
+ 434 0010 52F83310 	 ldr r1,[r2,r3,lsl#3]
+ 435 0014 7B68     	 ldr r3,[r7,#4]
+ 436 0016 DB00     	 lsls r3,r3,#3
+ 437 0018 074A     	 ldr r2,.L31
+ 438 001a 1344     	 add r3,r3,r2
+ 439 001c 0846     	 mov r0,r1
+ 440 001e 0749     	 ldr r1,.L31+4
+ 441 0020 1A46     	 mov r2,r3
+ 442 0022 FFF7FEFF 	 bl sys_timeout
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* we have to cast via size_t to get rid of const warning
+ 443              	 .loc 1 268 0 discriminator 3
+ 444 0026 7B68     	 ldr r3,[r7,#4]
+ 445 0028 0133     	 adds r3,r3,#1
+ 446 002a 7B60     	 str r3,[r7,#4]
+ 447              	.L29:
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* we have to cast via size_t to get rid of const warning
+ 448              	 .loc 1 268 0 is_stmt 0 discriminator 1
+ 449 002c 7B68     	 ldr r3,[r7,#4]
+ 450 002e 012B     	 cmp r3,#1
+ 451 0030 ECD9     	 bls .L30
+ 272:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 273:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 452              	 .loc 1 273 0 is_stmt 1
+ 453 0032 0837     	 adds r7,r7,#8
+ 454              	.LCFI20:
+ 455              	 .cfi_def_cfa_offset 8
+ 456 0034 BD46     	 mov sp,r7
+ 457              	.LCFI21:
+ 458              	 .cfi_def_cfa_register 13
+ 459              	 
+ 460 0036 80BD     	 pop {r7,pc}
+ 461              	.L32:
+ 462              	 .align 2
+ 463              	.L31:
+ 464 0038 00000000 	 .word lwip_cyclic_timers
+ 465 003c 00000000 	 .word lwip_cyclic_timer
+ 466              	 .cfi_endproc
+ 467              	.LFE141:
+ 469              	 .section .text.sys_timeout,"ax",%progbits
+ 470              	 .align 2
+ 471              	 .global sys_timeout
+ 472              	 .thumb
+ 473              	 .thumb_func
+ 475              	sys_timeout:
+ 476              	.LFB142:
+ 274:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 275:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+ 276:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Create a one-shot timer (aka timeout). Timeouts are processed in the
+ 277:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * following cases:
+ 278:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * - while waiting for a message using sys_timeouts_mbox_fetch()
+ 279:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * - by calling sys_check_timeouts() (NO_SYS==1 only)
+ 280:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+ 281:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param msecs time in milliseconds after that the timer should expire
+ 282:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param handler callback function to call when msecs have elapsed
+ 283:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param arg argument to pass to the callback function
+ 284:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 285:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 286:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 287:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_timeout_debug(u32_t msecs, sys_timeout_handler handler, void *arg, const char *handler_name)
+ 288:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #else /* LWIP_DEBUG_TIMERNAMES */
+ 289:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 290:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_timeout(u32_t msecs, sys_timeout_handler handler, void *arg)
+ 291:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+ 292:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 477              	 .loc 1 292 0
+ 478              	 .cfi_startproc
+ 479              	 
+ 480              	 
+ 481 0000 80B5     	 push {r7,lr}
+ 482              	.LCFI22:
+ 483              	 .cfi_def_cfa_offset 8
+ 484              	 .cfi_offset 7,-8
+ 485              	 .cfi_offset 14,-4
+ 486 0002 86B0     	 sub sp,sp,#24
+ 487              	.LCFI23:
+ 488              	 .cfi_def_cfa_offset 32
+ 489 0004 00AF     	 add r7,sp,#0
+ 490              	.LCFI24:
+ 491              	 .cfi_def_cfa_register 7
+ 492 0006 F860     	 str r0,[r7,#12]
+ 493 0008 B960     	 str r1,[r7,#8]
+ 494 000a 7A60     	 str r2,[r7,#4]
+ 293:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t next_timeout_time;
+ 294:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 295:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 296:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 297:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_ASSERT("Timeout time too long, max is LWIP_UINT32_MAX/4 msecs", msecs <= (LWIP_UINT32_MAX / 
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 299:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   next_timeout_time = (u32_t)(sys_now() + msecs); /* overflow handled by TIME_LESS_THAN macro */ 
+ 495              	 .loc 1 299 0
+ 496 000c FFF7FEFF 	 bl sys_now
+ 497 0010 0246     	 mov r2,r0
+ 498 0012 FB68     	 ldr r3,[r7,#12]
+ 499 0014 1344     	 add r3,r3,r2
+ 500 0016 7B61     	 str r3,[r7,#20]
+ 300:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 301:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 302:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   sys_timeout_abs(next_timeout_time, handler, arg, handler_name);
+ 303:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #else
+ 304:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   sys_timeout_abs(next_timeout_time, handler, arg);
+ 501              	 .loc 1 304 0
+ 502 0018 7869     	 ldr r0,[r7,#20]
+ 503 001a B968     	 ldr r1,[r7,#8]
+ 504 001c 7A68     	 ldr r2,[r7,#4]
+ 505 001e FFF7FEFF 	 bl sys_timeout_abs
+ 305:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif
+ 306:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 506              	 .loc 1 306 0
+ 507 0022 1837     	 adds r7,r7,#24
+ 508              	.LCFI25:
+ 509              	 .cfi_def_cfa_offset 8
+ 510 0024 BD46     	 mov sp,r7
+ 511              	.LCFI26:
+ 512              	 .cfi_def_cfa_register 13
+ 513              	 
+ 514 0026 80BD     	 pop {r7,pc}
+ 515              	 .cfi_endproc
+ 516              	.LFE142:
+ 518              	 .section .text.sys_untimeout,"ax",%progbits
+ 519              	 .align 2
+ 520              	 .global sys_untimeout
+ 521              	 .thumb
+ 522              	 .thumb_func
+ 524              	sys_untimeout:
+ 525              	.LFB143:
+ 307:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 308:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+ 309:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Go through timeout list (for this task only) and remove the first matching
+ 310:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * entry (subsequent entries remain untouched), even though the timeout has not
+ 311:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * triggered yet.
+ 312:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+ 313:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param handler callback function that would be called by the timeout
+ 314:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @param arg callback argument that would be passed to handler
+ 315:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** */
+ 316:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 317:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_untimeout(sys_timeout_handler handler, void *arg)
+ 318:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 526              	 .loc 1 318 0
+ 527              	 .cfi_startproc
+ 528              	 
+ 529              	 
+ 530 0000 80B5     	 push {r7,lr}
+ 531              	.LCFI27:
+ 532              	 .cfi_def_cfa_offset 8
+ 533              	 .cfi_offset 7,-8
+ 534              	 .cfi_offset 14,-4
+ 535 0002 84B0     	 sub sp,sp,#16
+ 536              	.LCFI28:
+ 537              	 .cfi_def_cfa_offset 24
+ 538 0004 00AF     	 add r7,sp,#0
+ 539              	.LCFI29:
+ 540              	 .cfi_def_cfa_register 7
+ 541 0006 7860     	 str r0,[r7,#4]
+ 542 0008 3960     	 str r1,[r7]
+ 319:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   struct sys_timeo *prev_t, *t;
+ 320:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 321:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 322:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 323:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (next_timeout == NULL) {
+ 543              	 .loc 1 323 0
+ 544 000a 194B     	 ldr r3,.L42
+ 545 000c 1B68     	 ldr r3,[r3]
+ 546 000e 002B     	 cmp r3,#0
+ 547 0010 00D1     	 bne .L35
+ 324:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return;
+ 548              	 .loc 1 324 0
+ 549 0012 29E0     	 b .L34
+ 550              	.L35:
+ 325:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 326:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 327:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   for (t = next_timeout, prev_t = NULL; t != NULL; prev_t = t, t = t->next) {
+ 551              	 .loc 1 327 0
+ 552 0014 164B     	 ldr r3,.L42
+ 553 0016 1B68     	 ldr r3,[r3]
+ 554 0018 BB60     	 str r3,[r7,#8]
+ 555 001a 0023     	 movs r3,#0
+ 556 001c FB60     	 str r3,[r7,#12]
+ 557 001e 1FE0     	 b .L37
+ 558              	.L41:
+ 328:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 559              	 .loc 1 328 0
+ 560 0020 BB68     	 ldr r3,[r7,#8]
+ 561 0022 9A68     	 ldr r2,[r3,#8]
+ 562 0024 7B68     	 ldr r3,[r7,#4]
+ 563 0026 9A42     	 cmp r2,r3
+ 564 0028 15D1     	 bne .L38
+ 565              	 .loc 1 328 0 is_stmt 0 discriminator 1
+ 566 002a BB68     	 ldr r3,[r7,#8]
+ 567 002c DA68     	 ldr r2,[r3,#12]
+ 568 002e 3B68     	 ldr r3,[r7]
+ 569 0030 9A42     	 cmp r2,r3
+ 570 0032 10D1     	 bne .L38
+ 329:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       /* We have a match */
+ 330:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       /* Unlink from previous in list */
+ 331:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       if (prev_t == NULL) {
+ 571              	 .loc 1 331 0 is_stmt 1
+ 572 0034 FB68     	 ldr r3,[r7,#12]
+ 573 0036 002B     	 cmp r3,#0
+ 574 0038 04D1     	 bne .L39
+ 332:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****         next_timeout = t->next;
+ 575              	 .loc 1 332 0
+ 576 003a BB68     	 ldr r3,[r7,#8]
+ 577 003c 1B68     	 ldr r3,[r3]
+ 578 003e 0C4A     	 ldr r2,.L42
+ 579 0040 1360     	 str r3,[r2]
+ 580 0042 03E0     	 b .L40
+ 581              	.L39:
+ 333:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       } else {
+ 334:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****         prev_t->next = t->next;
+ 582              	 .loc 1 334 0
+ 583 0044 BB68     	 ldr r3,[r7,#8]
+ 584 0046 1A68     	 ldr r2,[r3]
+ 585 0048 FB68     	 ldr r3,[r7,#12]
+ 586 004a 1A60     	 str r2,[r3]
+ 587              	.L40:
+ 335:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       }
+ 336:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       memp_free(MEMP_SYS_TIMEOUT, t);
+ 588              	 .loc 1 336 0
+ 589 004c 0520     	 movs r0,#5
+ 590 004e B968     	 ldr r1,[r7,#8]
+ 591 0050 FFF7FEFF 	 bl memp_free
+ 337:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       return;
+ 592              	 .loc 1 337 0
+ 593 0054 08E0     	 b .L34
+ 594              	.L38:
+ 327:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 595              	 .loc 1 327 0 discriminator 2
+ 596 0056 BB68     	 ldr r3,[r7,#8]
+ 597 0058 FB60     	 str r3,[r7,#12]
+ 598 005a BB68     	 ldr r3,[r7,#8]
+ 599 005c 1B68     	 ldr r3,[r3]
+ 600 005e BB60     	 str r3,[r7,#8]
+ 601              	.L37:
+ 327:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 602              	 .loc 1 327 0 is_stmt 0 discriminator 1
+ 603 0060 BB68     	 ldr r3,[r7,#8]
+ 604 0062 002B     	 cmp r3,#0
+ 605 0064 DCD1     	 bne .L41
+ 338:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     }
+ 339:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 340:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   return;
+ 606              	 .loc 1 340 0 is_stmt 1 discriminator 2
+ 607 0066 00BF     	 nop
+ 608              	.L34:
+ 341:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 609              	 .loc 1 341 0
+ 610 0068 1037     	 adds r7,r7,#16
+ 611              	.LCFI30:
+ 612              	 .cfi_def_cfa_offset 8
+ 613 006a BD46     	 mov sp,r7
+ 614              	.LCFI31:
+ 615              	 .cfi_def_cfa_register 13
+ 616              	 
+ 617 006c 80BD     	 pop {r7,pc}
+ 618              	.L43:
+ 619 006e 00BF     	 .align 2
+ 620              	.L42:
+ 621 0070 00000000 	 .word next_timeout
+ 622              	 .cfi_endproc
+ 623              	.LFE143:
+ 625              	 .section .text.sys_check_timeouts,"ax",%progbits
+ 626              	 .align 2
+ 627              	 .global sys_check_timeouts
+ 628              	 .thumb
+ 629              	 .thumb_func
+ 631              	sys_check_timeouts:
+ 632              	.LFB144:
+ 342:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 343:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /**
+ 344:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * @ingroup lwip_nosys
+ 345:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Handle timeouts for NO_SYS==1 (i.e. without using
+ 346:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * tcpip_thread/sys_timeouts_mbox_fetch(). Uses sys_now() to call timeout
+ 347:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * handler functions when timeouts expire.
+ 348:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  *
+ 349:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * Must be called periodically from your main loop.
+ 350:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 351:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 352:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_check_timeouts(void)
+ 353:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 633              	 .loc 1 353 0
+ 634              	 .cfi_startproc
+ 635              	 
+ 636              	 
+ 637 0000 80B5     	 push {r7,lr}
+ 638              	.LCFI32:
+ 639              	 .cfi_def_cfa_offset 8
+ 640              	 .cfi_offset 7,-8
+ 641              	 .cfi_offset 14,-4
+ 642 0002 84B0     	 sub sp,sp,#16
+ 643              	.LCFI33:
+ 644              	 .cfi_def_cfa_offset 24
+ 645 0004 00AF     	 add r7,sp,#0
+ 646              	.LCFI34:
+ 647              	 .cfi_def_cfa_register 7
+ 354:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t now;
+ 355:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 356:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 357:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 358:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   /* Process only timers expired at the start of the function. */
+ 359:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   now = sys_now();
+ 648              	 .loc 1 359 0
+ 649 0006 FFF7FEFF 	 bl sys_now
+ 650 000a F860     	 str r0,[r7,#12]
+ 651              	.L50:
+ 652              	.LBB2:
+ 360:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 361:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   do {
+ 362:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     struct sys_timeo *tmptimeout;
+ 363:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     sys_timeout_handler handler;
+ 364:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     void *arg;
+ 365:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 366:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     PBUF_CHECK_FREE_OOSEQ();
+ 653              	 .loc 1 366 0
+ 654 000c 184B     	 ldr r3,.L51
+ 655 000e 1B78     	 ldrb r3,[r3]
+ 656 0010 DBB2     	 uxtb r3,r3
+ 657 0012 002B     	 cmp r3,#0
+ 658 0014 01D0     	 beq .L45
+ 659              	 .loc 1 366 0 is_stmt 0 discriminator 1
+ 660 0016 FFF7FEFF 	 bl pbuf_free_ooseq
+ 661              	.L45:
+ 367:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 368:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     tmptimeout = next_timeout;
+ 662              	 .loc 1 368 0 is_stmt 1
+ 663 001a 164B     	 ldr r3,.L51+4
+ 664 001c 1B68     	 ldr r3,[r3]
+ 665 001e BB60     	 str r3,[r7,#8]
+ 369:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if (tmptimeout == NULL) {
+ 666              	 .loc 1 369 0
+ 667 0020 BB68     	 ldr r3,[r7,#8]
+ 668 0022 002B     	 cmp r3,#0
+ 669 0024 00D1     	 bne .L46
+ 370:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       return;
+ 670              	 .loc 1 370 0
+ 671 0026 1FE0     	 b .L44
+ 672              	.L46:
+ 371:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     }
+ 372:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 373:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if (TIME_LESS_THAN(now, tmptimeout->time)) {
+ 673              	 .loc 1 373 0
+ 674 0028 BB68     	 ldr r3,[r7,#8]
+ 675 002a 5B68     	 ldr r3,[r3,#4]
+ 676 002c FA68     	 ldr r2,[r7,#12]
+ 677 002e D31A     	 subs r3,r2,r3
+ 678 0030 002B     	 cmp r3,#0
+ 679 0032 00DA     	 bge .L48
+ 374:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       return;
+ 680              	 .loc 1 374 0 discriminator 2
+ 681 0034 18E0     	 b .L44
+ 682              	.L48:
+ 375:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     }
+ 376:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 377:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* Timeout has expired */
+ 378:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     next_timeout = tmptimeout->next;
+ 683              	 .loc 1 378 0
+ 684 0036 BB68     	 ldr r3,[r7,#8]
+ 685 0038 1B68     	 ldr r3,[r3]
+ 686 003a 0E4A     	 ldr r2,.L51+4
+ 687 003c 1360     	 str r3,[r2]
+ 379:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     handler = tmptimeout->h;
+ 688              	 .loc 1 379 0
+ 689 003e BB68     	 ldr r3,[r7,#8]
+ 690 0040 9B68     	 ldr r3,[r3,#8]
+ 691 0042 7B60     	 str r3,[r7,#4]
+ 380:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     arg = tmptimeout->arg;
+ 692              	 .loc 1 380 0
+ 693 0044 BB68     	 ldr r3,[r7,#8]
+ 694 0046 DB68     	 ldr r3,[r3,#12]
+ 695 0048 3B60     	 str r3,[r7]
+ 381:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     current_timeout_due_time = tmptimeout->time;
+ 696              	 .loc 1 381 0
+ 697 004a BB68     	 ldr r3,[r7,#8]
+ 698 004c 5B68     	 ldr r3,[r3,#4]
+ 699 004e 0A4A     	 ldr r2,.L51+8
+ 700 0050 1360     	 str r3,[r2]
+ 382:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 383:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if (handler != NULL) {
+ 384:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       LWIP_DEBUGF(TIMERS_DEBUG, ("sct calling h=%s t=%"U32_F" arg=%p\n",
+ 385:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****                                  tmptimeout->handler_name, sys_now() - tmptimeout->time, arg));
+ 386:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     }
+ 387:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+ 388:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     memp_free(MEMP_SYS_TIMEOUT, tmptimeout);
+ 701              	 .loc 1 388 0
+ 702 0052 0520     	 movs r0,#5
+ 703 0054 B968     	 ldr r1,[r7,#8]
+ 704 0056 FFF7FEFF 	 bl memp_free
+ 389:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     if (handler != NULL) {
+ 705              	 .loc 1 389 0
+ 706 005a 7B68     	 ldr r3,[r7,#4]
+ 707 005c 002B     	 cmp r3,#0
+ 708 005e 02D0     	 beq .L49
+ 390:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****       handler(arg);
+ 709              	 .loc 1 390 0
+ 710 0060 7B68     	 ldr r3,[r7,#4]
+ 711 0062 3868     	 ldr r0,[r7]
+ 712 0064 9847     	 blx r3
+ 713              	.L49:
+ 714              	.LBE2:
+ 391:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     }
+ 392:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     LWIP_TCPIP_THREAD_ALIVE();
+ 393:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 394:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     /* Repeat until all expired timers have been called */
+ 395:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   } while (1);
+ 715              	 .loc 1 395 0
+ 716 0066 D1E7     	 b .L50
+ 717              	.L44:
+ 396:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 718              	 .loc 1 396 0
+ 719 0068 1037     	 adds r7,r7,#16
+ 720              	.LCFI35:
+ 721              	 .cfi_def_cfa_offset 8
+ 722 006a BD46     	 mov sp,r7
+ 723              	.LCFI36:
+ 724              	 .cfi_def_cfa_register 13
+ 725              	 
+ 726 006c 80BD     	 pop {r7,pc}
+ 727              	.L52:
+ 728 006e 00BF     	 .align 2
+ 729              	.L51:
+ 730 0070 00000000 	 .word pbuf_free_ooseq_pending
+ 731 0074 00000000 	 .word next_timeout
+ 732 0078 00000000 	 .word current_timeout_due_time
+ 733              	 .cfi_endproc
+ 734              	.LFE144:
+ 736              	 .section .text.sys_restart_timeouts,"ax",%progbits
+ 737              	 .align 2
+ 738              	 .global sys_restart_timeouts
+ 739              	 .thumb
+ 740              	 .thumb_func
+ 742              	sys_restart_timeouts:
+ 743              	.LFB145:
+ 397:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 398:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /** Rebase the timeout times to the current time.
+ 399:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * This is necessary if sys_check_timeouts() hasn't been called for a long
+ 400:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * time (e.g. while saving energy) to prevent all timer functions of that
+ 401:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * period being called.
+ 402:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 403:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** void
+ 404:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_restart_timeouts(void)
+ 405:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 744              	 .loc 1 405 0
+ 745              	 .cfi_startproc
+ 746              	 
+ 747              	 
+ 748 0000 80B5     	 push {r7,lr}
+ 749              	.LCFI37:
+ 750              	 .cfi_def_cfa_offset 8
+ 751              	 .cfi_offset 7,-8
+ 752              	 .cfi_offset 14,-4
+ 753 0002 84B0     	 sub sp,sp,#16
+ 754              	.LCFI38:
+ 755              	 .cfi_def_cfa_offset 24
+ 756 0004 00AF     	 add r7,sp,#0
+ 757              	.LCFI39:
+ 758              	 .cfi_def_cfa_register 7
+ 406:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t now;
+ 407:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t base;
+ 408:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   struct sys_timeo *t;
+ 409:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 410:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (next_timeout == NULL) {
+ 759              	 .loc 1 410 0
+ 760 0006 104B     	 ldr r3,.L58
+ 761 0008 1B68     	 ldr r3,[r3]
+ 762 000a 002B     	 cmp r3,#0
+ 763 000c 00D1     	 bne .L54
+ 411:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return;
+ 764              	 .loc 1 411 0
+ 765 000e 18E0     	 b .L53
+ 766              	.L54:
+ 412:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 413:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 414:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   now = sys_now();
+ 767              	 .loc 1 414 0
+ 768 0010 FFF7FEFF 	 bl sys_now
+ 769 0014 B860     	 str r0,[r7,#8]
+ 415:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   base = next_timeout->time;
+ 770              	 .loc 1 415 0
+ 771 0016 0C4B     	 ldr r3,.L58
+ 772 0018 1B68     	 ldr r3,[r3]
+ 773 001a 5B68     	 ldr r3,[r3,#4]
+ 774 001c 7B60     	 str r3,[r7,#4]
+ 416:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 417:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   for (t = next_timeout; t != NULL; t = t->next) {
+ 775              	 .loc 1 417 0
+ 776 001e 0A4B     	 ldr r3,.L58
+ 777 0020 1B68     	 ldr r3,[r3]
+ 778 0022 FB60     	 str r3,[r7,#12]
+ 779 0024 0AE0     	 b .L56
+ 780              	.L57:
+ 418:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     t->time = (t->time - base) + now;
+ 781              	 .loc 1 418 0 discriminator 3
+ 782 0026 FB68     	 ldr r3,[r7,#12]
+ 783 0028 5A68     	 ldr r2,[r3,#4]
+ 784 002a 7B68     	 ldr r3,[r7,#4]
+ 785 002c D21A     	 subs r2,r2,r3
+ 786 002e BB68     	 ldr r3,[r7,#8]
+ 787 0030 1A44     	 add r2,r2,r3
+ 788 0032 FB68     	 ldr r3,[r7,#12]
+ 789 0034 5A60     	 str r2,[r3,#4]
+ 417:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     t->time = (t->time - base) + now;
+ 790              	 .loc 1 417 0 discriminator 3
+ 791 0036 FB68     	 ldr r3,[r7,#12]
+ 792 0038 1B68     	 ldr r3,[r3]
+ 793 003a FB60     	 str r3,[r7,#12]
+ 794              	.L56:
+ 417:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     t->time = (t->time - base) + now;
+ 795              	 .loc 1 417 0 is_stmt 0 discriminator 1
+ 796 003c FB68     	 ldr r3,[r7,#12]
+ 797 003e 002B     	 cmp r3,#0
+ 798 0040 F1D1     	 bne .L57
+ 799              	.L53:
+ 419:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 420:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 800              	 .loc 1 420 0 is_stmt 1
+ 801 0042 1037     	 adds r7,r7,#16
+ 802              	.LCFI40:
+ 803              	 .cfi_def_cfa_offset 8
+ 804 0044 BD46     	 mov sp,r7
+ 805              	.LCFI41:
+ 806              	 .cfi_def_cfa_register 13
+ 807              	 
+ 808 0046 80BD     	 pop {r7,pc}
+ 809              	.L59:
+ 810              	 .align 2
+ 811              	.L58:
+ 812 0048 00000000 	 .word next_timeout
+ 813              	 .cfi_endproc
+ 814              	.LFE145:
+ 816              	 .section .text.sys_timeouts_sleeptime,"ax",%progbits
+ 817              	 .align 2
+ 818              	 .global sys_timeouts_sleeptime
+ 819              	 .thumb
+ 820              	 .thumb_func
+ 822              	sys_timeouts_sleeptime:
+ 823              	.LFB146:
+ 421:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 422:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** /** Return the time left before the next timeout is due. If no timeouts are
+ 423:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  * enqueued, returns 0xffffffff
+ 424:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****  */
+ 425:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** u32_t
+ 426:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** sys_timeouts_sleeptime(void)
+ 427:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** {
+ 824              	 .loc 1 427 0
+ 825              	 .cfi_startproc
+ 826              	 
+ 827              	 
+ 828 0000 80B5     	 push {r7,lr}
+ 829              	.LCFI42:
+ 830              	 .cfi_def_cfa_offset 8
+ 831              	 .cfi_offset 7,-8
+ 832              	 .cfi_offset 14,-4
+ 833 0002 82B0     	 sub sp,sp,#8
+ 834              	.LCFI43:
+ 835              	 .cfi_def_cfa_offset 16
+ 836 0004 00AF     	 add r7,sp,#0
+ 837              	.LCFI44:
+ 838              	 .cfi_def_cfa_register 7
+ 428:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   u32_t now;
+ 429:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 430:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 431:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** 
+ 432:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (next_timeout == NULL) {
+ 839              	 .loc 1 432 0
+ 840 0006 0F4B     	 ldr r3,.L64
+ 841 0008 1B68     	 ldr r3,[r3]
+ 842 000a 002B     	 cmp r3,#0
+ 843 000c 02D1     	 bne .L61
+ 433:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return SYS_TIMEOUTS_SLEEPTIME_INFINITE;
+ 844              	 .loc 1 433 0
+ 845 000e 4FF0FF33 	 mov r3,#-1
+ 846 0012 12E0     	 b .L62
+ 847              	.L61:
+ 434:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 435:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   now = sys_now();
+ 848              	 .loc 1 435 0
+ 849 0014 FFF7FEFF 	 bl sys_now
+ 850 0018 7860     	 str r0,[r7,#4]
+ 436:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   if (TIME_LESS_THAN(next_timeout->time, now)) {
+ 851              	 .loc 1 436 0
+ 852 001a 0A4B     	 ldr r3,.L64
+ 853 001c 1B68     	 ldr r3,[r3]
+ 854 001e 5A68     	 ldr r2,[r3,#4]
+ 855 0020 7B68     	 ldr r3,[r7,#4]
+ 856 0022 D31A     	 subs r3,r2,r3
+ 857 0024 002B     	 cmp r3,#0
+ 858 0026 01DA     	 bge .L63
+ 437:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return 0;
+ 859              	 .loc 1 437 0
+ 860 0028 0023     	 movs r3,#0
+ 861 002a 06E0     	 b .L62
+ 862              	.L63:
+ 863              	.LBB3:
+ 438:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   } else {
+ 439:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     u32_t ret = (u32_t)(next_timeout->time - now);
+ 864              	 .loc 1 439 0
+ 865 002c 054B     	 ldr r3,.L64
+ 866 002e 1B68     	 ldr r3,[r3]
+ 867 0030 5A68     	 ldr r2,[r3,#4]
+ 868 0032 7B68     	 ldr r3,[r7,#4]
+ 869 0034 D31A     	 subs r3,r2,r3
+ 870 0036 3B60     	 str r3,[r7]
+ 440:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     LWIP_ASSERT("invalid sleeptime", ret <= LWIP_MAX_TIMEOUT);
+ 441:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****     return ret;
+ 871              	 .loc 1 441 0
+ 872 0038 3B68     	 ldr r3,[r7]
+ 873              	.L62:
+ 874              	.LBE3:
+ 442:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c ****   }
+ 443:../Dave/Generated/ETH_LWIP/lwip/core/timeouts.c **** }
+ 875              	 .loc 1 443 0
+ 876 003a 1846     	 mov r0,r3
+ 877 003c 0837     	 adds r7,r7,#8
+ 878              	.LCFI45:
+ 879              	 .cfi_def_cfa_offset 8
+ 880 003e BD46     	 mov sp,r7
+ 881              	.LCFI46:
+ 882              	 .cfi_def_cfa_register 13
+ 883              	 
+ 884 0040 80BD     	 pop {r7,pc}
+ 885              	.L65:
+ 886 0042 00BF     	 .align 2
+ 887              	.L64:
+ 888 0044 00000000 	 .word next_timeout
+ 889              	 .cfi_endproc
+ 890              	.LFE146:
+ 892              	 .text
+ 893              	.Letext0:
+ 894              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\lib\\gcc\\arm-none-eabi\\4.9.3\\include\\stddef.h"
+ 895              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 896              	 .file 4 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 897              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 898              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
+ 899              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/timeouts.h"
+ 900              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/tcpbase.h"
+ 901              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
+ 902              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
+ 903              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
+ 904              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/tcp.h"
+ 905              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/priv/tcp_priv.h"
+ 906              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/prot/tcp.h"
+ 907              	 .file 15 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 908              	 .file 16 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+ 909              	 .file 17 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 timeouts.c
+    {standard input}:24     .rodata.lwip_cyclic_timers:00000000 lwip_cyclic_timers
+    {standard input}:21     .rodata.lwip_cyclic_timers:00000000 $d
+    {standard input}:34     .rodata.lwip_num_cyclic_timers:00000000 lwip_num_cyclic_timers
+    {standard input}:31     .rodata.lwip_num_cyclic_timers:00000000 $d
+    {standard input}:37     .bss.next_timeout:00000000 $d
+    {standard input}:40     .bss.next_timeout:00000000 next_timeout
+    {standard input}:43     .bss.current_timeout_due_time:00000000 $d
+    {standard input}:46     .bss.current_timeout_due_time:00000000 current_timeout_due_time
+    {standard input}:49     .bss.tcpip_tcp_timer_active:00000000 $d
+    {standard input}:52     .bss.tcpip_tcp_timer_active:00000000 tcpip_tcp_timer_active
+    {standard input}:55     .text.tcpip_tcp_timer:00000000 $t
+    {standard input}:59     .text.tcpip_tcp_timer:00000000 tcpip_tcp_timer
+    {standard input}:475    .text.sys_timeout:00000000 sys_timeout
+    {standard input}:115    .text.tcpip_tcp_timer:00000034 $d
+    {standard input}:123    .text.tcp_timer_needed:00000000 $t
+    {standard input}:128    .text.tcp_timer_needed:00000000 tcp_timer_needed
+    {standard input}:173    .text.tcp_timer_needed:00000030 $d
+    {standard input}:181    .text.sys_timeout_abs:00000000 $t
+    {standard input}:185    .text.sys_timeout_abs:00000000 sys_timeout_abs
+    {standard input}:319    .text.sys_timeout_abs:000000a8 $d
+    {standard input}:324    .text.lwip_cyclic_timer:00000000 $t
+    {standard input}:328    .text.lwip_cyclic_timer:00000000 lwip_cyclic_timer
+    {standard input}:398    .text.lwip_cyclic_timer:00000054 $d
+    {standard input}:404    .text.sys_timeouts_init:00000000 $t
+    {standard input}:409    .text.sys_timeouts_init:00000000 sys_timeouts_init
+    {standard input}:464    .text.sys_timeouts_init:00000038 $d
+    {standard input}:470    .text.sys_timeout:00000000 $t
+    {standard input}:519    .text.sys_untimeout:00000000 $t
+    {standard input}:524    .text.sys_untimeout:00000000 sys_untimeout
+    {standard input}:621    .text.sys_untimeout:00000070 $d
+    {standard input}:626    .text.sys_check_timeouts:00000000 $t
+    {standard input}:631    .text.sys_check_timeouts:00000000 sys_check_timeouts
+    {standard input}:730    .text.sys_check_timeouts:00000070 $d
+    {standard input}:737    .text.sys_restart_timeouts:00000000 $t
+    {standard input}:742    .text.sys_restart_timeouts:00000000 sys_restart_timeouts
+    {standard input}:812    .text.sys_restart_timeouts:00000048 $d
+    {standard input}:817    .text.sys_timeouts_sleeptime:00000000 $t
+    {standard input}:822    .text.sys_timeouts_sleeptime:00000000 sys_timeouts_sleeptime
+    {standard input}:888    .text.sys_timeouts_sleeptime:00000044 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+tcp_tmr
+etharp_tmr
+tcp_active_pcbs
+tcp_tw_pcbs
+memp_malloc
+sys_now
+memp_free
+pbuf_free_ooseq
+pbuf_free_ooseq_pending

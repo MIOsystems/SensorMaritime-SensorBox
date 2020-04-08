@@ -1,0 +1,1134 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "memp.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .comm memp_memory_RAW_PCB_base,115,4
+  20              	 .section .bss.memp_tab_RAW_PCB,"aw",%nobits
+  21              	 .align 2
+  24              	memp_tab_RAW_PCB:
+  25 0000 00000000 	 .space 4
+  26              	 .global memp_RAW_PCB
+  27              	 .section .rodata.memp_RAW_PCB,"a",%progbits
+  28              	 .align 2
+  31              	memp_RAW_PCB:
+  32 0000 1C00     	 .short 28
+  33 0002 0400     	 .short 4
+  34 0004 00000000 	 .word memp_memory_RAW_PCB_base
+  35 0008 00000000 	 .word memp_tab_RAW_PCB
+  36              	 .comm memp_memory_UDP_PCB_base,131,4
+  37              	 .section .bss.memp_tab_UDP_PCB,"aw",%nobits
+  38              	 .align 2
+  41              	memp_tab_UDP_PCB:
+  42 0000 00000000 	 .space 4
+  43              	 .global memp_UDP_PCB
+  44              	 .section .rodata.memp_UDP_PCB,"a",%progbits
+  45              	 .align 2
+  48              	memp_UDP_PCB:
+  49 0000 2000     	 .short 32
+  50 0002 0400     	 .short 4
+  51 0004 00000000 	 .word memp_memory_UDP_PCB_base
+  52 0008 00000000 	 .word memp_tab_UDP_PCB
+  53              	 .comm memp_memory_TCP_PCB_base,783,4
+  54              	 .section .bss.memp_tab_TCP_PCB,"aw",%nobits
+  55              	 .align 2
+  58              	memp_tab_TCP_PCB:
+  59 0000 00000000 	 .space 4
+  60              	 .global memp_TCP_PCB
+  61              	 .section .rodata.memp_TCP_PCB,"a",%progbits
+  62              	 .align 2
+  65              	memp_TCP_PCB:
+  66 0000 9C00     	 .short 156
+  67 0002 0500     	 .short 5
+  68 0004 00000000 	 .word memp_memory_TCP_PCB_base
+  69 0008 00000000 	 .word memp_tab_TCP_PCB
+  70              	 .comm memp_memory_TCP_PCB_LISTEN_base,163,4
+  71              	 .section .bss.memp_tab_TCP_PCB_LISTEN,"aw",%nobits
+  72              	 .align 2
+  75              	memp_tab_TCP_PCB_LISTEN:
+  76 0000 00000000 	 .space 4
+  77              	 .global memp_TCP_PCB_LISTEN
+  78              	 .section .rodata.memp_TCP_PCB_LISTEN,"a",%progbits
+  79              	 .align 2
+  82              	memp_TCP_PCB_LISTEN:
+  83 0000 2000     	 .short 32
+  84 0002 0500     	 .short 5
+  85 0004 00000000 	 .word memp_memory_TCP_PCB_LISTEN_base
+  86 0008 00000000 	 .word memp_tab_TCP_PCB_LISTEN
+  87              	 .comm memp_memory_TCP_SEG_base,131,4
+  88              	 .section .bss.memp_tab_TCP_SEG,"aw",%nobits
+  89              	 .align 2
+  92              	memp_tab_TCP_SEG:
+  93 0000 00000000 	 .space 4
+  94              	 .global memp_TCP_SEG
+  95              	 .section .rodata.memp_TCP_SEG,"a",%progbits
+  96              	 .align 2
+  99              	memp_TCP_SEG:
+ 100 0000 1000     	 .short 16
+ 101 0002 0800     	 .short 8
+ 102 0004 00000000 	 .word memp_memory_TCP_SEG_base
+ 103 0008 00000000 	 .word memp_tab_TCP_SEG
+ 104              	 .comm memp_memory_SYS_TIMEOUT_base,163,4
+ 105              	 .section .bss.memp_tab_SYS_TIMEOUT,"aw",%nobits
+ 106              	 .align 2
+ 109              	memp_tab_SYS_TIMEOUT:
+ 110 0000 00000000 	 .space 4
+ 111              	 .global memp_SYS_TIMEOUT
+ 112              	 .section .rodata.memp_SYS_TIMEOUT,"a",%progbits
+ 113              	 .align 2
+ 116              	memp_SYS_TIMEOUT:
+ 117 0000 1000     	 .short 16
+ 118 0002 0A00     	 .short 10
+ 119 0004 00000000 	 .word memp_memory_SYS_TIMEOUT_base
+ 120 0008 00000000 	 .word memp_tab_SYS_TIMEOUT
+ 121              	 .comm memp_memory_PBUF_base,259,4
+ 122              	 .section .bss.memp_tab_PBUF,"aw",%nobits
+ 123              	 .align 2
+ 126              	memp_tab_PBUF:
+ 127 0000 00000000 	 .space 4
+ 128              	 .global memp_PBUF
+ 129              	 .section .rodata.memp_PBUF,"a",%progbits
+ 130              	 .align 2
+ 133              	memp_PBUF:
+ 134 0000 1000     	 .short 16
+ 135 0002 1000     	 .short 16
+ 136 0004 00000000 	 .word memp_memory_PBUF_base
+ 137 0008 00000000 	 .word memp_tab_PBUF
+ 138              	 .comm memp_memory_PBUF_POOL_base,24835,4
+ 139              	 .section .bss.memp_tab_PBUF_POOL,"aw",%nobits
+ 140              	 .align 2
+ 143              	memp_tab_PBUF_POOL:
+ 144 0000 00000000 	 .space 4
+ 145              	 .global memp_PBUF_POOL
+ 146              	 .section .rodata.memp_PBUF_POOL,"a",%progbits
+ 147              	 .align 2
+ 150              	memp_PBUF_POOL:
+ 151 0000 1006     	 .short 1552
+ 152 0002 1000     	 .short 16
+ 153 0004 00000000 	 .word memp_memory_PBUF_POOL_base
+ 154 0008 00000000 	 .word memp_tab_PBUF_POOL
+ 155              	 .global memp_pools
+ 156              	 .section .rodata.memp_pools,"a",%progbits
+ 157              	 .align 2
+ 160              	memp_pools:
+ 161 0000 00000000 	 .word memp_RAW_PCB
+ 162 0004 00000000 	 .word memp_UDP_PCB
+ 163 0008 00000000 	 .word memp_TCP_PCB
+ 164 000c 00000000 	 .word memp_TCP_PCB_LISTEN
+ 165 0010 00000000 	 .word memp_TCP_SEG
+ 166 0014 00000000 	 .word memp_SYS_TIMEOUT
+ 167 0018 00000000 	 .word memp_PBUF
+ 168 001c 00000000 	 .word memp_PBUF_POOL
+ 169              	 .section .text.memp_init_pool,"ax",%progbits
+ 170              	 .align 2
+ 171              	 .global memp_init_pool
+ 172              	 .thumb
+ 173              	 .thumb_func
+ 175              	memp_init_pool:
+ 176              	.LFB137:
+ 177              	 .file 1 "../Dave/Generated/ETH_LWIP/lwip/core/memp.c"
+   1:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+   2:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @file
+   3:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Dynamic pool memory manager
+   4:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+   5:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * lwIP has dedicated pools for many structures (netconn, protocol control blocks,
+   6:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * packet buffers, ...). All these pools are managed here.
+   7:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+   8:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @defgroup mempool Memory pools
+   9:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @ingroup infrastructure
+  10:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Custom memory pools
+  11:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  12:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+  13:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  14:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /*
+  15:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  16:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * All rights reserved.
+  17:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+  18:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  19:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * are permitted provided that the following conditions are met:
+  20:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+  21:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  22:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *    this list of conditions and the following disclaimer.
+  23:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  24:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *    this list of conditions and the following disclaimer in the documentation
+  25:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *    and/or other materials provided with the distribution.
+  26:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * 3. The name of the author may not be used to endorse or promote products
+  27:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *    derived from this software without specific prior written permission.
+  28:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+  29:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  30:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  31:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  32:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  33:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  34:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  35:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  36:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  37:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  38:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * OF SUCH DAMAGE.
+  39:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+  40:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * This file is part of the lwIP TCP/IP stack.
+  41:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+  42:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Author: Adam Dunkels <adam@sics.se>
+  43:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+  44:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+  45:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  46:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/opt.h"
+  47:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  48:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/memp.h"
+  49:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/sys.h"
+  50:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/stats.h"
+  51:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  52:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include <string.h>
+  53:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  54:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /* Make sure we include everything we need for size calculation required by memp_std.h */
+  55:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/pbuf.h"
+  56:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/raw.h"
+  57:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/udp.h"
+  58:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/tcp.h"
+  59:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/tcp_priv.h"
+  60:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/altcp.h"
+  61:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/ip4_frag.h"
+  62:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/netbuf.h"
+  63:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/api.h"
+  64:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/tcpip_priv.h"
+  65:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/api_msg.h"
+  66:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/sockets_priv.h"
+  67:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/etharp.h"
+  68:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/igmp.h"
+  69:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/timeouts.h"
+  70:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /* needed by default MEMP_NUM_SYS_TIMEOUT */
+  71:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/netif/ppp/ppp_opts.h"
+  72:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/netdb.h"
+  73:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/dns.h"
+  74:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/nd6_priv.h"
+  75:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/ip6_frag.h"
+  76:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/mld6.h"
+  77:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  78:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #define LWIP_MEMPOOL(name,num,size,desc) LWIP_MEMPOOL_DECLARE(name,num,size,desc)
+  79:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/memp_std.h"
+  80:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  81:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** const struct memp_desc *const memp_pools[MEMP_MAX] = {
+  82:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #define LWIP_MEMPOOL(name,num,size,desc) &memp_ ## name,
+  83:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include "ETH_LWIP/lwip/include/lwip/priv/memp_std.h"
+  84:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** };
+  85:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  86:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #ifdef LWIP_HOOK_FILENAME
+  87:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #include LWIP_HOOK_FILENAME
+  88:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+  89:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  90:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_MEM_MALLOC && MEMP_OVERFLOW_CHECK >= 2
+  91:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #undef MEMP_OVERFLOW_CHECK
+  92:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /* MEMP_OVERFLOW_CHECK >= 2 does not work with MEMP_MEM_MALLOC, use 1 instead */
+  93:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #define MEMP_OVERFLOW_CHECK 1
+  94:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+  95:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+  96:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_SANITY_CHECK && !MEMP_MEM_MALLOC
+  97:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+  98:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Check that memp-lists don't form a circle, using "Floyd's cycle-finding algorithm".
+  99:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 100:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** static int
+ 101:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_sanity(const struct memp_desc *desc)
+ 102:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 103:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   struct memp *t, *h;
+ 104:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 105:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   t = *desc->tab;
+ 106:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   if (t != NULL) {
+ 107:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     for (h = t->next; (t != NULL) && (h != NULL); t = t->next,
+ 108:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****          h = ((h->next != NULL) ? h->next->next : NULL)) {
+ 109:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****       if (t == h) {
+ 110:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****         return 0;
+ 111:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****       }
+ 112:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     }
+ 113:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 114:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 115:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   return 1;
+ 116:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 117:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_SANITY_CHECK && !MEMP_MEM_MALLOC */
+ 118:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 119:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK
+ 120:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 121:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Check if a memp element was victim of an overflow or underflow
+ 122:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * (e.g. the restricted area after/before it has been altered)
+ 123:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 124:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param p the memp element to check
+ 125:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param desc the pool p comes from
+ 126:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 127:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** static void
+ 128:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_overflow_check_element(struct memp *p, const struct memp_desc *desc)
+ 129:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 130:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   mem_overflow_check_raw((u8_t *)p + MEMP_SIZE, desc->size, "pool ", desc->desc);
+ 131:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 132:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 133:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 134:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Initialize the restricted area of on memp element.
+ 135:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 136:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** static void
+ 137:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_overflow_init_element(struct memp *p, const struct memp_desc *desc)
+ 138:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 139:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   mem_overflow_init_raw((u8_t *)p + MEMP_SIZE, desc->size);
+ 140:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 141:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 142:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK >= 2
+ 143:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 144:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Do an overflow check for all elements in every pool.
+ 145:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 146:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @see memp_overflow_check_element for a description of the check
+ 147:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 148:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** static void
+ 149:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_overflow_check_all(void)
+ 150:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 151:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   u16_t i, j;
+ 152:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   struct memp *p;
+ 153:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_DECL_PROTECT(old_level);
+ 154:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_PROTECT(old_level);
+ 155:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 156:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   for (i = 0; i < MEMP_MAX; ++i) {
+ 157:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     p = (struct memp *)LWIP_MEM_ALIGN(memp_pools[i]->base);
+ 158:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     for (j = 0; j < memp_pools[i]->num; ++j) {
+ 159:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****       memp_overflow_check_element(p, memp_pools[i]);
+ 160:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****       p = LWIP_ALIGNMENT_CAST(struct memp *, ((u8_t *)p + MEMP_SIZE + memp_pools[i]->size + MEM_SAN
+ 161:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     }
+ 162:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 163:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_UNPROTECT(old_level);
+ 164:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 165:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK >= 2 */
+ 166:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 167:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 168:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 169:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Initialize custom memory pool.
+ 170:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Related functions: memp_malloc_pool, memp_free_pool
+ 171:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 172:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param desc pool to initialize
+ 173:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 174:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** void
+ 175:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_init_pool(const struct memp_desc *desc)
+ 176:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 178              	 .loc 1 176 0
+ 179              	 .cfi_startproc
+ 180              	 
+ 181              	 
+ 182              	 
+ 183 0000 80B4     	 push {r7}
+ 184              	.LCFI0:
+ 185              	 .cfi_def_cfa_offset 4
+ 186              	 .cfi_offset 7,-4
+ 187 0002 85B0     	 sub sp,sp,#20
+ 188              	.LCFI1:
+ 189              	 .cfi_def_cfa_offset 24
+ 190 0004 00AF     	 add r7,sp,#0
+ 191              	.LCFI2:
+ 192              	 .cfi_def_cfa_register 7
+ 193 0006 7860     	 str r0,[r7,#4]
+ 177:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_MEM_MALLOC
+ 178:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_UNUSED_ARG(desc);
+ 179:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else
+ 180:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   int i;
+ 181:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   struct memp *memp;
+ 182:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 183:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   *desc->tab = NULL;
+ 194              	 .loc 1 183 0
+ 195 0008 7B68     	 ldr r3,[r7,#4]
+ 196 000a 9B68     	 ldr r3,[r3,#8]
+ 197 000c 0022     	 movs r2,#0
+ 198 000e 1A60     	 str r2,[r3]
+ 184:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp = (struct memp *)LWIP_MEM_ALIGN(desc->base);
+ 199              	 .loc 1 184 0
+ 200 0010 7B68     	 ldr r3,[r7,#4]
+ 201 0012 5B68     	 ldr r3,[r3,#4]
+ 202 0014 0333     	 adds r3,r3,#3
+ 203 0016 23F00303 	 bic r3,r3,#3
+ 204 001a BB60     	 str r3,[r7,#8]
+ 185:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_MEM_INIT
+ 186:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   /* force memset on pool memory */
+ 187:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memset(memp, 0, (size_t)desc->num * (MEMP_SIZE + desc->size
+ 188:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK
+ 189:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****                                        + MEM_SANITY_REGION_AFTER_ALIGNED
+ 190:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 191:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****                                       ));
+ 192:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 193:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   /* create a linked list of memp elements */
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   for (i = 0; i < desc->num; ++i) {
+ 205              	 .loc 1 194 0
+ 206 001c 0023     	 movs r3,#0
+ 207 001e FB60     	 str r3,[r7,#12]
+ 208 0020 11E0     	 b .L2
+ 209              	.L3:
+ 195:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp->next = *desc->tab;
+ 210              	 .loc 1 195 0 discriminator 3
+ 211 0022 7B68     	 ldr r3,[r7,#4]
+ 212 0024 9B68     	 ldr r3,[r3,#8]
+ 213 0026 1A68     	 ldr r2,[r3]
+ 214 0028 BB68     	 ldr r3,[r7,#8]
+ 215 002a 1A60     	 str r2,[r3]
+ 196:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     *desc->tab = memp;
+ 216              	 .loc 1 196 0 discriminator 3
+ 217 002c 7B68     	 ldr r3,[r7,#4]
+ 218 002e 9B68     	 ldr r3,[r3,#8]
+ 219 0030 BA68     	 ldr r2,[r7,#8]
+ 220 0032 1A60     	 str r2,[r3]
+ 197:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK
+ 198:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp_overflow_init_element(memp, desc);
+ 199:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 200:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     /* cast through void* to get rid of alignment warnings */
+ 201:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp = (struct memp *)(void *)((u8_t *)memp + MEMP_SIZE + desc->size
+ 221              	 .loc 1 201 0 discriminator 3
+ 222 0034 7B68     	 ldr r3,[r7,#4]
+ 223 0036 1B88     	 ldrh r3,[r3]
+ 224 0038 1A46     	 mov r2,r3
+ 225 003a BB68     	 ldr r3,[r7,#8]
+ 226 003c 1344     	 add r3,r3,r2
+ 227 003e BB60     	 str r3,[r7,#8]
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp->next = *desc->tab;
+ 228              	 .loc 1 194 0 discriminator 3
+ 229 0040 FB68     	 ldr r3,[r7,#12]
+ 230 0042 0133     	 adds r3,r3,#1
+ 231 0044 FB60     	 str r3,[r7,#12]
+ 232              	.L2:
+ 194:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp->next = *desc->tab;
+ 233              	 .loc 1 194 0 is_stmt 0 discriminator 1
+ 234 0046 7B68     	 ldr r3,[r7,#4]
+ 235 0048 5B88     	 ldrh r3,[r3,#2]
+ 236 004a 1A46     	 mov r2,r3
+ 237 004c FB68     	 ldr r3,[r7,#12]
+ 238 004e 9A42     	 cmp r2,r3
+ 239 0050 E7DC     	 bgt .L3
+ 202:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK
+ 203:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****                                    + MEM_SANITY_REGION_AFTER_ALIGNED
+ 204:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 205:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****                                   );
+ 206:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 207:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_STATS
+ 208:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   desc->stats->avail = desc->num;
+ 209:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_STATS */
+ 210:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* !MEMP_MEM_MALLOC */
+ 211:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 212:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_STATS && (defined(LWIP_DEBUG) || LWIP_STATS_DISPLAY)
+ 213:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   desc->stats->name  = desc->desc;
+ 214:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_STATS && (defined(LWIP_DEBUG) || LWIP_STATS_DISPLAY) */
+ 215:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 240              	 .loc 1 215 0 is_stmt 1
+ 241 0052 1437     	 adds r7,r7,#20
+ 242              	.LCFI3:
+ 243              	 .cfi_def_cfa_offset 4
+ 244 0054 BD46     	 mov sp,r7
+ 245              	.LCFI4:
+ 246              	 .cfi_def_cfa_register 13
+ 247              	 
+ 248 0056 5DF8047B 	 ldr r7,[sp],#4
+ 249              	.LCFI5:
+ 250              	 .cfi_restore 7
+ 251              	 .cfi_def_cfa_offset 0
+ 252 005a 7047     	 bx lr
+ 253              	 .cfi_endproc
+ 254              	.LFE137:
+ 256              	 .section .text.memp_init,"ax",%progbits
+ 257              	 .align 2
+ 258              	 .global memp_init
+ 259              	 .thumb
+ 260              	 .thumb_func
+ 262              	memp_init:
+ 263              	.LFB138:
+ 216:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 217:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 218:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Initializes lwIP built-in pools.
+ 219:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Related functions: memp_malloc, memp_free
+ 220:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 221:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Carves out memp_memory into linked lists for each pool-type.
+ 222:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 223:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** void
+ 224:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_init(void)
+ 225:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 264              	 .loc 1 225 0
+ 265              	 .cfi_startproc
+ 266              	 
+ 267              	 
+ 268 0000 80B5     	 push {r7,lr}
+ 269              	.LCFI6:
+ 270              	 .cfi_def_cfa_offset 8
+ 271              	 .cfi_offset 7,-8
+ 272              	 .cfi_offset 14,-4
+ 273 0002 82B0     	 sub sp,sp,#8
+ 274              	.LCFI7:
+ 275              	 .cfi_def_cfa_offset 16
+ 276 0004 00AF     	 add r7,sp,#0
+ 277              	.LCFI8:
+ 278              	 .cfi_def_cfa_register 7
+ 226:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   u16_t i;
+ 227:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 228:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   /* for every pool: */
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   for (i = 0; i < LWIP_ARRAYSIZE(memp_pools); i++) {
+ 279              	 .loc 1 229 0
+ 280 0006 0023     	 movs r3,#0
+ 281 0008 FB80     	 strh r3,[r7,#6]
+ 282 000a 09E0     	 b .L5
+ 283              	.L6:
+ 230:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp_init_pool(memp_pools[i]);
+ 284              	 .loc 1 230 0 discriminator 3
+ 285 000c FB88     	 ldrh r3,[r7,#6]
+ 286 000e 074A     	 ldr r2,.L7
+ 287 0010 52F82330 	 ldr r3,[r2,r3,lsl#2]
+ 288 0014 1846     	 mov r0,r3
+ 289 0016 FFF7FEFF 	 bl memp_init_pool
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp_init_pool(memp_pools[i]);
+ 290              	 .loc 1 229 0 discriminator 3
+ 291 001a FB88     	 ldrh r3,[r7,#6]
+ 292 001c 0133     	 adds r3,r3,#1
+ 293 001e FB80     	 strh r3,[r7,#6]
+ 294              	.L5:
+ 229:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp_init_pool(memp_pools[i]);
+ 295              	 .loc 1 229 0 is_stmt 0 discriminator 1
+ 296 0020 FB88     	 ldrh r3,[r7,#6]
+ 297 0022 072B     	 cmp r3,#7
+ 298 0024 F2D9     	 bls .L6
+ 231:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 232:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if LWIP_STATS && MEMP_STATS
+ 233:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     lwip_stats.memp[i] = memp_pools[i]->stats;
+ 234:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 235:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 236:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 237:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK >= 2
+ 238:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   /* check everything a first time to see if it worked */
+ 239:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp_overflow_check_all();
+ 240:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK >= 2 */
+ 241:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 299              	 .loc 1 241 0 is_stmt 1
+ 300 0026 0837     	 adds r7,r7,#8
+ 301              	.LCFI9:
+ 302              	 .cfi_def_cfa_offset 8
+ 303 0028 BD46     	 mov sp,r7
+ 304              	.LCFI10:
+ 305              	 .cfi_def_cfa_register 13
+ 306              	 
+ 307 002a 80BD     	 pop {r7,pc}
+ 308              	.L8:
+ 309              	 .align 2
+ 310              	.L7:
+ 311 002c 00000000 	 .word memp_pools
+ 312              	 .cfi_endproc
+ 313              	.LFE138:
+ 315              	 .section .text.do_memp_malloc_pool,"ax",%progbits
+ 316              	 .align 2
+ 317              	 .thumb
+ 318              	 .thumb_func
+ 320              	do_memp_malloc_pool:
+ 321              	.LFB139:
+ 242:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 243:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** static void *
+ 244:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if !MEMP_OVERFLOW_CHECK
+ 245:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** do_memp_malloc_pool(const struct memp_desc *desc)
+ 246:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else
+ 247:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** do_memp_malloc_pool_fn(const struct memp_desc *desc, const char *file, const int line)
+ 248:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 249:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 322              	 .loc 1 249 0
+ 323              	 .cfi_startproc
+ 324              	 
+ 325              	 
+ 326              	 
+ 327 0000 80B4     	 push {r7}
+ 328              	.LCFI11:
+ 329              	 .cfi_def_cfa_offset 4
+ 330              	 .cfi_offset 7,-4
+ 331 0002 85B0     	 sub sp,sp,#20
+ 332              	.LCFI12:
+ 333              	 .cfi_def_cfa_offset 24
+ 334 0004 00AF     	 add r7,sp,#0
+ 335              	.LCFI13:
+ 336              	 .cfi_def_cfa_register 7
+ 337 0006 7860     	 str r0,[r7,#4]
+ 250:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   struct memp *memp;
+ 251:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_DECL_PROTECT(old_level);
+ 252:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 253:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_MEM_MALLOC
+ 254:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp = (struct memp *)mem_malloc(MEMP_SIZE + MEMP_ALIGN_SIZE(desc->size));
+ 255:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_PROTECT(old_level);
+ 256:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else /* MEMP_MEM_MALLOC */
+ 257:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_PROTECT(old_level);
+ 258:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 259:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp = *desc->tab;
+ 338              	 .loc 1 259 0
+ 339 0008 7B68     	 ldr r3,[r7,#4]
+ 340 000a 9B68     	 ldr r3,[r3,#8]
+ 341 000c 1B68     	 ldr r3,[r3]
+ 342 000e FB60     	 str r3,[r7,#12]
+ 260:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_MEM_MALLOC */
+ 261:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 262:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   if (memp != NULL) {
+ 343              	 .loc 1 262 0
+ 344 0010 FB68     	 ldr r3,[r7,#12]
+ 345 0012 002B     	 cmp r3,#0
+ 346 0014 06D0     	 beq .L10
+ 263:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if !MEMP_MEM_MALLOC
+ 264:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK == 1
+ 265:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp_overflow_check_element(memp, desc);
+ 266:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 267:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 268:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     *desc->tab = memp->next;
+ 347              	 .loc 1 268 0
+ 348 0016 7B68     	 ldr r3,[r7,#4]
+ 349 0018 9B68     	 ldr r3,[r3,#8]
+ 350 001a FA68     	 ldr r2,[r7,#12]
+ 351 001c 1268     	 ldr r2,[r2]
+ 352 001e 1A60     	 str r2,[r3]
+ 269:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK
+ 270:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp->next = NULL;
+ 271:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 272:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* !MEMP_MEM_MALLOC */
+ 273:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK
+ 274:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp->file = file;
+ 275:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp->line = line;
+ 276:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_MEM_MALLOC
+ 277:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     memp_overflow_init_element(memp, desc);
+ 278:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_MEM_MALLOC */
+ 279:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 280:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     LWIP_ASSERT("memp_malloc: memp properly aligned",
+ 281:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****                 ((mem_ptr_t)memp % MEM_ALIGNMENT) == 0);
+ 282:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_STATS
+ 283:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     desc->stats->used++;
+ 284:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     if (desc->stats->used > desc->stats->max) {
+ 285:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****       desc->stats->max = desc->stats->used;
+ 286:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     }
+ 287:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 288:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     SYS_ARCH_UNPROTECT(old_level);
+ 289:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     /* cast through u8_t* to get rid of alignment warnings */
+ 290:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     return ((u8_t *)memp + MEMP_SIZE);
+ 353              	 .loc 1 290 0
+ 354 0020 FB68     	 ldr r3,[r7,#12]
+ 355 0022 00E0     	 b .L11
+ 356              	.L10:
+ 291:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   } else {
+ 292:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_STATS
+ 293:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     desc->stats->err++;
+ 294:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 295:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     SYS_ARCH_UNPROTECT(old_level);
+ 296:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     LWIP_DEBUGF(MEMP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("memp_malloc: out of memory in pool %s\n", de
+ 297:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 298:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 299:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   return NULL;
+ 357              	 .loc 1 299 0
+ 358 0024 0023     	 movs r3,#0
+ 359              	.L11:
+ 300:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 360              	 .loc 1 300 0
+ 361 0026 1846     	 mov r0,r3
+ 362 0028 1437     	 adds r7,r7,#20
+ 363              	.LCFI14:
+ 364              	 .cfi_def_cfa_offset 4
+ 365 002a BD46     	 mov sp,r7
+ 366              	.LCFI15:
+ 367              	 .cfi_def_cfa_register 13
+ 368              	 
+ 369 002c 5DF8047B 	 ldr r7,[sp],#4
+ 370              	.LCFI16:
+ 371              	 .cfi_restore 7
+ 372              	 .cfi_def_cfa_offset 0
+ 373 0030 7047     	 bx lr
+ 374              	 .cfi_endproc
+ 375              	.LFE139:
+ 377 0032 00BF     	 .section .text.memp_malloc_pool,"ax",%progbits
+ 378              	 .align 2
+ 379              	 .global memp_malloc_pool
+ 380              	 .thumb
+ 381              	 .thumb_func
+ 383              	memp_malloc_pool:
+ 384              	.LFB140:
+ 301:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 302:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 303:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Get an element from a custom pool.
+ 304:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 305:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param desc the pool to get an element from
+ 306:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 307:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @return a pointer to the allocated memory or a NULL pointer on error
+ 308:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 309:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** void *
+ 310:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if !MEMP_OVERFLOW_CHECK
+ 311:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_malloc_pool(const struct memp_desc *desc)
+ 312:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else
+ 313:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_malloc_pool_fn(const struct memp_desc *desc, const char *file, const int line)
+ 314:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 315:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 385              	 .loc 1 315 0
+ 386              	 .cfi_startproc
+ 387              	 
+ 388              	 
+ 389 0000 80B5     	 push {r7,lr}
+ 390              	.LCFI17:
+ 391              	 .cfi_def_cfa_offset 8
+ 392              	 .cfi_offset 7,-8
+ 393              	 .cfi_offset 14,-4
+ 394 0002 82B0     	 sub sp,sp,#8
+ 395              	.LCFI18:
+ 396              	 .cfi_def_cfa_offset 16
+ 397 0004 00AF     	 add r7,sp,#0
+ 398              	.LCFI19:
+ 399              	 .cfi_def_cfa_register 7
+ 400 0006 7860     	 str r0,[r7,#4]
+ 316:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_ASSERT("invalid pool desc", desc != NULL);
+ 317:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   if (desc == NULL) {
+ 401              	 .loc 1 317 0
+ 402 0008 7B68     	 ldr r3,[r7,#4]
+ 403 000a 002B     	 cmp r3,#0
+ 404 000c 01D1     	 bne .L13
+ 318:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     return NULL;
+ 405              	 .loc 1 318 0
+ 406 000e 0023     	 movs r3,#0
+ 407 0010 03E0     	 b .L14
+ 408              	.L13:
+ 319:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 320:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 321:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if !MEMP_OVERFLOW_CHECK
+ 322:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   return do_memp_malloc_pool(desc);
+ 409              	 .loc 1 322 0
+ 410 0012 7868     	 ldr r0,[r7,#4]
+ 411 0014 FFF7FEFF 	 bl do_memp_malloc_pool
+ 412 0018 0346     	 mov r3,r0
+ 413              	.L14:
+ 323:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else
+ 324:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   return do_memp_malloc_pool_fn(desc, file, line);
+ 325:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 326:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 414              	 .loc 1 326 0
+ 415 001a 1846     	 mov r0,r3
+ 416 001c 0837     	 adds r7,r7,#8
+ 417              	.LCFI20:
+ 418              	 .cfi_def_cfa_offset 8
+ 419 001e BD46     	 mov sp,r7
+ 420              	.LCFI21:
+ 421              	 .cfi_def_cfa_register 13
+ 422              	 
+ 423 0020 80BD     	 pop {r7,pc}
+ 424              	 .cfi_endproc
+ 425              	.LFE140:
+ 427 0022 00BF     	 .section .text.memp_malloc,"ax",%progbits
+ 428              	 .align 2
+ 429              	 .global memp_malloc
+ 430              	 .thumb
+ 431              	 .thumb_func
+ 433              	memp_malloc:
+ 434              	.LFB141:
+ 327:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 328:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 329:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Get an element from a specific pool.
+ 330:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 331:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param type the pool to get an element from
+ 332:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 333:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @return a pointer to the allocated memory or a NULL pointer on error
+ 334:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 335:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** void *
+ 336:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if !MEMP_OVERFLOW_CHECK
+ 337:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_malloc(memp_t type)
+ 338:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else
+ 339:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_malloc_fn(memp_t type, const char *file, const int line)
+ 340:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 341:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 435              	 .loc 1 341 0
+ 436              	 .cfi_startproc
+ 437              	 
+ 438              	 
+ 439 0000 80B5     	 push {r7,lr}
+ 440              	.LCFI22:
+ 441              	 .cfi_def_cfa_offset 8
+ 442              	 .cfi_offset 7,-8
+ 443              	 .cfi_offset 14,-4
+ 444 0002 84B0     	 sub sp,sp,#16
+ 445              	.LCFI23:
+ 446              	 .cfi_def_cfa_offset 24
+ 447 0004 00AF     	 add r7,sp,#0
+ 448              	.LCFI24:
+ 449              	 .cfi_def_cfa_register 7
+ 450 0006 0346     	 mov r3,r0
+ 451 0008 FB71     	 strb r3,[r7,#7]
+ 342:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   void *memp;
+ 343:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_ERROR("memp_malloc: type < MEMP_MAX", (type < MEMP_MAX), return NULL;);
+ 452              	 .loc 1 343 0
+ 453 000a FB79     	 ldrb r3,[r7,#7]
+ 454 000c 072B     	 cmp r3,#7
+ 455 000e 01D9     	 bls .L16
+ 456              	 .loc 1 343 0 is_stmt 0 discriminator 1
+ 457 0010 0023     	 movs r3,#0
+ 458 0012 08E0     	 b .L17
+ 459              	.L16:
+ 344:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 345:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK >= 2
+ 346:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp_overflow_check_all();
+ 347:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK >= 2 */
+ 348:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 349:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if !MEMP_OVERFLOW_CHECK
+ 350:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp = do_memp_malloc_pool(memp_pools[type]);
+ 460              	 .loc 1 350 0 is_stmt 1
+ 461 0014 FB79     	 ldrb r3,[r7,#7]
+ 462 0016 064A     	 ldr r2,.L18
+ 463 0018 52F82330 	 ldr r3,[r2,r3,lsl#2]
+ 464 001c 1846     	 mov r0,r3
+ 465 001e FFF7FEFF 	 bl do_memp_malloc_pool
+ 466 0022 F860     	 str r0,[r7,#12]
+ 351:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else
+ 352:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp = do_memp_malloc_pool_fn(memp_pools[type], file, line);
+ 353:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 354:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 355:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   return memp;
+ 467              	 .loc 1 355 0
+ 468 0024 FB68     	 ldr r3,[r7,#12]
+ 469              	.L17:
+ 356:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 470              	 .loc 1 356 0
+ 471 0026 1846     	 mov r0,r3
+ 472 0028 1037     	 adds r7,r7,#16
+ 473              	.LCFI25:
+ 474              	 .cfi_def_cfa_offset 8
+ 475 002a BD46     	 mov sp,r7
+ 476              	.LCFI26:
+ 477              	 .cfi_def_cfa_register 13
+ 478              	 
+ 479 002c 80BD     	 pop {r7,pc}
+ 480              	.L19:
+ 481 002e 00BF     	 .align 2
+ 482              	.L18:
+ 483 0030 00000000 	 .word memp_pools
+ 484              	 .cfi_endproc
+ 485              	.LFE141:
+ 487              	 .section .text.do_memp_free_pool,"ax",%progbits
+ 488              	 .align 2
+ 489              	 .thumb
+ 490              	 .thumb_func
+ 492              	do_memp_free_pool:
+ 493              	.LFB142:
+ 357:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 358:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** static void
+ 359:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** do_memp_free_pool(const struct memp_desc *desc, void *mem)
+ 360:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 494              	 .loc 1 360 0
+ 495              	 .cfi_startproc
+ 496              	 
+ 497              	 
+ 498              	 
+ 499 0000 80B4     	 push {r7}
+ 500              	.LCFI27:
+ 501              	 .cfi_def_cfa_offset 4
+ 502              	 .cfi_offset 7,-4
+ 503 0002 85B0     	 sub sp,sp,#20
+ 504              	.LCFI28:
+ 505              	 .cfi_def_cfa_offset 24
+ 506 0004 00AF     	 add r7,sp,#0
+ 507              	.LCFI29:
+ 508              	 .cfi_def_cfa_register 7
+ 509 0006 7860     	 str r0,[r7,#4]
+ 510 0008 3960     	 str r1,[r7]
+ 361:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   struct memp *memp;
+ 362:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_DECL_PROTECT(old_level);
+ 363:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 364:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_ASSERT("memp_free: mem properly aligned",
+ 365:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****               ((mem_ptr_t)mem % MEM_ALIGNMENT) == 0);
+ 366:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 367:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   /* cast through void* to get rid of alignment warnings */
+ 368:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp = (struct memp *)(void *)((u8_t *)mem - MEMP_SIZE);
+ 511              	 .loc 1 368 0
+ 512 000a 3B68     	 ldr r3,[r7]
+ 513 000c FB60     	 str r3,[r7,#12]
+ 369:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 370:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_PROTECT(old_level);
+ 371:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 372:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK == 1
+ 373:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp_overflow_check_element(memp, desc);
+ 374:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK */
+ 375:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 376:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_STATS
+ 377:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   desc->stats->used--;
+ 378:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 379:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 380:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_MEM_MALLOC
+ 381:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_UNUSED_ARG(desc);
+ 382:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_UNPROTECT(old_level);
+ 383:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   mem_free(memp);
+ 384:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #else /* MEMP_MEM_MALLOC */
+ 385:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp->next = *desc->tab;
+ 514              	 .loc 1 385 0
+ 515 000e 7B68     	 ldr r3,[r7,#4]
+ 516 0010 9B68     	 ldr r3,[r3,#8]
+ 517 0012 1A68     	 ldr r2,[r3]
+ 518 0014 FB68     	 ldr r3,[r7,#12]
+ 519 0016 1A60     	 str r2,[r3]
+ 386:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   *desc->tab = memp;
+ 520              	 .loc 1 386 0
+ 521 0018 7B68     	 ldr r3,[r7,#4]
+ 522 001a 9B68     	 ldr r3,[r3,#8]
+ 523 001c FA68     	 ldr r2,[r7,#12]
+ 524 001e 1A60     	 str r2,[r3]
+ 387:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 388:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_SANITY_CHECK
+ 389:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_ASSERT("memp sanity", memp_sanity(desc));
+ 390:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_SANITY_CHECK */
+ 391:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 392:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   SYS_ARCH_UNPROTECT(old_level);
+ 393:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* !MEMP_MEM_MALLOC */
+ 394:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 525              	 .loc 1 394 0
+ 526 0020 1437     	 adds r7,r7,#20
+ 527              	.LCFI30:
+ 528              	 .cfi_def_cfa_offset 4
+ 529 0022 BD46     	 mov sp,r7
+ 530              	.LCFI31:
+ 531              	 .cfi_def_cfa_register 13
+ 532              	 
+ 533 0024 5DF8047B 	 ldr r7,[sp],#4
+ 534              	.LCFI32:
+ 535              	 .cfi_restore 7
+ 536              	 .cfi_def_cfa_offset 0
+ 537 0028 7047     	 bx lr
+ 538              	 .cfi_endproc
+ 539              	.LFE142:
+ 541 002a 00BF     	 .section .text.memp_free_pool,"ax",%progbits
+ 542              	 .align 2
+ 543              	 .global memp_free_pool
+ 544              	 .thumb
+ 545              	 .thumb_func
+ 547              	memp_free_pool:
+ 548              	.LFB143:
+ 395:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 396:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 397:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Put a custom pool element back into its pool.
+ 398:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 399:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param desc the pool where to put mem
+ 400:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param mem the memp element to free
+ 401:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 402:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** void
+ 403:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_free_pool(const struct memp_desc *desc, void *mem)
+ 404:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 549              	 .loc 1 404 0
+ 550              	 .cfi_startproc
+ 551              	 
+ 552              	 
+ 553 0000 80B5     	 push {r7,lr}
+ 554              	.LCFI33:
+ 555              	 .cfi_def_cfa_offset 8
+ 556              	 .cfi_offset 7,-8
+ 557              	 .cfi_offset 14,-4
+ 558 0002 82B0     	 sub sp,sp,#8
+ 559              	.LCFI34:
+ 560              	 .cfi_def_cfa_offset 16
+ 561 0004 00AF     	 add r7,sp,#0
+ 562              	.LCFI35:
+ 563              	 .cfi_def_cfa_register 7
+ 564 0006 7860     	 str r0,[r7,#4]
+ 565 0008 3960     	 str r1,[r7]
+ 405:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_ASSERT("invalid pool desc", desc != NULL);
+ 406:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   if ((desc == NULL) || (mem == NULL)) {
+ 566              	 .loc 1 406 0
+ 567 000a 7B68     	 ldr r3,[r7,#4]
+ 568 000c 002B     	 cmp r3,#0
+ 569 000e 02D0     	 beq .L22
+ 570              	 .loc 1 406 0 is_stmt 0 discriminator 1
+ 571 0010 3B68     	 ldr r3,[r7]
+ 572 0012 002B     	 cmp r3,#0
+ 573 0014 00D1     	 bne .L23
+ 574              	.L22:
+ 407:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     return;
+ 575              	 .loc 1 407 0 is_stmt 1
+ 576 0016 03E0     	 b .L21
+ 577              	.L23:
+ 408:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 409:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 410:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   do_memp_free_pool(desc, mem);
+ 578              	 .loc 1 410 0
+ 579 0018 7868     	 ldr r0,[r7,#4]
+ 580 001a 3968     	 ldr r1,[r7]
+ 581 001c FFF7FEFF 	 bl do_memp_free_pool
+ 582              	.L21:
+ 411:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 583              	 .loc 1 411 0
+ 584 0020 0837     	 adds r7,r7,#8
+ 585              	.LCFI36:
+ 586              	 .cfi_def_cfa_offset 8
+ 587 0022 BD46     	 mov sp,r7
+ 588              	.LCFI37:
+ 589              	 .cfi_def_cfa_register 13
+ 590              	 
+ 591 0024 80BD     	 pop {r7,pc}
+ 592              	 .cfi_endproc
+ 593              	.LFE143:
+ 595 0026 00BF     	 .section .text.memp_free,"ax",%progbits
+ 596              	 .align 2
+ 597              	 .global memp_free
+ 598              	 .thumb
+ 599              	 .thumb_func
+ 601              	memp_free:
+ 602              	.LFB144:
+ 412:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 413:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** /**
+ 414:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * Put an element back into its pool.
+ 415:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  *
+ 416:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param type the pool where to put mem
+ 417:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  * @param mem the memp element to free
+ 418:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****  */
+ 419:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** void
+ 420:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** memp_free(memp_t type, void *mem)
+ 421:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** {
+ 603              	 .loc 1 421 0
+ 604              	 .cfi_startproc
+ 605              	 
+ 606              	 
+ 607 0000 80B5     	 push {r7,lr}
+ 608              	.LCFI38:
+ 609              	 .cfi_def_cfa_offset 8
+ 610              	 .cfi_offset 7,-8
+ 611              	 .cfi_offset 14,-4
+ 612 0002 82B0     	 sub sp,sp,#8
+ 613              	.LCFI39:
+ 614              	 .cfi_def_cfa_offset 16
+ 615 0004 00AF     	 add r7,sp,#0
+ 616              	.LCFI40:
+ 617              	 .cfi_def_cfa_register 7
+ 618 0006 0346     	 mov r3,r0
+ 619 0008 3960     	 str r1,[r7]
+ 620 000a FB71     	 strb r3,[r7,#7]
+ 422:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #ifdef LWIP_HOOK_MEMP_AVAILABLE
+ 423:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   struct memp *old_first;
+ 424:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 425:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 426:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   LWIP_ERROR("memp_free: type < MEMP_MAX", (type < MEMP_MAX), return;);
+ 621              	 .loc 1 426 0
+ 622 000c FB79     	 ldrb r3,[r7,#7]
+ 623 000e 072B     	 cmp r3,#7
+ 624 0010 00D9     	 bls .L26
+ 625 0012 0BE0     	 b .L25
+ 626              	.L26:
+ 427:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 428:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   if (mem == NULL) {
+ 627              	 .loc 1 428 0
+ 628 0014 3B68     	 ldr r3,[r7]
+ 629 0016 002B     	 cmp r3,#0
+ 630 0018 00D1     	 bne .L28
+ 429:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     return;
+ 631              	 .loc 1 429 0 discriminator 2
+ 632 001a 07E0     	 b .L25
+ 633              	.L28:
+ 430:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 431:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 432:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #if MEMP_OVERFLOW_CHECK >= 2
+ 433:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   memp_overflow_check_all();
+ 434:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif /* MEMP_OVERFLOW_CHECK >= 2 */
+ 435:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 436:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #ifdef LWIP_HOOK_MEMP_AVAILABLE
+ 437:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   old_first = *memp_pools[type]->tab;
+ 438:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 439:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 440:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   do_memp_free_pool(memp_pools[type], mem);
+ 634              	 .loc 1 440 0
+ 635 001c FB79     	 ldrb r3,[r7,#7]
+ 636 001e 054A     	 ldr r2,.L29
+ 637 0020 52F82330 	 ldr r3,[r2,r3,lsl#2]
+ 638 0024 1846     	 mov r0,r3
+ 639 0026 3968     	 ldr r1,[r7]
+ 640 0028 FFF7FEFF 	 bl do_memp_free_pool
+ 641              	.L25:
+ 441:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** 
+ 442:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #ifdef LWIP_HOOK_MEMP_AVAILABLE
+ 443:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   if (old_first == NULL) {
+ 444:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****     LWIP_HOOK_MEMP_AVAILABLE(type);
+ 445:../Dave/Generated/ETH_LWIP/lwip/core/memp.c ****   }
+ 446:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** #endif
+ 447:../Dave/Generated/ETH_LWIP/lwip/core/memp.c **** }
+ 642              	 .loc 1 447 0
+ 643 002c 0837     	 adds r7,r7,#8
+ 644              	.LCFI41:
+ 645              	 .cfi_def_cfa_offset 8
+ 646 002e BD46     	 mov sp,r7
+ 647              	.LCFI42:
+ 648              	 .cfi_def_cfa_register 13
+ 649              	 
+ 650 0030 80BD     	 pop {r7,pc}
+ 651              	.L30:
+ 652 0032 00BF     	 .align 2
+ 653              	.L29:
+ 654 0034 00000000 	 .word memp_pools
+ 655              	 .cfi_endproc
+ 656              	.LFE144:
+ 658              	 .text
+ 659              	.Letext0:
+ 660              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 661              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 662              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 663              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 664              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/priv/memp_priv.h"
+ 665              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/priv/memp_std.h"
+ 666              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 667              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 memp.c
+                            *COM*:00000073 memp_memory_RAW_PCB_base
+    {standard input}:21     .bss.memp_tab_RAW_PCB:00000000 $d
+    {standard input}:24     .bss.memp_tab_RAW_PCB:00000000 memp_tab_RAW_PCB
+    {standard input}:31     .rodata.memp_RAW_PCB:00000000 memp_RAW_PCB
+    {standard input}:28     .rodata.memp_RAW_PCB:00000000 $d
+                            *COM*:00000083 memp_memory_UDP_PCB_base
+    {standard input}:38     .bss.memp_tab_UDP_PCB:00000000 $d
+    {standard input}:41     .bss.memp_tab_UDP_PCB:00000000 memp_tab_UDP_PCB
+    {standard input}:48     .rodata.memp_UDP_PCB:00000000 memp_UDP_PCB
+    {standard input}:45     .rodata.memp_UDP_PCB:00000000 $d
+                            *COM*:0000030f memp_memory_TCP_PCB_base
+    {standard input}:55     .bss.memp_tab_TCP_PCB:00000000 $d
+    {standard input}:58     .bss.memp_tab_TCP_PCB:00000000 memp_tab_TCP_PCB
+    {standard input}:65     .rodata.memp_TCP_PCB:00000000 memp_TCP_PCB
+    {standard input}:62     .rodata.memp_TCP_PCB:00000000 $d
+                            *COM*:000000a3 memp_memory_TCP_PCB_LISTEN_base
+    {standard input}:72     .bss.memp_tab_TCP_PCB_LISTEN:00000000 $d
+    {standard input}:75     .bss.memp_tab_TCP_PCB_LISTEN:00000000 memp_tab_TCP_PCB_LISTEN
+    {standard input}:82     .rodata.memp_TCP_PCB_LISTEN:00000000 memp_TCP_PCB_LISTEN
+    {standard input}:79     .rodata.memp_TCP_PCB_LISTEN:00000000 $d
+                            *COM*:00000083 memp_memory_TCP_SEG_base
+    {standard input}:89     .bss.memp_tab_TCP_SEG:00000000 $d
+    {standard input}:92     .bss.memp_tab_TCP_SEG:00000000 memp_tab_TCP_SEG
+    {standard input}:99     .rodata.memp_TCP_SEG:00000000 memp_TCP_SEG
+    {standard input}:96     .rodata.memp_TCP_SEG:00000000 $d
+                            *COM*:000000a3 memp_memory_SYS_TIMEOUT_base
+    {standard input}:106    .bss.memp_tab_SYS_TIMEOUT:00000000 $d
+    {standard input}:109    .bss.memp_tab_SYS_TIMEOUT:00000000 memp_tab_SYS_TIMEOUT
+    {standard input}:116    .rodata.memp_SYS_TIMEOUT:00000000 memp_SYS_TIMEOUT
+    {standard input}:113    .rodata.memp_SYS_TIMEOUT:00000000 $d
+                            *COM*:00000103 memp_memory_PBUF_base
+    {standard input}:123    .bss.memp_tab_PBUF:00000000 $d
+    {standard input}:126    .bss.memp_tab_PBUF:00000000 memp_tab_PBUF
+    {standard input}:133    .rodata.memp_PBUF:00000000 memp_PBUF
+    {standard input}:130    .rodata.memp_PBUF:00000000 $d
+                            *COM*:00006103 memp_memory_PBUF_POOL_base
+    {standard input}:140    .bss.memp_tab_PBUF_POOL:00000000 $d
+    {standard input}:143    .bss.memp_tab_PBUF_POOL:00000000 memp_tab_PBUF_POOL
+    {standard input}:150    .rodata.memp_PBUF_POOL:00000000 memp_PBUF_POOL
+    {standard input}:147    .rodata.memp_PBUF_POOL:00000000 $d
+    {standard input}:160    .rodata.memp_pools:00000000 memp_pools
+    {standard input}:157    .rodata.memp_pools:00000000 $d
+    {standard input}:170    .text.memp_init_pool:00000000 $t
+    {standard input}:175    .text.memp_init_pool:00000000 memp_init_pool
+    {standard input}:257    .text.memp_init:00000000 $t
+    {standard input}:262    .text.memp_init:00000000 memp_init
+    {standard input}:311    .text.memp_init:0000002c $d
+    {standard input}:316    .text.do_memp_malloc_pool:00000000 $t
+    {standard input}:320    .text.do_memp_malloc_pool:00000000 do_memp_malloc_pool
+    {standard input}:378    .text.memp_malloc_pool:00000000 $t
+    {standard input}:383    .text.memp_malloc_pool:00000000 memp_malloc_pool
+    {standard input}:428    .text.memp_malloc:00000000 $t
+    {standard input}:433    .text.memp_malloc:00000000 memp_malloc
+    {standard input}:483    .text.memp_malloc:00000030 $d
+    {standard input}:488    .text.do_memp_free_pool:00000000 $t
+    {standard input}:492    .text.do_memp_free_pool:00000000 do_memp_free_pool
+    {standard input}:542    .text.memp_free_pool:00000000 $t
+    {standard input}:547    .text.memp_free_pool:00000000 memp_free_pool
+    {standard input}:596    .text.memp_free:00000000 $t
+    {standard input}:601    .text.memp_free:00000000 memp_free
+    {standard input}:654    .text.memp_free:00000034 $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

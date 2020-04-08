@@ -30,3 +30,35 @@ D:\Users\Beheerder\Desktop\Sensormaritime Development\Job\GpsGyroAnalysisUITool\
 D:\Users\Beheerder\Desktop\Sensormaritime Development\Job\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\SharpMap.UI.dll
 D:\Users\Beheerder\Desktop\Sensormaritime Development\Job\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\SharpMap.UI.xml
 D:\Users\Beheerder\Desktop\Sensormaritime Development\Job\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.MapControl.resources
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\GpsGyroAnalysisUITool.exe.config
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\GpsGyroAnalysisUITool.exe
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\GpsGyroAnalysisUITool.pdb
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\BruTile.Desktop.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\BruTile.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\BruTile.MbTiles.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\BruTile.Serialization.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\Common.Logging.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\GeoAPI.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\NetTopologySuite.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\NetTopologySuite.IO.GeoTools.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\NetTopologySuite.IO.MsSqlSpatial.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\NetTopologySuite.IO.PostGis.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\Newtonsoft.Json.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\PowerCollections.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\ProjNet.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\SharpMap.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\SharpMap.UI.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\System.Data.SQLite.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\System.Data.SQLite.Linq.dll
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\Newtonsoft.Json.xml
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\SharpMap.xml
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\bin\Debug\SharpMap.UI.xml
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.csprojAssemblyReference.cache
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.Form1.resources
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.GraphControl.resources
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.MapControl.resources
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.Properties.Resources.resources
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.csproj.GenerateResource.cache
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.csproj.CopyComplete
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.exe
+D:\Users\Beheerder\Desktop\GPSBox\SensorMaritime-SensorBox\Sensorbox_visualisatie\GpsGyroAnalysisUITool\GpsGyroAnalysisUITool\obj\Debug\GpsGyroAnalysisUITool.pdb

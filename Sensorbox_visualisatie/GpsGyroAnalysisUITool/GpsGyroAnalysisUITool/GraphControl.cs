@@ -75,9 +75,9 @@ namespace GpsGyroAnalysisUITool
            // g.DrawLine(Pens.Black, positionx + 15, 20, positionx + 15, Height - 80);
             g.FillRectangle(Brushes.Blue, new Rectangle(positionx, 20 + (int)minDeg, 50, maxRange));
             g.DrawLine(Pens.Red, positionx - 1, 20 + (int)avgDeg, positionx + (50 - 1), 20 + (int)avgDeg);
-            g.DrawString("min: " + (int)ToDegrees(min), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 80));
-            g.DrawString("max: " + (int)ToDegrees(max), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 70));
-            g.DrawString("avg: " + (int)ToDegrees(avg), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 60));
+            g.DrawString("min: " + Math.Round(ToDegrees(min),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 80));
+            g.DrawString("max: " + Math.Round(ToDegrees(max),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 70));
+            g.DrawString("avg: " + Math.Round(ToDegrees(avg),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 60));
         }
     }
 }

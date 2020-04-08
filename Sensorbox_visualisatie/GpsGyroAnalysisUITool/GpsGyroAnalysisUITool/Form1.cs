@@ -91,7 +91,6 @@ namespace GpsGyroAnalysisUITool
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
 
 
             //drawRotationBar(g, minx, maxx, avgx, 40, "x");

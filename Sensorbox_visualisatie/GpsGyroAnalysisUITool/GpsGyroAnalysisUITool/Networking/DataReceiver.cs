@@ -20,6 +20,7 @@ namespace GpsGyroAnalysisUITool.Networking
         public double degreeAngle;
         public double latitude;
         public double longtitude;
+        public bool headingSet;
 
         public NMEAData()
         {
@@ -146,7 +147,11 @@ namespace GpsGyroAnalysisUITool.Networking
                     string[] gpsData = nmeaString.Substring(0, nmeaString.Length-1).Split(',');
 
                     NMEAData nmeaData = new NMEAData();
-                    nmeaData.degreeAngle = double.Parse(gpsData[8].Replace('.', ','));
+                    if (gpsData[8] != string.Empty)
+                    {
+                        nmeaData.degreeAngle = double.Parse(gpsData[8].Replace('.', ','));
+                        nmeaData.headingSet = true;
+                    }
                     nmeaData.latitude =  MinuteToDegree( double.Parse (gpsData[5].Replace('.', ',')));
                     nmeaData.longtitude = MinuteToDegree(double.Parse(gpsData[3].Replace('.', ',')));
 

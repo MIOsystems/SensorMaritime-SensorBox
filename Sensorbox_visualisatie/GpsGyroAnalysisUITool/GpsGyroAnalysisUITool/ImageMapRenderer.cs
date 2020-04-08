@@ -48,7 +48,7 @@ namespace DavisBridgeTool3.Entities
 
 			if (point == null)
 				return;
-			if (point.Length < 2) {
+			if (point.Count < 2) {
 				PointF pointFC = Transform.WorldtoMap(point[0].Coordinate, map);
 				g.FillEllipse(Brushes.Red, new Rectangle( (int)pointFC.X - 3, (int)pointFC.Y - 3, 6, 6));
 				return;

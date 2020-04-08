@@ -65,8 +65,6 @@ namespace GpsGyroAnalysisUITool
             double minDeg = ((90.0 + ToDegrees(min)) / 180.0) * range;
             double maxDeg = ((90.0 + ToDegrees(max)) / 180.0) * range;
 
-            Console.WriteLine("avgDeg: "+ label+ avgDeg);
-
 
             int maxRange = (int)(maxDeg - minDeg);
 

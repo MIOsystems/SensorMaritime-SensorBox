@@ -77,12 +77,15 @@ namespace GpsGyroAnalysisUITool
                 data = new NMEAData(nmeaData);
                 Coordinate currentGPSCoordinate = new Coordinate(nmeaData.latitude, nmeaData.longtitude);
                 Coordinate unitCoord = new Coordinate(currentGPSCoordinate.X - 1.0 * Math.Cos(((Math.PI / 180) * (nmeaData.degreeAngle + 90))), currentGPSCoordinate.Y + 1.0 * Math.Sin((Math.PI / 180) * (nmeaData.degreeAngle + 90)));
-               
-           
-                
-                boatLayerProvider.Geometries[0] = gf.CreateMultiPoint(new Coordinate[] { currentGPSCoordinate, unitCoord });
 
-               // boatLayerProvider.Geometries[0] = gf.CreateMultiPoint(new Coordinate[] { currentGPSCoordinate });
+
+                if (nmeaData.headingSet)
+                {
+                    boatLayerProvider.Geometries[0] = gf.CreateMultiPoint(new Coordinate[] { currentGPSCoordinate, unitCoord });
+                }
+                else {
+                    boatLayerProvider.Geometries[0] = gf.CreateMultiPoint(new Coordinate[] { currentGPSCoordinate });
+                }
                 mapBox1.Map.Center = GeometryTransform.TransformCoordinate(currentGPSCoordinate, Transformations.Wgs84ToGoogle.MathTransform);
                 mapBox1.Refresh();
             });

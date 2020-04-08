@@ -255,6 +255,7 @@ void cycledelay(uint32_t cycles)
 }
 
 void bmi055_apply_gyro_angle(float* gyro_a, double* gyro_intergral_a, double delta){
+	//*gyro_intergral_a += (* gyro_a)*delta;
 	*gyro_intergral_a += (* gyro_a)*delta;
 }
 
@@ -280,7 +281,7 @@ void bmi055_apply_accel_all_angles(){
 		// this if statement prevent division by zero.
 		if(accel_angle_div_x > 0.0){
 			double accel_angle_x = atan((acc_x)/ accel_angle_div_x);
-			complement_xValue = (complement_xValue*0.8)+ (accel_angle_x*0.2);
+			complement_xValue = ((complement_xValue*0.8)+ (accel_angle_x*0.2));
 		}
 		else{
 			complement_xValue = (complement_xValue*0.8);
@@ -292,7 +293,7 @@ void bmi055_apply_accel_all_angles(){
 		double accel_angle_div_y = sqrt((acc_z)*(acc_z)+ (acc_x)*(acc_x));
 		if(accel_angle_div_y > 0.0){
 			double accel_angle_y = atan((acc_y)/accel_angle_div_y);
-			complement_yValue = (complement_yValue*0.8)+ (accel_angle_y*0.2);
+			complement_yValue = ((complement_yValue*0.8)+ (accel_angle_y*0.2));
 		}
 		else{
 			complement_yValue = (complement_yValue*0.8);
@@ -307,7 +308,7 @@ void bmi055_apply_accel_all_angles(){
 		}
 		else{
 
-			complement_zValue = (complement_zValue*0.8);
+			complement_zValue = -(complement_zValue*0.8);
 		}
 
 //		angle_vec.x = intergrated_complement_x;
@@ -362,9 +363,9 @@ void bmi055_poll_data(){
 		int16_t acc_zValue = (((int16_t)(acceleration_register_copy[7] << 8) | acceleration_register_copy[4]) >> 4);
 
 
-		acc_x = (acc_xValue*(2.0f / 2048.0f)) * 0.98;
+		acc_x = -(acc_xValue*(2.0f / 2048.0f)) * 0.98;
 		acc_y = (acc_yValue*(2.0f / 2048.0f)) * 0.98;
-		acc_z = (acc_zValue*(2.0f / 2048.0f)) * 0.98;
+		acc_z = -(acc_zValue*(2.0f / 2048.0f)) * 0.98;
 
 
 
@@ -376,9 +377,9 @@ void bmi055_poll_data(){
 
 
 
-		gyro_x = (gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+		gyro_x = -(gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
 		gyro_y = (gyro_yValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
-		gyro_z = (gyro_zValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+		gyro_z = -(gyro_zValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
 
 //		bmi055_mat.gyro_x = (gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
 //		bmi055_mat.gyro_y = (gyro_yValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
@@ -472,7 +473,7 @@ int main(void)
     }
   }
 
-  long t = 0;
+  long polltime = 0;
 
 
   /* Placeholder for user application code. The while loop below can be replaced with user application code. */
@@ -480,8 +481,8 @@ int main(void)
   {
 
 	  sys_check_timeouts();
-	  t++;
-	  if( t > 60000){//600000){
+	  polltime++;
+	  if( polltime > 60000){//600000){
 		  bmi055_poll_data();
 		  bmi055_apply_gyro_all_angles();
 		  bmi055_apply_accel_all_angles();
@@ -541,7 +542,7 @@ if(minInitialized){
 //		  udp_send_event(sprintString);
 		 // udp_send_event2(c_v);
 //		  __enable_irq();
-		  t = 0;
+		  polltime = 0;
 	  }
 	  if(gpsOutputready){
 		  avg_complement_xValue = avg_complement_xValue/num_of_samples;

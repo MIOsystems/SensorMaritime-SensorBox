@@ -5019,8 +5019,9 @@
  897 0006 F860     	 str r0,[r7,#12]
  898 0008 B960     	 str r1,[r7,#8]
  899 000a C7E90023 	 strd r2,[r7]
- 258:../main.c     **** 	*gyro_intergral_a += (* gyro_a)*delta;
- 900              	 .loc 4 258 0
+ 258:../main.c     **** 	//*gyro_intergral_a += (* gyro_a)*delta;
+ 259:../main.c     **** 	*gyro_intergral_a += (* gyro_a)*delta;
+ 900              	 .loc 4 259 0
  901 000e BB68     	 ldr r3,[r7,#8]
  902 0010 D3E90045 	 ldrd r4,[r3]
  903 0014 FB68     	 ldr r3,[r7,#12]
@@ -5042,8 +5043,8 @@
  919 003c 0B46     	 mov r3,r1
  920 003e B968     	 ldr r1,[r7,#8]
  921 0040 C1E90023 	 strd r2,[r1]
- 259:../main.c     **** }
- 922              	 .loc 4 259 0
+ 260:../main.c     **** }
+ 922              	 .loc 4 260 0
  923 0044 1037     	 adds r7,r7,#16
  924              	.LCFI64:
  925              	 .cfi_def_cfa_offset 16
@@ -5061,10 +5062,10 @@
  938              	 .thumb_func
  940              	bmi055_apply_gyro_all_angles:
  941              	.LFB462:
- 260:../main.c     **** 
  261:../main.c     **** 
- 262:../main.c     **** void bmi055_apply_gyro_all_angles(){
- 942              	 .loc 4 262 0
+ 262:../main.c     **** 
+ 263:../main.c     **** void bmi055_apply_gyro_all_angles(){
+ 942              	 .loc 4 263 0
  943              	 .cfi_startproc
  944              	 
  945              	 
@@ -5076,30 +5077,30 @@
  951 0002 00AF     	 add r7,sp,#0
  952              	.LCFI67:
  953              	 .cfi_def_cfa_register 7
- 263:../main.c     **** 	bmi055_apply_gyro_angle(&gyro_y, &complement_xValue, -0.004);
- 954              	 .loc 4 263 0
+ 264:../main.c     **** 	bmi055_apply_gyro_angle(&gyro_y, &complement_xValue, -0.004);
+ 954              	 .loc 4 264 0
  955 0004 0E48     	 ldr r0,.L32+16
  956 0006 0F49     	 ldr r1,.L32+20
  957 0008 09A3     	 adr r3,.L32
  958 000a D3E90023 	 ldrd r2,[r3]
  959 000e FFF7FEFF 	 bl bmi055_apply_gyro_angle
- 264:../main.c     **** 	bmi055_apply_gyro_angle(&gyro_x, &complement_yValue, 0.004);
- 960              	 .loc 4 264 0
+ 265:../main.c     **** 	bmi055_apply_gyro_angle(&gyro_x, &complement_yValue, 0.004);
+ 960              	 .loc 4 265 0
  961 0012 0D48     	 ldr r0,.L32+24
  962 0014 0D49     	 ldr r1,.L32+28
  963 0016 08A3     	 adr r3,.L32+8
  964 0018 D3E90023 	 ldrd r2,[r3]
  965 001c FFF7FEFF 	 bl bmi055_apply_gyro_angle
- 265:../main.c     **** 	bmi055_apply_gyro_angle(&gyro_y, &complement_zValue, 0.004);
- 966              	 .loc 4 265 0
+ 266:../main.c     **** 	bmi055_apply_gyro_angle(&gyro_y, &complement_zValue, 0.004);
+ 966              	 .loc 4 266 0
  967 0020 0748     	 ldr r0,.L32+16
  968 0022 0B49     	 ldr r1,.L32+32
  969 0024 04A3     	 adr r3,.L32+8
  970 0026 D3E90023 	 ldrd r2,[r3]
  971 002a FFF7FEFF 	 bl bmi055_apply_gyro_angle
- 266:../main.c     **** 
- 267:../main.c     **** }
- 972              	 .loc 4 267 0
+ 267:../main.c     **** 
+ 268:../main.c     **** }
+ 972              	 .loc 4 268 0
  973 002e 80BD     	 pop {r7,pc}
  974              	.L33:
  975              	 .align 3
@@ -5125,1875 +5126,1887 @@
  996              	 .thumb_func
  998              	bmi055_apply_accel_all_angles:
  999              	.LFB463:
- 268:../main.c     **** //
- 269:../main.c     **** 
- 270:../main.c     **** void bmi055_apply_accel_all_angles(){
- 1000              	 .loc 4 270 0
+ 269:../main.c     **** //
+ 270:../main.c     **** 
+ 271:../main.c     **** void bmi055_apply_accel_all_angles(){
+ 1000              	 .loc 4 271 0
  1001              	 .cfi_startproc
  1002              	 
  1003              	 
- 1004 0000 B0B5     	 push {r4,r5,r7,lr}
+ 1004 0000 2DE9B043 	 push {r4,r5,r7,r8,r9,lr}
  1005              	.LCFI68:
- 1006              	 .cfi_def_cfa_offset 16
- 1007              	 .cfi_offset 4,-16
- 1008              	 .cfi_offset 5,-12
- 1009              	 .cfi_offset 7,-8
- 1010              	 .cfi_offset 14,-4
- 1011 0002 8AB0     	 sub sp,sp,#40
- 1012              	.LCFI69:
- 1013              	 .cfi_def_cfa_offset 56
- 1014 0004 00AF     	 add r7,sp,#0
- 1015              	.LCFI70:
- 1016              	 .cfi_def_cfa_register 7
- 271:../main.c     **** 		num_of_samples++;
- 1017              	 .loc 4 271 0
- 1018 0006 AA4B     	 ldr r3,.L50+24
- 1019 0008 1B68     	 ldr r3,[r3]
- 1020 000a 0133     	 adds r3,r3,#1
- 1021 000c A84A     	 ldr r2,.L50+24
- 1022 000e 1360     	 str r3,[r2]
- 272:../main.c     **** 		//you can if needed use the following commented if statement to accelerometer data
- 273:../main.c     **** 		//double filterValue = fabs(bmi055_mat.acc_x)+fabs(bmi055_mat.acc_y)+fabs(bmi055_mat.acc_z);
- 274:../main.c     **** 		//if(filterValue > 0.1 &&  filterValue < 1.9 )
- 275:../main.c     **** 		//{
- 276:../main.c     **** 			//add angle code here...
- 277:../main.c     **** 		//}
- 278:../main.c     **** 
- 279:../main.c     **** 		double accel_angle_div_x = sqrt((acc_y)*(acc_y)+ (acc_z)*(acc_z));
- 1023              	 .loc 4 279 0
- 1024 0010 A84B     	 ldr r3,.L50+28
- 1025 0012 93ED007A 	 flds s14,[r3]
- 1026 0016 A74B     	 ldr r3,.L50+28
- 1027 0018 D3ED007A 	 flds s15,[r3]
- 1028 001c 27EE277A 	 fmuls s14,s14,s15
- 1029 0020 A54B     	 ldr r3,.L50+32
- 1030 0022 D3ED006A 	 flds s13,[r3]
- 1031 0026 A44B     	 ldr r3,.L50+32
- 1032 0028 D3ED007A 	 flds s15,[r3]
- 1033 002c 66EEA77A 	 fmuls s15,s13,s15
- 1034 0030 77EE277A 	 fadds s15,s14,s15
- 1035 0034 17EE900A 	 fmrs r0,s15
- 1036 0038 FFF7FEFF 	 bl __aeabi_f2d
- 1037 003c 0246     	 mov r2,r0
- 1038 003e 0B46     	 mov r3,r1
- 1039 0040 1046     	 mov r0,r2
- 1040 0042 1946     	 mov r1,r3
- 1041 0044 FFF7FEFF 	 bl sqrt
- 1042 0048 C7E90801 	 strd r0,[r7,#32]
- 280:../main.c     **** 		// this if statement prevent division by zero.
- 281:../main.c     **** 		if(accel_angle_div_x > 0.0){
- 1043              	 .loc 4 281 0
- 1044 004c D7E90801 	 ldrd r0,[r7,#32]
- 1045 0050 4FF00002 	 mov r2,#0
- 1046 0054 4FF00003 	 mov r3,#0
- 1047 0058 FFF7FEFF 	 bl __aeabi_dcmpgt
- 1048 005c 0346     	 mov r3,r0
- 1049 005e 002B     	 cmp r3,#0
- 1050 0060 35D0     	 beq .L47
- 1051              	.LBB2:
- 282:../main.c     **** 			double accel_angle_x = atan((acc_x)/ accel_angle_div_x);
- 1052              	 .loc 4 282 0
- 1053 0062 964B     	 ldr r3,.L50+36
- 1054 0064 1B68     	 ldr r3,[r3]
- 1055 0066 1846     	 mov r0,r3
- 1056 0068 FFF7FEFF 	 bl __aeabi_f2d
- 1057 006c 0246     	 mov r2,r0
- 1058 006e 0B46     	 mov r3,r1
- 1059 0070 1046     	 mov r0,r2
- 1060 0072 1946     	 mov r1,r3
- 1061 0074 D7E90823 	 ldrd r2,[r7,#32]
- 1062 0078 FFF7FEFF 	 bl __aeabi_ddiv
- 1063 007c 0246     	 mov r2,r0
- 1064 007e 0B46     	 mov r3,r1
- 1065 0080 1046     	 mov r0,r2
- 1066 0082 1946     	 mov r1,r3
- 1067 0084 FFF7FEFF 	 bl atan
- 1068 0088 C7E90601 	 strd r0,[r7,#24]
- 283:../main.c     **** 			complement_xValue = (complement_xValue*0.8)+ (accel_angle_x*0.2);
- 1069              	 .loc 4 283 0
- 1070 008c 8C4B     	 ldr r3,.L50+40
- 1071 008e D3E90023 	 ldrd r2,[r3]
- 1072 0092 1046     	 mov r0,r2
- 1073 0094 1946     	 mov r1,r3
- 1074 0096 80A3     	 adr r3,.L50
- 1075 0098 D3E90023 	 ldrd r2,[r3]
- 1076 009c FFF7FEFF 	 bl __aeabi_dmul
- 1077 00a0 0246     	 mov r2,r0
- 1078 00a2 0B46     	 mov r3,r1
- 1079 00a4 1446     	 mov r4,r2
- 1080 00a6 1D46     	 mov r5,r3
- 1081 00a8 D7E90601 	 ldrd r0,[r7,#24]
- 1082 00ac 7CA3     	 adr r3,.L50+8
- 1083 00ae D3E90023 	 ldrd r2,[r3]
- 1084 00b2 FFF7FEFF 	 bl __aeabi_dmul
- 1085 00b6 0246     	 mov r2,r0
- 1086 00b8 0B46     	 mov r3,r1
- 1087 00ba 2046     	 mov r0,r4
- 1088 00bc 2946     	 mov r1,r5
- 1089 00be FFF7FEFF 	 bl __aeabi_dadd
- 1090 00c2 0246     	 mov r2,r0
- 1091 00c4 0B46     	 mov r3,r1
- 1092 00c6 7E49     	 ldr r1,.L50+40
- 1093 00c8 C1E90023 	 strd r2,[r1]
- 1094              	.LBE2:
- 1095 00cc 0EE0     	 b .L37
- 1096              	.L47:
- 284:../main.c     **** 		}
- 285:../main.c     **** 		else{
- 286:../main.c     **** 			complement_xValue = (complement_xValue*0.8);
- 1097              	 .loc 4 286 0
- 1098 00ce 7C4B     	 ldr r3,.L50+40
- 1099 00d0 D3E90023 	 ldrd r2,[r3]
- 1100 00d4 1046     	 mov r0,r2
- 1101 00d6 1946     	 mov r1,r3
- 1102 00d8 6FA3     	 adr r3,.L50
- 1103 00da D3E90023 	 ldrd r2,[r3]
- 1104 00de FFF7FEFF 	 bl __aeabi_dmul
- 1105 00e2 0246     	 mov r2,r0
- 1106 00e4 0B46     	 mov r3,r1
- 1107 00e6 7649     	 ldr r1,.L50+40
- 1108 00e8 C1E90023 	 strd r2,[r1]
- 1109              	.L37:
- 287:../main.c     **** 		}
- 288:../main.c     **** 
- 289:../main.c     **** 		//first atan2 was used but atan is faster. You can always revert this code
- 290:../main.c     **** 		//double accel_angle_x = atan2((bmi055_mat.acc_x), (bmi055_mat.acc_y)*(bmi055_mat.acc_y)+ (bmi055
- 291:../main.c     **** 
- 292:../main.c     **** 		double accel_angle_div_y = sqrt((acc_z)*(acc_z)+ (acc_x)*(acc_x));
- 1110              	 .loc 4 292 0
- 1111 00ec 724B     	 ldr r3,.L50+32
- 1112 00ee 93ED007A 	 flds s14,[r3]
- 1113 00f2 714B     	 ldr r3,.L50+32
- 1114 00f4 D3ED007A 	 flds s15,[r3]
- 1115 00f8 27EE277A 	 fmuls s14,s14,s15
- 1116 00fc 6F4B     	 ldr r3,.L50+36
- 1117 00fe D3ED006A 	 flds s13,[r3]
- 1118 0102 6E4B     	 ldr r3,.L50+36
- 1119 0104 D3ED007A 	 flds s15,[r3]
- 1120 0108 66EEA77A 	 fmuls s15,s13,s15
- 1121 010c 77EE277A 	 fadds s15,s14,s15
- 1122 0110 17EE900A 	 fmrs r0,s15
- 1123 0114 FFF7FEFF 	 bl __aeabi_f2d
- 1124 0118 0246     	 mov r2,r0
- 1125 011a 0B46     	 mov r3,r1
- 1126 011c 1046     	 mov r0,r2
- 1127 011e 1946     	 mov r1,r3
- 1128 0120 FFF7FEFF 	 bl sqrt
- 1129 0124 C7E90401 	 strd r0,[r7,#16]
- 293:../main.c     **** 		if(accel_angle_div_y > 0.0){
- 1130              	 .loc 4 293 0
- 1131 0128 D7E90401 	 ldrd r0,[r7,#16]
- 1132 012c 4FF00002 	 mov r2,#0
- 1133 0130 4FF00003 	 mov r3,#0
- 1134 0134 FFF7FEFF 	 bl __aeabi_dcmpgt
- 1135 0138 0346     	 mov r3,r0
- 1136 013a 002B     	 cmp r3,#0
- 1137 013c 35D0     	 beq .L48
- 1138              	.LBB3:
- 294:../main.c     **** 			double accel_angle_y = atan((acc_y)/accel_angle_div_y);
- 1139              	 .loc 4 294 0
- 1140 013e 5D4B     	 ldr r3,.L50+28
- 1141 0140 1B68     	 ldr r3,[r3]
- 1142 0142 1846     	 mov r0,r3
- 1143 0144 FFF7FEFF 	 bl __aeabi_f2d
- 1144 0148 0246     	 mov r2,r0
- 1145 014a 0B46     	 mov r3,r1
- 1146 014c 1046     	 mov r0,r2
- 1147 014e 1946     	 mov r1,r3
- 1148 0150 D7E90423 	 ldrd r2,[r7,#16]
- 1149 0154 FFF7FEFF 	 bl __aeabi_ddiv
- 1150 0158 0246     	 mov r2,r0
- 1151 015a 0B46     	 mov r3,r1
- 1152 015c 1046     	 mov r0,r2
- 1153 015e 1946     	 mov r1,r3
- 1154 0160 FFF7FEFF 	 bl atan
- 1155 0164 C7E90201 	 strd r0,[r7,#8]
- 295:../main.c     **** 			complement_yValue = (complement_yValue*0.8)+ (accel_angle_y*0.2);
- 1156              	 .loc 4 295 0
- 1157 0168 564B     	 ldr r3,.L50+44
- 1158 016a D3E90023 	 ldrd r2,[r3]
- 1159 016e 1046     	 mov r0,r2
- 1160 0170 1946     	 mov r1,r3
- 1161 0172 49A3     	 adr r3,.L50
- 1162 0174 D3E90023 	 ldrd r2,[r3]
- 1163 0178 FFF7FEFF 	 bl __aeabi_dmul
- 1164 017c 0246     	 mov r2,r0
- 1165 017e 0B46     	 mov r3,r1
- 1166 0180 1446     	 mov r4,r2
- 1167 0182 1D46     	 mov r5,r3
- 1168 0184 D7E90201 	 ldrd r0,[r7,#8]
- 1169 0188 45A3     	 adr r3,.L50+8
- 1170 018a D3E90023 	 ldrd r2,[r3]
- 1171 018e FFF7FEFF 	 bl __aeabi_dmul
- 1172 0192 0246     	 mov r2,r0
- 1173 0194 0B46     	 mov r3,r1
- 1174 0196 2046     	 mov r0,r4
- 1175 0198 2946     	 mov r1,r5
- 1176 019a FFF7FEFF 	 bl __aeabi_dadd
- 1177 019e 0246     	 mov r2,r0
- 1178 01a0 0B46     	 mov r3,r1
- 1179 01a2 4849     	 ldr r1,.L50+44
- 1180 01a4 C1E90023 	 strd r2,[r1]
- 1181              	.LBE3:
- 1182 01a8 0EE0     	 b .L40
- 1183              	.L48:
- 296:../main.c     **** 		}
- 297:../main.c     **** 		else{
- 298:../main.c     **** 			complement_yValue = (complement_yValue*0.8);
- 1184              	 .loc 4 298 0
- 1185 01aa 464B     	 ldr r3,.L50+44
- 1186 01ac D3E90023 	 ldrd r2,[r3]
- 1187 01b0 1046     	 mov r0,r2
- 1188 01b2 1946     	 mov r1,r3
- 1189 01b4 38A3     	 adr r3,.L50
- 1190 01b6 D3E90023 	 ldrd r2,[r3]
- 1191 01ba FFF7FEFF 	 bl __aeabi_dmul
- 1192 01be 0246     	 mov r2,r0
- 1193 01c0 0B46     	 mov r3,r1
- 1194 01c2 4049     	 ldr r1,.L50+44
- 1195 01c4 C1E90023 	 strd r2,[r1]
- 1196              	.L40:
- 299:../main.c     **** 		}
- 300:../main.c     **** 
- 301:../main.c     **** 		//first atan2 was used but atan is faster. You can always revert this code
- 302:../main.c     **** 		//double accel_angle =  atan2(sqrt(acc_u*acc_u + acc_v*acc_v), acc_w);
- 303:../main.c     **** 
- 304:../main.c     **** 		if(acc_z > 0.0){
- 1197              	 .loc 4 304 0
- 1198 01c8 3B4B     	 ldr r3,.L50+32
- 1199 01ca D3ED007A 	 flds s15,[r3]
- 1200 01ce F5EEC07A 	 fcmpezs s15
- 1201 01d2 F1EE10FA 	 fmstat
- 1202 01d6 4CDD     	 ble .L49
- 1203              	.LBB4:
- 305:../main.c     **** 			double accel_angle_z  =  atan((acc_x)*(acc_x) + (acc_y)*(acc_y)/ (acc_z));
- 1204              	 .loc 4 305 0
- 1205 01d8 384B     	 ldr r3,.L50+36
- 1206 01da 93ED007A 	 flds s14,[r3]
- 1207 01de 374B     	 ldr r3,.L50+36
- 1208 01e0 D3ED007A 	 flds s15,[r3]
- 1209 01e4 27EE277A 	 fmuls s14,s14,s15
- 1210 01e8 324B     	 ldr r3,.L50+28
- 1211 01ea D3ED006A 	 flds s13,[r3]
- 1212 01ee 314B     	 ldr r3,.L50+28
- 1213 01f0 D3ED007A 	 flds s15,[r3]
- 1214 01f4 66EEA76A 	 fmuls s13,s13,s15
- 1215 01f8 2F4B     	 ldr r3,.L50+32
- 1216 01fa D3ED007A 	 flds s15,[r3]
- 1217 01fe C6EEA77A 	 fdivs s15,s13,s15
- 1218 0202 77EE277A 	 fadds s15,s14,s15
- 1219 0206 17EE900A 	 fmrs r0,s15
- 1220 020a FFF7FEFF 	 bl __aeabi_f2d
- 1221 020e 0246     	 mov r2,r0
- 1222 0210 0B46     	 mov r3,r1
- 1223 0212 1046     	 mov r0,r2
- 1224 0214 1946     	 mov r1,r3
- 1225 0216 FFF7FEFF 	 bl atan
- 1226 021a C7E90001 	 strd r0,[r7]
- 306:../main.c     **** 			complement_zValue = ((complement_zValue*0.8)+ (((M_PI/2.0)-accel_angle_z)*0.2));
- 1227              	 .loc 4 306 0
- 1228 021e 2A4B     	 ldr r3,.L50+48
- 1229 0220 D3E90023 	 ldrd r2,[r3]
- 1230 0224 1046     	 mov r0,r2
- 1231 0226 1946     	 mov r1,r3
- 1232 0228 1BA3     	 adr r3,.L50
- 1233 022a D3E90023 	 ldrd r2,[r3]
- 1234 022e FFF7FEFF 	 bl __aeabi_dmul
- 1235 0232 0246     	 mov r2,r0
- 1236 0234 0B46     	 mov r3,r1
- 1237 0236 1446     	 mov r4,r2
- 1238 0238 1D46     	 mov r5,r3
- 1239 023a 1BA1     	 adr r1,.L50+16
- 1240 023c D1E90001 	 ldrd r0,[r1]
- 1241 0240 D7E90023 	 ldrd r2,[r7]
- 1242 0244 FFF7FEFF 	 bl __aeabi_dsub
- 1243 0248 0246     	 mov r2,r0
- 1244 024a 0B46     	 mov r3,r1
- 1245 024c 1046     	 mov r0,r2
- 1246 024e 1946     	 mov r1,r3
- 1247 0250 13A3     	 adr r3,.L50+8
- 1248 0252 D3E90023 	 ldrd r2,[r3]
- 1249 0256 FFF7FEFF 	 bl __aeabi_dmul
- 1250 025a 0246     	 mov r2,r0
- 1251 025c 0B46     	 mov r3,r1
- 1252 025e 2046     	 mov r0,r4
- 1253 0260 2946     	 mov r1,r5
- 1254 0262 FFF7FEFF 	 bl __aeabi_dadd
- 1255 0266 0246     	 mov r2,r0
- 1256 0268 0B46     	 mov r3,r1
- 1257 026a 1749     	 ldr r1,.L50+48
- 1258 026c C1E90023 	 strd r2,[r1]
- 1259              	.LBE4:
- 1260 0270 0EE0     	 b .L34
- 1261              	.L49:
- 307:../main.c     **** 		}
- 308:../main.c     **** 		else{
- 309:../main.c     **** 
- 310:../main.c     **** 			complement_zValue = (complement_zValue*0.8);
- 1262              	 .loc 4 310 0
- 1263 0272 154B     	 ldr r3,.L50+48
- 1264 0274 D3E90023 	 ldrd r2,[r3]
- 1265 0278 1046     	 mov r0,r2
- 1266 027a 1946     	 mov r1,r3
- 1267 027c 06A3     	 adr r3,.L50
- 1268 027e D3E90023 	 ldrd r2,[r3]
- 1269 0282 FFF7FEFF 	 bl __aeabi_dmul
- 1270 0286 0246     	 mov r2,r0
- 1271 0288 0B46     	 mov r3,r1
- 1272 028a 0F49     	 ldr r1,.L50+48
- 1273 028c C1E90023 	 strd r2,[r1]
- 1274              	.L34:
- 311:../main.c     **** 		}
- 312:../main.c     **** 
- 313:../main.c     **** //		angle_vec.x = intergrated_complement_x;
- 314:../main.c     **** //		angle_vec.y = intergrated_complement_y;
- 315:../main.c     **** //		angle_vec.z = intergrated_complement_z;
- 316:../main.c     **** 
- 317:../main.c     **** }
- 1275              	 .loc 4 317 0
- 1276 0290 2837     	 adds r7,r7,#40
- 1277              	.LCFI71:
- 1278              	 .cfi_def_cfa_offset 16
- 1279 0292 BD46     	 mov sp,r7
- 1280              	.LCFI72:
- 1281              	 .cfi_def_cfa_register 13
- 1282              	 
- 1283 0294 B0BD     	 pop {r4,r5,r7,pc}
- 1284              	.L51:
- 1285 0296 00BF     	 .align 3
- 1286              	.L50:
- 1287 0298 9A999999 	 .word -1717986918
- 1288 029c 9999E93F 	 .word 1072273817
- 1289 02a0 9A999999 	 .word -1717986918
- 1290 02a4 9999C93F 	 .word 1070176665
- 1291 02a8 182D4454 	 .word 1413754136
- 1292 02ac FB21F93F 	 .word 1073291771
- 1293 02b0 00000000 	 .word num_of_samples
- 1294 02b4 00000000 	 .word acc_y
- 1295 02b8 00000000 	 .word acc_z
- 1296 02bc 00000000 	 .word acc_x
- 1297 02c0 00000000 	 .word complement_xValue
- 1298 02c4 00000000 	 .word complement_yValue
- 1299 02c8 00000000 	 .word complement_zValue
- 1300              	 .cfi_endproc
- 1301              	.LFE463:
- 1303 02cc AFF30080 	 .section .text.bmi055_start,"ax",%progbits
- 1304              	 .align 2
- 1305              	 .global bmi055_start
- 1306              	 .thumb
- 1307              	 .thumb_func
- 1309              	bmi055_start:
- 1310              	.LFB464:
- 318:../main.c     **** 
+ 1006              	 .cfi_def_cfa_offset 24
+ 1007              	 .cfi_offset 4,-24
+ 1008              	 .cfi_offset 5,-20
+ 1009              	 .cfi_offset 7,-16
+ 1010              	 .cfi_offset 8,-12
+ 1011              	 .cfi_offset 9,-8
+ 1012              	 .cfi_offset 14,-4
+ 1013 0004 8AB0     	 sub sp,sp,#40
+ 1014              	.LCFI69:
+ 1015              	 .cfi_def_cfa_offset 64
+ 1016 0006 00AF     	 add r7,sp,#0
+ 1017              	.LCFI70:
+ 1018              	 .cfi_def_cfa_register 7
+ 272:../main.c     **** 		num_of_samples++;
+ 1019              	 .loc 4 272 0
+ 1020 0008 AB4B     	 ldr r3,.L50+24
+ 1021 000a 1B68     	 ldr r3,[r3]
+ 1022 000c 0133     	 adds r3,r3,#1
+ 1023 000e AA4A     	 ldr r2,.L50+24
+ 1024 0010 1360     	 str r3,[r2]
+ 273:../main.c     **** 		//you can if needed use the following commented if statement to accelerometer data
+ 274:../main.c     **** 		//double filterValue = fabs(bmi055_mat.acc_x)+fabs(bmi055_mat.acc_y)+fabs(bmi055_mat.acc_z);
+ 275:../main.c     **** 		//if(filterValue > 0.1 &&  filterValue < 1.9 )
+ 276:../main.c     **** 		//{
+ 277:../main.c     **** 			//add angle code here...
+ 278:../main.c     **** 		//}
+ 279:../main.c     **** 
+ 280:../main.c     **** 		double accel_angle_div_x = sqrt((acc_y)*(acc_y)+ (acc_z)*(acc_z));
+ 1025              	 .loc 4 280 0
+ 1026 0012 AA4B     	 ldr r3,.L50+28
+ 1027 0014 93ED007A 	 flds s14,[r3]
+ 1028 0018 A84B     	 ldr r3,.L50+28
+ 1029 001a D3ED007A 	 flds s15,[r3]
+ 1030 001e 27EE277A 	 fmuls s14,s14,s15
+ 1031 0022 A74B     	 ldr r3,.L50+32
+ 1032 0024 D3ED006A 	 flds s13,[r3]
+ 1033 0028 A54B     	 ldr r3,.L50+32
+ 1034 002a D3ED007A 	 flds s15,[r3]
+ 1035 002e 66EEA77A 	 fmuls s15,s13,s15
+ 1036 0032 77EE277A 	 fadds s15,s14,s15
+ 1037 0036 17EE900A 	 fmrs r0,s15
+ 1038 003a FFF7FEFF 	 bl __aeabi_f2d
+ 1039 003e 0246     	 mov r2,r0
+ 1040 0040 0B46     	 mov r3,r1
+ 1041 0042 1046     	 mov r0,r2
+ 1042 0044 1946     	 mov r1,r3
+ 1043 0046 FFF7FEFF 	 bl sqrt
+ 1044 004a C7E90801 	 strd r0,[r7,#32]
+ 281:../main.c     **** 		// this if statement prevent division by zero.
+ 282:../main.c     **** 		if(accel_angle_div_x > 0.0){
+ 1045              	 .loc 4 282 0
+ 1046 004e D7E90801 	 ldrd r0,[r7,#32]
+ 1047 0052 4FF00002 	 mov r2,#0
+ 1048 0056 4FF00003 	 mov r3,#0
+ 1049 005a FFF7FEFF 	 bl __aeabi_dcmpgt
+ 1050 005e 0346     	 mov r3,r0
+ 1051 0060 002B     	 cmp r3,#0
+ 1052 0062 35D0     	 beq .L47
+ 1053              	.LBB2:
+ 283:../main.c     **** 			double accel_angle_x = atan((acc_x)/ accel_angle_div_x);
+ 1054              	 .loc 4 283 0
+ 1055 0064 974B     	 ldr r3,.L50+36
+ 1056 0066 1B68     	 ldr r3,[r3]
+ 1057 0068 1846     	 mov r0,r3
+ 1058 006a FFF7FEFF 	 bl __aeabi_f2d
+ 1059 006e 0246     	 mov r2,r0
+ 1060 0070 0B46     	 mov r3,r1
+ 1061 0072 1046     	 mov r0,r2
+ 1062 0074 1946     	 mov r1,r3
+ 1063 0076 D7E90823 	 ldrd r2,[r7,#32]
+ 1064 007a FFF7FEFF 	 bl __aeabi_ddiv
+ 1065 007e 0246     	 mov r2,r0
+ 1066 0080 0B46     	 mov r3,r1
+ 1067 0082 1046     	 mov r0,r2
+ 1068 0084 1946     	 mov r1,r3
+ 1069 0086 FFF7FEFF 	 bl atan
+ 1070 008a C7E90601 	 strd r0,[r7,#24]
+ 284:../main.c     **** 			complement_xValue = ((complement_xValue*0.8)+ (accel_angle_x*0.2));
+ 1071              	 .loc 4 284 0
+ 1072 008e 8E4B     	 ldr r3,.L50+40
+ 1073 0090 D3E90023 	 ldrd r2,[r3]
+ 1074 0094 1046     	 mov r0,r2
+ 1075 0096 1946     	 mov r1,r3
+ 1076 0098 81A3     	 adr r3,.L50
+ 1077 009a D3E90023 	 ldrd r2,[r3]
+ 1078 009e FFF7FEFF 	 bl __aeabi_dmul
+ 1079 00a2 0246     	 mov r2,r0
+ 1080 00a4 0B46     	 mov r3,r1
+ 1081 00a6 9046     	 mov r8,r2
+ 1082 00a8 9946     	 mov r9,r3
+ 1083 00aa D7E90601 	 ldrd r0,[r7,#24]
+ 1084 00ae 7EA3     	 adr r3,.L50+8
+ 1085 00b0 D3E90023 	 ldrd r2,[r3]
+ 1086 00b4 FFF7FEFF 	 bl __aeabi_dmul
+ 1087 00b8 0246     	 mov r2,r0
+ 1088 00ba 0B46     	 mov r3,r1
+ 1089 00bc 4046     	 mov r0,r8
+ 1090 00be 4946     	 mov r1,r9
+ 1091 00c0 FFF7FEFF 	 bl __aeabi_dadd
+ 1092 00c4 0246     	 mov r2,r0
+ 1093 00c6 0B46     	 mov r3,r1
+ 1094 00c8 7F49     	 ldr r1,.L50+40
+ 1095 00ca C1E90023 	 strd r2,[r1]
+ 1096              	.LBE2:
+ 1097 00ce 0EE0     	 b .L37
+ 1098              	.L47:
+ 285:../main.c     **** 		}
+ 286:../main.c     **** 		else{
+ 287:../main.c     **** 			complement_xValue = (complement_xValue*0.8);
+ 1099              	 .loc 4 287 0
+ 1100 00d0 7D4B     	 ldr r3,.L50+40
+ 1101 00d2 D3E90023 	 ldrd r2,[r3]
+ 1102 00d6 1046     	 mov r0,r2
+ 1103 00d8 1946     	 mov r1,r3
+ 1104 00da 71A3     	 adr r3,.L50
+ 1105 00dc D3E90023 	 ldrd r2,[r3]
+ 1106 00e0 FFF7FEFF 	 bl __aeabi_dmul
+ 1107 00e4 0246     	 mov r2,r0
+ 1108 00e6 0B46     	 mov r3,r1
+ 1109 00e8 7749     	 ldr r1,.L50+40
+ 1110 00ea C1E90023 	 strd r2,[r1]
+ 1111              	.L37:
+ 288:../main.c     **** 		}
+ 289:../main.c     **** 
+ 290:../main.c     **** 		//first atan2 was used but atan is faster. You can always revert this code
+ 291:../main.c     **** 		//double accel_angle_x = atan2((bmi055_mat.acc_x), (bmi055_mat.acc_y)*(bmi055_mat.acc_y)+ (bmi055
+ 292:../main.c     **** 
+ 293:../main.c     **** 		double accel_angle_div_y = sqrt((acc_z)*(acc_z)+ (acc_x)*(acc_x));
+ 1112              	 .loc 4 293 0
+ 1113 00ee 744B     	 ldr r3,.L50+32
+ 1114 00f0 93ED007A 	 flds s14,[r3]
+ 1115 00f4 724B     	 ldr r3,.L50+32
+ 1116 00f6 D3ED007A 	 flds s15,[r3]
+ 1117 00fa 27EE277A 	 fmuls s14,s14,s15
+ 1118 00fe 714B     	 ldr r3,.L50+36
+ 1119 0100 D3ED006A 	 flds s13,[r3]
+ 1120 0104 6F4B     	 ldr r3,.L50+36
+ 1121 0106 D3ED007A 	 flds s15,[r3]
+ 1122 010a 66EEA77A 	 fmuls s15,s13,s15
+ 1123 010e 77EE277A 	 fadds s15,s14,s15
+ 1124 0112 17EE900A 	 fmrs r0,s15
+ 1125 0116 FFF7FEFF 	 bl __aeabi_f2d
+ 1126 011a 0246     	 mov r2,r0
+ 1127 011c 0B46     	 mov r3,r1
+ 1128 011e 1046     	 mov r0,r2
+ 1129 0120 1946     	 mov r1,r3
+ 1130 0122 FFF7FEFF 	 bl sqrt
+ 1131 0126 C7E90401 	 strd r0,[r7,#16]
+ 294:../main.c     **** 		if(accel_angle_div_y > 0.0){
+ 1132              	 .loc 4 294 0
+ 1133 012a D7E90401 	 ldrd r0,[r7,#16]
+ 1134 012e 4FF00002 	 mov r2,#0
+ 1135 0132 4FF00003 	 mov r3,#0
+ 1136 0136 FFF7FEFF 	 bl __aeabi_dcmpgt
+ 1137 013a 0346     	 mov r3,r0
+ 1138 013c 002B     	 cmp r3,#0
+ 1139 013e 35D0     	 beq .L48
+ 1140              	.LBB3:
+ 295:../main.c     **** 			double accel_angle_y = atan((acc_y)/accel_angle_div_y);
+ 1141              	 .loc 4 295 0
+ 1142 0140 5E4B     	 ldr r3,.L50+28
+ 1143 0142 1B68     	 ldr r3,[r3]
+ 1144 0144 1846     	 mov r0,r3
+ 1145 0146 FFF7FEFF 	 bl __aeabi_f2d
+ 1146 014a 0246     	 mov r2,r0
+ 1147 014c 0B46     	 mov r3,r1
+ 1148 014e 1046     	 mov r0,r2
+ 1149 0150 1946     	 mov r1,r3
+ 1150 0152 D7E90423 	 ldrd r2,[r7,#16]
+ 1151 0156 FFF7FEFF 	 bl __aeabi_ddiv
+ 1152 015a 0246     	 mov r2,r0
+ 1153 015c 0B46     	 mov r3,r1
+ 1154 015e 1046     	 mov r0,r2
+ 1155 0160 1946     	 mov r1,r3
+ 1156 0162 FFF7FEFF 	 bl atan
+ 1157 0166 C7E90201 	 strd r0,[r7,#8]
+ 296:../main.c     **** 			complement_yValue = ((complement_yValue*0.8)+ (accel_angle_y*0.2));
+ 1158              	 .loc 4 296 0
+ 1159 016a 584B     	 ldr r3,.L50+44
+ 1160 016c D3E90023 	 ldrd r2,[r3]
+ 1161 0170 1046     	 mov r0,r2
+ 1162 0172 1946     	 mov r1,r3
+ 1163 0174 4AA3     	 adr r3,.L50
+ 1164 0176 D3E90023 	 ldrd r2,[r3]
+ 1165 017a FFF7FEFF 	 bl __aeabi_dmul
+ 1166 017e 0246     	 mov r2,r0
+ 1167 0180 0B46     	 mov r3,r1
+ 1168 0182 9046     	 mov r8,r2
+ 1169 0184 9946     	 mov r9,r3
+ 1170 0186 D7E90201 	 ldrd r0,[r7,#8]
+ 1171 018a 47A3     	 adr r3,.L50+8
+ 1172 018c D3E90023 	 ldrd r2,[r3]
+ 1173 0190 FFF7FEFF 	 bl __aeabi_dmul
+ 1174 0194 0246     	 mov r2,r0
+ 1175 0196 0B46     	 mov r3,r1
+ 1176 0198 4046     	 mov r0,r8
+ 1177 019a 4946     	 mov r1,r9
+ 1178 019c FFF7FEFF 	 bl __aeabi_dadd
+ 1179 01a0 0246     	 mov r2,r0
+ 1180 01a2 0B46     	 mov r3,r1
+ 1181 01a4 4949     	 ldr r1,.L50+44
+ 1182 01a6 C1E90023 	 strd r2,[r1]
+ 1183              	.LBE3:
+ 1184 01aa 0EE0     	 b .L40
+ 1185              	.L48:
+ 297:../main.c     **** 		}
+ 298:../main.c     **** 		else{
+ 299:../main.c     **** 			complement_yValue = (complement_yValue*0.8);
+ 1186              	 .loc 4 299 0
+ 1187 01ac 474B     	 ldr r3,.L50+44
+ 1188 01ae D3E90023 	 ldrd r2,[r3]
+ 1189 01b2 1046     	 mov r0,r2
+ 1190 01b4 1946     	 mov r1,r3
+ 1191 01b6 3AA3     	 adr r3,.L50
+ 1192 01b8 D3E90023 	 ldrd r2,[r3]
+ 1193 01bc FFF7FEFF 	 bl __aeabi_dmul
+ 1194 01c0 0246     	 mov r2,r0
+ 1195 01c2 0B46     	 mov r3,r1
+ 1196 01c4 4149     	 ldr r1,.L50+44
+ 1197 01c6 C1E90023 	 strd r2,[r1]
+ 1198              	.L40:
+ 300:../main.c     **** 		}
+ 301:../main.c     **** 
+ 302:../main.c     **** 		//first atan2 was used but atan is faster. You can always revert this code
+ 303:../main.c     **** 		//double accel_angle =  atan2(sqrt(acc_u*acc_u + acc_v*acc_v), acc_w);
+ 304:../main.c     **** 
+ 305:../main.c     **** 		if(acc_z > 0.0){
+ 1199              	 .loc 4 305 0
+ 1200 01ca 3D4B     	 ldr r3,.L50+32
+ 1201 01cc D3ED007A 	 flds s15,[r3]
+ 1202 01d0 F5EEC07A 	 fcmpezs s15
+ 1203 01d4 F1EE10FA 	 fmstat
+ 1204 01d8 4CDD     	 ble .L49
+ 1205              	.LBB4:
+ 306:../main.c     **** 			double accel_angle_z  =  atan((acc_x)*(acc_x) + (acc_y)*(acc_y)/ (acc_z));
+ 1206              	 .loc 4 306 0
+ 1207 01da 3A4B     	 ldr r3,.L50+36
+ 1208 01dc 93ED007A 	 flds s14,[r3]
+ 1209 01e0 384B     	 ldr r3,.L50+36
+ 1210 01e2 D3ED007A 	 flds s15,[r3]
+ 1211 01e6 27EE277A 	 fmuls s14,s14,s15
+ 1212 01ea 344B     	 ldr r3,.L50+28
+ 1213 01ec D3ED006A 	 flds s13,[r3]
+ 1214 01f0 324B     	 ldr r3,.L50+28
+ 1215 01f2 D3ED007A 	 flds s15,[r3]
+ 1216 01f6 66EEA76A 	 fmuls s13,s13,s15
+ 1217 01fa 314B     	 ldr r3,.L50+32
+ 1218 01fc D3ED007A 	 flds s15,[r3]
+ 1219 0200 C6EEA77A 	 fdivs s15,s13,s15
+ 1220 0204 77EE277A 	 fadds s15,s14,s15
+ 1221 0208 17EE900A 	 fmrs r0,s15
+ 1222 020c FFF7FEFF 	 bl __aeabi_f2d
+ 1223 0210 0246     	 mov r2,r0
+ 1224 0212 0B46     	 mov r3,r1
+ 1225 0214 1046     	 mov r0,r2
+ 1226 0216 1946     	 mov r1,r3
+ 1227 0218 FFF7FEFF 	 bl atan
+ 1228 021c C7E90001 	 strd r0,[r7]
+ 307:../main.c     **** 			complement_zValue = ((complement_zValue*0.8)+ (((M_PI/2.0)-accel_angle_z)*0.2));
+ 1229              	 .loc 4 307 0
+ 1230 0220 2B4B     	 ldr r3,.L50+48
+ 1231 0222 D3E90023 	 ldrd r2,[r3]
+ 1232 0226 1046     	 mov r0,r2
+ 1233 0228 1946     	 mov r1,r3
+ 1234 022a 1DA3     	 adr r3,.L50
+ 1235 022c D3E90023 	 ldrd r2,[r3]
+ 1236 0230 FFF7FEFF 	 bl __aeabi_dmul
+ 1237 0234 0246     	 mov r2,r0
+ 1238 0236 0B46     	 mov r3,r1
+ 1239 0238 1446     	 mov r4,r2
+ 1240 023a 1D46     	 mov r5,r3
+ 1241 023c 1CA1     	 adr r1,.L50+16
+ 1242 023e D1E90001 	 ldrd r0,[r1]
+ 1243 0242 D7E90023 	 ldrd r2,[r7]
+ 1244 0246 FFF7FEFF 	 bl __aeabi_dsub
+ 1245 024a 0246     	 mov r2,r0
+ 1246 024c 0B46     	 mov r3,r1
+ 1247 024e 1046     	 mov r0,r2
+ 1248 0250 1946     	 mov r1,r3
+ 1249 0252 15A3     	 adr r3,.L50+8
+ 1250 0254 D3E90023 	 ldrd r2,[r3]
+ 1251 0258 FFF7FEFF 	 bl __aeabi_dmul
+ 1252 025c 0246     	 mov r2,r0
+ 1253 025e 0B46     	 mov r3,r1
+ 1254 0260 2046     	 mov r0,r4
+ 1255 0262 2946     	 mov r1,r5
+ 1256 0264 FFF7FEFF 	 bl __aeabi_dadd
+ 1257 0268 0246     	 mov r2,r0
+ 1258 026a 0B46     	 mov r3,r1
+ 1259 026c 1849     	 ldr r1,.L50+48
+ 1260 026e C1E90023 	 strd r2,[r1]
+ 1261              	.LBE4:
+ 1262 0272 11E0     	 b .L34
+ 1263              	.L49:
+ 308:../main.c     **** 		}
+ 309:../main.c     **** 		else{
+ 310:../main.c     **** 
+ 311:../main.c     **** 			complement_zValue = -(complement_zValue*0.8);
+ 1264              	 .loc 4 311 0
+ 1265 0274 164B     	 ldr r3,.L50+48
+ 1266 0276 D3E90023 	 ldrd r2,[r3]
+ 1267 027a 1046     	 mov r0,r2
+ 1268 027c 1946     	 mov r1,r3
+ 1269 027e 08A3     	 adr r3,.L50
+ 1270 0280 D3E90023 	 ldrd r2,[r3]
+ 1271 0284 FFF7FEFF 	 bl __aeabi_dmul
+ 1272 0288 0246     	 mov r2,r0
+ 1273 028a 0B46     	 mov r3,r1
+ 1274 028c 1446     	 mov r4,r2
+ 1275 028e 83F00045 	 eor r5,r3,#-2147483648
+ 1276 0292 0F4B     	 ldr r3,.L50+48
+ 1277 0294 C3E90045 	 strd r4,[r3]
+ 1278              	.L34:
+ 312:../main.c     **** 		}
+ 313:../main.c     **** 
+ 314:../main.c     **** //		angle_vec.x = intergrated_complement_x;
+ 315:../main.c     **** //		angle_vec.y = intergrated_complement_y;
+ 316:../main.c     **** //		angle_vec.z = intergrated_complement_z;
+ 317:../main.c     **** 
+ 318:../main.c     **** }
+ 1279              	 .loc 4 318 0
+ 1280 0298 2837     	 adds r7,r7,#40
+ 1281              	.LCFI71:
+ 1282              	 .cfi_def_cfa_offset 24
+ 1283 029a BD46     	 mov sp,r7
+ 1284              	.LCFI72:
+ 1285              	 .cfi_def_cfa_register 13
+ 1286              	 
+ 1287 029c BDE8B083 	 pop {r4,r5,r7,r8,r9,pc}
+ 1288              	.L51:
+ 1289              	 .align 3
+ 1290              	.L50:
+ 1291 02a0 9A999999 	 .word -1717986918
+ 1292 02a4 9999E93F 	 .word 1072273817
+ 1293 02a8 9A999999 	 .word -1717986918
+ 1294 02ac 9999C93F 	 .word 1070176665
+ 1295 02b0 182D4454 	 .word 1413754136
+ 1296 02b4 FB21F93F 	 .word 1073291771
+ 1297 02b8 00000000 	 .word num_of_samples
+ 1298 02bc 00000000 	 .word acc_y
+ 1299 02c0 00000000 	 .word acc_z
+ 1300 02c4 00000000 	 .word acc_x
+ 1301 02c8 00000000 	 .word complement_xValue
+ 1302 02cc 00000000 	 .word complement_yValue
+ 1303 02d0 00000000 	 .word complement_zValue
+ 1304              	 .cfi_endproc
+ 1305              	.LFE463:
+ 1307 02d4 AFF30080 	 .section .text.bmi055_start,"ax",%progbits
+ 1308              	 .align 2
+ 1309              	 .global bmi055_start
+ 1310              	 .thumb
+ 1311              	 .thumb_func
+ 1313              	bmi055_start:
+ 1314              	.LFB464:
  319:../main.c     **** 
- 320:../main.c     **** void bmi055_start(void)
- 321:../main.c     **** {
- 1311              	 .loc 4 321 0
- 1312              	 .cfi_startproc
- 1313              	 
- 1314              	 
- 1315 0000 80B5     	 push {r7,lr}
- 1316              	.LCFI73:
- 1317              	 .cfi_def_cfa_offset 8
- 1318              	 .cfi_offset 7,-8
- 1319              	 .cfi_offset 14,-4
- 1320 0002 00AF     	 add r7,sp,#0
- 1321              	.LCFI74:
- 1322              	 .cfi_def_cfa_register 7
- 322:../main.c     **** 		SPI_MASTER_SetBaudRate(&SPI_MASTER_0, SPI_MASTER_0.config->channel_config->baudrate);
- 1323              	 .loc 4 322 0
- 1324 0004 154B     	 ldr r3,.L53
- 1325 0006 5B68     	 ldr r3,[r3,#4]
- 1326 0008 1B68     	 ldr r3,[r3]
- 1327 000a 1B68     	 ldr r3,[r3]
- 1328 000c 1348     	 ldr r0,.L53
- 1329 000e 1946     	 mov r1,r3
- 1330 0010 FFF7FEFF 	 bl SPI_MASTER_SetBaudRate
- 323:../main.c     **** 		XMC_GPIO_SetMode(BMI_CSA_PORT, BMI_CSA_PIN, BMI_CSA_MODE);
- 1331              	 .loc 4 323 0
- 1332 0014 1248     	 ldr r0,.L53+4
- 1333 0016 0621     	 movs r1,#6
- 1334 0018 8022     	 movs r2,#128
- 1335 001a FFF7FEFF 	 bl XMC_GPIO_SetMode
- 324:../main.c     **** 		XMC_GPIO_SetMode(BMI_CSG_PORT, BMI_CSG_PIN, BMI_CSG_MODE);
- 1336              	 .loc 4 324 0
- 1337 001e 1148     	 ldr r0,.L53+8
- 1338 0020 0621     	 movs r1,#6
- 1339 0022 8022     	 movs r2,#128
- 1340 0024 FFF7FEFF 	 bl XMC_GPIO_SetMode
- 325:../main.c     **** 
- 326:../main.c     **** 		cycledelay((uint32_t)(145 * 2));
- 1341              	 .loc 4 326 0
- 1342 0028 4FF49170 	 mov r0,#290
- 1343 002c FFF7FEFF 	 bl cycledelay
- 327:../main.c     **** 
- 328:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSA_PORT, BMI_CSA_PIN);
- 1344              	 .loc 4 328 0
- 1345 0030 0B48     	 ldr r0,.L53+4
- 1346 0032 0621     	 movs r1,#6
- 1347 0034 FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
- 329:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSG_PORT, BMI_CSG_PIN);
+ 320:../main.c     **** 
+ 321:../main.c     **** void bmi055_start(void)
+ 322:../main.c     **** {
+ 1315              	 .loc 4 322 0
+ 1316              	 .cfi_startproc
+ 1317              	 
+ 1318              	 
+ 1319 0000 80B5     	 push {r7,lr}
+ 1320              	.LCFI73:
+ 1321              	 .cfi_def_cfa_offset 8
+ 1322              	 .cfi_offset 7,-8
+ 1323              	 .cfi_offset 14,-4
+ 1324 0002 00AF     	 add r7,sp,#0
+ 1325              	.LCFI74:
+ 1326              	 .cfi_def_cfa_register 7
+ 323:../main.c     **** 		SPI_MASTER_SetBaudRate(&SPI_MASTER_0, SPI_MASTER_0.config->channel_config->baudrate);
+ 1327              	 .loc 4 323 0
+ 1328 0004 154B     	 ldr r3,.L53
+ 1329 0006 5B68     	 ldr r3,[r3,#4]
+ 1330 0008 1B68     	 ldr r3,[r3]
+ 1331 000a 1B68     	 ldr r3,[r3]
+ 1332 000c 1348     	 ldr r0,.L53
+ 1333 000e 1946     	 mov r1,r3
+ 1334 0010 FFF7FEFF 	 bl SPI_MASTER_SetBaudRate
+ 324:../main.c     **** 		XMC_GPIO_SetMode(BMI_CSA_PORT, BMI_CSA_PIN, BMI_CSA_MODE);
+ 1335              	 .loc 4 324 0
+ 1336 0014 1248     	 ldr r0,.L53+4
+ 1337 0016 0621     	 movs r1,#6
+ 1338 0018 8022     	 movs r2,#128
+ 1339 001a FFF7FEFF 	 bl XMC_GPIO_SetMode
+ 325:../main.c     **** 		XMC_GPIO_SetMode(BMI_CSG_PORT, BMI_CSG_PIN, BMI_CSG_MODE);
+ 1340              	 .loc 4 325 0
+ 1341 001e 1148     	 ldr r0,.L53+8
+ 1342 0020 0621     	 movs r1,#6
+ 1343 0022 8022     	 movs r2,#128
+ 1344 0024 FFF7FEFF 	 bl XMC_GPIO_SetMode
+ 326:../main.c     **** 
+ 327:../main.c     **** 		cycledelay((uint32_t)(145 * 2));
+ 1345              	 .loc 4 327 0
+ 1346 0028 4FF49170 	 mov r0,#290
+ 1347 002c FFF7FEFF 	 bl cycledelay
+ 328:../main.c     **** 
+ 329:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSA_PORT, BMI_CSA_PIN);
  1348              	 .loc 4 329 0
- 1349 0038 0A48     	 ldr r0,.L53+8
- 1350 003a 0621     	 movs r1,#6
- 1351 003c FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
- 330:../main.c     **** 
- 331:../main.c     **** 		spi_flushrxbuffer(&SPI_MASTER_0);
- 1352              	 .loc 4 331 0
- 1353 0040 0648     	 ldr r0,.L53
- 1354 0042 FFF7FEFF 	 bl spi_flushrxbuffer
- 332:../main.c     **** 
- 333:../main.c     **** 		memset(acceleration_register, 0, 4);
- 1355              	 .loc 4 333 0
- 1356 0046 0848     	 ldr r0,.L53+12
- 1357 0048 0021     	 movs r1,#0
- 1358 004a 0422     	 movs r2,#4
- 1359 004c FFF7FEFF 	 bl memset
- 334:../main.c     **** 		memset(gyro_register, 0, 4);
- 1360              	 .loc 4 334 0
- 1361 0050 0648     	 ldr r0,.L53+16
- 1362 0052 0021     	 movs r1,#0
- 1363 0054 0422     	 movs r2,#4
- 1364 0056 FFF7FEFF 	 bl memset
- 335:../main.c     **** }
- 1365              	 .loc 4 335 0
- 1366 005a 80BD     	 pop {r7,pc}
- 1367              	.L54:
- 1368              	 .align 2
- 1369              	.L53:
- 1370 005c 00000000 	 .word SPI_MASTER_0
- 1371 0060 00820248 	 .word 1208123904
- 1372 0064 00850248 	 .word 1208124672
- 1373 0068 00000000 	 .word acceleration_register
- 1374 006c 00000000 	 .word gyro_register
- 1375              	 .cfi_endproc
- 1376              	.LFE464:
- 1378              	 .global __aeabi_d2f
- 1379              	 .section .text.bmi055_poll_data,"ax",%progbits
- 1380              	 .align 2
- 1381              	 .global bmi055_poll_data
- 1382              	 .thumb
- 1383              	 .thumb_func
- 1385              	bmi055_poll_data:
- 1386              	.LFB465:
- 336:../main.c     **** 
+ 1349 0030 0B48     	 ldr r0,.L53+4
+ 1350 0032 0621     	 movs r1,#6
+ 1351 0034 FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
+ 330:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSG_PORT, BMI_CSG_PIN);
+ 1352              	 .loc 4 330 0
+ 1353 0038 0A48     	 ldr r0,.L53+8
+ 1354 003a 0621     	 movs r1,#6
+ 1355 003c FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
+ 331:../main.c     **** 
+ 332:../main.c     **** 		spi_flushrxbuffer(&SPI_MASTER_0);
+ 1356              	 .loc 4 332 0
+ 1357 0040 0648     	 ldr r0,.L53
+ 1358 0042 FFF7FEFF 	 bl spi_flushrxbuffer
+ 333:../main.c     **** 
+ 334:../main.c     **** 		memset(acceleration_register, 0, 4);
+ 1359              	 .loc 4 334 0
+ 1360 0046 0848     	 ldr r0,.L53+12
+ 1361 0048 0021     	 movs r1,#0
+ 1362 004a 0422     	 movs r2,#4
+ 1363 004c FFF7FEFF 	 bl memset
+ 335:../main.c     **** 		memset(gyro_register, 0, 4);
+ 1364              	 .loc 4 335 0
+ 1365 0050 0648     	 ldr r0,.L53+16
+ 1366 0052 0021     	 movs r1,#0
+ 1367 0054 0422     	 movs r2,#4
+ 1368 0056 FFF7FEFF 	 bl memset
+ 336:../main.c     **** }
+ 1369              	 .loc 4 336 0
+ 1370 005a 80BD     	 pop {r7,pc}
+ 1371              	.L54:
+ 1372              	 .align 2
+ 1373              	.L53:
+ 1374 005c 00000000 	 .word SPI_MASTER_0
+ 1375 0060 00820248 	 .word 1208123904
+ 1376 0064 00850248 	 .word 1208124672
+ 1377 0068 00000000 	 .word acceleration_register
+ 1378 006c 00000000 	 .word gyro_register
+ 1379              	 .cfi_endproc
+ 1380              	.LFE464:
+ 1382              	 .global __aeabi_d2f
+ 1383              	 .section .text.bmi055_poll_data,"ax",%progbits
+ 1384              	 .align 2
+ 1385              	 .global bmi055_poll_data
+ 1386              	 .thumb
+ 1387              	 .thumb_func
+ 1389              	bmi055_poll_data:
+ 1390              	.LFB465:
  337:../main.c     **** 
- 338:../main.c     **** void bmi055_poll_data(){
- 1387              	 .loc 4 338 0
- 1388              	 .cfi_startproc
- 1389              	 
- 1390              	 
- 1391 0000 80B5     	 push {r7,lr}
- 1392              	.LCFI75:
- 1393              	 .cfi_def_cfa_offset 8
- 1394              	 .cfi_offset 7,-8
- 1395              	 .cfi_offset 14,-4
- 1396 0002 82B0     	 sub sp,sp,#8
- 1397              	.LCFI76:
- 1398              	 .cfi_def_cfa_offset 16
- 1399 0004 00AF     	 add r7,sp,#0
- 1400              	.LCFI77:
- 1401              	 .cfi_def_cfa_register 7
- 339:../main.c     **** 
+ 338:../main.c     **** 
+ 339:../main.c     **** void bmi055_poll_data(){
+ 1391              	 .loc 4 339 0
+ 1392              	 .cfi_startproc
+ 1393              	 
+ 1394              	 
+ 1395 0000 80B5     	 push {r7,lr}
+ 1396              	.LCFI75:
+ 1397              	 .cfi_def_cfa_offset 8
+ 1398              	 .cfi_offset 7,-8
+ 1399              	 .cfi_offset 14,-4
+ 1400 0002 82B0     	 sub sp,sp,#8
+ 1401              	.LCFI76:
+ 1402              	 .cfi_def_cfa_offset 16
+ 1403 0004 00AF     	 add r7,sp,#0
+ 1404              	.LCFI77:
+ 1405              	 .cfi_def_cfa_register 7
  340:../main.c     **** 
- 341:../main.c     **** 		uint16_t opcode = BMI_DATAREG_START;
- 1402              	 .loc 4 341 0
- 1403 0006 4FF40243 	 mov r3,#33280
- 1404 000a 3B80     	 strh r3,[r7]
- 342:../main.c     **** 
- 343:../main.c     **** 		//poll data from accelerometer
- 344:../main.c     **** 		spi_flushrxbuffer(&SPI_MASTER_0);
- 1405              	 .loc 4 344 0
- 1406 000c A648     	 ldr r0,.L56+16
- 1407 000e FFF7FEFF 	 bl spi_flushrxbuffer
- 345:../main.c     **** 		XMC_GPIO_SetOutputLow(BMI_CSA_PORT, BMI_CSA_PIN);
- 1408              	 .loc 4 345 0
- 1409 0012 A648     	 ldr r0,.L56+20
- 1410 0014 0621     	 movs r1,#6
- 1411 0016 FFF7FEFF 	 bl XMC_GPIO_SetOutputLow
- 346:../main.c     **** 		SPI_MASTER_Transfer(&SPI_MASTER_0, (uint8_t *)&opcode, (uint8_t*)acceleration_register, 4);
+ 341:../main.c     **** 
+ 342:../main.c     **** 		uint16_t opcode = BMI_DATAREG_START;
+ 1406              	 .loc 4 342 0
+ 1407 0006 4FF40243 	 mov r3,#33280
+ 1408 000a 3B80     	 strh r3,[r7]
+ 343:../main.c     **** 
+ 344:../main.c     **** 		//poll data from accelerometer
+ 345:../main.c     **** 		spi_flushrxbuffer(&SPI_MASTER_0);
+ 1409              	 .loc 4 345 0
+ 1410 000c AC48     	 ldr r0,.L56+16
+ 1411 000e FFF7FEFF 	 bl spi_flushrxbuffer
+ 346:../main.c     **** 		XMC_GPIO_SetOutputLow(BMI_CSA_PORT, BMI_CSA_PIN);
  1412              	 .loc 4 346 0
- 1413 001a 3B46     	 mov r3,r7
- 1414 001c A248     	 ldr r0,.L56+16
- 1415 001e 1946     	 mov r1,r3
- 1416 0020 A34A     	 ldr r2,.L56+24
- 1417 0022 0423     	 movs r3,#4
- 1418 0024 FFF7FEFF 	 bl SPI_MASTER_Transfer
- 347:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSA_PORT, BMI_CSA_PIN);
- 1419              	 .loc 4 347 0
- 1420 0028 A048     	 ldr r0,.L56+20
- 1421 002a 0621     	 movs r1,#6
- 1422 002c FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
- 348:../main.c     **** 
- 349:../main.c     **** 		//poll data from gyroscope
- 350:../main.c     **** 		spi_flushrxbuffer(&SPI_MASTER_0);
- 1423              	 .loc 4 350 0
- 1424 0030 9D48     	 ldr r0,.L56+16
- 1425 0032 FFF7FEFF 	 bl spi_flushrxbuffer
- 351:../main.c     **** 		XMC_GPIO_SetOutputLow(BMI_CSG_PORT, BMI_CSG_PIN);
- 1426              	 .loc 4 351 0
- 1427 0036 9F48     	 ldr r0,.L56+28
- 1428 0038 0621     	 movs r1,#6
- 1429 003a FFF7FEFF 	 bl XMC_GPIO_SetOutputLow
- 352:../main.c     **** 		SPI_MASTER_Transfer(&SPI_MASTER_0, (uint8_t *)&opcode, (uint8_t*)gyro_register, 4);
+ 1413 0012 AC48     	 ldr r0,.L56+20
+ 1414 0014 0621     	 movs r1,#6
+ 1415 0016 FFF7FEFF 	 bl XMC_GPIO_SetOutputLow
+ 347:../main.c     **** 		SPI_MASTER_Transfer(&SPI_MASTER_0, (uint8_t *)&opcode, (uint8_t*)acceleration_register, 4);
+ 1416              	 .loc 4 347 0
+ 1417 001a 3B46     	 mov r3,r7
+ 1418 001c A848     	 ldr r0,.L56+16
+ 1419 001e 1946     	 mov r1,r3
+ 1420 0020 A94A     	 ldr r2,.L56+24
+ 1421 0022 0423     	 movs r3,#4
+ 1422 0024 FFF7FEFF 	 bl SPI_MASTER_Transfer
+ 348:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSA_PORT, BMI_CSA_PIN);
+ 1423              	 .loc 4 348 0
+ 1424 0028 A648     	 ldr r0,.L56+20
+ 1425 002a 0621     	 movs r1,#6
+ 1426 002c FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
+ 349:../main.c     **** 
+ 350:../main.c     **** 		//poll data from gyroscope
+ 351:../main.c     **** 		spi_flushrxbuffer(&SPI_MASTER_0);
+ 1427              	 .loc 4 351 0
+ 1428 0030 A348     	 ldr r0,.L56+16
+ 1429 0032 FFF7FEFF 	 bl spi_flushrxbuffer
+ 352:../main.c     **** 		XMC_GPIO_SetOutputLow(BMI_CSG_PORT, BMI_CSG_PIN);
  1430              	 .loc 4 352 0
- 1431 003e 3B46     	 mov r3,r7
- 1432 0040 9948     	 ldr r0,.L56+16
- 1433 0042 1946     	 mov r1,r3
- 1434 0044 9C4A     	 ldr r2,.L56+32
- 1435 0046 0423     	 movs r3,#4
- 1436 0048 FFF7FEFF 	 bl SPI_MASTER_Transfer
- 353:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSG_PORT, BMI_CSG_PIN);
- 1437              	 .loc 4 353 0
- 1438 004c 9948     	 ldr r0,.L56+28
- 1439 004e 0621     	 movs r1,#6
- 1440 0050 FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
- 354:../main.c     **** 
+ 1431 0036 A548     	 ldr r0,.L56+28
+ 1432 0038 0621     	 movs r1,#6
+ 1433 003a FFF7FEFF 	 bl XMC_GPIO_SetOutputLow
+ 353:../main.c     **** 		SPI_MASTER_Transfer(&SPI_MASTER_0, (uint8_t *)&opcode, (uint8_t*)gyro_register, 4);
+ 1434              	 .loc 4 353 0
+ 1435 003e 3B46     	 mov r3,r7
+ 1436 0040 9F48     	 ldr r0,.L56+16
+ 1437 0042 1946     	 mov r1,r3
+ 1438 0044 A24A     	 ldr r2,.L56+32
+ 1439 0046 0423     	 movs r3,#4
+ 1440 0048 FFF7FEFF 	 bl SPI_MASTER_Transfer
+ 354:../main.c     **** 		XMC_GPIO_SetOutputHigh(BMI_CSG_PORT, BMI_CSG_PIN);
+ 1441              	 .loc 4 354 0
+ 1442 004c 9F48     	 ldr r0,.L56+28
+ 1443 004e 0621     	 movs r1,#6
+ 1444 0050 FFF7FEFF 	 bl XMC_GPIO_SetOutputHigh
  355:../main.c     **** 
- 356:../main.c     **** 		acceleration_register_copy = (uint8_t*)acceleration_register;
- 1441              	 .loc 4 356 0
- 1442 0054 994B     	 ldr r3,.L56+36
- 1443 0056 964A     	 ldr r2,.L56+24
- 1444 0058 1A60     	 str r2,[r3]
- 357:../main.c     **** 		gyro_register_copy = (uint8_t*)gyro_register;
+ 356:../main.c     **** 
+ 357:../main.c     **** 		acceleration_register_copy = (uint8_t*)acceleration_register;
  1445              	 .loc 4 357 0
- 1446 005a 994B     	 ldr r3,.L56+40
- 1447 005c 964A     	 ldr r2,.L56+32
- 1448 005e 1A60     	 str r2,[r3]
- 358:../main.c     **** 
- 359:../main.c     **** 		//merge accelerometer data NOTE: data may not be merged as expected because the first byte in the
- 360:../main.c     **** 		int16_t acc_xValue = (((int16_t)(acceleration_register_copy[3] << 8) | acceleration_register_copy
- 1449              	 .loc 4 360 0
- 1450 0060 964B     	 ldr r3,.L56+36
- 1451 0062 1B68     	 ldr r3,[r3]
- 1452 0064 0333     	 adds r3,r3,#3
- 1453 0066 1B78     	 ldrb r3,[r3]
- 1454 0068 1B02     	 lsls r3,r3,#8
- 1455 006a 9BB2     	 uxth r3,r3
- 1456 006c 1BB2     	 sxth r3,r3
- 1457 006e 934A     	 ldr r2,.L56+36
- 1458 0070 1268     	 ldr r2,[r2]
- 1459 0072 1278     	 ldrb r2,[r2]
- 1460 0074 1343     	 orrs r3,r3,r2
- 1461 0076 1B11     	 asrs r3,r3,#4
- 1462 0078 FB80     	 strh r3,[r7,#6]
- 361:../main.c     **** 		int16_t acc_yValue = (((int16_t)(acceleration_register_copy[5] << 8) | acceleration_register_copy
- 1463              	 .loc 4 361 0
- 1464 007a 904B     	 ldr r3,.L56+36
- 1465 007c 1B68     	 ldr r3,[r3]
- 1466 007e 0533     	 adds r3,r3,#5
- 1467 0080 1B78     	 ldrb r3,[r3]
- 1468 0082 1B02     	 lsls r3,r3,#8
- 1469 0084 9BB2     	 uxth r3,r3
- 1470 0086 1BB2     	 sxth r3,r3
- 1471 0088 8C4A     	 ldr r2,.L56+36
- 1472 008a 1268     	 ldr r2,[r2]
- 1473 008c 0232     	 adds r2,r2,#2
- 1474 008e 1278     	 ldrb r2,[r2]
- 1475 0090 1343     	 orrs r3,r3,r2
- 1476 0092 1B11     	 asrs r3,r3,#4
- 1477 0094 BB80     	 strh r3,[r7,#4]
- 362:../main.c     **** 		int16_t acc_zValue = (((int16_t)(acceleration_register_copy[7] << 8) | acceleration_register_copy
- 1478              	 .loc 4 362 0
- 1479 0096 894B     	 ldr r3,.L56+36
- 1480 0098 1B68     	 ldr r3,[r3]
- 1481 009a 0733     	 adds r3,r3,#7
- 1482 009c 1B78     	 ldrb r3,[r3]
- 1483 009e 1B02     	 lsls r3,r3,#8
- 1484 00a0 9BB2     	 uxth r3,r3
- 1485 00a2 1BB2     	 sxth r3,r3
- 1486 00a4 854A     	 ldr r2,.L56+36
- 1487 00a6 1268     	 ldr r2,[r2]
- 1488 00a8 0432     	 adds r2,r2,#4
- 1489 00aa 1278     	 ldrb r2,[r2]
- 1490 00ac 1343     	 orrs r3,r3,r2
- 1491 00ae 1B11     	 asrs r3,r3,#4
- 1492 00b0 7B80     	 strh r3,[r7,#2]
- 363:../main.c     **** 
+ 1446 0054 9F4B     	 ldr r3,.L56+36
+ 1447 0056 9C4A     	 ldr r2,.L56+24
+ 1448 0058 1A60     	 str r2,[r3]
+ 358:../main.c     **** 		gyro_register_copy = (uint8_t*)gyro_register;
+ 1449              	 .loc 4 358 0
+ 1450 005a 9F4B     	 ldr r3,.L56+40
+ 1451 005c 9C4A     	 ldr r2,.L56+32
+ 1452 005e 1A60     	 str r2,[r3]
+ 359:../main.c     **** 
+ 360:../main.c     **** 		//merge accelerometer data NOTE: data may not be merged as expected because the first byte in the
+ 361:../main.c     **** 		int16_t acc_xValue = (((int16_t)(acceleration_register_copy[3] << 8) | acceleration_register_copy
+ 1453              	 .loc 4 361 0
+ 1454 0060 9C4B     	 ldr r3,.L56+36
+ 1455 0062 1B68     	 ldr r3,[r3]
+ 1456 0064 0333     	 adds r3,r3,#3
+ 1457 0066 1B78     	 ldrb r3,[r3]
+ 1458 0068 1B02     	 lsls r3,r3,#8
+ 1459 006a 9BB2     	 uxth r3,r3
+ 1460 006c 1BB2     	 sxth r3,r3
+ 1461 006e 994A     	 ldr r2,.L56+36
+ 1462 0070 1268     	 ldr r2,[r2]
+ 1463 0072 1278     	 ldrb r2,[r2]
+ 1464 0074 1343     	 orrs r3,r3,r2
+ 1465 0076 1B11     	 asrs r3,r3,#4
+ 1466 0078 FB80     	 strh r3,[r7,#6]
+ 362:../main.c     **** 		int16_t acc_yValue = (((int16_t)(acceleration_register_copy[5] << 8) | acceleration_register_copy
+ 1467              	 .loc 4 362 0
+ 1468 007a 964B     	 ldr r3,.L56+36
+ 1469 007c 1B68     	 ldr r3,[r3]
+ 1470 007e 0533     	 adds r3,r3,#5
+ 1471 0080 1B78     	 ldrb r3,[r3]
+ 1472 0082 1B02     	 lsls r3,r3,#8
+ 1473 0084 9BB2     	 uxth r3,r3
+ 1474 0086 1BB2     	 sxth r3,r3
+ 1475 0088 924A     	 ldr r2,.L56+36
+ 1476 008a 1268     	 ldr r2,[r2]
+ 1477 008c 0232     	 adds r2,r2,#2
+ 1478 008e 1278     	 ldrb r2,[r2]
+ 1479 0090 1343     	 orrs r3,r3,r2
+ 1480 0092 1B11     	 asrs r3,r3,#4
+ 1481 0094 BB80     	 strh r3,[r7,#4]
+ 363:../main.c     **** 		int16_t acc_zValue = (((int16_t)(acceleration_register_copy[7] << 8) | acceleration_register_copy
+ 1482              	 .loc 4 363 0
+ 1483 0096 8F4B     	 ldr r3,.L56+36
+ 1484 0098 1B68     	 ldr r3,[r3]
+ 1485 009a 0733     	 adds r3,r3,#7
+ 1486 009c 1B78     	 ldrb r3,[r3]
+ 1487 009e 1B02     	 lsls r3,r3,#8
+ 1488 00a0 9BB2     	 uxth r3,r3
+ 1489 00a2 1BB2     	 sxth r3,r3
+ 1490 00a4 8B4A     	 ldr r2,.L56+36
+ 1491 00a6 1268     	 ldr r2,[r2]
+ 1492 00a8 0432     	 adds r2,r2,#4
+ 1493 00aa 1278     	 ldrb r2,[r2]
+ 1494 00ac 1343     	 orrs r3,r3,r2
+ 1495 00ae 1B11     	 asrs r3,r3,#4
+ 1496 00b0 7B80     	 strh r3,[r7,#2]
  364:../main.c     **** 
- 365:../main.c     **** 		acc_x = (acc_xValue*(2.0f / 2048.0f)) * 0.98;
- 1493              	 .loc 4 365 0
- 1494 00b2 B7F90630 	 ldrsh r3,[r7,#6]
- 1495 00b6 07EE903A 	 fmsr s15,r3
- 1496 00ba F8EEE77A 	 fsitos s15,s15
- 1497 00be 9FED817A 	 flds s14,.L56+44
- 1498 00c2 67EE877A 	 fmuls s15,s15,s14
- 1499 00c6 17EE900A 	 fmrs r0,s15
- 1500 00ca FFF7FEFF 	 bl __aeabi_f2d
- 1501 00ce 0246     	 mov r2,r0
- 1502 00d0 0B46     	 mov r3,r1
- 1503 00d2 1046     	 mov r0,r2
- 1504 00d4 1946     	 mov r1,r3
- 1505 00d6 70A3     	 adr r3,.L56
- 1506 00d8 D3E90023 	 ldrd r2,[r3]
- 1507 00dc FFF7FEFF 	 bl __aeabi_dmul
- 1508 00e0 0246     	 mov r2,r0
- 1509 00e2 0B46     	 mov r3,r1
- 1510 00e4 1046     	 mov r0,r2
- 1511 00e6 1946     	 mov r1,r3
- 1512 00e8 FFF7FEFF 	 bl __aeabi_d2f
- 1513 00ec 0246     	 mov r2,r0
- 1514 00ee 764B     	 ldr r3,.L56+48
- 1515 00f0 1A60     	 str r2,[r3]
- 366:../main.c     **** 		acc_y = (acc_yValue*(2.0f / 2048.0f)) * 0.98;
- 1516              	 .loc 4 366 0
- 1517 00f2 B7F90430 	 ldrsh r3,[r7,#4]
- 1518 00f6 07EE903A 	 fmsr s15,r3
- 1519 00fa F8EEE77A 	 fsitos s15,s15
- 1520 00fe 9FED717A 	 flds s14,.L56+44
- 1521 0102 67EE877A 	 fmuls s15,s15,s14
- 1522 0106 17EE900A 	 fmrs r0,s15
- 1523 010a FFF7FEFF 	 bl __aeabi_f2d
- 1524 010e 0246     	 mov r2,r0
- 1525 0110 0B46     	 mov r3,r1
- 1526 0112 1046     	 mov r0,r2
- 1527 0114 1946     	 mov r1,r3
- 1528 0116 60A3     	 adr r3,.L56
- 1529 0118 D3E90023 	 ldrd r2,[r3]
- 1530 011c FFF7FEFF 	 bl __aeabi_dmul
- 1531 0120 0246     	 mov r2,r0
- 1532 0122 0B46     	 mov r3,r1
- 1533 0124 1046     	 mov r0,r2
- 1534 0126 1946     	 mov r1,r3
- 1535 0128 FFF7FEFF 	 bl __aeabi_d2f
- 1536 012c 0246     	 mov r2,r0
- 1537 012e 674B     	 ldr r3,.L56+52
- 1538 0130 1A60     	 str r2,[r3]
- 367:../main.c     **** 		acc_z = (acc_zValue*(2.0f / 2048.0f)) * 0.98;
- 1539              	 .loc 4 367 0
- 1540 0132 B7F90230 	 ldrsh r3,[r7,#2]
- 1541 0136 07EE903A 	 fmsr s15,r3
- 1542 013a F8EEE77A 	 fsitos s15,s15
- 1543 013e 9FED617A 	 flds s14,.L56+44
- 1544 0142 67EE877A 	 fmuls s15,s15,s14
- 1545 0146 17EE900A 	 fmrs r0,s15
- 1546 014a FFF7FEFF 	 bl __aeabi_f2d
- 1547 014e 0246     	 mov r2,r0
- 1548 0150 0B46     	 mov r3,r1
- 1549 0152 1046     	 mov r0,r2
- 1550 0154 1946     	 mov r1,r3
- 1551 0156 50A3     	 adr r3,.L56
- 1552 0158 D3E90023 	 ldrd r2,[r3]
- 1553 015c FFF7FEFF 	 bl __aeabi_dmul
- 1554 0160 0246     	 mov r2,r0
- 1555 0162 0B46     	 mov r3,r1
- 1556 0164 1046     	 mov r0,r2
- 1557 0166 1946     	 mov r1,r3
- 1558 0168 FFF7FEFF 	 bl __aeabi_d2f
- 1559 016c 0246     	 mov r2,r0
- 1560 016e 584B     	 ldr r3,.L56+56
- 1561 0170 1A60     	 str r2,[r3]
- 368:../main.c     **** 
+ 365:../main.c     **** 
+ 366:../main.c     **** 		acc_x = -(acc_xValue*(2.0f / 2048.0f)) * 0.98;
+ 1497              	 .loc 4 366 0
+ 1498 00b2 B7F90630 	 ldrsh r3,[r7,#6]
+ 1499 00b6 07EE903A 	 fmsr s15,r3
+ 1500 00ba F8EEE77A 	 fsitos s15,s15
+ 1501 00be 9FED877A 	 flds s14,.L56+44
+ 1502 00c2 67EE877A 	 fmuls s15,s15,s14
+ 1503 00c6 F1EE677A 	 fnegs s15,s15
+ 1504 00ca 17EE903A 	 fmrs r3,s15
+ 1505 00ce 1846     	 mov r0,r3
+ 1506 00d0 FFF7FEFF 	 bl __aeabi_f2d
+ 1507 00d4 0246     	 mov r2,r0
+ 1508 00d6 0B46     	 mov r3,r1
+ 1509 00d8 1046     	 mov r0,r2
+ 1510 00da 1946     	 mov r1,r3
+ 1511 00dc 74A3     	 adr r3,.L56
+ 1512 00de D3E90023 	 ldrd r2,[r3]
+ 1513 00e2 FFF7FEFF 	 bl __aeabi_dmul
+ 1514 00e6 0246     	 mov r2,r0
+ 1515 00e8 0B46     	 mov r3,r1
+ 1516 00ea 1046     	 mov r0,r2
+ 1517 00ec 1946     	 mov r1,r3
+ 1518 00ee FFF7FEFF 	 bl __aeabi_d2f
+ 1519 00f2 0246     	 mov r2,r0
+ 1520 00f4 7A4B     	 ldr r3,.L56+48
+ 1521 00f6 1A60     	 str r2,[r3]
+ 367:../main.c     **** 		acc_y = (acc_yValue*(2.0f / 2048.0f)) * 0.98;
+ 1522              	 .loc 4 367 0
+ 1523 00f8 B7F90430 	 ldrsh r3,[r7,#4]
+ 1524 00fc 07EE903A 	 fmsr s15,r3
+ 1525 0100 F8EEE77A 	 fsitos s15,s15
+ 1526 0104 9FED757A 	 flds s14,.L56+44
+ 1527 0108 67EE877A 	 fmuls s15,s15,s14
+ 1528 010c 17EE900A 	 fmrs r0,s15
+ 1529 0110 FFF7FEFF 	 bl __aeabi_f2d
+ 1530 0114 0246     	 mov r2,r0
+ 1531 0116 0B46     	 mov r3,r1
+ 1532 0118 1046     	 mov r0,r2
+ 1533 011a 1946     	 mov r1,r3
+ 1534 011c 64A3     	 adr r3,.L56
+ 1535 011e D3E90023 	 ldrd r2,[r3]
+ 1536 0122 FFF7FEFF 	 bl __aeabi_dmul
+ 1537 0126 0246     	 mov r2,r0
+ 1538 0128 0B46     	 mov r3,r1
+ 1539 012a 1046     	 mov r0,r2
+ 1540 012c 1946     	 mov r1,r3
+ 1541 012e FFF7FEFF 	 bl __aeabi_d2f
+ 1542 0132 0246     	 mov r2,r0
+ 1543 0134 6B4B     	 ldr r3,.L56+52
+ 1544 0136 1A60     	 str r2,[r3]
+ 368:../main.c     **** 		acc_z = -(acc_zValue*(2.0f / 2048.0f)) * 0.98;
+ 1545              	 .loc 4 368 0
+ 1546 0138 B7F90230 	 ldrsh r3,[r7,#2]
+ 1547 013c 07EE903A 	 fmsr s15,r3
+ 1548 0140 F8EEE77A 	 fsitos s15,s15
+ 1549 0144 9FED657A 	 flds s14,.L56+44
+ 1550 0148 67EE877A 	 fmuls s15,s15,s14
+ 1551 014c F1EE677A 	 fnegs s15,s15
+ 1552 0150 17EE903A 	 fmrs r3,s15
+ 1553 0154 1846     	 mov r0,r3
+ 1554 0156 FFF7FEFF 	 bl __aeabi_f2d
+ 1555 015a 0246     	 mov r2,r0
+ 1556 015c 0B46     	 mov r3,r1
+ 1557 015e 1046     	 mov r0,r2
+ 1558 0160 1946     	 mov r1,r3
+ 1559 0162 53A3     	 adr r3,.L56
+ 1560 0164 D3E90023 	 ldrd r2,[r3]
+ 1561 0168 FFF7FEFF 	 bl __aeabi_dmul
+ 1562 016c 0246     	 mov r2,r0
+ 1563 016e 0B46     	 mov r3,r1
+ 1564 0170 1046     	 mov r0,r2
+ 1565 0172 1946     	 mov r1,r3
+ 1566 0174 FFF7FEFF 	 bl __aeabi_d2f
+ 1567 0178 0246     	 mov r2,r0
+ 1568 017a 5B4B     	 ldr r3,.L56+56
+ 1569 017c 1A60     	 str r2,[r3]
  369:../main.c     **** 
  370:../main.c     **** 
  371:../main.c     **** 
- 372:../main.c     **** 		//merge gyroscope data NOTE: data may not be merged as expected because the first byte in the arr
- 373:../main.c     **** 		gyro_xValue = (((int16_t)(gyro_register_copy[3] << 8) | gyro_register_copy[0]));
- 1562              	 .loc 4 373 0
- 1563 0172 534B     	 ldr r3,.L56+40
- 1564 0174 1B68     	 ldr r3,[r3]
- 1565 0176 0333     	 adds r3,r3,#3
- 1566 0178 1B78     	 ldrb r3,[r3]
- 1567 017a 1B02     	 lsls r3,r3,#8
- 1568 017c 9AB2     	 uxth r2,r3
- 1569 017e 504B     	 ldr r3,.L56+40
- 1570 0180 1B68     	 ldr r3,[r3]
- 1571 0182 1B78     	 ldrb r3,[r3]
- 1572 0184 9BB2     	 uxth r3,r3
- 1573 0186 1343     	 orrs r3,r3,r2
- 1574 0188 9AB2     	 uxth r2,r3
- 1575 018a 524B     	 ldr r3,.L56+60
- 1576 018c 1A80     	 strh r2,[r3]
- 374:../main.c     **** 		gyro_yValue = (((int16_t)(gyro_register_copy[5] << 8) | gyro_register_copy[2]));
- 1577              	 .loc 4 374 0
- 1578 018e 4C4B     	 ldr r3,.L56+40
- 1579 0190 1B68     	 ldr r3,[r3]
- 1580 0192 0533     	 adds r3,r3,#5
- 1581 0194 1B78     	 ldrb r3,[r3]
- 1582 0196 1B02     	 lsls r3,r3,#8
- 1583 0198 9AB2     	 uxth r2,r3
- 1584 019a 494B     	 ldr r3,.L56+40
- 1585 019c 1B68     	 ldr r3,[r3]
- 1586 019e 0233     	 adds r3,r3,#2
- 1587 01a0 1B78     	 ldrb r3,[r3]
- 1588 01a2 9BB2     	 uxth r3,r3
- 1589 01a4 1343     	 orrs r3,r3,r2
- 1590 01a6 9AB2     	 uxth r2,r3
- 1591 01a8 4B4B     	 ldr r3,.L56+64
- 1592 01aa 1A80     	 strh r2,[r3]
- 375:../main.c     **** 		gyro_zValue = (((int16_t)(gyro_register_copy[7] << 8) | gyro_register_copy[4]));
- 1593              	 .loc 4 375 0
- 1594 01ac 444B     	 ldr r3,.L56+40
- 1595 01ae 1B68     	 ldr r3,[r3]
- 1596 01b0 0733     	 adds r3,r3,#7
- 1597 01b2 1B78     	 ldrb r3,[r3]
- 1598 01b4 1B02     	 lsls r3,r3,#8
- 1599 01b6 9AB2     	 uxth r2,r3
- 1600 01b8 414B     	 ldr r3,.L56+40
- 1601 01ba 1B68     	 ldr r3,[r3]
- 1602 01bc 0433     	 adds r3,r3,#4
- 1603 01be 1B78     	 ldrb r3,[r3]
- 1604 01c0 9BB2     	 uxth r3,r3
- 1605 01c2 1343     	 orrs r3,r3,r2
- 1606 01c4 9AB2     	 uxth r2,r3
- 1607 01c6 454B     	 ldr r3,.L56+68
- 1608 01c8 1A80     	 strh r2,[r3]
- 376:../main.c     **** 
+ 372:../main.c     **** 
+ 373:../main.c     **** 		//merge gyroscope data NOTE: data may not be merged as expected because the first byte in the arr
+ 374:../main.c     **** 		gyro_xValue = (((int16_t)(gyro_register_copy[3] << 8) | gyro_register_copy[0]));
+ 1570              	 .loc 4 374 0
+ 1571 017e 564B     	 ldr r3,.L56+40
+ 1572 0180 1B68     	 ldr r3,[r3]
+ 1573 0182 0333     	 adds r3,r3,#3
+ 1574 0184 1B78     	 ldrb r3,[r3]
+ 1575 0186 1B02     	 lsls r3,r3,#8
+ 1576 0188 9AB2     	 uxth r2,r3
+ 1577 018a 534B     	 ldr r3,.L56+40
+ 1578 018c 1B68     	 ldr r3,[r3]
+ 1579 018e 1B78     	 ldrb r3,[r3]
+ 1580 0190 9BB2     	 uxth r3,r3
+ 1581 0192 1343     	 orrs r3,r3,r2
+ 1582 0194 9AB2     	 uxth r2,r3
+ 1583 0196 554B     	 ldr r3,.L56+60
+ 1584 0198 1A80     	 strh r2,[r3]
+ 375:../main.c     **** 		gyro_yValue = (((int16_t)(gyro_register_copy[5] << 8) | gyro_register_copy[2]));
+ 1585              	 .loc 4 375 0
+ 1586 019a 4F4B     	 ldr r3,.L56+40
+ 1587 019c 1B68     	 ldr r3,[r3]
+ 1588 019e 0533     	 adds r3,r3,#5
+ 1589 01a0 1B78     	 ldrb r3,[r3]
+ 1590 01a2 1B02     	 lsls r3,r3,#8
+ 1591 01a4 9AB2     	 uxth r2,r3
+ 1592 01a6 4C4B     	 ldr r3,.L56+40
+ 1593 01a8 1B68     	 ldr r3,[r3]
+ 1594 01aa 0233     	 adds r3,r3,#2
+ 1595 01ac 1B78     	 ldrb r3,[r3]
+ 1596 01ae 9BB2     	 uxth r3,r3
+ 1597 01b0 1343     	 orrs r3,r3,r2
+ 1598 01b2 9AB2     	 uxth r2,r3
+ 1599 01b4 4E4B     	 ldr r3,.L56+64
+ 1600 01b6 1A80     	 strh r2,[r3]
+ 376:../main.c     **** 		gyro_zValue = (((int16_t)(gyro_register_copy[7] << 8) | gyro_register_copy[4]));
+ 1601              	 .loc 4 376 0
+ 1602 01b8 474B     	 ldr r3,.L56+40
+ 1603 01ba 1B68     	 ldr r3,[r3]
+ 1604 01bc 0733     	 adds r3,r3,#7
+ 1605 01be 1B78     	 ldrb r3,[r3]
+ 1606 01c0 1B02     	 lsls r3,r3,#8
+ 1607 01c2 9AB2     	 uxth r2,r3
+ 1608 01c4 444B     	 ldr r3,.L56+40
+ 1609 01c6 1B68     	 ldr r3,[r3]
+ 1610 01c8 0433     	 adds r3,r3,#4
+ 1611 01ca 1B78     	 ldrb r3,[r3]
+ 1612 01cc 9BB2     	 uxth r3,r3
+ 1613 01ce 1343     	 orrs r3,r3,r2
+ 1614 01d0 9AB2     	 uxth r2,r3
+ 1615 01d2 484B     	 ldr r3,.L56+68
+ 1616 01d4 1A80     	 strh r2,[r3]
  377:../main.c     **** 
  378:../main.c     **** 
- 379:../main.c     **** 		gyro_x = (gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
- 1609              	 .loc 4 379 0
- 1610 01ca 424B     	 ldr r3,.L56+60
- 1611 01cc 1B88     	 ldrh r3,[r3]
- 1612 01ce 1BB2     	 sxth r3,r3
- 1613 01d0 07EE903A 	 fmsr s15,r3
- 1614 01d4 F8EEE77A 	 fsitos s15,s15
- 1615 01d8 9FED417A 	 flds s14,.L56+72
- 1616 01dc 67EE877A 	 fmuls s15,s15,s14
- 1617 01e0 17EE900A 	 fmrs r0,s15
- 1618 01e4 FFF7FEFF 	 bl __aeabi_f2d
- 1619 01e8 0246     	 mov r2,r0
- 1620 01ea 0B46     	 mov r3,r1
- 1621 01ec 1046     	 mov r0,r2
- 1622 01ee 1946     	 mov r1,r3
- 1623 01f0 2BA3     	 adr r3,.L56+8
- 1624 01f2 D3E90023 	 ldrd r2,[r3]
- 1625 01f6 FFF7FEFF 	 bl __aeabi_dmul
- 1626 01fa 0246     	 mov r2,r0
- 1627 01fc 0B46     	 mov r3,r1
- 1628 01fe 1046     	 mov r0,r2
- 1629 0200 1946     	 mov r1,r3
- 1630 0202 FFF7FEFF 	 bl __aeabi_d2f
- 1631 0206 0246     	 mov r2,r0
- 1632 0208 364B     	 ldr r3,.L56+76
- 1633 020a 1A60     	 str r2,[r3]
- 380:../main.c     **** 		gyro_y = (gyro_yValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
- 1634              	 .loc 4 380 0
- 1635 020c 324B     	 ldr r3,.L56+64
- 1636 020e 1B88     	 ldrh r3,[r3]
- 1637 0210 1BB2     	 sxth r3,r3
- 1638 0212 07EE903A 	 fmsr s15,r3
- 1639 0216 F8EEE77A 	 fsitos s15,s15
- 1640 021a 9FED317A 	 flds s14,.L56+72
- 1641 021e 67EE877A 	 fmuls s15,s15,s14
- 1642 0222 17EE900A 	 fmrs r0,s15
- 1643 0226 FFF7FEFF 	 bl __aeabi_f2d
- 1644 022a 0246     	 mov r2,r0
- 1645 022c 0B46     	 mov r3,r1
- 1646 022e 1046     	 mov r0,r2
- 1647 0230 1946     	 mov r1,r3
- 1648 0232 1BA3     	 adr r3,.L56+8
- 1649 0234 D3E90023 	 ldrd r2,[r3]
- 1650 0238 FFF7FEFF 	 bl __aeabi_dmul
- 1651 023c 0246     	 mov r2,r0
- 1652 023e 0B46     	 mov r3,r1
- 1653 0240 1046     	 mov r0,r2
- 1654 0242 1946     	 mov r1,r3
- 1655 0244 FFF7FEFF 	 bl __aeabi_d2f
- 1656 0248 0246     	 mov r2,r0
- 1657 024a 274B     	 ldr r3,.L56+80
- 1658 024c 1A60     	 str r2,[r3]
- 381:../main.c     **** 		gyro_z = (gyro_zValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
- 1659              	 .loc 4 381 0
- 1660 024e 234B     	 ldr r3,.L56+68
- 1661 0250 1B88     	 ldrh r3,[r3]
- 1662 0252 1BB2     	 sxth r3,r3
- 1663 0254 07EE903A 	 fmsr s15,r3
- 1664 0258 F8EEE77A 	 fsitos s15,s15
- 1665 025c 9FED207A 	 flds s14,.L56+72
- 1666 0260 67EE877A 	 fmuls s15,s15,s14
- 1667 0264 17EE900A 	 fmrs r0,s15
- 1668 0268 FFF7FEFF 	 bl __aeabi_f2d
- 1669 026c 0246     	 mov r2,r0
- 1670 026e 0B46     	 mov r3,r1
- 1671 0270 1046     	 mov r0,r2
- 1672 0272 1946     	 mov r1,r3
- 1673 0274 0AA3     	 adr r3,.L56+8
- 1674 0276 D3E90023 	 ldrd r2,[r3]
- 1675 027a FFF7FEFF 	 bl __aeabi_dmul
- 1676 027e 0246     	 mov r2,r0
- 1677 0280 0B46     	 mov r3,r1
- 1678 0282 1046     	 mov r0,r2
- 1679 0284 1946     	 mov r1,r3
- 1680 0286 FFF7FEFF 	 bl __aeabi_d2f
- 1681 028a 0246     	 mov r2,r0
- 1682 028c 174B     	 ldr r3,.L56+84
- 1683 028e 1A60     	 str r2,[r3]
- 382:../main.c     **** 
- 383:../main.c     **** //		bmi055_mat.gyro_x = (gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
- 384:../main.c     **** //		bmi055_mat.gyro_y = (gyro_yValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
- 385:../main.c     **** //		bmi055_mat.gyro_z = (gyro_zValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
- 386:../main.c     **** //
- 387:../main.c     **** //		bmi055_mat.acc_x = (acc_xValue*(2.0f / 2048.0f)) * 0.98;
- 388:../main.c     **** //		bmi055_mat.acc_y = (acc_yValue*(2.0f / 2048.0f)) * 0.98;
- 389:../main.c     **** //		bmi055_mat.acc_z = (acc_zValue*(2.0f / 2048.0f)) * 0.98;
- 390:../main.c     **** 
- 391:../main.c     **** }
- 1684              	 .loc 4 391 0
- 1685 0290 0837     	 adds r7,r7,#8
- 1686              	.LCFI78:
- 1687              	 .cfi_def_cfa_offset 8
- 1688 0292 BD46     	 mov sp,r7
- 1689              	.LCFI79:
- 1690              	 .cfi_def_cfa_register 13
- 1691              	 
- 1692 0294 80BD     	 pop {r7,pc}
- 1693              	.L57:
- 1694 0296 00BF     	 .align 3
- 1695              	.L56:
- 1696 0298 5C8FC2F5 	 .word -171798692
- 1697 029c 285CEF3F 	 .word 1072651304
- 1698 02a0 399D52A2 	 .word -1571644103
- 1699 02a4 46DF913F 	 .word 1066524486
- 1700 02a8 00000000 	 .word SPI_MASTER_0
- 1701 02ac 00820248 	 .word 1208123904
- 1702 02b0 00000000 	 .word acceleration_register
- 1703 02b4 00850248 	 .word 1208124672
- 1704 02b8 00000000 	 .word gyro_register
- 1705 02bc 00000000 	 .word acceleration_register_copy
- 1706 02c0 00000000 	 .word gyro_register_copy
- 1707 02c4 0000803A 	 .word 981467136
- 1708 02c8 00000000 	 .word acc_x
- 1709 02cc 00000000 	 .word acc_y
- 1710 02d0 00000000 	 .word acc_z
- 1711 02d4 00000000 	 .word gyro_xValue
- 1712 02d8 00000000 	 .word gyro_yValue
- 1713 02dc 00000000 	 .word gyro_zValue
- 1714 02e0 F4017A3D 	 .word 1031406068
- 1715 02e4 00000000 	 .word gyro_x
- 1716 02e8 00000000 	 .word gyro_y
- 1717 02ec 00000000 	 .word gyro_z
- 1718              	 .cfi_endproc
- 1719              	.LFE465:
- 1721              	 .section .text.udp_initialize,"ax",%progbits
- 1722              	 .align 2
- 1723              	 .global udp_initialize
- 1724              	 .thumb
- 1725              	 .thumb_func
- 1727              	udp_initialize:
- 1728              	.LFB466:
- 392:../main.c     **** 
+ 379:../main.c     **** 
+ 380:../main.c     **** 		gyro_x = -(gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+ 1617              	 .loc 4 380 0
+ 1618 01d6 454B     	 ldr r3,.L56+60
+ 1619 01d8 1B88     	 ldrh r3,[r3]
+ 1620 01da 1BB2     	 sxth r3,r3
+ 1621 01dc 07EE903A 	 fmsr s15,r3
+ 1622 01e0 F8EEE77A 	 fsitos s15,s15
+ 1623 01e4 9FED447A 	 flds s14,.L56+72
+ 1624 01e8 67EE877A 	 fmuls s15,s15,s14
+ 1625 01ec F1EE677A 	 fnegs s15,s15
+ 1626 01f0 17EE903A 	 fmrs r3,s15
+ 1627 01f4 1846     	 mov r0,r3
+ 1628 01f6 FFF7FEFF 	 bl __aeabi_f2d
+ 1629 01fa 0246     	 mov r2,r0
+ 1630 01fc 0B46     	 mov r3,r1
+ 1631 01fe 1046     	 mov r0,r2
+ 1632 0200 1946     	 mov r1,r3
+ 1633 0202 2DA3     	 adr r3,.L56+8
+ 1634 0204 D3E90023 	 ldrd r2,[r3]
+ 1635 0208 FFF7FEFF 	 bl __aeabi_dmul
+ 1636 020c 0246     	 mov r2,r0
+ 1637 020e 0B46     	 mov r3,r1
+ 1638 0210 1046     	 mov r0,r2
+ 1639 0212 1946     	 mov r1,r3
+ 1640 0214 FFF7FEFF 	 bl __aeabi_d2f
+ 1641 0218 0246     	 mov r2,r0
+ 1642 021a 384B     	 ldr r3,.L56+76
+ 1643 021c 1A60     	 str r2,[r3]
+ 381:../main.c     **** 		gyro_y = (gyro_yValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+ 1644              	 .loc 4 381 0
+ 1645 021e 344B     	 ldr r3,.L56+64
+ 1646 0220 1B88     	 ldrh r3,[r3]
+ 1647 0222 1BB2     	 sxth r3,r3
+ 1648 0224 07EE903A 	 fmsr s15,r3
+ 1649 0228 F8EEE77A 	 fsitos s15,s15
+ 1650 022c 9FED327A 	 flds s14,.L56+72
+ 1651 0230 67EE877A 	 fmuls s15,s15,s14
+ 1652 0234 17EE900A 	 fmrs r0,s15
+ 1653 0238 FFF7FEFF 	 bl __aeabi_f2d
+ 1654 023c 0246     	 mov r2,r0
+ 1655 023e 0B46     	 mov r3,r1
+ 1656 0240 1046     	 mov r0,r2
+ 1657 0242 1946     	 mov r1,r3
+ 1658 0244 1CA3     	 adr r3,.L56+8
+ 1659 0246 D3E90023 	 ldrd r2,[r3]
+ 1660 024a FFF7FEFF 	 bl __aeabi_dmul
+ 1661 024e 0246     	 mov r2,r0
+ 1662 0250 0B46     	 mov r3,r1
+ 1663 0252 1046     	 mov r0,r2
+ 1664 0254 1946     	 mov r1,r3
+ 1665 0256 FFF7FEFF 	 bl __aeabi_d2f
+ 1666 025a 0246     	 mov r2,r0
+ 1667 025c 284B     	 ldr r3,.L56+80
+ 1668 025e 1A60     	 str r2,[r3]
+ 382:../main.c     **** 		gyro_z = -(gyro_zValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+ 1669              	 .loc 4 382 0
+ 1670 0260 244B     	 ldr r3,.L56+68
+ 1671 0262 1B88     	 ldrh r3,[r3]
+ 1672 0264 1BB2     	 sxth r3,r3
+ 1673 0266 07EE903A 	 fmsr s15,r3
+ 1674 026a F8EEE77A 	 fsitos s15,s15
+ 1675 026e 9FED227A 	 flds s14,.L56+72
+ 1676 0272 67EE877A 	 fmuls s15,s15,s14
+ 1677 0276 F1EE677A 	 fnegs s15,s15
+ 1678 027a 17EE903A 	 fmrs r3,s15
+ 1679 027e 1846     	 mov r0,r3
+ 1680 0280 FFF7FEFF 	 bl __aeabi_f2d
+ 1681 0284 0246     	 mov r2,r0
+ 1682 0286 0B46     	 mov r3,r1
+ 1683 0288 1046     	 mov r0,r2
+ 1684 028a 1946     	 mov r1,r3
+ 1685 028c 0AA3     	 adr r3,.L56+8
+ 1686 028e D3E90023 	 ldrd r2,[r3]
+ 1687 0292 FFF7FEFF 	 bl __aeabi_dmul
+ 1688 0296 0246     	 mov r2,r0
+ 1689 0298 0B46     	 mov r3,r1
+ 1690 029a 1046     	 mov r0,r2
+ 1691 029c 1946     	 mov r1,r3
+ 1692 029e FFF7FEFF 	 bl __aeabi_d2f
+ 1693 02a2 0246     	 mov r2,r0
+ 1694 02a4 174B     	 ldr r3,.L56+84
+ 1695 02a6 1A60     	 str r2,[r3]
+ 383:../main.c     **** 
+ 384:../main.c     **** //		bmi055_mat.gyro_x = (gyro_xValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+ 385:../main.c     **** //		bmi055_mat.gyro_y = (gyro_yValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+ 386:../main.c     **** //		bmi055_mat.gyro_z = (gyro_zValue* (2000.0f / 32767.0f)) * (M_PI/180.0f);
+ 387:../main.c     **** //
+ 388:../main.c     **** //		bmi055_mat.acc_x = (acc_xValue*(2.0f / 2048.0f)) * 0.98;
+ 389:../main.c     **** //		bmi055_mat.acc_y = (acc_yValue*(2.0f / 2048.0f)) * 0.98;
+ 390:../main.c     **** //		bmi055_mat.acc_z = (acc_zValue*(2.0f / 2048.0f)) * 0.98;
+ 391:../main.c     **** 
+ 392:../main.c     **** }
+ 1696              	 .loc 4 392 0
+ 1697 02a8 0837     	 adds r7,r7,#8
+ 1698              	.LCFI78:
+ 1699              	 .cfi_def_cfa_offset 8
+ 1700 02aa BD46     	 mov sp,r7
+ 1701              	.LCFI79:
+ 1702              	 .cfi_def_cfa_register 13
+ 1703              	 
+ 1704 02ac 80BD     	 pop {r7,pc}
+ 1705              	.L57:
+ 1706 02ae 00BF     	 .align 3
+ 1707              	.L56:
+ 1708 02b0 5C8FC2F5 	 .word -171798692
+ 1709 02b4 285CEF3F 	 .word 1072651304
+ 1710 02b8 399D52A2 	 .word -1571644103
+ 1711 02bc 46DF913F 	 .word 1066524486
+ 1712 02c0 00000000 	 .word SPI_MASTER_0
+ 1713 02c4 00820248 	 .word 1208123904
+ 1714 02c8 00000000 	 .word acceleration_register
+ 1715 02cc 00850248 	 .word 1208124672
+ 1716 02d0 00000000 	 .word gyro_register
+ 1717 02d4 00000000 	 .word acceleration_register_copy
+ 1718 02d8 00000000 	 .word gyro_register_copy
+ 1719 02dc 0000803A 	 .word 981467136
+ 1720 02e0 00000000 	 .word acc_x
+ 1721 02e4 00000000 	 .word acc_y
+ 1722 02e8 00000000 	 .word acc_z
+ 1723 02ec 00000000 	 .word gyro_xValue
+ 1724 02f0 00000000 	 .word gyro_yValue
+ 1725 02f4 00000000 	 .word gyro_zValue
+ 1726 02f8 F4017A3D 	 .word 1031406068
+ 1727 02fc 00000000 	 .word gyro_x
+ 1728 0300 00000000 	 .word gyro_y
+ 1729 0304 00000000 	 .word gyro_z
+ 1730              	 .cfi_endproc
+ 1731              	.LFE465:
+ 1733              	 .section .text.udp_initialize,"ax",%progbits
+ 1734              	 .align 2
+ 1735              	 .global udp_initialize
+ 1736              	 .thumb
+ 1737              	 .thumb_func
+ 1739              	udp_initialize:
+ 1740              	.LFB466:
  393:../main.c     **** 
- 394:../main.c     **** void udp_initialize()
- 395:../main.c     **** {
- 1729              	 .loc 4 395 0
- 1730              	 .cfi_startproc
- 1731              	 
- 1732              	 
- 1733 0000 80B5     	 push {r7,lr}
- 1734              	.LCFI80:
- 1735              	 .cfi_def_cfa_offset 8
- 1736              	 .cfi_offset 7,-8
- 1737              	 .cfi_offset 14,-4
- 1738 0002 00AF     	 add r7,sp,#0
- 1739              	.LCFI81:
- 1740              	 .cfi_def_cfa_register 7
- 396:../main.c     **** 	IP_ADDR4(&returnaddr, ip1,ip2,ip3,ip4);
+ 394:../main.c     **** 
+ 395:../main.c     **** void udp_initialize()
+ 396:../main.c     **** {
  1741              	 .loc 4 396 0
- 1742 0004 044B     	 ldr r3,.L59
- 1743 0006 054A     	 ldr r2,.L59+4
- 1744 0008 1A60     	 str r2,[r3]
- 397:../main.c     **** 	com_pcb = udp_new();
- 1745              	 .loc 4 397 0
- 1746 000a FFF7FEFF 	 bl udp_new
- 1747 000e 0246     	 mov r2,r0
- 1748 0010 034B     	 ldr r3,.L59+8
- 1749 0012 1A60     	 str r2,[r3]
- 398:../main.c     **** }
- 1750              	 .loc 4 398 0
- 1751 0014 80BD     	 pop {r7,pc}
- 1752              	.L60:
- 1753 0016 00BF     	 .align 2
- 1754              	.L59:
- 1755 0018 00000000 	 .word returnaddr
- 1756 001c C0A80009 	 .word 151038144
- 1757 0020 00000000 	 .word com_pcb
- 1758              	 .cfi_endproc
- 1759              	.LFE466:
- 1761              	 .section .rodata
- 1762              	 .align 2
- 1763              	.LC1:
- 1764 0008 6F6B00   	 .ascii "ok\000"
- 1765 000b 00       	 .section .text.udp_send_event2,"ax",%progbits
- 1766              	 .align 2
- 1767              	 .global udp_send_event2
- 1768              	 .thumb
- 1769              	 .thumb_func
- 1771              	udp_send_event2:
- 1772              	.LFB467:
- 399:../main.c     **** 
+ 1742              	 .cfi_startproc
+ 1743              	 
+ 1744              	 
+ 1745 0000 80B5     	 push {r7,lr}
+ 1746              	.LCFI80:
+ 1747              	 .cfi_def_cfa_offset 8
+ 1748              	 .cfi_offset 7,-8
+ 1749              	 .cfi_offset 14,-4
+ 1750 0002 00AF     	 add r7,sp,#0
+ 1751              	.LCFI81:
+ 1752              	 .cfi_def_cfa_register 7
+ 397:../main.c     **** 	IP_ADDR4(&returnaddr, ip1,ip2,ip3,ip4);
+ 1753              	 .loc 4 397 0
+ 1754 0004 044B     	 ldr r3,.L59
+ 1755 0006 054A     	 ldr r2,.L59+4
+ 1756 0008 1A60     	 str r2,[r3]
+ 398:../main.c     **** 	com_pcb = udp_new();
+ 1757              	 .loc 4 398 0
+ 1758 000a FFF7FEFF 	 bl udp_new
+ 1759 000e 0246     	 mov r2,r0
+ 1760 0010 034B     	 ldr r3,.L59+8
+ 1761 0012 1A60     	 str r2,[r3]
+ 399:../main.c     **** }
+ 1762              	 .loc 4 399 0
+ 1763 0014 80BD     	 pop {r7,pc}
+ 1764              	.L60:
+ 1765 0016 00BF     	 .align 2
+ 1766              	.L59:
+ 1767 0018 00000000 	 .word returnaddr
+ 1768 001c C0A80009 	 .word 151038144
+ 1769 0020 00000000 	 .word com_pcb
+ 1770              	 .cfi_endproc
+ 1771              	.LFE466:
+ 1773              	 .section .rodata
+ 1774              	 .align 2
+ 1775              	.LC1:
+ 1776 0008 6F6B00   	 .ascii "ok\000"
+ 1777 000b 00       	 .section .text.udp_send_event2,"ax",%progbits
+ 1778              	 .align 2
+ 1779              	 .global udp_send_event2
+ 1780              	 .thumb
+ 1781              	 .thumb_func
+ 1783              	udp_send_event2:
+ 1784              	.LFB467:
  400:../main.c     **** 
- 401:../main.c     **** void udp_send_event2(char* message)
- 402:../main.c     **** {
- 1773              	 .loc 4 402 0
- 1774              	 .cfi_startproc
- 1775              	 
- 1776              	 
- 1777 0000 80B5     	 push {r7,lr}
- 1778              	.LCFI82:
- 1779              	 .cfi_def_cfa_offset 8
- 1780              	 .cfi_offset 7,-8
- 1781              	 .cfi_offset 14,-4
- 1782 0002 86B0     	 sub sp,sp,#24
- 1783              	.LCFI83:
- 1784              	 .cfi_def_cfa_offset 32
- 1785 0004 00AF     	 add r7,sp,#0
- 1786              	.LCFI84:
- 1787              	 .cfi_def_cfa_register 7
- 1788 0006 7860     	 str r0,[r7,#4]
- 403:../main.c     **** 
- 404:../main.c     **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, 75, PBUF_RAM);
- 1789              	 .loc 4 404 0
- 1790 0008 3820     	 movs r0,#56
- 1791 000a 4B21     	 movs r1,#75
- 1792 000c 4FF42072 	 mov r2,#640
- 1793 0010 FFF7FEFF 	 bl pbuf_alloc
- 1794 0014 7861     	 str r0,[r7,#20]
- 405:../main.c     **** 	((char*)b->payload)[0] = 5;
- 1795              	 .loc 4 405 0
- 1796 0016 7B69     	 ldr r3,[r7,#20]
- 1797 0018 5B68     	 ldr r3,[r3,#4]
- 1798 001a 0522     	 movs r2,#5
- 1799 001c 1A70     	 strb r2,[r3]
- 406:../main.c     **** 	memcpy (b->payload+1, message, 75);
- 1800              	 .loc 4 406 0
- 1801 001e 7B69     	 ldr r3,[r7,#20]
- 1802 0020 5B68     	 ldr r3,[r3,#4]
- 1803 0022 0133     	 adds r3,r3,#1
- 1804 0024 1846     	 mov r0,r3
- 1805 0026 7968     	 ldr r1,[r7,#4]
- 1806 0028 4B22     	 movs r2,#75
- 1807 002a FFF7FEFF 	 bl memcpy
- 407:../main.c     **** 	char* c = (char*)b->payload;
- 1808              	 .loc 4 407 0
- 1809 002e 7B69     	 ldr r3,[r7,#20]
- 1810 0030 5B68     	 ldr r3,[r3,#4]
- 1811 0032 3B61     	 str r3,[r7,#16]
- 408:../main.c     **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
- 1812              	 .loc 4 408 0
- 1813 0034 0B4B     	 ldr r3,.L63
- 1814 0036 1B68     	 ldr r3,[r3]
- 1815 0038 1846     	 mov r0,r3
- 1816 003a 7969     	 ldr r1,[r7,#20]
- 1817 003c 0A4A     	 ldr r2,.L63+4
- 1818 003e 4CF62043 	 movw r3,#52256
- 1819 0042 FFF7FEFF 	 bl udp_sendto
- 1820 0046 0346     	 mov r3,r0
- 1821 0048 FB73     	 strb r3,[r7,#15]
- 409:../main.c     **** 	if(e == ERR_OK){
- 1822              	 .loc 4 409 0
- 1823 004a 97F90F30 	 ldrsb r3,[r7,#15]
- 1824 004e 002B     	 cmp r3,#0
- 1825 0050 02D1     	 bne .L62
- 1826              	.LBB5:
- 410:../main.c     **** 		printf("ok");
- 1827              	 .loc 4 410 0
- 1828 0052 0648     	 ldr r0,.L63+8
- 1829 0054 FFF7FEFF 	 bl printf
- 1830              	.L62:
- 1831              	.LBE5:
- 411:../main.c     **** 	}
- 412:../main.c     **** 
- 413:../main.c     **** 	pbuf_free(b);
- 1832              	 .loc 4 413 0
- 1833 0058 7869     	 ldr r0,[r7,#20]
- 1834 005a FFF7FEFF 	 bl pbuf_free
- 414:../main.c     **** }
- 1835              	 .loc 4 414 0
- 1836 005e 1837     	 adds r7,r7,#24
- 1837              	.LCFI85:
- 1838              	 .cfi_def_cfa_offset 8
- 1839 0060 BD46     	 mov sp,r7
- 1840              	.LCFI86:
- 1841              	 .cfi_def_cfa_register 13
- 1842              	 
- 1843 0062 80BD     	 pop {r7,pc}
- 1844              	.L64:
- 1845              	 .align 2
- 1846              	.L63:
- 1847 0064 00000000 	 .word com_pcb
- 1848 0068 00000000 	 .word returnaddr
- 1849 006c 08000000 	 .word .LC1
- 1850              	 .cfi_endproc
- 1851              	.LFE467:
- 1853              	 .section .text.udp_send_event,"ax",%progbits
- 1854              	 .align 2
- 1855              	 .global udp_send_event
- 1856              	 .thumb
- 1857              	 .thumb_func
- 1859              	udp_send_event:
- 1860              	.LFB468:
- 415:../main.c     **** 
- 416:../main.c     **** void udp_send_event(char* message)
- 417:../main.c     **** {
- 1861              	 .loc 4 417 0
- 1862              	 .cfi_startproc
- 1863              	 
- 1864              	 
- 1865 0000 80B5     	 push {r7,lr}
- 1866              	.LCFI87:
- 1867              	 .cfi_def_cfa_offset 8
- 1868              	 .cfi_offset 7,-8
- 1869              	 .cfi_offset 14,-4
- 1870 0002 86B0     	 sub sp,sp,#24
- 1871              	.LCFI88:
- 1872              	 .cfi_def_cfa_offset 32
- 1873 0004 00AF     	 add r7,sp,#0
- 1874              	.LCFI89:
- 1875              	 .cfi_def_cfa_register 7
- 1876 0006 7860     	 str r0,[r7,#4]
- 418:../main.c     **** 
+ 401:../main.c     **** 
+ 402:../main.c     **** void udp_send_event2(char* message)
+ 403:../main.c     **** {
+ 1785              	 .loc 4 403 0
+ 1786              	 .cfi_startproc
+ 1787              	 
+ 1788              	 
+ 1789 0000 80B5     	 push {r7,lr}
+ 1790              	.LCFI82:
+ 1791              	 .cfi_def_cfa_offset 8
+ 1792              	 .cfi_offset 7,-8
+ 1793              	 .cfi_offset 14,-4
+ 1794 0002 86B0     	 sub sp,sp,#24
+ 1795              	.LCFI83:
+ 1796              	 .cfi_def_cfa_offset 32
+ 1797 0004 00AF     	 add r7,sp,#0
+ 1798              	.LCFI84:
+ 1799              	 .cfi_def_cfa_register 7
+ 1800 0006 7860     	 str r0,[r7,#4]
+ 404:../main.c     **** 
+ 405:../main.c     **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, 75, PBUF_RAM);
+ 1801              	 .loc 4 405 0
+ 1802 0008 3820     	 movs r0,#56
+ 1803 000a 4B21     	 movs r1,#75
+ 1804 000c 4FF42072 	 mov r2,#640
+ 1805 0010 FFF7FEFF 	 bl pbuf_alloc
+ 1806 0014 7861     	 str r0,[r7,#20]
+ 406:../main.c     **** 	((char*)b->payload)[0] = 5;
+ 1807              	 .loc 4 406 0
+ 1808 0016 7B69     	 ldr r3,[r7,#20]
+ 1809 0018 5B68     	 ldr r3,[r3,#4]
+ 1810 001a 0522     	 movs r2,#5
+ 1811 001c 1A70     	 strb r2,[r3]
+ 407:../main.c     **** 	memcpy (b->payload+1, message, 75);
+ 1812              	 .loc 4 407 0
+ 1813 001e 7B69     	 ldr r3,[r7,#20]
+ 1814 0020 5B68     	 ldr r3,[r3,#4]
+ 1815 0022 0133     	 adds r3,r3,#1
+ 1816 0024 1846     	 mov r0,r3
+ 1817 0026 7968     	 ldr r1,[r7,#4]
+ 1818 0028 4B22     	 movs r2,#75
+ 1819 002a FFF7FEFF 	 bl memcpy
+ 408:../main.c     **** 	char* c = (char*)b->payload;
+ 1820              	 .loc 4 408 0
+ 1821 002e 7B69     	 ldr r3,[r7,#20]
+ 1822 0030 5B68     	 ldr r3,[r3,#4]
+ 1823 0032 3B61     	 str r3,[r7,#16]
+ 409:../main.c     **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+ 1824              	 .loc 4 409 0
+ 1825 0034 0B4B     	 ldr r3,.L63
+ 1826 0036 1B68     	 ldr r3,[r3]
+ 1827 0038 1846     	 mov r0,r3
+ 1828 003a 7969     	 ldr r1,[r7,#20]
+ 1829 003c 0A4A     	 ldr r2,.L63+4
+ 1830 003e 4CF62043 	 movw r3,#52256
+ 1831 0042 FFF7FEFF 	 bl udp_sendto
+ 1832 0046 0346     	 mov r3,r0
+ 1833 0048 FB73     	 strb r3,[r7,#15]
+ 410:../main.c     **** 	if(e == ERR_OK){
+ 1834              	 .loc 4 410 0
+ 1835 004a 97F90F30 	 ldrsb r3,[r7,#15]
+ 1836 004e 002B     	 cmp r3,#0
+ 1837 0050 02D1     	 bne .L62
+ 1838              	.LBB5:
+ 411:../main.c     **** 		printf("ok");
+ 1839              	 .loc 4 411 0
+ 1840 0052 0648     	 ldr r0,.L63+8
+ 1841 0054 FFF7FEFF 	 bl printf
+ 1842              	.L62:
+ 1843              	.LBE5:
+ 412:../main.c     **** 	}
+ 413:../main.c     **** 
+ 414:../main.c     **** 	pbuf_free(b);
+ 1844              	 .loc 4 414 0
+ 1845 0058 7869     	 ldr r0,[r7,#20]
+ 1846 005a FFF7FEFF 	 bl pbuf_free
+ 415:../main.c     **** }
+ 1847              	 .loc 4 415 0
+ 1848 005e 1837     	 adds r7,r7,#24
+ 1849              	.LCFI85:
+ 1850              	 .cfi_def_cfa_offset 8
+ 1851 0060 BD46     	 mov sp,r7
+ 1852              	.LCFI86:
+ 1853              	 .cfi_def_cfa_register 13
+ 1854              	 
+ 1855 0062 80BD     	 pop {r7,pc}
+ 1856              	.L64:
+ 1857              	 .align 2
+ 1858              	.L63:
+ 1859 0064 00000000 	 .word com_pcb
+ 1860 0068 00000000 	 .word returnaddr
+ 1861 006c 08000000 	 .word .LC1
+ 1862              	 .cfi_endproc
+ 1863              	.LFE467:
+ 1865              	 .section .text.udp_send_event,"ax",%progbits
+ 1866              	 .align 2
+ 1867              	 .global udp_send_event
+ 1868              	 .thumb
+ 1869              	 .thumb_func
+ 1871              	udp_send_event:
+ 1872              	.LFB468:
+ 416:../main.c     **** 
+ 417:../main.c     **** void udp_send_event(char* message)
+ 418:../main.c     **** {
+ 1873              	 .loc 4 418 0
+ 1874              	 .cfi_startproc
+ 1875              	 
+ 1876              	 
+ 1877 0000 80B5     	 push {r7,lr}
+ 1878              	.LCFI87:
+ 1879              	 .cfi_def_cfa_offset 8
+ 1880              	 .cfi_offset 7,-8
+ 1881              	 .cfi_offset 14,-4
+ 1882 0002 86B0     	 sub sp,sp,#24
+ 1883              	.LCFI88:
+ 1884              	 .cfi_def_cfa_offset 32
+ 1885 0004 00AF     	 add r7,sp,#0
+ 1886              	.LCFI89:
+ 1887              	 .cfi_def_cfa_register 7
+ 1888 0006 7860     	 str r0,[r7,#4]
  419:../main.c     **** 
- 420:../main.c     **** 	u16_t l = strlen(message)+1;
- 1877              	 .loc 4 420 0
- 1878 0008 7868     	 ldr r0,[r7,#4]
- 1879 000a FFF7FEFF 	 bl strlen
- 1880 000e 0346     	 mov r3,r0
- 1881 0010 9BB2     	 uxth r3,r3
- 1882 0012 0133     	 adds r3,r3,#1
- 1883 0014 FB82     	 strh r3,[r7,#22]
- 421:../main.c     **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, l+1, PBUF_RAM);
- 1884              	 .loc 4 421 0
- 1885 0016 FB8A     	 ldrh r3,[r7,#22]
- 1886 0018 0133     	 adds r3,r3,#1
- 1887 001a 9BB2     	 uxth r3,r3
- 1888 001c 3820     	 movs r0,#56
- 1889 001e 1946     	 mov r1,r3
- 1890 0020 4FF42072 	 mov r2,#640
- 1891 0024 FFF7FEFF 	 bl pbuf_alloc
- 1892 0028 3861     	 str r0,[r7,#16]
- 422:../main.c     **** 	((char*)b->payload)[0] = 3;
- 1893              	 .loc 4 422 0
- 1894 002a 3B69     	 ldr r3,[r7,#16]
- 1895 002c 5B68     	 ldr r3,[r3,#4]
- 1896 002e 0322     	 movs r2,#3
- 1897 0030 1A70     	 strb r2,[r3]
- 423:../main.c     **** 	memcpy (b->payload+1, message, l+1);
- 1898              	 .loc 4 423 0
- 1899 0032 3B69     	 ldr r3,[r7,#16]
- 1900 0034 5B68     	 ldr r3,[r3,#4]
- 1901 0036 5A1C     	 adds r2,r3,#1
- 1902 0038 FB8A     	 ldrh r3,[r7,#22]
- 1903 003a 0133     	 adds r3,r3,#1
- 1904 003c 1046     	 mov r0,r2
- 1905 003e 7968     	 ldr r1,[r7,#4]
- 1906 0040 1A46     	 mov r2,r3
- 1907 0042 FFF7FEFF 	 bl memcpy
- 424:../main.c     **** 	char* c = (char*)b->payload;
- 1908              	 .loc 4 424 0
- 1909 0046 3B69     	 ldr r3,[r7,#16]
- 1910 0048 5B68     	 ldr r3,[r3,#4]
- 1911 004a FB60     	 str r3,[r7,#12]
- 425:../main.c     **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
- 1912              	 .loc 4 425 0
- 1913 004c 0B4B     	 ldr r3,.L67
- 1914 004e 1B68     	 ldr r3,[r3]
- 1915 0050 1846     	 mov r0,r3
- 1916 0052 3969     	 ldr r1,[r7,#16]
- 1917 0054 0A4A     	 ldr r2,.L67+4
- 1918 0056 4CF62043 	 movw r3,#52256
- 1919 005a FFF7FEFF 	 bl udp_sendto
- 1920 005e 0346     	 mov r3,r0
- 1921 0060 FB72     	 strb r3,[r7,#11]
- 426:../main.c     **** 	if(e == ERR_OK){
- 1922              	 .loc 4 426 0
- 1923 0062 97F90B30 	 ldrsb r3,[r7,#11]
- 1924 0066 002B     	 cmp r3,#0
- 1925 0068 02D1     	 bne .L66
- 1926              	.LBB6:
- 427:../main.c     **** 		printf("ok");
- 1927              	 .loc 4 427 0
- 1928 006a 0648     	 ldr r0,.L67+8
- 1929 006c FFF7FEFF 	 bl printf
- 1930              	.L66:
- 1931              	.LBE6:
- 428:../main.c     **** 	}
- 429:../main.c     **** 
- 430:../main.c     **** 	pbuf_free(b);
- 1932              	 .loc 4 430 0
- 1933 0070 3869     	 ldr r0,[r7,#16]
- 1934 0072 FFF7FEFF 	 bl pbuf_free
- 431:../main.c     **** }
- 1935              	 .loc 4 431 0
- 1936 0076 1837     	 adds r7,r7,#24
- 1937              	.LCFI90:
- 1938              	 .cfi_def_cfa_offset 8
- 1939 0078 BD46     	 mov sp,r7
- 1940              	.LCFI91:
- 1941              	 .cfi_def_cfa_register 13
- 1942              	 
- 1943 007a 80BD     	 pop {r7,pc}
- 1944              	.L68:
- 1945              	 .align 2
- 1946              	.L67:
- 1947 007c 00000000 	 .word com_pcb
- 1948 0080 00000000 	 .word returnaddr
- 1949 0084 08000000 	 .word .LC1
- 1950              	 .cfi_endproc
- 1951              	.LFE468:
- 1953              	 .global __aeabi_dcmplt
- 1954              	 .global __aeabi_i2d
- 1955              	 .section .text.main,"ax",%progbits
- 1956              	 .align 2
- 1957              	 .global main
- 1958              	 .thumb
- 1959              	 .thumb_func
- 1961              	main:
- 1962              	.LFB469:
- 432:../main.c     **** 
+ 420:../main.c     **** 
+ 421:../main.c     **** 	u16_t l = strlen(message)+1;
+ 1889              	 .loc 4 421 0
+ 1890 0008 7868     	 ldr r0,[r7,#4]
+ 1891 000a FFF7FEFF 	 bl strlen
+ 1892 000e 0346     	 mov r3,r0
+ 1893 0010 9BB2     	 uxth r3,r3
+ 1894 0012 0133     	 adds r3,r3,#1
+ 1895 0014 FB82     	 strh r3,[r7,#22]
+ 422:../main.c     **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, l+1, PBUF_RAM);
+ 1896              	 .loc 4 422 0
+ 1897 0016 FB8A     	 ldrh r3,[r7,#22]
+ 1898 0018 0133     	 adds r3,r3,#1
+ 1899 001a 9BB2     	 uxth r3,r3
+ 1900 001c 3820     	 movs r0,#56
+ 1901 001e 1946     	 mov r1,r3
+ 1902 0020 4FF42072 	 mov r2,#640
+ 1903 0024 FFF7FEFF 	 bl pbuf_alloc
+ 1904 0028 3861     	 str r0,[r7,#16]
+ 423:../main.c     **** 	((char*)b->payload)[0] = 3;
+ 1905              	 .loc 4 423 0
+ 1906 002a 3B69     	 ldr r3,[r7,#16]
+ 1907 002c 5B68     	 ldr r3,[r3,#4]
+ 1908 002e 0322     	 movs r2,#3
+ 1909 0030 1A70     	 strb r2,[r3]
+ 424:../main.c     **** 	memcpy (b->payload+1, message, l+1);
+ 1910              	 .loc 4 424 0
+ 1911 0032 3B69     	 ldr r3,[r7,#16]
+ 1912 0034 5B68     	 ldr r3,[r3,#4]
+ 1913 0036 5A1C     	 adds r2,r3,#1
+ 1914 0038 FB8A     	 ldrh r3,[r7,#22]
+ 1915 003a 0133     	 adds r3,r3,#1
+ 1916 003c 1046     	 mov r0,r2
+ 1917 003e 7968     	 ldr r1,[r7,#4]
+ 1918 0040 1A46     	 mov r2,r3
+ 1919 0042 FFF7FEFF 	 bl memcpy
+ 425:../main.c     **** 	char* c = (char*)b->payload;
+ 1920              	 .loc 4 425 0
+ 1921 0046 3B69     	 ldr r3,[r7,#16]
+ 1922 0048 5B68     	 ldr r3,[r3,#4]
+ 1923 004a FB60     	 str r3,[r7,#12]
+ 426:../main.c     **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+ 1924              	 .loc 4 426 0
+ 1925 004c 0B4B     	 ldr r3,.L67
+ 1926 004e 1B68     	 ldr r3,[r3]
+ 1927 0050 1846     	 mov r0,r3
+ 1928 0052 3969     	 ldr r1,[r7,#16]
+ 1929 0054 0A4A     	 ldr r2,.L67+4
+ 1930 0056 4CF62043 	 movw r3,#52256
+ 1931 005a FFF7FEFF 	 bl udp_sendto
+ 1932 005e 0346     	 mov r3,r0
+ 1933 0060 FB72     	 strb r3,[r7,#11]
+ 427:../main.c     **** 	if(e == ERR_OK){
+ 1934              	 .loc 4 427 0
+ 1935 0062 97F90B30 	 ldrsb r3,[r7,#11]
+ 1936 0066 002B     	 cmp r3,#0
+ 1937 0068 02D1     	 bne .L66
+ 1938              	.LBB6:
+ 428:../main.c     **** 		printf("ok");
+ 1939              	 .loc 4 428 0
+ 1940 006a 0648     	 ldr r0,.L67+8
+ 1941 006c FFF7FEFF 	 bl printf
+ 1942              	.L66:
+ 1943              	.LBE6:
+ 429:../main.c     **** 	}
+ 430:../main.c     **** 
+ 431:../main.c     **** 	pbuf_free(b);
+ 1944              	 .loc 4 431 0
+ 1945 0070 3869     	 ldr r0,[r7,#16]
+ 1946 0072 FFF7FEFF 	 bl pbuf_free
+ 432:../main.c     **** }
+ 1947              	 .loc 4 432 0
+ 1948 0076 1837     	 adds r7,r7,#24
+ 1949              	.LCFI90:
+ 1950              	 .cfi_def_cfa_offset 8
+ 1951 0078 BD46     	 mov sp,r7
+ 1952              	.LCFI91:
+ 1953              	 .cfi_def_cfa_register 13
+ 1954              	 
+ 1955 007a 80BD     	 pop {r7,pc}
+ 1956              	.L68:
+ 1957              	 .align 2
+ 1958              	.L67:
+ 1959 007c 00000000 	 .word com_pcb
+ 1960 0080 00000000 	 .word returnaddr
+ 1961 0084 08000000 	 .word .LC1
+ 1962              	 .cfi_endproc
+ 1963              	.LFE468:
+ 1965              	 .global __aeabi_dcmplt
+ 1966              	 .global __aeabi_i2d
+ 1967              	 .section .text.main,"ax",%progbits
+ 1968              	 .align 2
+ 1969              	 .global main
+ 1970              	 .thumb
+ 1971              	 .thumb_func
+ 1973              	main:
+ 1974              	.LFB469:
  433:../main.c     **** 
  434:../main.c     **** 
  435:../main.c     **** 
  436:../main.c     **** 
- 437:../main.c     **** int main(void)
- 438:../main.c     **** {
- 1963              	 .loc 4 438 0
- 1964              	 .cfi_startproc
- 1965              	 
- 1966              	 
- 1967 0000 B0B5     	 push {r4,r5,r7,lr}
- 1968              	.LCFI92:
- 1969              	 .cfi_def_cfa_offset 16
- 1970              	 .cfi_offset 4,-16
- 1971              	 .cfi_offset 5,-12
- 1972              	 .cfi_offset 7,-8
- 1973              	 .cfi_offset 14,-4
- 1974 0002 84B0     	 sub sp,sp,#16
- 1975              	.LCFI93:
- 1976              	 .cfi_def_cfa_offset 32
- 1977 0004 00AF     	 add r7,sp,#0
- 1978              	.LCFI94:
- 1979              	 .cfi_def_cfa_register 7
- 439:../main.c     ****   DAVE_STATUS_t status;
- 440:../main.c     **** 
- 441:../main.c     ****   status = DAVE_Init();           /* Initialization of DAVE APPs  */
- 1980              	 .loc 4 441 0
- 1981 0006 FFF7FEFF 	 bl DAVE_Init
- 1982 000a 0346     	 mov r3,r0
- 1983 000c FB72     	 strb r3,[r7,#11]
- 442:../main.c     **** 
- 443:../main.c     ****   firstSentenceBuffer = receivedSentence;
- 1984              	 .loc 4 443 0
- 1985 000e 6E4B     	 ldr r3,.L110
- 1986 0010 6E4A     	 ldr r2,.L110+4
- 1987 0012 1A60     	 str r2,[r3]
- 444:../main.c     ****   secondSentenceBuffer = receivedSentence2;
- 1988              	 .loc 4 444 0
- 1989 0014 6E4B     	 ldr r3,.L110+8
- 1990 0016 6F4A     	 ldr r2,.L110+12
- 1991 0018 1A60     	 str r2,[r3]
- 445:../main.c     **** 
+ 437:../main.c     **** 
+ 438:../main.c     **** int main(void)
+ 439:../main.c     **** {
+ 1975              	 .loc 4 439 0
+ 1976              	 .cfi_startproc
+ 1977              	 
+ 1978              	 
+ 1979 0000 B0B5     	 push {r4,r5,r7,lr}
+ 1980              	.LCFI92:
+ 1981              	 .cfi_def_cfa_offset 16
+ 1982              	 .cfi_offset 4,-16
+ 1983              	 .cfi_offset 5,-12
+ 1984              	 .cfi_offset 7,-8
+ 1985              	 .cfi_offset 14,-4
+ 1986 0002 84B0     	 sub sp,sp,#16
+ 1987              	.LCFI93:
+ 1988              	 .cfi_def_cfa_offset 32
+ 1989 0004 00AF     	 add r7,sp,#0
+ 1990              	.LCFI94:
+ 1991              	 .cfi_def_cfa_register 7
+ 440:../main.c     ****   DAVE_STATUS_t status;
+ 441:../main.c     **** 
+ 442:../main.c     ****   status = DAVE_Init();           /* Initialization of DAVE APPs  */
+ 1992              	 .loc 4 442 0
+ 1993 0006 FFF7FEFF 	 bl DAVE_Init
+ 1994 000a 0346     	 mov r3,r0
+ 1995 000c FB72     	 strb r3,[r7,#11]
+ 443:../main.c     **** 
+ 444:../main.c     ****   firstSentenceBuffer = receivedSentence;
+ 1996              	 .loc 4 444 0
+ 1997 000e 6E4B     	 ldr r3,.L110
+ 1998 0010 6E4A     	 ldr r2,.L110+4
+ 1999 0012 1A60     	 str r2,[r3]
+ 445:../main.c     ****   secondSentenceBuffer = receivedSentence2;
+ 2000              	 .loc 4 445 0
+ 2001 0014 6E4B     	 ldr r3,.L110+8
+ 2002 0016 6F4A     	 ldr r2,.L110+12
+ 2003 0018 1A60     	 str r2,[r3]
  446:../main.c     **** 
- 447:../main.c     ****   outputBufferStart = firstSentenceBuffer;
- 1992              	 .loc 4 447 0
- 1993 001a 6B4B     	 ldr r3,.L110
- 1994 001c 1B68     	 ldr r3,[r3]
- 1995 001e 6E4A     	 ldr r2,.L110+16
- 1996 0020 1360     	 str r3,[r2]
- 448:../main.c     ****   outputBufferCurrent = firstSentenceBuffer;
- 1997              	 .loc 4 448 0
- 1998 0022 694B     	 ldr r3,.L110
- 1999 0024 1B68     	 ldr r3,[r3]
- 2000 0026 6D4A     	 ldr r2,.L110+20
- 2001 0028 1360     	 str r3,[r2]
- 449:../main.c     ****   outputBufferEnd = firstSentenceBuffer+199;
- 2002              	 .loc 4 449 0
- 2003 002a 674B     	 ldr r3,.L110
- 2004 002c 1B68     	 ldr r3,[r3]
- 2005 002e C733     	 adds r3,r3,#199
- 2006 0030 6B4A     	 ldr r2,.L110+24
- 2007 0032 1360     	 str r3,[r2]
- 450:../main.c     **** 
- 451:../main.c     ****   secondOutputBufferStart = secondSentenceBuffer;
- 2008              	 .loc 4 451 0
- 2009 0034 664B     	 ldr r3,.L110+8
- 2010 0036 1B68     	 ldr r3,[r3]
- 2011 0038 6A4A     	 ldr r2,.L110+28
- 2012 003a 1360     	 str r3,[r2]
- 452:../main.c     ****   secondOutputBufferCurrent = secondSentenceBuffer;
- 2013              	 .loc 4 452 0
- 2014 003c 644B     	 ldr r3,.L110+8
- 2015 003e 1B68     	 ldr r3,[r3]
- 2016 0040 694A     	 ldr r2,.L110+32
- 2017 0042 1360     	 str r3,[r2]
- 453:../main.c     ****   secondOutputBufferEnd = secondSentenceBuffer;
- 2018              	 .loc 4 453 0
- 2019 0044 624B     	 ldr r3,.L110+8
- 2020 0046 1B68     	 ldr r3,[r3]
- 2021 0048 684A     	 ldr r2,.L110+36
- 2022 004a 1360     	 str r3,[r2]
- 454:../main.c     **** 
+ 447:../main.c     **** 
+ 448:../main.c     ****   outputBufferStart = firstSentenceBuffer;
+ 2004              	 .loc 4 448 0
+ 2005 001a 6B4B     	 ldr r3,.L110
+ 2006 001c 1B68     	 ldr r3,[r3]
+ 2007 001e 6E4A     	 ldr r2,.L110+16
+ 2008 0020 1360     	 str r3,[r2]
+ 449:../main.c     ****   outputBufferCurrent = firstSentenceBuffer;
+ 2009              	 .loc 4 449 0
+ 2010 0022 694B     	 ldr r3,.L110
+ 2011 0024 1B68     	 ldr r3,[r3]
+ 2012 0026 6D4A     	 ldr r2,.L110+20
+ 2013 0028 1360     	 str r3,[r2]
+ 450:../main.c     ****   outputBufferEnd = firstSentenceBuffer+199;
+ 2014              	 .loc 4 450 0
+ 2015 002a 674B     	 ldr r3,.L110
+ 2016 002c 1B68     	 ldr r3,[r3]
+ 2017 002e C733     	 adds r3,r3,#199
+ 2018 0030 6B4A     	 ldr r2,.L110+24
+ 2019 0032 1360     	 str r3,[r2]
+ 451:../main.c     **** 
+ 452:../main.c     ****   secondOutputBufferStart = secondSentenceBuffer;
+ 2020              	 .loc 4 452 0
+ 2021 0034 664B     	 ldr r3,.L110+8
+ 2022 0036 1B68     	 ldr r3,[r3]
+ 2023 0038 6A4A     	 ldr r2,.L110+28
+ 2024 003a 1360     	 str r3,[r2]
+ 453:../main.c     ****   secondOutputBufferCurrent = secondSentenceBuffer;
+ 2025              	 .loc 4 453 0
+ 2026 003c 644B     	 ldr r3,.L110+8
+ 2027 003e 1B68     	 ldr r3,[r3]
+ 2028 0040 694A     	 ldr r2,.L110+32
+ 2029 0042 1360     	 str r3,[r2]
+ 454:../main.c     ****   secondOutputBufferEnd = secondSentenceBuffer;
+ 2030              	 .loc 4 454 0
+ 2031 0044 624B     	 ldr r3,.L110+8
+ 2032 0046 1B68     	 ldr r3,[r3]
+ 2033 0048 684A     	 ldr r2,.L110+36
+ 2034 004a 1360     	 str r3,[r2]
  455:../main.c     **** 
- 456:../main.c     ****   cycledelay((uint32_t)(100000 * 2));
- 2023              	 .loc 4 456 0
- 2024 004c 6848     	 ldr r0,.L110+40
- 2025 004e FFF7FEFF 	 bl cycledelay
- 457:../main.c     **** 
- 458:../main.c     ****   udp_initialize();
- 2026              	 .loc 4 458 0
- 2027 0052 FFF7FEFF 	 bl udp_initialize
- 459:../main.c     **** 
- 460:../main.c     ****   cycledelay(140000* 50);
- 2028              	 .loc 4 460 0
- 2029 0056 6748     	 ldr r0,.L110+44
- 2030 0058 FFF7FEFF 	 bl cycledelay
- 461:../main.c     **** 
- 462:../main.c     ****   bmi055_start();
- 2031              	 .loc 4 462 0
- 2032 005c FFF7FEFF 	 bl bmi055_start
- 463:../main.c     **** 
- 464:../main.c     ****   if(status != DAVE_STATUS_SUCCESS)
- 2033              	 .loc 4 464 0
- 2034 0060 FB7A     	 ldrb r3,[r7,#11]
- 2035 0062 002B     	 cmp r3,#0
- 2036 0064 00D0     	 beq .L70
- 2037              	.L71:
- 465:../main.c     ****   {
- 466:../main.c     ****     /* Placeholder for error handler code. The while loop below can be replaced with an user error 
- 467:../main.c     ****     XMC_DEBUG("DAVE APPs initialization failed\n");
- 468:../main.c     **** 
- 469:../main.c     ****     while(1U)
- 470:../main.c     ****     {
- 471:../main.c     **** 
- 472:../main.c     ****     }
- 2038              	 .loc 4 472 0 discriminator 1
- 2039 0066 FEE7     	 b .L71
- 2040              	.L70:
- 473:../main.c     ****   }
- 474:../main.c     **** 
- 475:../main.c     ****   long t = 0;
- 2041              	 .loc 4 475 0
- 2042 0068 0023     	 movs r3,#0
- 2043 006a FB60     	 str r3,[r7,#12]
- 2044              	.L97:
- 476:../main.c     **** 
+ 456:../main.c     **** 
+ 457:../main.c     ****   cycledelay((uint32_t)(100000 * 2));
+ 2035              	 .loc 4 457 0
+ 2036 004c 6848     	 ldr r0,.L110+40
+ 2037 004e FFF7FEFF 	 bl cycledelay
+ 458:../main.c     **** 
+ 459:../main.c     ****   udp_initialize();
+ 2038              	 .loc 4 459 0
+ 2039 0052 FFF7FEFF 	 bl udp_initialize
+ 460:../main.c     **** 
+ 461:../main.c     ****   cycledelay(140000* 50);
+ 2040              	 .loc 4 461 0
+ 2041 0056 6748     	 ldr r0,.L110+44
+ 2042 0058 FFF7FEFF 	 bl cycledelay
+ 462:../main.c     **** 
+ 463:../main.c     ****   bmi055_start();
+ 2043              	 .loc 4 463 0
+ 2044 005c FFF7FEFF 	 bl bmi055_start
+ 464:../main.c     **** 
+ 465:../main.c     ****   if(status != DAVE_STATUS_SUCCESS)
+ 2045              	 .loc 4 465 0
+ 2046 0060 FB7A     	 ldrb r3,[r7,#11]
+ 2047 0062 002B     	 cmp r3,#0
+ 2048 0064 00D0     	 beq .L70
+ 2049              	.L71:
+ 466:../main.c     ****   {
+ 467:../main.c     ****     /* Placeholder for error handler code. The while loop below can be replaced with an user error 
+ 468:../main.c     ****     XMC_DEBUG("DAVE APPs initialization failed\n");
+ 469:../main.c     **** 
+ 470:../main.c     ****     while(1U)
+ 471:../main.c     ****     {
+ 472:../main.c     **** 
+ 473:../main.c     ****     }
+ 2050              	 .loc 4 473 0 discriminator 1
+ 2051 0066 FEE7     	 b .L71
+ 2052              	.L70:
+ 474:../main.c     ****   }
+ 475:../main.c     **** 
+ 476:../main.c     ****   long polltime = 0;
+ 2053              	 .loc 4 476 0
+ 2054 0068 0023     	 movs r3,#0
+ 2055 006a FB60     	 str r3,[r7,#12]
+ 2056              	.L97:
  477:../main.c     **** 
- 478:../main.c     ****   /* Placeholder for user application code. The while loop below can be replaced with user applicat
- 479:../main.c     ****   while(1U)
- 480:../main.c     ****   {
- 481:../main.c     **** 
- 482:../main.c     **** 	  sys_check_timeouts();
- 2045              	 .loc 4 482 0
- 2046 006c FFF7FEFF 	 bl sys_check_timeouts
- 483:../main.c     **** 	  t++;
- 2047              	 .loc 4 483 0
- 2048 0070 FB68     	 ldr r3,[r7,#12]
- 2049 0072 0133     	 adds r3,r3,#1
- 2050 0074 FB60     	 str r3,[r7,#12]
- 484:../main.c     **** 	  if( t > 60000){//600000){
- 2051              	 .loc 4 484 0
- 2052 0076 FB68     	 ldr r3,[r7,#12]
- 2053 0078 4EF66022 	 movw r2,#60000
- 2054 007c 9342     	 cmp r3,r2
- 2055 007e 40F30F81 	 ble .L72
- 485:../main.c     **** 		  bmi055_poll_data();
- 2056              	 .loc 4 485 0
- 2057 0082 FFF7FEFF 	 bl bmi055_poll_data
- 486:../main.c     **** 		  bmi055_apply_gyro_all_angles();
- 2058              	 .loc 4 486 0
- 2059 0086 FFF7FEFF 	 bl bmi055_apply_gyro_all_angles
- 487:../main.c     **** 		  bmi055_apply_accel_all_angles();
- 2060              	 .loc 4 487 0
- 2061 008a FFF7FEFF 	 bl bmi055_apply_accel_all_angles
- 488:../main.c     **** 
+ 478:../main.c     **** 
+ 479:../main.c     ****   /* Placeholder for user application code. The while loop below can be replaced with user applicat
+ 480:../main.c     ****   while(1U)
+ 481:../main.c     ****   {
+ 482:../main.c     **** 
+ 483:../main.c     **** 	  sys_check_timeouts();
+ 2057              	 .loc 4 483 0
+ 2058 006c FFF7FEFF 	 bl sys_check_timeouts
+ 484:../main.c     **** 	  polltime++;
+ 2059              	 .loc 4 484 0
+ 2060 0070 FB68     	 ldr r3,[r7,#12]
+ 2061 0072 0133     	 adds r3,r3,#1
+ 2062 0074 FB60     	 str r3,[r7,#12]
+ 485:../main.c     **** 	  if( polltime > 60000){//600000){
+ 2063              	 .loc 4 485 0
+ 2064 0076 FB68     	 ldr r3,[r7,#12]
+ 2065 0078 4EF66022 	 movw r2,#60000
+ 2066 007c 9342     	 cmp r3,r2
+ 2067 007e 40F30F81 	 ble .L72
+ 486:../main.c     **** 		  bmi055_poll_data();
+ 2068              	 .loc 4 486 0
+ 2069 0082 FFF7FEFF 	 bl bmi055_poll_data
+ 487:../main.c     **** 		  bmi055_apply_gyro_all_angles();
+ 2070              	 .loc 4 487 0
+ 2071 0086 FFF7FEFF 	 bl bmi055_apply_gyro_all_angles
+ 488:../main.c     **** 		  bmi055_apply_accel_all_angles();
+ 2072              	 .loc 4 488 0
+ 2073 008a FFF7FEFF 	 bl bmi055_apply_accel_all_angles
  489:../main.c     **** 
  490:../main.c     **** 
- 491:../main.c     **** 		  // min berekenen
- 492:../main.c     **** if(maxInitialized){
- 2062              	 .loc 4 492 0
- 2063 008e 5A4B     	 ldr r3,.L110+48
- 2064 0090 1B78     	 ldrb r3,[r3]
- 2065 0092 002B     	 cmp r3,#0
- 2066 0094 3FD0     	 beq .L73
- 493:../main.c     **** 	  max_complement_xValue =  max(complement_xValue, max_complement_xValue);
- 2067              	 .loc 4 493 0
- 2068 0096 594B     	 ldr r3,.L110+52
- 2069 0098 D3E90001 	 ldrd r0,[r3]
- 2070 009c 584B     	 ldr r3,.L110+56
- 2071 009e D3E90023 	 ldrd r2,[r3]
- 2072 00a2 FFF7FEFF 	 bl __aeabi_dcmpgt
- 2073 00a6 0346     	 mov r3,r0
- 2074 00a8 002B     	 cmp r3,#0
- 2075 00aa 03D0     	 beq .L104
- 2076              	 .loc 4 493 0 is_stmt 0 discriminator 1
- 2077 00ac 534B     	 ldr r3,.L110+52
- 2078 00ae D3E90023 	 ldrd r2,[r3]
- 2079 00b2 02E0     	 b .L76
- 2080              	.L104:
- 2081              	 .loc 4 493 0 discriminator 2
- 2082 00b4 524B     	 ldr r3,.L110+56
- 2083 00b6 D3E90023 	 ldrd r2,[r3]
- 2084              	.L76:
- 2085              	 .loc 4 493 0 discriminator 4
- 2086 00ba 5149     	 ldr r1,.L110+56
- 2087 00bc C1E90023 	 strd r2,[r1]
- 494:../main.c     **** 	  max_complement_yValue =  max(complement_yValue, max_complement_yValue);
- 2088              	 .loc 4 494 0 is_stmt 1 discriminator 4
- 2089 00c0 504B     	 ldr r3,.L110+60
- 2090 00c2 D3E90001 	 ldrd r0,[r3]
- 2091 00c6 504B     	 ldr r3,.L110+64
- 2092 00c8 D3E90023 	 ldrd r2,[r3]
- 2093 00cc FFF7FEFF 	 bl __aeabi_dcmpgt
- 2094 00d0 0346     	 mov r3,r0
- 2095 00d2 002B     	 cmp r3,#0
- 2096 00d4 03D0     	 beq .L105
- 2097              	 .loc 4 494 0 is_stmt 0 discriminator 1
- 2098 00d6 4B4B     	 ldr r3,.L110+60
- 2099 00d8 D3E90023 	 ldrd r2,[r3]
- 2100 00dc 02E0     	 b .L79
- 2101              	.L105:
- 2102              	 .loc 4 494 0 discriminator 2
- 2103 00de 4A4B     	 ldr r3,.L110+64
- 2104 00e0 D3E90023 	 ldrd r2,[r3]
- 2105              	.L79:
- 2106              	 .loc 4 494 0 discriminator 4
- 2107 00e4 4849     	 ldr r1,.L110+64
- 2108 00e6 C1E90023 	 strd r2,[r1]
- 495:../main.c     **** 	  max_complement_zValue =  max(complement_zValue, max_complement_zValue);
- 2109              	 .loc 4 495 0 is_stmt 1 discriminator 4
- 2110 00ea 484B     	 ldr r3,.L110+68
- 2111 00ec D3E90001 	 ldrd r0,[r3]
- 2112 00f0 474B     	 ldr r3,.L110+72
- 2113 00f2 D3E90023 	 ldrd r2,[r3]
- 2114 00f6 FFF7FEFF 	 bl __aeabi_dcmpgt
- 2115 00fa 0346     	 mov r3,r0
- 2116 00fc 002B     	 cmp r3,#0
- 2117 00fe 03D0     	 beq .L106
- 2118              	 .loc 4 495 0 is_stmt 0 discriminator 1
- 2119 0100 424B     	 ldr r3,.L110+68
- 2120 0102 D3E90023 	 ldrd r2,[r3]
- 2121 0106 02E0     	 b .L82
- 2122              	.L106:
- 2123              	 .loc 4 495 0 discriminator 2
- 2124 0108 414B     	 ldr r3,.L110+72
- 2125 010a D3E90023 	 ldrd r2,[r3]
- 2126              	.L82:
- 2127              	 .loc 4 495 0 discriminator 4
- 2128 010e 4049     	 ldr r1,.L110+72
- 2129 0110 C1E90023 	 strd r2,[r1]
- 2130 0114 14E0     	 b .L83
- 2131              	.L73:
- 496:../main.c     **** }
- 497:../main.c     **** else{
- 498:../main.c     **** 	  max_complement_xValue = complement_xValue;
- 2132              	 .loc 4 498 0 is_stmt 1
- 2133 0116 394B     	 ldr r3,.L110+52
- 2134 0118 D3E90023 	 ldrd r2,[r3]
- 2135 011c 3849     	 ldr r1,.L110+56
- 2136 011e C1E90023 	 strd r2,[r1]
- 499:../main.c     **** 	  max_complement_yValue = complement_yValue;
- 2137              	 .loc 4 499 0
- 2138 0122 384B     	 ldr r3,.L110+60
- 2139 0124 D3E90023 	 ldrd r2,[r3]
- 2140 0128 3749     	 ldr r1,.L110+64
- 2141 012a C1E90023 	 strd r2,[r1]
- 500:../main.c     **** 	  max_complement_zValue = complement_zValue;
- 2142              	 .loc 4 500 0
- 2143 012e 374B     	 ldr r3,.L110+68
- 2144 0130 D3E90023 	 ldrd r2,[r3]
- 2145 0134 3649     	 ldr r1,.L110+72
- 2146 0136 C1E90023 	 strd r2,[r1]
- 501:../main.c     **** 	  maxInitialized = true;
- 2147              	 .loc 4 501 0
- 2148 013a 2F4B     	 ldr r3,.L110+48
- 2149 013c 0122     	 movs r2,#1
- 2150 013e 1A70     	 strb r2,[r3]
- 2151              	.L83:
- 502:../main.c     **** }
- 503:../main.c     **** 
- 504:../main.c     **** //		  max_complement_xValue = max(gyro_x, max_gyro_xValue);
- 505:../main.c     **** //		  max_complement_yValue = max(gyro_y, max_gyro_yValue);
- 506:../main.c     **** //		  max_complement_zValue = max(gyro_z, max_gyro_zValue);
- 507:../main.c     **** 
- 508:../main.c     **** 		  //max berekenen
- 509:../main.c     **** 
- 510:../main.c     **** if(minInitialized){
- 2152              	 .loc 4 510 0
- 2153 0140 344B     	 ldr r3,.L110+76
- 2154 0142 1B78     	 ldrb r3,[r3]
- 2155 0144 002B     	 cmp r3,#0
- 2156 0146 6DD0     	 beq .L84
- 511:../main.c     **** //				min_complement_xValue = min(gyro_x, min_gyro_xValue);
- 512:../main.c     **** //				min_complement_yValue = min(gyro_y, min_gyro_yValue);
- 513:../main.c     **** //				min_complement_zValue = min(gyro_z, min_gyro_zValue);
- 514:../main.c     **** 
- 515:../main.c     **** 				min_complement_xValue =  min(complement_xValue, min_complement_xValue);
- 2157              	 .loc 4 515 0
- 2158 0148 2C4B     	 ldr r3,.L110+52
- 2159 014a D3E90001 	 ldrd r0,[r3]
- 2160 014e 324B     	 ldr r3,.L110+80
- 2161 0150 D3E90023 	 ldrd r2,[r3]
- 2162 0154 FFF7FEFF 	 bl __aeabi_dcmplt
- 2163 0158 0346     	 mov r3,r0
- 2164 015a 002B     	 cmp r3,#0
- 2165 015c 03D0     	 beq .L107
- 2166              	 .loc 4 515 0 is_stmt 0 discriminator 1
- 2167 015e 274B     	 ldr r3,.L110+52
- 2168 0160 D3E90023 	 ldrd r2,[r3]
- 2169 0164 02E0     	 b .L87
- 2170              	.L107:
- 2171              	 .loc 4 515 0 discriminator 2
- 2172 0166 2C4B     	 ldr r3,.L110+80
- 2173 0168 D3E90023 	 ldrd r2,[r3]
- 2174              	.L87:
- 2175              	 .loc 4 515 0 discriminator 4
- 2176 016c 2A49     	 ldr r1,.L110+80
- 2177 016e C1E90023 	 strd r2,[r1]
- 516:../main.c     **** 				min_complement_yValue =  min(complement_yValue, min_complement_yValue);
- 2178              	 .loc 4 516 0 is_stmt 1 discriminator 4
- 2179 0172 244B     	 ldr r3,.L110+60
- 2180 0174 D3E90001 	 ldrd r0,[r3]
- 2181 0178 284B     	 ldr r3,.L110+84
- 2182 017a D3E90023 	 ldrd r2,[r3]
- 2183 017e FFF7FEFF 	 bl __aeabi_dcmplt
- 2184 0182 0346     	 mov r3,r0
- 2185 0184 002B     	 cmp r3,#0
- 2186 0186 03D0     	 beq .L108
- 2187              	 .loc 4 516 0 is_stmt 0 discriminator 1
- 2188 0188 1E4B     	 ldr r3,.L110+60
- 2189 018a D3E90023 	 ldrd r2,[r3]
- 2190 018e 02E0     	 b .L90
- 2191              	.L108:
- 2192              	 .loc 4 516 0 discriminator 2
- 2193 0190 224B     	 ldr r3,.L110+84
- 2194 0192 D3E90023 	 ldrd r2,[r3]
- 2195              	.L90:
- 2196              	 .loc 4 516 0 discriminator 4
- 2197 0196 2149     	 ldr r1,.L110+84
- 2198 0198 C1E90023 	 strd r2,[r1]
- 517:../main.c     **** 				min_complement_zValue =  min(complement_zValue, min_complement_zValue);
- 2199              	 .loc 4 517 0 is_stmt 1 discriminator 4
- 2200 019c 1B4B     	 ldr r3,.L110+68
- 2201 019e D3E90001 	 ldrd r0,[r3]
- 2202 01a2 1F4B     	 ldr r3,.L110+88
- 2203 01a4 D3E90023 	 ldrd r2,[r3]
- 2204 01a8 FFF7FEFF 	 bl __aeabi_dcmplt
- 2205 01ac 0346     	 mov r3,r0
- 2206 01ae 002B     	 cmp r3,#0
- 2207 01b0 03D0     	 beq .L109
- 2208              	 .loc 4 517 0 is_stmt 0 discriminator 1
- 2209 01b2 164B     	 ldr r3,.L110+68
- 2210 01b4 D3E90023 	 ldrd r2,[r3]
- 2211 01b8 02E0     	 b .L93
- 2212              	.L109:
- 2213              	 .loc 4 517 0 discriminator 2
- 2214 01ba 194B     	 ldr r3,.L110+88
- 2215 01bc D3E90023 	 ldrd r2,[r3]
- 2216              	.L93:
- 2217              	 .loc 4 517 0 discriminator 4
- 2218 01c0 1749     	 ldr r1,.L110+88
- 2219 01c2 C1E90023 	 strd r2,[r1]
- 2220 01c6 42E0     	 b .L94
- 2221              	.L111:
- 2222              	 .align 2
- 2223              	.L110:
- 2224 01c8 00000000 	 .word firstSentenceBuffer
- 2225 01cc 00000000 	 .word receivedSentence
- 2226 01d0 00000000 	 .word secondSentenceBuffer
- 2227 01d4 00000000 	 .word receivedSentence2
- 2228 01d8 00000000 	 .word outputBufferStart
- 2229 01dc 00000000 	 .word outputBufferCurrent
- 2230 01e0 00000000 	 .word outputBufferEnd
- 2231 01e4 00000000 	 .word secondOutputBufferStart
- 2232 01e8 00000000 	 .word secondOutputBufferCurrent
- 2233 01ec 00000000 	 .word secondOutputBufferEnd
- 2234 01f0 400D0300 	 .word 200000
- 2235 01f4 C0CF6A00 	 .word 7000000
- 2236 01f8 00000000 	 .word maxInitialized
- 2237 01fc 00000000 	 .word complement_xValue
- 2238 0200 00000000 	 .word max_complement_xValue
- 2239 0204 00000000 	 .word complement_yValue
- 2240 0208 00000000 	 .word max_complement_yValue
- 2241 020c 00000000 	 .word complement_zValue
- 2242 0210 00000000 	 .word max_complement_zValue
- 2243 0214 00000000 	 .word minInitialized
- 2244 0218 00000000 	 .word min_complement_xValue
- 2245 021c 00000000 	 .word min_complement_yValue
- 2246 0220 00000000 	 .word min_complement_zValue
- 2247              	.L84:
- 518:../main.c     **** 		  }
- 519:../main.c     **** 		  else{
- 520:../main.c     **** 			  min_complement_xValue = complement_xValue;
- 2248              	 .loc 4 520 0 is_stmt 1
- 2249 0224 874B     	 ldr r3,.L112
- 2250 0226 D3E90023 	 ldrd r2,[r3]
- 2251 022a 8749     	 ldr r1,.L112+4
- 2252 022c C1E90023 	 strd r2,[r1]
- 521:../main.c     **** 			  min_complement_yValue = complement_yValue;
- 2253              	 .loc 4 521 0
- 2254 0230 864B     	 ldr r3,.L112+8
- 2255 0232 D3E90023 	 ldrd r2,[r3]
- 2256 0236 8649     	 ldr r1,.L112+12
- 2257 0238 C1E90023 	 strd r2,[r1]
- 522:../main.c     **** 			  min_complement_zValue = complement_zValue;
- 2258              	 .loc 4 522 0
- 2259 023c 854B     	 ldr r3,.L112+16
- 2260 023e D3E90023 	 ldrd r2,[r3]
- 2261 0242 8549     	 ldr r1,.L112+20
- 2262 0244 C1E90023 	 strd r2,[r1]
- 523:../main.c     **** 			  minInitialized = true;
- 2263              	 .loc 4 523 0
- 2264 0248 844B     	 ldr r3,.L112+24
- 2265 024a 0122     	 movs r2,#1
- 2266 024c 1A70     	 strb r2,[r3]
- 2267              	.L94:
- 524:../main.c     **** 
- 525:../main.c     **** 		  }
- 526:../main.c     **** 
- 527:../main.c     **** 		  //avg berekenen
- 528:../main.c     **** 
- 529:../main.c     **** 		  avg_complement_xValue += complement_xValue;
- 2268              	 .loc 4 529 0
- 2269 024e 844B     	 ldr r3,.L112+28
- 2270 0250 D3E90001 	 ldrd r0,[r3]
- 2271 0254 7B4B     	 ldr r3,.L112
- 2272 0256 D3E90023 	 ldrd r2,[r3]
- 2273 025a FFF7FEFF 	 bl __aeabi_dadd
- 2274 025e 0246     	 mov r2,r0
- 2275 0260 0B46     	 mov r3,r1
- 2276 0262 7F49     	 ldr r1,.L112+28
- 2277 0264 C1E90023 	 strd r2,[r1]
- 530:../main.c     **** 		  avg_complement_yValue += complement_yValue;
- 2278              	 .loc 4 530 0
- 2279 0268 7E4B     	 ldr r3,.L112+32
- 2280 026a D3E90001 	 ldrd r0,[r3]
- 2281 026e 774B     	 ldr r3,.L112+8
- 2282 0270 D3E90023 	 ldrd r2,[r3]
- 2283 0274 FFF7FEFF 	 bl __aeabi_dadd
- 2284 0278 0246     	 mov r2,r0
- 2285 027a 0B46     	 mov r3,r1
- 2286 027c 7949     	 ldr r1,.L112+32
- 2287 027e C1E90023 	 strd r2,[r1]
- 531:../main.c     **** 		  avg_complement_zValue += complement_zValue;
- 2288              	 .loc 4 531 0
- 2289 0282 794B     	 ldr r3,.L112+36
- 2290 0284 D3E90001 	 ldrd r0,[r3]
- 2291 0288 724B     	 ldr r3,.L112+16
- 2292 028a D3E90023 	 ldrd r2,[r3]
- 2293 028e FFF7FEFF 	 bl __aeabi_dadd
- 2294 0292 0246     	 mov r2,r0
- 2295 0294 0B46     	 mov r3,r1
- 2296 0296 7449     	 ldr r1,.L112+36
- 2297 0298 C1E90023 	 strd r2,[r1]
- 532:../main.c     **** 
- 533:../main.c     **** //		  __disable_irq();
- 534:../main.c     **** //		  v.id[0] = 'G';
- 535:../main.c     **** //		  v.id[1] = 'Y';
- 536:../main.c     **** //		  v.g_x = gyro_x;
- 537:../main.c     **** //		  v.g_y = gyro_y;
- 538:../main.c     **** //		  v.g_z = gyro_z;
- 539:../main.c     **** //		  char* c_v = &v;
- 540:../main.c     **** //		  sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
- 541:../main.c     **** //		  udp_send_event(sprintString);
- 542:../main.c     **** 		 // udp_send_event2(c_v);
- 543:../main.c     **** //		  __enable_irq();
- 544:../main.c     **** 		  t = 0;
- 2298              	 .loc 4 544 0
- 2299 029c 0023     	 movs r3,#0
- 2300 029e FB60     	 str r3,[r7,#12]
- 2301              	.L72:
- 545:../main.c     **** 	  }
- 546:../main.c     **** 	  if(gpsOutputready){
- 2302              	 .loc 4 546 0
- 2303 02a0 724B     	 ldr r3,.L112+40
- 2304 02a2 1B78     	 ldrb r3,[r3]
- 2305 02a4 002B     	 cmp r3,#0
- 2306 02a6 00F0C480 	 beq .L95
- 2307              	.LBB7:
- 547:../main.c     **** 		  avg_complement_xValue = avg_complement_xValue/num_of_samples;
- 2308              	 .loc 4 547 0
- 2309 02aa 6D4B     	 ldr r3,.L112+28
- 2310 02ac D3E90045 	 ldrd r4,[r3]
- 2311 02b0 6F4B     	 ldr r3,.L112+44
- 2312 02b2 1B68     	 ldr r3,[r3]
- 2313 02b4 1846     	 mov r0,r3
- 2314 02b6 FFF7FEFF 	 bl __aeabi_i2d
- 2315 02ba 0246     	 mov r2,r0
- 2316 02bc 0B46     	 mov r3,r1
- 2317 02be 2046     	 mov r0,r4
- 2318 02c0 2946     	 mov r1,r5
- 2319 02c2 FFF7FEFF 	 bl __aeabi_ddiv
- 2320 02c6 0246     	 mov r2,r0
- 2321 02c8 0B46     	 mov r3,r1
- 2322 02ca 6549     	 ldr r1,.L112+28
- 2323 02cc C1E90023 	 strd r2,[r1]
- 548:../main.c     **** 		  avg_complement_yValue = avg_complement_yValue/num_of_samples;
- 2324              	 .loc 4 548 0
- 2325 02d0 644B     	 ldr r3,.L112+32
- 2326 02d2 D3E90045 	 ldrd r4,[r3]
- 2327 02d6 664B     	 ldr r3,.L112+44
- 2328 02d8 1B68     	 ldr r3,[r3]
- 2329 02da 1846     	 mov r0,r3
- 2330 02dc FFF7FEFF 	 bl __aeabi_i2d
- 2331 02e0 0246     	 mov r2,r0
- 2332 02e2 0B46     	 mov r3,r1
- 2333 02e4 2046     	 mov r0,r4
- 2334 02e6 2946     	 mov r1,r5
- 2335 02e8 FFF7FEFF 	 bl __aeabi_ddiv
- 2336 02ec 0246     	 mov r2,r0
- 2337 02ee 0B46     	 mov r3,r1
- 2338 02f0 5C49     	 ldr r1,.L112+32
- 2339 02f2 C1E90023 	 strd r2,[r1]
- 549:../main.c     **** 		  avg_complement_zValue = avg_complement_zValue/num_of_samples;
- 2340              	 .loc 4 549 0
- 2341 02f6 5C4B     	 ldr r3,.L112+36
- 2342 02f8 D3E90045 	 ldrd r4,[r3]
- 2343 02fc 5C4B     	 ldr r3,.L112+44
- 2344 02fe 1B68     	 ldr r3,[r3]
- 2345 0300 1846     	 mov r0,r3
- 2346 0302 FFF7FEFF 	 bl __aeabi_i2d
- 2347 0306 0246     	 mov r2,r0
- 2348 0308 0B46     	 mov r3,r1
- 2349 030a 2046     	 mov r0,r4
- 2350 030c 2946     	 mov r1,r5
- 2351 030e FFF7FEFF 	 bl __aeabi_ddiv
- 2352 0312 0246     	 mov r2,r0
- 2353 0314 0B46     	 mov r3,r1
- 2354 0316 5449     	 ldr r1,.L112+36
- 2355 0318 C1E90023 	 strd r2,[r1]
- 550:../main.c     **** 
- 551:../main.c     **** //		  bmi_gps_data.avg_x = avg_complement_xValue;
- 552:../main.c     **** //		  bmi_gps_data.avg_y = avg_complement_yValue;
- 553:../main.c     **** //		  bmi_gps_data.avg_z = avg_complement_zValue;
- 554:../main.c     **** //		  bmi_gps_data.min_x = min_complement_xValue;
- 555:../main.c     **** //		  bmi_gps_data.min_y = min_complement_yValue;
- 556:../main.c     **** //		  bmi_gps_data.min_z = min_complement_zValue;
- 557:../main.c     **** //		  bmi_gps_data.max_x = max_complement_xValue;
- 558:../main.c     **** //		  bmi_gps_data.max_y = max_complement_yValue;
- 559:../main.c     **** //		  bmi_gps_data.max_z = max_complement_zValue;
- 560:../main.c     **** 
- 561:../main.c     **** 		  bmi_gps_data.avg_x = avg_complement_xValue;
- 2356              	 .loc 4 561 0
- 2357 031c 504B     	 ldr r3,.L112+28
- 2358 031e D3E90023 	 ldrd r2,[r3]
- 2359 0322 5449     	 ldr r1,.L112+48
- 2360 0324 C1E90023 	 strd r2,[r1]
- 562:../main.c     **** 		  bmi_gps_data.avg_y = avg_complement_yValue;
- 2361              	 .loc 4 562 0
- 2362 0328 4E4B     	 ldr r3,.L112+32
- 2363 032a D3E90023 	 ldrd r2,[r3]
- 2364 032e 5149     	 ldr r1,.L112+48
- 2365 0330 C1E90223 	 strd r2,[r1,#8]
- 563:../main.c     **** 		  bmi_gps_data.avg_z = avg_complement_zValue;
- 2366              	 .loc 4 563 0
- 2367 0334 4C4B     	 ldr r3,.L112+36
- 2368 0336 D3E90023 	 ldrd r2,[r3]
- 2369 033a 4E49     	 ldr r1,.L112+48
- 2370 033c C1E90423 	 strd r2,[r1,#16]
- 564:../main.c     **** 		  bmi_gps_data.min_x = min_complement_xValue;
- 2371              	 .loc 4 564 0
- 2372 0340 414B     	 ldr r3,.L112+4
- 2373 0342 D3E90023 	 ldrd r2,[r3]
- 2374 0346 4B49     	 ldr r1,.L112+48
- 2375 0348 C1E90623 	 strd r2,[r1,#24]
- 565:../main.c     **** 		  bmi_gps_data.min_y = min_complement_yValue;
- 2376              	 .loc 4 565 0
- 2377 034c 404B     	 ldr r3,.L112+12
- 2378 034e D3E90023 	 ldrd r2,[r3]
- 2379 0352 4849     	 ldr r1,.L112+48
- 2380 0354 C1E90823 	 strd r2,[r1,#32]
- 566:../main.c     **** 		  bmi_gps_data.min_z = min_complement_zValue;
- 2381              	 .loc 4 566 0
- 2382 0358 3F4B     	 ldr r3,.L112+20
- 2383 035a D3E90023 	 ldrd r2,[r3]
- 2384 035e 4549     	 ldr r1,.L112+48
- 2385 0360 C1E90A23 	 strd r2,[r1,#40]
- 567:../main.c     **** 		  bmi_gps_data.max_x = max_complement_xValue;
- 2386              	 .loc 4 567 0
- 2387 0364 444B     	 ldr r3,.L112+52
- 2388 0366 D3E90023 	 ldrd r2,[r3]
- 2389 036a 4249     	 ldr r1,.L112+48
- 2390 036c C1E90C23 	 strd r2,[r1,#48]
- 568:../main.c     **** 		  bmi_gps_data.max_y = max_complement_yValue;
- 2391              	 .loc 4 568 0
- 2392 0370 424B     	 ldr r3,.L112+56
- 2393 0372 D3E90023 	 ldrd r2,[r3]
- 2394 0376 3F49     	 ldr r1,.L112+48
- 2395 0378 C1E90E23 	 strd r2,[r1,#56]
- 569:../main.c     **** 		  bmi_gps_data.max_z = max_complement_zValue;
- 2396              	 .loc 4 569 0
- 2397 037c 404B     	 ldr r3,.L112+60
- 2398 037e D3E90023 	 ldrd r2,[r3]
- 2399 0382 3C49     	 ldr r1,.L112+48
- 2400 0384 C1E91023 	 strd r2,[r1,#64]
- 570:../main.c     **** 
- 571:../main.c     **** //
- 572:../main.c     **** //		  bmi_gps_data.avg_x = 3;
- 573:../main.c     **** //		  bmi_gps_data.avg_y = 3;
- 574:../main.c     **** //		  bmi_gps_data.avg_z = 3;
- 575:../main.c     **** //		  bmi_gps_data.min_x = 4;
- 576:../main.c     **** //		  bmi_gps_data.min_y = 4;
- 577:../main.c     **** //		  bmi_gps_data.min_z = 4;
- 578:../main.c     **** //		  bmi_gps_data.max_x = 5;
- 579:../main.c     **** //		  bmi_gps_data.max_y = 5;
- 580:../main.c     **** //		  bmi_gps_data.max_z = 5;
- 581:../main.c     **** 
+ 491:../main.c     **** 
+ 492:../main.c     **** 		  // min berekenen
+ 493:../main.c     **** if(maxInitialized){
+ 2074              	 .loc 4 493 0
+ 2075 008e 5A4B     	 ldr r3,.L110+48
+ 2076 0090 1B78     	 ldrb r3,[r3]
+ 2077 0092 002B     	 cmp r3,#0
+ 2078 0094 3FD0     	 beq .L73
+ 494:../main.c     **** 	  max_complement_xValue =  max(complement_xValue, max_complement_xValue);
+ 2079              	 .loc 4 494 0
+ 2080 0096 594B     	 ldr r3,.L110+52
+ 2081 0098 D3E90001 	 ldrd r0,[r3]
+ 2082 009c 584B     	 ldr r3,.L110+56
+ 2083 009e D3E90023 	 ldrd r2,[r3]
+ 2084 00a2 FFF7FEFF 	 bl __aeabi_dcmpgt
+ 2085 00a6 0346     	 mov r3,r0
+ 2086 00a8 002B     	 cmp r3,#0
+ 2087 00aa 03D0     	 beq .L104
+ 2088              	 .loc 4 494 0 is_stmt 0 discriminator 1
+ 2089 00ac 534B     	 ldr r3,.L110+52
+ 2090 00ae D3E90023 	 ldrd r2,[r3]
+ 2091 00b2 02E0     	 b .L76
+ 2092              	.L104:
+ 2093              	 .loc 4 494 0 discriminator 2
+ 2094 00b4 524B     	 ldr r3,.L110+56
+ 2095 00b6 D3E90023 	 ldrd r2,[r3]
+ 2096              	.L76:
+ 2097              	 .loc 4 494 0 discriminator 4
+ 2098 00ba 5149     	 ldr r1,.L110+56
+ 2099 00bc C1E90023 	 strd r2,[r1]
+ 495:../main.c     **** 	  max_complement_yValue =  max(complement_yValue, max_complement_yValue);
+ 2100              	 .loc 4 495 0 is_stmt 1 discriminator 4
+ 2101 00c0 504B     	 ldr r3,.L110+60
+ 2102 00c2 D3E90001 	 ldrd r0,[r3]
+ 2103 00c6 504B     	 ldr r3,.L110+64
+ 2104 00c8 D3E90023 	 ldrd r2,[r3]
+ 2105 00cc FFF7FEFF 	 bl __aeabi_dcmpgt
+ 2106 00d0 0346     	 mov r3,r0
+ 2107 00d2 002B     	 cmp r3,#0
+ 2108 00d4 03D0     	 beq .L105
+ 2109              	 .loc 4 495 0 is_stmt 0 discriminator 1
+ 2110 00d6 4B4B     	 ldr r3,.L110+60
+ 2111 00d8 D3E90023 	 ldrd r2,[r3]
+ 2112 00dc 02E0     	 b .L79
+ 2113              	.L105:
+ 2114              	 .loc 4 495 0 discriminator 2
+ 2115 00de 4A4B     	 ldr r3,.L110+64
+ 2116 00e0 D3E90023 	 ldrd r2,[r3]
+ 2117              	.L79:
+ 2118              	 .loc 4 495 0 discriminator 4
+ 2119 00e4 4849     	 ldr r1,.L110+64
+ 2120 00e6 C1E90023 	 strd r2,[r1]
+ 496:../main.c     **** 	  max_complement_zValue =  max(complement_zValue, max_complement_zValue);
+ 2121              	 .loc 4 496 0 is_stmt 1 discriminator 4
+ 2122 00ea 484B     	 ldr r3,.L110+68
+ 2123 00ec D3E90001 	 ldrd r0,[r3]
+ 2124 00f0 474B     	 ldr r3,.L110+72
+ 2125 00f2 D3E90023 	 ldrd r2,[r3]
+ 2126 00f6 FFF7FEFF 	 bl __aeabi_dcmpgt
+ 2127 00fa 0346     	 mov r3,r0
+ 2128 00fc 002B     	 cmp r3,#0
+ 2129 00fe 03D0     	 beq .L106
+ 2130              	 .loc 4 496 0 is_stmt 0 discriminator 1
+ 2131 0100 424B     	 ldr r3,.L110+68
+ 2132 0102 D3E90023 	 ldrd r2,[r3]
+ 2133 0106 02E0     	 b .L82
+ 2134              	.L106:
+ 2135              	 .loc 4 496 0 discriminator 2
+ 2136 0108 414B     	 ldr r3,.L110+72
+ 2137 010a D3E90023 	 ldrd r2,[r3]
+ 2138              	.L82:
+ 2139              	 .loc 4 496 0 discriminator 4
+ 2140 010e 4049     	 ldr r1,.L110+72
+ 2141 0110 C1E90023 	 strd r2,[r1]
+ 2142 0114 14E0     	 b .L83
+ 2143              	.L73:
+ 497:../main.c     **** }
+ 498:../main.c     **** else{
+ 499:../main.c     **** 	  max_complement_xValue = complement_xValue;
+ 2144              	 .loc 4 499 0 is_stmt 1
+ 2145 0116 394B     	 ldr r3,.L110+52
+ 2146 0118 D3E90023 	 ldrd r2,[r3]
+ 2147 011c 3849     	 ldr r1,.L110+56
+ 2148 011e C1E90023 	 strd r2,[r1]
+ 500:../main.c     **** 	  max_complement_yValue = complement_yValue;
+ 2149              	 .loc 4 500 0
+ 2150 0122 384B     	 ldr r3,.L110+60
+ 2151 0124 D3E90023 	 ldrd r2,[r3]
+ 2152 0128 3749     	 ldr r1,.L110+64
+ 2153 012a C1E90023 	 strd r2,[r1]
+ 501:../main.c     **** 	  max_complement_zValue = complement_zValue;
+ 2154              	 .loc 4 501 0
+ 2155 012e 374B     	 ldr r3,.L110+68
+ 2156 0130 D3E90023 	 ldrd r2,[r3]
+ 2157 0134 3649     	 ldr r1,.L110+72
+ 2158 0136 C1E90023 	 strd r2,[r1]
+ 502:../main.c     **** 	  maxInitialized = true;
+ 2159              	 .loc 4 502 0
+ 2160 013a 2F4B     	 ldr r3,.L110+48
+ 2161 013c 0122     	 movs r2,#1
+ 2162 013e 1A70     	 strb r2,[r3]
+ 2163              	.L83:
+ 503:../main.c     **** }
+ 504:../main.c     **** 
+ 505:../main.c     **** //		  max_complement_xValue = max(gyro_x, max_gyro_xValue);
+ 506:../main.c     **** //		  max_complement_yValue = max(gyro_y, max_gyro_yValue);
+ 507:../main.c     **** //		  max_complement_zValue = max(gyro_z, max_gyro_zValue);
+ 508:../main.c     **** 
+ 509:../main.c     **** 		  //max berekenen
+ 510:../main.c     **** 
+ 511:../main.c     **** if(minInitialized){
+ 2164              	 .loc 4 511 0
+ 2165 0140 344B     	 ldr r3,.L110+76
+ 2166 0142 1B78     	 ldrb r3,[r3]
+ 2167 0144 002B     	 cmp r3,#0
+ 2168 0146 6DD0     	 beq .L84
+ 512:../main.c     **** //				min_complement_xValue = min(gyro_x, min_gyro_xValue);
+ 513:../main.c     **** //				min_complement_yValue = min(gyro_y, min_gyro_yValue);
+ 514:../main.c     **** //				min_complement_zValue = min(gyro_z, min_gyro_zValue);
+ 515:../main.c     **** 
+ 516:../main.c     **** 				min_complement_xValue =  min(complement_xValue, min_complement_xValue);
+ 2169              	 .loc 4 516 0
+ 2170 0148 2C4B     	 ldr r3,.L110+52
+ 2171 014a D3E90001 	 ldrd r0,[r3]
+ 2172 014e 324B     	 ldr r3,.L110+80
+ 2173 0150 D3E90023 	 ldrd r2,[r3]
+ 2174 0154 FFF7FEFF 	 bl __aeabi_dcmplt
+ 2175 0158 0346     	 mov r3,r0
+ 2176 015a 002B     	 cmp r3,#0
+ 2177 015c 03D0     	 beq .L107
+ 2178              	 .loc 4 516 0 is_stmt 0 discriminator 1
+ 2179 015e 274B     	 ldr r3,.L110+52
+ 2180 0160 D3E90023 	 ldrd r2,[r3]
+ 2181 0164 02E0     	 b .L87
+ 2182              	.L107:
+ 2183              	 .loc 4 516 0 discriminator 2
+ 2184 0166 2C4B     	 ldr r3,.L110+80
+ 2185 0168 D3E90023 	 ldrd r2,[r3]
+ 2186              	.L87:
+ 2187              	 .loc 4 516 0 discriminator 4
+ 2188 016c 2A49     	 ldr r1,.L110+80
+ 2189 016e C1E90023 	 strd r2,[r1]
+ 517:../main.c     **** 				min_complement_yValue =  min(complement_yValue, min_complement_yValue);
+ 2190              	 .loc 4 517 0 is_stmt 1 discriminator 4
+ 2191 0172 244B     	 ldr r3,.L110+60
+ 2192 0174 D3E90001 	 ldrd r0,[r3]
+ 2193 0178 284B     	 ldr r3,.L110+84
+ 2194 017a D3E90023 	 ldrd r2,[r3]
+ 2195 017e FFF7FEFF 	 bl __aeabi_dcmplt
+ 2196 0182 0346     	 mov r3,r0
+ 2197 0184 002B     	 cmp r3,#0
+ 2198 0186 03D0     	 beq .L108
+ 2199              	 .loc 4 517 0 is_stmt 0 discriminator 1
+ 2200 0188 1E4B     	 ldr r3,.L110+60
+ 2201 018a D3E90023 	 ldrd r2,[r3]
+ 2202 018e 02E0     	 b .L90
+ 2203              	.L108:
+ 2204              	 .loc 4 517 0 discriminator 2
+ 2205 0190 224B     	 ldr r3,.L110+84
+ 2206 0192 D3E90023 	 ldrd r2,[r3]
+ 2207              	.L90:
+ 2208              	 .loc 4 517 0 discriminator 4
+ 2209 0196 2149     	 ldr r1,.L110+84
+ 2210 0198 C1E90023 	 strd r2,[r1]
+ 518:../main.c     **** 				min_complement_zValue =  min(complement_zValue, min_complement_zValue);
+ 2211              	 .loc 4 518 0 is_stmt 1 discriminator 4
+ 2212 019c 1B4B     	 ldr r3,.L110+68
+ 2213 019e D3E90001 	 ldrd r0,[r3]
+ 2214 01a2 1F4B     	 ldr r3,.L110+88
+ 2215 01a4 D3E90023 	 ldrd r2,[r3]
+ 2216 01a8 FFF7FEFF 	 bl __aeabi_dcmplt
+ 2217 01ac 0346     	 mov r3,r0
+ 2218 01ae 002B     	 cmp r3,#0
+ 2219 01b0 03D0     	 beq .L109
+ 2220              	 .loc 4 518 0 is_stmt 0 discriminator 1
+ 2221 01b2 164B     	 ldr r3,.L110+68
+ 2222 01b4 D3E90023 	 ldrd r2,[r3]
+ 2223 01b8 02E0     	 b .L93
+ 2224              	.L109:
+ 2225              	 .loc 4 518 0 discriminator 2
+ 2226 01ba 194B     	 ldr r3,.L110+88
+ 2227 01bc D3E90023 	 ldrd r2,[r3]
+ 2228              	.L93:
+ 2229              	 .loc 4 518 0 discriminator 4
+ 2230 01c0 1749     	 ldr r1,.L110+88
+ 2231 01c2 C1E90023 	 strd r2,[r1]
+ 2232 01c6 42E0     	 b .L94
+ 2233              	.L111:
+ 2234              	 .align 2
+ 2235              	.L110:
+ 2236 01c8 00000000 	 .word firstSentenceBuffer
+ 2237 01cc 00000000 	 .word receivedSentence
+ 2238 01d0 00000000 	 .word secondSentenceBuffer
+ 2239 01d4 00000000 	 .word receivedSentence2
+ 2240 01d8 00000000 	 .word outputBufferStart
+ 2241 01dc 00000000 	 .word outputBufferCurrent
+ 2242 01e0 00000000 	 .word outputBufferEnd
+ 2243 01e4 00000000 	 .word secondOutputBufferStart
+ 2244 01e8 00000000 	 .word secondOutputBufferCurrent
+ 2245 01ec 00000000 	 .word secondOutputBufferEnd
+ 2246 01f0 400D0300 	 .word 200000
+ 2247 01f4 C0CF6A00 	 .word 7000000
+ 2248 01f8 00000000 	 .word maxInitialized
+ 2249 01fc 00000000 	 .word complement_xValue
+ 2250 0200 00000000 	 .word max_complement_xValue
+ 2251 0204 00000000 	 .word complement_yValue
+ 2252 0208 00000000 	 .word max_complement_yValue
+ 2253 020c 00000000 	 .word complement_zValue
+ 2254 0210 00000000 	 .word max_complement_zValue
+ 2255 0214 00000000 	 .word minInitialized
+ 2256 0218 00000000 	 .word min_complement_xValue
+ 2257 021c 00000000 	 .word min_complement_yValue
+ 2258 0220 00000000 	 .word min_complement_zValue
+ 2259              	.L84:
+ 519:../main.c     **** 		  }
+ 520:../main.c     **** 		  else{
+ 521:../main.c     **** 			  min_complement_xValue = complement_xValue;
+ 2260              	 .loc 4 521 0 is_stmt 1
+ 2261 0224 874B     	 ldr r3,.L112
+ 2262 0226 D3E90023 	 ldrd r2,[r3]
+ 2263 022a 8749     	 ldr r1,.L112+4
+ 2264 022c C1E90023 	 strd r2,[r1]
+ 522:../main.c     **** 			  min_complement_yValue = complement_yValue;
+ 2265              	 .loc 4 522 0
+ 2266 0230 864B     	 ldr r3,.L112+8
+ 2267 0232 D3E90023 	 ldrd r2,[r3]
+ 2268 0236 8649     	 ldr r1,.L112+12
+ 2269 0238 C1E90023 	 strd r2,[r1]
+ 523:../main.c     **** 			  min_complement_zValue = complement_zValue;
+ 2270              	 .loc 4 523 0
+ 2271 023c 854B     	 ldr r3,.L112+16
+ 2272 023e D3E90023 	 ldrd r2,[r3]
+ 2273 0242 8549     	 ldr r1,.L112+20
+ 2274 0244 C1E90023 	 strd r2,[r1]
+ 524:../main.c     **** 			  minInitialized = true;
+ 2275              	 .loc 4 524 0
+ 2276 0248 844B     	 ldr r3,.L112+24
+ 2277 024a 0122     	 movs r2,#1
+ 2278 024c 1A70     	 strb r2,[r3]
+ 2279              	.L94:
+ 525:../main.c     **** 
+ 526:../main.c     **** 		  }
+ 527:../main.c     **** 
+ 528:../main.c     **** 		  //avg berekenen
+ 529:../main.c     **** 
+ 530:../main.c     **** 		  avg_complement_xValue += complement_xValue;
+ 2280              	 .loc 4 530 0
+ 2281 024e 844B     	 ldr r3,.L112+28
+ 2282 0250 D3E90001 	 ldrd r0,[r3]
+ 2283 0254 7B4B     	 ldr r3,.L112
+ 2284 0256 D3E90023 	 ldrd r2,[r3]
+ 2285 025a FFF7FEFF 	 bl __aeabi_dadd
+ 2286 025e 0246     	 mov r2,r0
+ 2287 0260 0B46     	 mov r3,r1
+ 2288 0262 7F49     	 ldr r1,.L112+28
+ 2289 0264 C1E90023 	 strd r2,[r1]
+ 531:../main.c     **** 		  avg_complement_yValue += complement_yValue;
+ 2290              	 .loc 4 531 0
+ 2291 0268 7E4B     	 ldr r3,.L112+32
+ 2292 026a D3E90001 	 ldrd r0,[r3]
+ 2293 026e 774B     	 ldr r3,.L112+8
+ 2294 0270 D3E90023 	 ldrd r2,[r3]
+ 2295 0274 FFF7FEFF 	 bl __aeabi_dadd
+ 2296 0278 0246     	 mov r2,r0
+ 2297 027a 0B46     	 mov r3,r1
+ 2298 027c 7949     	 ldr r1,.L112+32
+ 2299 027e C1E90023 	 strd r2,[r1]
+ 532:../main.c     **** 		  avg_complement_zValue += complement_zValue;
+ 2300              	 .loc 4 532 0
+ 2301 0282 794B     	 ldr r3,.L112+36
+ 2302 0284 D3E90001 	 ldrd r0,[r3]
+ 2303 0288 724B     	 ldr r3,.L112+16
+ 2304 028a D3E90023 	 ldrd r2,[r3]
+ 2305 028e FFF7FEFF 	 bl __aeabi_dadd
+ 2306 0292 0246     	 mov r2,r0
+ 2307 0294 0B46     	 mov r3,r1
+ 2308 0296 7449     	 ldr r1,.L112+36
+ 2309 0298 C1E90023 	 strd r2,[r1]
+ 533:../main.c     **** 
+ 534:../main.c     **** //		  __disable_irq();
+ 535:../main.c     **** //		  v.id[0] = 'G';
+ 536:../main.c     **** //		  v.id[1] = 'Y';
+ 537:../main.c     **** //		  v.g_x = gyro_x;
+ 538:../main.c     **** //		  v.g_y = gyro_y;
+ 539:../main.c     **** //		  v.g_z = gyro_z;
+ 540:../main.c     **** //		  char* c_v = &v;
+ 541:../main.c     **** //		  sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
+ 542:../main.c     **** //		  udp_send_event(sprintString);
+ 543:../main.c     **** 		 // udp_send_event2(c_v);
+ 544:../main.c     **** //		  __enable_irq();
+ 545:../main.c     **** 		  polltime = 0;
+ 2310              	 .loc 4 545 0
+ 2311 029c 0023     	 movs r3,#0
+ 2312 029e FB60     	 str r3,[r7,#12]
+ 2313              	.L72:
+ 546:../main.c     **** 	  }
+ 547:../main.c     **** 	  if(gpsOutputready){
+ 2314              	 .loc 4 547 0
+ 2315 02a0 724B     	 ldr r3,.L112+40
+ 2316 02a2 1B78     	 ldrb r3,[r3]
+ 2317 02a4 002B     	 cmp r3,#0
+ 2318 02a6 00F0C480 	 beq .L95
+ 2319              	.LBB7:
+ 548:../main.c     **** 		  avg_complement_xValue = avg_complement_xValue/num_of_samples;
+ 2320              	 .loc 4 548 0
+ 2321 02aa 6D4B     	 ldr r3,.L112+28
+ 2322 02ac D3E90045 	 ldrd r4,[r3]
+ 2323 02b0 6F4B     	 ldr r3,.L112+44
+ 2324 02b2 1B68     	 ldr r3,[r3]
+ 2325 02b4 1846     	 mov r0,r3
+ 2326 02b6 FFF7FEFF 	 bl __aeabi_i2d
+ 2327 02ba 0246     	 mov r2,r0
+ 2328 02bc 0B46     	 mov r3,r1
+ 2329 02be 2046     	 mov r0,r4
+ 2330 02c0 2946     	 mov r1,r5
+ 2331 02c2 FFF7FEFF 	 bl __aeabi_ddiv
+ 2332 02c6 0246     	 mov r2,r0
+ 2333 02c8 0B46     	 mov r3,r1
+ 2334 02ca 6549     	 ldr r1,.L112+28
+ 2335 02cc C1E90023 	 strd r2,[r1]
+ 549:../main.c     **** 		  avg_complement_yValue = avg_complement_yValue/num_of_samples;
+ 2336              	 .loc 4 549 0
+ 2337 02d0 644B     	 ldr r3,.L112+32
+ 2338 02d2 D3E90045 	 ldrd r4,[r3]
+ 2339 02d6 664B     	 ldr r3,.L112+44
+ 2340 02d8 1B68     	 ldr r3,[r3]
+ 2341 02da 1846     	 mov r0,r3
+ 2342 02dc FFF7FEFF 	 bl __aeabi_i2d
+ 2343 02e0 0246     	 mov r2,r0
+ 2344 02e2 0B46     	 mov r3,r1
+ 2345 02e4 2046     	 mov r0,r4
+ 2346 02e6 2946     	 mov r1,r5
+ 2347 02e8 FFF7FEFF 	 bl __aeabi_ddiv
+ 2348 02ec 0246     	 mov r2,r0
+ 2349 02ee 0B46     	 mov r3,r1
+ 2350 02f0 5C49     	 ldr r1,.L112+32
+ 2351 02f2 C1E90023 	 strd r2,[r1]
+ 550:../main.c     **** 		  avg_complement_zValue = avg_complement_zValue/num_of_samples;
+ 2352              	 .loc 4 550 0
+ 2353 02f6 5C4B     	 ldr r3,.L112+36
+ 2354 02f8 D3E90045 	 ldrd r4,[r3]
+ 2355 02fc 5C4B     	 ldr r3,.L112+44
+ 2356 02fe 1B68     	 ldr r3,[r3]
+ 2357 0300 1846     	 mov r0,r3
+ 2358 0302 FFF7FEFF 	 bl __aeabi_i2d
+ 2359 0306 0246     	 mov r2,r0
+ 2360 0308 0B46     	 mov r3,r1
+ 2361 030a 2046     	 mov r0,r4
+ 2362 030c 2946     	 mov r1,r5
+ 2363 030e FFF7FEFF 	 bl __aeabi_ddiv
+ 2364 0312 0246     	 mov r2,r0
+ 2365 0314 0B46     	 mov r3,r1
+ 2366 0316 5449     	 ldr r1,.L112+36
+ 2367 0318 C1E90023 	 strd r2,[r1]
+ 551:../main.c     **** 
+ 552:../main.c     **** //		  bmi_gps_data.avg_x = avg_complement_xValue;
+ 553:../main.c     **** //		  bmi_gps_data.avg_y = avg_complement_yValue;
+ 554:../main.c     **** //		  bmi_gps_data.avg_z = avg_complement_zValue;
+ 555:../main.c     **** //		  bmi_gps_data.min_x = min_complement_xValue;
+ 556:../main.c     **** //		  bmi_gps_data.min_y = min_complement_yValue;
+ 557:../main.c     **** //		  bmi_gps_data.min_z = min_complement_zValue;
+ 558:../main.c     **** //		  bmi_gps_data.max_x = max_complement_xValue;
+ 559:../main.c     **** //		  bmi_gps_data.max_y = max_complement_yValue;
+ 560:../main.c     **** //		  bmi_gps_data.max_z = max_complement_zValue;
+ 561:../main.c     **** 
+ 562:../main.c     **** 		  bmi_gps_data.avg_x = avg_complement_xValue;
+ 2368              	 .loc 4 562 0
+ 2369 031c 504B     	 ldr r3,.L112+28
+ 2370 031e D3E90023 	 ldrd r2,[r3]
+ 2371 0322 5449     	 ldr r1,.L112+48
+ 2372 0324 C1E90023 	 strd r2,[r1]
+ 563:../main.c     **** 		  bmi_gps_data.avg_y = avg_complement_yValue;
+ 2373              	 .loc 4 563 0
+ 2374 0328 4E4B     	 ldr r3,.L112+32
+ 2375 032a D3E90023 	 ldrd r2,[r3]
+ 2376 032e 5149     	 ldr r1,.L112+48
+ 2377 0330 C1E90223 	 strd r2,[r1,#8]
+ 564:../main.c     **** 		  bmi_gps_data.avg_z = avg_complement_zValue;
+ 2378              	 .loc 4 564 0
+ 2379 0334 4C4B     	 ldr r3,.L112+36
+ 2380 0336 D3E90023 	 ldrd r2,[r3]
+ 2381 033a 4E49     	 ldr r1,.L112+48
+ 2382 033c C1E90423 	 strd r2,[r1,#16]
+ 565:../main.c     **** 		  bmi_gps_data.min_x = min_complement_xValue;
+ 2383              	 .loc 4 565 0
+ 2384 0340 414B     	 ldr r3,.L112+4
+ 2385 0342 D3E90023 	 ldrd r2,[r3]
+ 2386 0346 4B49     	 ldr r1,.L112+48
+ 2387 0348 C1E90623 	 strd r2,[r1,#24]
+ 566:../main.c     **** 		  bmi_gps_data.min_y = min_complement_yValue;
+ 2388              	 .loc 4 566 0
+ 2389 034c 404B     	 ldr r3,.L112+12
+ 2390 034e D3E90023 	 ldrd r2,[r3]
+ 2391 0352 4849     	 ldr r1,.L112+48
+ 2392 0354 C1E90823 	 strd r2,[r1,#32]
+ 567:../main.c     **** 		  bmi_gps_data.min_z = min_complement_zValue;
+ 2393              	 .loc 4 567 0
+ 2394 0358 3F4B     	 ldr r3,.L112+20
+ 2395 035a D3E90023 	 ldrd r2,[r3]
+ 2396 035e 4549     	 ldr r1,.L112+48
+ 2397 0360 C1E90A23 	 strd r2,[r1,#40]
+ 568:../main.c     **** 		  bmi_gps_data.max_x = max_complement_xValue;
+ 2398              	 .loc 4 568 0
+ 2399 0364 444B     	 ldr r3,.L112+52
+ 2400 0366 D3E90023 	 ldrd r2,[r3]
+ 2401 036a 4249     	 ldr r1,.L112+48
+ 2402 036c C1E90C23 	 strd r2,[r1,#48]
+ 569:../main.c     **** 		  bmi_gps_data.max_y = max_complement_yValue;
+ 2403              	 .loc 4 569 0
+ 2404 0370 424B     	 ldr r3,.L112+56
+ 2405 0372 D3E90023 	 ldrd r2,[r3]
+ 2406 0376 3F49     	 ldr r1,.L112+48
+ 2407 0378 C1E90E23 	 strd r2,[r1,#56]
+ 570:../main.c     **** 		  bmi_gps_data.max_z = max_complement_zValue;
+ 2408              	 .loc 4 570 0
+ 2409 037c 404B     	 ldr r3,.L112+60
+ 2410 037e D3E90023 	 ldrd r2,[r3]
+ 2411 0382 3C49     	 ldr r1,.L112+48
+ 2412 0384 C1E91023 	 strd r2,[r1,#64]
+ 571:../main.c     **** 
+ 572:../main.c     **** //
+ 573:../main.c     **** //		  bmi_gps_data.avg_x = 3;
+ 574:../main.c     **** //		  bmi_gps_data.avg_y = 3;
+ 575:../main.c     **** //		  bmi_gps_data.avg_z = 3;
+ 576:../main.c     **** //		  bmi_gps_data.min_x = 4;
+ 577:../main.c     **** //		  bmi_gps_data.min_y = 4;
+ 578:../main.c     **** //		  bmi_gps_data.min_z = 4;
+ 579:../main.c     **** //		  bmi_gps_data.max_x = 5;
+ 580:../main.c     **** //		  bmi_gps_data.max_y = 5;
+ 581:../main.c     **** //		  bmi_gps_data.max_z = 5;
  582:../main.c     **** 
- 583:../main.c     **** 		  num_of_samples = 0;
- 2401              	 .loc 4 583 0
- 2402 0388 394B     	 ldr r3,.L112+44
- 2403 038a 0022     	 movs r2,#0
- 2404 038c 1A60     	 str r2,[r3]
- 584:../main.c     **** 		  max_complement_xValue = 0;
- 2405              	 .loc 4 584 0
- 2406 038e 3A49     	 ldr r1,.L112+52
- 2407 0390 4FF00002 	 mov r2,#0
- 2408 0394 4FF00003 	 mov r3,#0
- 2409 0398 C1E90023 	 strd r2,[r1]
- 585:../main.c     **** 		  max_complement_yValue = 0;
- 2410              	 .loc 4 585 0
- 2411 039c 3749     	 ldr r1,.L112+56
- 2412 039e 4FF00002 	 mov r2,#0
- 2413 03a2 4FF00003 	 mov r3,#0
- 2414 03a6 C1E90023 	 strd r2,[r1]
- 586:../main.c     **** 		  max_complement_zValue = 0;
- 2415              	 .loc 4 586 0
- 2416 03aa 3549     	 ldr r1,.L112+60
- 2417 03ac 4FF00002 	 mov r2,#0
- 2418 03b0 4FF00003 	 mov r3,#0
- 2419 03b4 C1E90023 	 strd r2,[r1]
- 587:../main.c     **** 
- 588:../main.c     **** 		  minInitialized = false;
- 2420              	 .loc 4 588 0
- 2421 03b8 284B     	 ldr r3,.L112+24
- 2422 03ba 0022     	 movs r2,#0
- 2423 03bc 1A70     	 strb r2,[r3]
- 589:../main.c     **** 		  maxInitialized = false;
- 2424              	 .loc 4 589 0
- 2425 03be 314B     	 ldr r3,.L112+64
- 2426 03c0 0022     	 movs r2,#0
- 2427 03c2 1A70     	 strb r2,[r3]
- 590:../main.c     **** 
- 591:../main.c     **** 		  min_complement_xValue = 0;
- 2428              	 .loc 4 591 0
- 2429 03c4 2049     	 ldr r1,.L112+4
- 2430 03c6 4FF00002 	 mov r2,#0
- 2431 03ca 4FF00003 	 mov r3,#0
- 2432 03ce C1E90023 	 strd r2,[r1]
- 592:../main.c     **** 		  min_complement_yValue = 0;
- 2433              	 .loc 4 592 0
- 2434 03d2 1F49     	 ldr r1,.L112+12
- 2435 03d4 4FF00002 	 mov r2,#0
- 2436 03d8 4FF00003 	 mov r3,#0
- 2437 03dc C1E90023 	 strd r2,[r1]
- 593:../main.c     **** 		  min_complement_zValue = 0;
- 2438              	 .loc 4 593 0
- 2439 03e0 1D49     	 ldr r1,.L112+20
- 2440 03e2 4FF00002 	 mov r2,#0
- 2441 03e6 4FF00003 	 mov r3,#0
- 2442 03ea C1E90023 	 strd r2,[r1]
- 594:../main.c     **** 
- 595:../main.c     **** 		  avg_complement_xValue = 0;
- 2443              	 .loc 4 595 0
- 2444 03ee 1C49     	 ldr r1,.L112+28
- 2445 03f0 4FF00002 	 mov r2,#0
- 2446 03f4 4FF00003 	 mov r3,#0
- 2447 03f8 C1E90023 	 strd r2,[r1]
- 596:../main.c     **** 		  avg_complement_yValue = 0;
- 2448              	 .loc 4 596 0
- 2449 03fc 1949     	 ldr r1,.L112+32
- 2450 03fe 4FF00002 	 mov r2,#0
- 2451 0402 4FF00003 	 mov r3,#0
- 2452 0406 C1E90023 	 strd r2,[r1]
- 597:../main.c     **** 		  avg_complement_zValue = 0;
- 2453              	 .loc 4 597 0
- 2454 040a 1749     	 ldr r1,.L112+36
- 2455 040c 4FF00002 	 mov r2,#0
- 2456 0410 4FF00003 	 mov r3,#0
- 2457 0414 C1E90023 	 strd r2,[r1]
- 598:../main.c     **** 
- 599:../main.c     **** 		  char* c_v = &bmi_gps_data;
- 2458              	 .loc 4 599 0
- 2459 0418 164B     	 ldr r3,.L112+48
- 2460 041a 7B60     	 str r3,[r7,#4]
- 600:../main.c     **** 		  udp_send_event2(c_v);
- 2461              	 .loc 4 600 0
- 2462 041c 7868     	 ldr r0,[r7,#4]
- 2463 041e FFF7FEFF 	 bl udp_send_event2
- 601:../main.c     **** 		  udp_send_event(secondOutputBufferStart);
- 2464              	 .loc 4 601 0
- 2465 0422 194B     	 ldr r3,.L112+68
- 2466 0424 1B68     	 ldr r3,[r3]
- 2467 0426 1846     	 mov r0,r3
- 2468 0428 FFF7FEFF 	 bl udp_send_event
- 602:../main.c     **** 		  gpsOutputready = false;
- 2469              	 .loc 4 602 0
- 2470 042c 0F4B     	 ldr r3,.L112+40
- 2471 042e 0022     	 movs r2,#0
- 2472 0430 1A70     	 strb r2,[r3]
- 2473              	.L95:
- 2474              	.LBE7:
- 603:../main.c     **** 		  //sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
- 604:../main.c     **** 	  }
- 605:../main.c     **** 	  if(outputBufferReady){
- 2475              	 .loc 4 605 0
- 2476 0432 164B     	 ldr r3,.L112+72
- 2477 0434 1B78     	 ldrb r3,[r3]
- 2478 0436 002B     	 cmp r3,#0
- 2479 0438 02D0     	 beq .L96
- 606:../main.c     **** 		 // udp_send_event(receivedSentence);
- 607:../main.c     **** 		  outputBufferReady = false;
- 2480              	 .loc 4 607 0
- 2481 043a 144B     	 ldr r3,.L112+72
- 2482 043c 0022     	 movs r2,#0
- 2483 043e 1A70     	 strb r2,[r3]
- 2484              	.L96:
- 608:../main.c     **** 
- 609:../main.c     **** 	  }
- 610:../main.c     **** 
+ 583:../main.c     **** 
+ 584:../main.c     **** 		  num_of_samples = 0;
+ 2413              	 .loc 4 584 0
+ 2414 0388 394B     	 ldr r3,.L112+44
+ 2415 038a 0022     	 movs r2,#0
+ 2416 038c 1A60     	 str r2,[r3]
+ 585:../main.c     **** 		  max_complement_xValue = 0;
+ 2417              	 .loc 4 585 0
+ 2418 038e 3A49     	 ldr r1,.L112+52
+ 2419 0390 4FF00002 	 mov r2,#0
+ 2420 0394 4FF00003 	 mov r3,#0
+ 2421 0398 C1E90023 	 strd r2,[r1]
+ 586:../main.c     **** 		  max_complement_yValue = 0;
+ 2422              	 .loc 4 586 0
+ 2423 039c 3749     	 ldr r1,.L112+56
+ 2424 039e 4FF00002 	 mov r2,#0
+ 2425 03a2 4FF00003 	 mov r3,#0
+ 2426 03a6 C1E90023 	 strd r2,[r1]
+ 587:../main.c     **** 		  max_complement_zValue = 0;
+ 2427              	 .loc 4 587 0
+ 2428 03aa 3549     	 ldr r1,.L112+60
+ 2429 03ac 4FF00002 	 mov r2,#0
+ 2430 03b0 4FF00003 	 mov r3,#0
+ 2431 03b4 C1E90023 	 strd r2,[r1]
+ 588:../main.c     **** 
+ 589:../main.c     **** 		  minInitialized = false;
+ 2432              	 .loc 4 589 0
+ 2433 03b8 284B     	 ldr r3,.L112+24
+ 2434 03ba 0022     	 movs r2,#0
+ 2435 03bc 1A70     	 strb r2,[r3]
+ 590:../main.c     **** 		  maxInitialized = false;
+ 2436              	 .loc 4 590 0
+ 2437 03be 314B     	 ldr r3,.L112+64
+ 2438 03c0 0022     	 movs r2,#0
+ 2439 03c2 1A70     	 strb r2,[r3]
+ 591:../main.c     **** 
+ 592:../main.c     **** 		  min_complement_xValue = 0;
+ 2440              	 .loc 4 592 0
+ 2441 03c4 2049     	 ldr r1,.L112+4
+ 2442 03c6 4FF00002 	 mov r2,#0
+ 2443 03ca 4FF00003 	 mov r3,#0
+ 2444 03ce C1E90023 	 strd r2,[r1]
+ 593:../main.c     **** 		  min_complement_yValue = 0;
+ 2445              	 .loc 4 593 0
+ 2446 03d2 1F49     	 ldr r1,.L112+12
+ 2447 03d4 4FF00002 	 mov r2,#0
+ 2448 03d8 4FF00003 	 mov r3,#0
+ 2449 03dc C1E90023 	 strd r2,[r1]
+ 594:../main.c     **** 		  min_complement_zValue = 0;
+ 2450              	 .loc 4 594 0
+ 2451 03e0 1D49     	 ldr r1,.L112+20
+ 2452 03e2 4FF00002 	 mov r2,#0
+ 2453 03e6 4FF00003 	 mov r3,#0
+ 2454 03ea C1E90023 	 strd r2,[r1]
+ 595:../main.c     **** 
+ 596:../main.c     **** 		  avg_complement_xValue = 0;
+ 2455              	 .loc 4 596 0
+ 2456 03ee 1C49     	 ldr r1,.L112+28
+ 2457 03f0 4FF00002 	 mov r2,#0
+ 2458 03f4 4FF00003 	 mov r3,#0
+ 2459 03f8 C1E90023 	 strd r2,[r1]
+ 597:../main.c     **** 		  avg_complement_yValue = 0;
+ 2460              	 .loc 4 597 0
+ 2461 03fc 1949     	 ldr r1,.L112+32
+ 2462 03fe 4FF00002 	 mov r2,#0
+ 2463 0402 4FF00003 	 mov r3,#0
+ 2464 0406 C1E90023 	 strd r2,[r1]
+ 598:../main.c     **** 		  avg_complement_zValue = 0;
+ 2465              	 .loc 4 598 0
+ 2466 040a 1749     	 ldr r1,.L112+36
+ 2467 040c 4FF00002 	 mov r2,#0
+ 2468 0410 4FF00003 	 mov r3,#0
+ 2469 0414 C1E90023 	 strd r2,[r1]
+ 599:../main.c     **** 
+ 600:../main.c     **** 		  char* c_v = &bmi_gps_data;
+ 2470              	 .loc 4 600 0
+ 2471 0418 164B     	 ldr r3,.L112+48
+ 2472 041a 7B60     	 str r3,[r7,#4]
+ 601:../main.c     **** 		  udp_send_event2(c_v);
+ 2473              	 .loc 4 601 0
+ 2474 041c 7868     	 ldr r0,[r7,#4]
+ 2475 041e FFF7FEFF 	 bl udp_send_event2
+ 602:../main.c     **** 		  udp_send_event(secondOutputBufferStart);
+ 2476              	 .loc 4 602 0
+ 2477 0422 194B     	 ldr r3,.L112+68
+ 2478 0424 1B68     	 ldr r3,[r3]
+ 2479 0426 1846     	 mov r0,r3
+ 2480 0428 FFF7FEFF 	 bl udp_send_event
+ 603:../main.c     **** 		  gpsOutputready = false;
+ 2481              	 .loc 4 603 0
+ 2482 042c 0F4B     	 ldr r3,.L112+40
+ 2483 042e 0022     	 movs r2,#0
+ 2484 0430 1A70     	 strb r2,[r3]
+ 2485              	.L95:
+ 2486              	.LBE7:
+ 604:../main.c     **** 		  //sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
+ 605:../main.c     **** 	  }
+ 606:../main.c     **** 	  if(outputBufferReady){
+ 2487              	 .loc 4 606 0
+ 2488 0432 164B     	 ldr r3,.L112+72
+ 2489 0434 1B78     	 ldrb r3,[r3]
+ 2490 0436 002B     	 cmp r3,#0
+ 2491 0438 02D0     	 beq .L96
+ 607:../main.c     **** 		 // udp_send_event(receivedSentence);
+ 608:../main.c     **** 		  outputBufferReady = false;
+ 2492              	 .loc 4 608 0
+ 2493 043a 144B     	 ldr r3,.L112+72
+ 2494 043c 0022     	 movs r2,#0
+ 2495 043e 1A70     	 strb r2,[r3]
+ 2496              	.L96:
+ 609:../main.c     **** 
+ 610:../main.c     **** 	  }
  611:../main.c     **** 
- 612:../main.c     **** 	//  printf("g");
- 613:../main.c     **** 
+ 612:../main.c     **** 
+ 613:../main.c     **** 	//  printf("g");
  614:../main.c     **** 
- 615:../main.c     ****   }
- 2485              	 .loc 4 615 0
- 2486 0440 14E6     	 b .L97
- 2487              	.L113:
- 2488 0442 00BF     	 .align 2
- 2489              	.L112:
- 2490 0444 00000000 	 .word complement_xValue
- 2491 0448 00000000 	 .word min_complement_xValue
- 2492 044c 00000000 	 .word complement_yValue
- 2493 0450 00000000 	 .word min_complement_yValue
- 2494 0454 00000000 	 .word complement_zValue
- 2495 0458 00000000 	 .word min_complement_zValue
- 2496 045c 00000000 	 .word minInitialized
- 2497 0460 00000000 	 .word avg_complement_xValue
- 2498 0464 00000000 	 .word avg_complement_yValue
- 2499 0468 00000000 	 .word avg_complement_zValue
- 2500 046c 00000000 	 .word gpsOutputready
- 2501 0470 00000000 	 .word num_of_samples
- 2502 0474 00000000 	 .word bmi_gps_data
- 2503 0478 00000000 	 .word max_complement_xValue
- 2504 047c 00000000 	 .word max_complement_yValue
- 2505 0480 00000000 	 .word max_complement_zValue
- 2506 0484 00000000 	 .word maxInitialized
- 2507 0488 00000000 	 .word secondOutputBufferStart
- 2508 048c 00000000 	 .word outputBufferReady
- 2509              	 .cfi_endproc
- 2510              	.LFE469:
- 2512              	 .text
- 2513              	.Letext0:
- 2514              	 .file 5 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 2515              	 .file 6 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 2516              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc4_gpio.h"
- 2517              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_uart.h"
- 2518              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart.h"
- 2519              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
- 2520              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
- 2521              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
- 2522              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
- 2523              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
- 2524              	 .file 15 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
- 2525              	 .file 16 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/udp.h"
- 2526              	 .file 17 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_spi.h"
- 2527              	 .file 18 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/DAVE.h"
- 2528              	 .file 19 "<built-in>"
- 2529              	 .file 20 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
- 2530              	 .file 21 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
- 2531              	 .file 22 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
- 2532              	 .file 23 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart_extern.h"
- 2533              	 .file 24 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/SPI_MASTER/spi_master_extern.h"
+ 615:../main.c     **** 
+ 616:../main.c     ****   }
+ 2497              	 .loc 4 616 0
+ 2498 0440 14E6     	 b .L97
+ 2499              	.L113:
+ 2500 0442 00BF     	 .align 2
+ 2501              	.L112:
+ 2502 0444 00000000 	 .word complement_xValue
+ 2503 0448 00000000 	 .word min_complement_xValue
+ 2504 044c 00000000 	 .word complement_yValue
+ 2505 0450 00000000 	 .word min_complement_yValue
+ 2506 0454 00000000 	 .word complement_zValue
+ 2507 0458 00000000 	 .word min_complement_zValue
+ 2508 045c 00000000 	 .word minInitialized
+ 2509 0460 00000000 	 .word avg_complement_xValue
+ 2510 0464 00000000 	 .word avg_complement_yValue
+ 2511 0468 00000000 	 .word avg_complement_zValue
+ 2512 046c 00000000 	 .word gpsOutputready
+ 2513 0470 00000000 	 .word num_of_samples
+ 2514 0474 00000000 	 .word bmi_gps_data
+ 2515 0478 00000000 	 .word max_complement_xValue
+ 2516 047c 00000000 	 .word max_complement_yValue
+ 2517 0480 00000000 	 .word max_complement_zValue
+ 2518 0484 00000000 	 .word maxInitialized
+ 2519 0488 00000000 	 .word secondOutputBufferStart
+ 2520 048c 00000000 	 .word outputBufferReady
+ 2521              	 .cfi_endproc
+ 2522              	.LFE469:
+ 2524              	 .text
+ 2525              	.Letext0:
+ 2526              	 .file 5 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2527              	 .file 6 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 2528              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc4_gpio.h"
+ 2529              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_uart.h"
+ 2530              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart.h"
+ 2531              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 2532              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
+ 2533              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
+ 2534              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
+ 2535              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
+ 2536              	 .file 15 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 2537              	 .file 16 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/udp.h"
+ 2538              	 .file 17 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_spi.h"
+ 2539              	 .file 18 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/DAVE.h"
+ 2540              	 .file 19 "<built-in>"
+ 2541              	 .file 20 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 2542              	 .file 21 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+ 2543              	 .file 22 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
+ 2544              	 .file 23 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart_extern.h"
+ 2545              	 .file 24 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/SPI_MASTER/spi_master_extern.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
     {standard input}:20     .text.XMC_GPIO_SetOutputHigh:00000000 $t
@@ -7098,30 +7111,30 @@ DEFINED SYMBOLS
     {standard input}:977    .text.bmi055_apply_gyro_all_angles:00000030 $d
     {standard input}:993    .text.bmi055_apply_accel_all_angles:00000000 $t
     {standard input}:998    .text.bmi055_apply_accel_all_angles:00000000 bmi055_apply_accel_all_angles
-    {standard input}:1287   .text.bmi055_apply_accel_all_angles:00000298 $d
-    {standard input}:1304   .text.bmi055_start:00000000 $t
-    {standard input}:1309   .text.bmi055_start:00000000 bmi055_start
-    {standard input}:1370   .text.bmi055_start:0000005c $d
-    {standard input}:1380   .text.bmi055_poll_data:00000000 $t
-    {standard input}:1385   .text.bmi055_poll_data:00000000 bmi055_poll_data
-    {standard input}:1696   .text.bmi055_poll_data:00000298 $d
-    {standard input}:1722   .text.udp_initialize:00000000 $t
-    {standard input}:1727   .text.udp_initialize:00000000 udp_initialize
-    {standard input}:1755   .text.udp_initialize:00000018 $d
-    {standard input}:1766   .text.udp_send_event2:00000000 $t
-    {standard input}:1771   .text.udp_send_event2:00000000 udp_send_event2
-    {standard input}:1847   .text.udp_send_event2:00000064 $d
-    {standard input}:1854   .text.udp_send_event:00000000 $t
-    {standard input}:1859   .text.udp_send_event:00000000 udp_send_event
-    {standard input}:1947   .text.udp_send_event:0000007c $d
-    {standard input}:1956   .text.main:00000000 $t
-    {standard input}:1961   .text.main:00000000 main
-    {standard input}:2224   .text.main:000001c8 $d
-    {standard input}:2249   .text.main:00000224 $t
-    {standard input}:2490   .text.main:00000444 $d
+    {standard input}:1291   .text.bmi055_apply_accel_all_angles:000002a0 $d
+    {standard input}:1308   .text.bmi055_start:00000000 $t
+    {standard input}:1313   .text.bmi055_start:00000000 bmi055_start
+    {standard input}:1374   .text.bmi055_start:0000005c $d
+    {standard input}:1384   .text.bmi055_poll_data:00000000 $t
+    {standard input}:1389   .text.bmi055_poll_data:00000000 bmi055_poll_data
+    {standard input}:1708   .text.bmi055_poll_data:000002b0 $d
+    {standard input}:1734   .text.udp_initialize:00000000 $t
+    {standard input}:1739   .text.udp_initialize:00000000 udp_initialize
+    {standard input}:1767   .text.udp_initialize:00000018 $d
+    {standard input}:1778   .text.udp_send_event2:00000000 $t
+    {standard input}:1783   .text.udp_send_event2:00000000 udp_send_event2
+    {standard input}:1859   .text.udp_send_event2:00000064 $d
+    {standard input}:1866   .text.udp_send_event:00000000 $t
+    {standard input}:1871   .text.udp_send_event:00000000 udp_send_event
+    {standard input}:1959   .text.udp_send_event:0000007c $d
+    {standard input}:1968   .text.main:00000000 $t
+    {standard input}:1973   .text.main:00000000 main
+    {standard input}:2236   .text.main:000001c8 $d
+    {standard input}:2261   .text.main:00000224 $t
+    {standard input}:2502   .text.main:00000444 $d
                      .debug_frame:00000010 $d
     {standard input}:992    .text.bmi055_apply_gyro_all_angles:00000054 $t
-    {standard input}:1303   .text.bmi055_apply_accel_all_angles:000002cc $t
+    {standard input}:1307   .text.bmi055_apply_accel_all_angles:000002d4 $t
 
 UNDEFINED SYMBOLS
 XMC_SPI_CH_GetReceivedData

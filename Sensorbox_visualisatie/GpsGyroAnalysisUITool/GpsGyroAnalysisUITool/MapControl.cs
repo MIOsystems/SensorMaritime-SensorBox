@@ -52,10 +52,6 @@ namespace GpsGyroAnalysisUITool
 
             mapBox1.Map.Layers.Add(bc);
 
-
-
-
-
             TileAsyncLayer mapTileLayer = new TileAsyncLayer(tileSource, "o");
             mapBox1.Map.BackgroundLayer.Add(mapTileLayer);
             mapBox1.Map.MinimumZoom = 20;

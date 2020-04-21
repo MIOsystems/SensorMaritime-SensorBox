@@ -147,13 +147,14 @@ namespace GpsGyroAnalysisUITool.Networking
                     string[] gpsData = nmeaString.Substring(0, nmeaString.Length-1).Split(',');
 
                     NMEAData nmeaData = new NMEAData();
-                    if (gpsData[8] != string.Empty)
+                    if (gpsData[8] != string.Empty && gpsData[3] != string.Empty && gpsData[5] != string.Empty )
                     {
                         nmeaData.degreeAngle = double.Parse(gpsData[8].Replace('.', ','));
+                        nmeaData.latitude = MinuteToDegree(double.Parse(gpsData[5].Replace('.', ',')));
+                        nmeaData.longtitude = MinuteToDegree(double.Parse(gpsData[3].Replace('.', ',')));
                         nmeaData.headingSet = true;
                     }
-                    nmeaData.latitude =  MinuteToDegree(double.Parse (gpsData[5].Replace('.', ',')));
-                    nmeaData.longtitude = MinuteToDegree(double.Parse(gpsData[3].Replace('.', ',')));
+                    
 
 
                     //Console.WriteLine("wl: "+ nmeaData.degreeAngle);

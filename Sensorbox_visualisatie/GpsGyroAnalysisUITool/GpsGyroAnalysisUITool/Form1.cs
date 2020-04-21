@@ -53,11 +53,6 @@ namespace GpsGyroAnalysisUITool
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
 
 
         //double ToDegrees(double radians) {
@@ -89,18 +84,5 @@ namespace GpsGyroAnalysisUITool
         //    g.DrawString("avg: "+ (int)ToDegrees(max), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 60));
         //}
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-
-
-            //drawRotationBar(g, minx, maxx, avgx, 40, "x");
-            //drawRotationBar(g, miny, maxy, avgy, 80, "y");
-            //drawRotationBar(g, minz, maxz, avgz, 120, "z");
-        }
-
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-
-        }
     }
 }

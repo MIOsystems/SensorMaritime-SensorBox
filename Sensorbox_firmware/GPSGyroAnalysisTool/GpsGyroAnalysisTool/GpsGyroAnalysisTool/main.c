@@ -76,19 +76,19 @@ int num_of_samples = 0;
 
 double max_complement_xValue = 0;
 double max_complement_yValue = 0;
-double max_complement_zValue = M_PI/2.0;
+double max_complement_zValue = M_PI/2;
 
 double min_complement_xValue = 0;
 double min_complement_yValue = 0;
-double min_complement_zValue = M_PI/2.0;
+double min_complement_zValue = M_PI/2;
 
 double avg_complement_xValue = 0;
 double avg_complement_yValue = 0;
-double avg_complement_zValue = M_PI/2.0;
+double avg_complement_zValue = M_PI/2;
 
 double complement_xValue = 0;
 double complement_yValue = 0;
-double complement_zValue = M_PI/2.0;
+double complement_zValue = M_PI/2;
 
 
 //typedef struct gyro_gps_data {
@@ -263,7 +263,7 @@ void bmi055_apply_gyro_angle(float* gyro_a, double* gyro_intergral_a, double del
 void bmi055_apply_gyro_all_angles(){
 	bmi055_apply_gyro_angle(&gyro_y, &complement_xValue, -0.004);
 	bmi055_apply_gyro_angle(&gyro_x, &complement_yValue, 0.004);
-	bmi055_apply_gyro_angle(&gyro_y, &complement_zValue, 0.004);
+	bmi055_apply_gyro_angle(&gyro_y, &complement_zValue, -0.004);
 
 }
 //
@@ -302,9 +302,10 @@ void bmi055_apply_accel_all_angles(){
 		//first atan2 was used but atan is faster. You can always revert this code
 		//double accel_angle =  atan2(sqrt(acc_u*acc_u + acc_v*acc_v), acc_w);
 
-		if(acc_z > 0.0){
-			double accel_angle_z  =  atan((acc_x)*(acc_x) + (acc_y)*(acc_y)/ (acc_z));
-			complement_zValue = ((complement_zValue*0.8)+ (((M_PI/2.0)-accel_angle_z)*0.2));
+		double accel_angle_div_z = sqrt((acc_x)*(acc_x) + (acc_y)*(acc_y));
+		if(accel_angle_div_z > 0.0){
+		double accel_angle_z  =  atan((acc_z)/accel_angle_div_z);
+			complement_zValue = ((complement_zValue*0.8)+ (accel_angle_z*0.2));
 		}
 		else{
 

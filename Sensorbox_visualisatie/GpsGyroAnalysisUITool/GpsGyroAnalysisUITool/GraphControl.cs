@@ -66,15 +66,24 @@ namespace GpsGyroAnalysisUITool
             double maxDeg = ((90.0 + ToDegrees(max)) / 180.0) * range;
 
 
+            double gavgDeg = ((90.0 - ToDegrees(avg)) / 180.0) * range;
+            double gminDeg = ((90.0 - ToDegrees(min)) / 180.0) * range;
+            double gmaxDeg = ((90.0 - ToDegrees(max)) / 180.0) * range;
+
             int maxRange = (int)(maxDeg - minDeg);
 
+            int gmaxRange = (int)(gminDeg - gmaxDeg );
+
             g.DrawString(label, SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, 6));
+
+          
+
             g.FillRectangle(Brushes.Gray, new Rectangle(positionx, 20, 50, Height - 100));
             g.DrawLine(Pens.Black, positionx - 1, 20, positionx + (50 - 1), 20);
             g.DrawLine(Pens.Black, positionx - 1, Height - 80, positionx + (50 - 1), Height - 80);
            // g.DrawLine(Pens.Black, positionx + 15, 20, positionx + 15, Height - 80);
-            g.FillRectangle(Brushes.Blue, new Rectangle(positionx, 20 + (int)minDeg, 50, maxRange));
-            g.DrawLine(Pens.Red, positionx - 1, 20+(int)avgDeg, positionx + (50 - 1), 20+(int)avgDeg);
+            g.FillRectangle(Brushes.Blue, new Rectangle(positionx, 20 + (int)gmaxDeg, 50, gmaxRange));
+            g.DrawLine(Pens.Red, positionx - 1, 20+(int)gavgDeg, positionx + (50 - 1), 20+(int)gavgDeg);
             g.DrawString("min: " + Math.Round(ToDegrees(min),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 80));
             g.DrawString("max: " + Math.Round(ToDegrees(max),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 70));
             g.DrawString("avg: " + Math.Round(ToDegrees(avg),2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 60));

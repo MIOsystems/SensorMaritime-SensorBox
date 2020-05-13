@@ -104,15 +104,15 @@ namespace GpsGyroAnalysisUITool.Networking
                 //    }
 
                 //}
+                string s = Encoding.UTF8.GetString(message, 0, message.Length);
 
 
-
-                if (message[0] == 5)
+                if (s.StartsWith("ADMS"))
                 {
 
-                   string s =  Encoding.UTF8.GetString(message, 1, message.Length-1);
+                  
 
-                    Console.WriteLine(s);
+                   // Console.WriteLine(s);
 
                     s = s.Substring(5, s.IndexOf("$")-5);
                     string[] stringValues =  s.Split(',');
@@ -134,9 +134,9 @@ namespace GpsGyroAnalysisUITool.Networking
                     }
                 }
 
-                else if (message[0] == 7)
+                else if (s.StartsWith("ADR"))
                 {
-                    string s = Encoding.UTF8.GetString(message, 1, message.Length - 1);
+                   // string s = Encoding.UTF8.GetString(message, 1, message.Length - 1);
 
                     Console.WriteLine(s);
                     s = s.Substring(4, s.IndexOf("$")-4);
@@ -157,9 +157,9 @@ namespace GpsGyroAnalysisUITool.Networking
 
                 }
                 else {
-                    string nmeaString = Encoding.ASCII.GetString(message, 1, message.Length - 2);
+                   // string nmeaString = Encoding.ASCII.GetString(message, 1, message.Length - 2);
                    // Console.WriteLine("strs: " + nmeaString);
-                    string[] gpsData = nmeaString.Substring(0, nmeaString.Length - 1).Split(',');
+                    string[] gpsData = s.Substring(0, s.Length - 1).Split(',');
 
                     NMEAData nmeaData = new NMEAData();
                     if (gpsData[8] != string.Empty && gpsData[3] != string.Empty && gpsData[5] != string.Empty)

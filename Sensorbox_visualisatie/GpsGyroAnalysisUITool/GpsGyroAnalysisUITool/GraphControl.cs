@@ -14,12 +14,14 @@ namespace GpsGyroAnalysisUITool
     public partial class GraphControl : UserControl
     {
 
-        private SensorData data;
+        private SensorData rotData;
+        private SensorData msData;
 
         public GraphControl()
         {
             InitializeComponent();
-            data = new SensorData();
+            rotData = new SensorData();
+            msData = new SensorData();
 
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
@@ -29,10 +31,17 @@ namespace GpsGyroAnalysisUITool
         }
 
 
-        public void Load(DataReceiver dataReceiver) {
+        public void Load(DataReceiver2 dataReceiver) {
             dataReceiver.actions.Add((sensordata) =>
             {
-                data = new SensorData(sensordata);
+                if (sensordata.isMS2)
+                {
+                    msData = new SensorData(sensordata);
+                }
+                else {
+                    rotData = new SensorData(sensordata);
+                }
+                
 
             });
 
@@ -49,10 +58,46 @@ namespace GpsGyroAnalysisUITool
         {
 
             Graphics g = e.Graphics;
+            
+            drawRotationBar(g, rotData.min_x, rotData.max_x, rotData.avg_x, 20, "x");
+            drawRotationBar(g, rotData.min_y, rotData.max_y, rotData.avg_y, 90, "y");
+            drawRotationBar(g, rotData.min_z, rotData.max_z, rotData.avg_z, 160, "z");
 
-            drawRotationBar(g, data.min_x, data.max_x, data.avg_x, 50, "x");
-            drawRotationBar(g, data.min_y, data.max_y, data.avg_y, 120, "y");
-            drawRotationBar(g, data.min_z, data.max_z, data.avg_z, 190, "z");
+            drawRotationBarMS(g, msData.min_x, msData.max_x, msData.avg_x, 230, "x");
+            drawRotationBarMS(g, msData.min_y, msData.max_y, msData.avg_y, 300, "y");
+            drawRotationBarMS(g, msData.min_z, msData.max_z, msData.avg_z, 370, "z");
+        }
+
+
+
+        void drawRotationBarMS(Graphics g, double min, double max, double avg, int positionx, string label)
+        {
+
+            int range = (Height - 100);
+
+            double avgDeg = ((18.0 + avg)/36.0) * range;
+            double minDeg = ((18.0 + min)/36.0) * range;
+            double maxDeg = ((18.0 + max)/36.0) * range;
+
+
+            double gavgDeg = ((18.0 - avg)/36.0) * range;
+            double gminDeg = ((18.0 - min)/36.0) * range;
+            double gmaxDeg = ((18.0 - max)/36.0) * range;
+
+            int maxRange = (int)(maxDeg - minDeg);
+
+            int gmaxRange = (int)(gminDeg- gmaxDeg);
+
+            g.DrawString(label, SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, 6));
+            g.FillRectangle(Brushes.Gray, new Rectangle(positionx, 20, 50, Height - 100));
+            g.DrawLine(Pens.Black, positionx - 1, 20, positionx + (50 - 1), 20);
+            g.DrawLine(Pens.Black, positionx - 1, Height - 80, positionx + (50 - 1), Height - 80);
+            // g.DrawLine(Pens.Black, positionx + 15, 20, positionx + 15, Height - 80);
+            g.FillRectangle(Brushes.Blue, new Rectangle(positionx, 20 + (int)gmaxDeg, 50, gmaxRange));
+            g.DrawLine(Pens.Red, positionx - 1, 20 + (int)gavgDeg, positionx + (50 - 1), 20 + (int)gavgDeg);
+            g.DrawString("min ms: " + Math.Round(min, 2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 80));
+            g.DrawString("max: ms " + Math.Round(max, 2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 70));
+            g.DrawString("avg: ms " + Math.Round(avg, 2), SystemFonts.DefaultFont, new SolidBrush(Color.FromArgb(80, 80, 80)), new Point(positionx + 10, Height - 60));
         }
 
 

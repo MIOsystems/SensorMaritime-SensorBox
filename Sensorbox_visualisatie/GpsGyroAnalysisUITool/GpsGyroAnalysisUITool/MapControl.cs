@@ -21,7 +21,7 @@ namespace GpsGyroAnalysisUITool
     public partial class MapControl : UserControl
     {
 
-        private DataReceiver dataReceiver;
+        private DataReceiver2 dataReceiver;
         private NMEAData data;
         private GoogleTileSource tileSource;
         private GeometryProvider boatLayerProvider;
@@ -66,7 +66,7 @@ namespace GpsGyroAnalysisUITool
             SetStyle(ControlStyles.UserPaint, true);
         }
 
-        public void Load(DataReceiver  dataReceiver) {
+        public void Load(DataReceiver2  dataReceiver) {
             this.dataReceiver = dataReceiver;
             dataReceiver.gpsActions.Add((nmeaData) =>
             {

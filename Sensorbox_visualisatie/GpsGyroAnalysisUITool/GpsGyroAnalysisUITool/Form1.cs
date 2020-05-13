@@ -18,6 +18,7 @@ namespace GpsGyroAnalysisUITool
     {
 
         private DataReceiver receiver;
+        private DataReceiver2 receiver2;
         private tmr.Timer timer = new tmr.Timer();
 
  
@@ -34,10 +35,12 @@ namespace GpsGyroAnalysisUITool
         public Form1()
         {
             InitializeComponent();
-            receiver = new DataReceiver();
 
-            graphController.Load(receiver);
-            mapController.Load(receiver);
+            receiver2 = new DataReceiver2();
+            //receiver = new DataReceiver();
+
+            graphController.Load(receiver2);
+            mapController.Load(receiver2);
            
 
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);

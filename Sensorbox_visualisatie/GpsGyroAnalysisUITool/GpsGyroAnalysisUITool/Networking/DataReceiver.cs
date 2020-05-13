@@ -39,6 +39,7 @@ namespace GpsGyroAnalysisUITool.Networking
 
     public class SensorData {
 
+        public bool isMS2;
         public double avg_x;
         public double avg_y;
         public double avg_z;
@@ -90,9 +91,9 @@ namespace GpsGyroAnalysisUITool.Networking
             queue = new ConcurrentQueue<SensorData>();
             actions = new List<Action<SensorData>>();
             gpsActions = new List<Action<NMEAData>>();
-            client = new UdpClient(new IPEndPoint(IPAddress.Parse(SensorIP), DestPort));
-            Thread thread = new Thread(RunPackageQueue);
-            thread.Start();
+            //client = new UdpClient(new IPEndPoint(IPAddress.Parse(SensorIP), DestPort));
+            //Thread thread = new Thread(RunPackageQueue);
+            //thread.Start();
 
 
            

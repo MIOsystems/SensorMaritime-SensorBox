@@ -6,6 +6,8 @@
  */
 
 
+#define  GRAVITY_MS 9.80665
+
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 
@@ -57,6 +59,9 @@ struct udp_pcb*  com_pcb;
 ip_addr_t returnaddr;
 
 
+char ms_msg[104] , r_msg[104];
+
+
 
 
 //int16_t max_gyro_xValue = 0;
@@ -89,6 +94,24 @@ double avg_complement_zValue = M_PI/2;
 double complement_xValue = 0;
 double complement_yValue = 0;
 double complement_zValue = M_PI/2;
+
+
+
+double max_ms_xValue = 0;
+double max_ms_yValue = 0;
+double max_ms_zValue = 0;
+
+double min_ms_xValue = 0;
+double min_ms_yValue = 0;
+double min_ms_zValue = 0;
+
+double avg_ms_xValue = 0;
+double avg_ms_yValue = 0;
+double avg_ms_zValue = 0;
+
+double ms_xValue = 0;
+double ms_yValue = 0;
+double ms_zValue = 0;
 
 
 //typedef struct gyro_gps_data {
@@ -125,11 +148,29 @@ typedef struct angle_data {
 } angle_data;
 
 
+
+typedef struct ms_data {
+	double avg_x;
+	double avg_y;
+	double avg_z;
+	double min_x;
+	double min_y;
+	double min_z;
+	double max_x;
+	double max_y;
+	double max_z;
+
+
+} ms_data;
+
+
 angle_data bmi_gps_data;
+ms_data bmi_ms_data;
 
 
 float gyro_x, gyro_y, gyro_z;
 float acc_x, acc_y, acc_z;
+float acc_x_ms2, acc_y_ms2, acc_z_ms2;
 
 int16_t gyro_xValue = 0;
 int16_t gyro_yValue = 0;
@@ -141,6 +182,12 @@ int messageState = 0;
 bool outputBufferReady 	= false;
 
 bool gpsOutputready    	= false;
+
+
+bool msMinInitialized 	= false;
+
+bool msMaxInitialized 	= false;
+
 
 bool minInitialized 	= false;
 
@@ -368,7 +415,13 @@ void bmi055_poll_data(){
 		acc_y = (acc_yValue*(2.0f / 2048.0f)) * 0.98;
 		acc_z = -(acc_zValue*(2.0f / 2048.0f)) * 0.98;
 
+		acc_x_ms2 = acc_x*GRAVITY_MS;
+		acc_y_ms2 = acc_y*GRAVITY_MS;
+		acc_z_ms2 = acc_z*GRAVITY_MS;
 
+		ms_xValue = acc_x_ms2;
+		ms_yValue = acc_y_ms2;
+		ms_zValue = acc_z_ms2;
 
 
 		//merge gyroscope data NOTE: data may not be merged as expected because the first byte in the array is a dummy byte.
@@ -406,6 +459,49 @@ void udp_send_event2(char* message)
 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, 75, PBUF_RAM);
 	((char*)b->payload)[0] = 5;
 	memcpy (b->payload+1, message, 75);
+	char* c = (char*)b->payload;
+	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+	if(e == ERR_OK){
+		printf("ok");
+	}
+
+	pbuf_free(b);
+}
+
+
+void udp_send_event_r(angle_data* strct)
+{
+
+//	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, 200, PBUF_RAM);
+//	((char*)b->payload)[0] = 7;
+//	//ADMS,avg_x,avg_y,avg_z,min_x,min_y,min_z,max_x,max_y,max_z$
+//	sprintf(r_msg, "ADR,%f,%f,%f,%f,%f,%f,%f,%f,%f$", strct->avg_x, strct->avg_y, strct->avg_z, strct->min_x, strct->min_y, strct->min_z, strct->max_x, strct->max_y, strct->max_z);
+
+
+	sprintf(r_msg, "ADR,%f,%f,%f,%f,%f,%f,%f,%f,%f$", strct->avg_x, strct->avg_y, strct->avg_z, strct->min_x, strct->min_y, strct->min_z, strct->max_x, strct->max_y, strct->max_z);
+	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, strlen(r_msg)+1, PBUF_RAM);
+	((char*)b->payload)[0] = 7;
+	memcpy (b->payload+1, r_msg, strlen(r_msg));
+	char* c = (char*)b->payload;
+	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+	if(e == ERR_OK){
+		printf("ok");
+	}
+
+	pbuf_free(b);
+}
+
+
+void udp_send_event_ms(ms_data* strct)
+{
+
+
+
+	sprintf(ms_msg, "ADMS,%f,%f,%f,%f,%f,%f,%f,%f,%f$", strct->avg_x, strct->avg_y, strct->avg_z, strct->min_x, strct->min_y, strct->min_z, strct->max_x, strct->max_y, strct->max_z);
+
+	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, strlen(ms_msg)+1, PBUF_RAM);
+	((char*)b->payload)[0] = 5;
+	memcpy (b->payload+1, ms_msg, strlen(ms_msg));
 	char* c = (char*)b->payload;
 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
 	if(e == ERR_OK){
@@ -490,18 +586,59 @@ int main(void)
 
 
 
+
+
+// ms berekenen
+
 		  // min berekenen
-if(maxInitialized){
-	  max_complement_xValue =  max(complement_xValue, max_complement_xValue);
-	  max_complement_yValue =  max(complement_yValue, max_complement_yValue);
-	  max_complement_zValue =  max(complement_zValue, max_complement_zValue);
-}
-else{
-	  max_complement_xValue = complement_xValue;
-	  max_complement_yValue = complement_yValue;
-	  max_complement_zValue = complement_zValue;
-	  maxInitialized = true;
-}
+				if(msMaxInitialized){
+					max_ms_xValue =  max(ms_xValue, max_ms_xValue);
+					max_ms_yValue =  max(ms_yValue, max_ms_yValue);
+					max_ms_zValue =  max(ms_zValue, max_ms_zValue);
+				}
+				else{
+					  max_ms_xValue = ms_xValue;
+					  max_ms_yValue = ms_yValue;
+					  max_ms_zValue = ms_zValue;
+					  msMaxInitialized = true;
+				}
+
+				//max berekenen
+
+				if(msMinInitialized){
+					min_ms_xValue =  min(ms_xValue, min_ms_xValue);
+					min_ms_yValue =  min(ms_yValue, min_ms_yValue);
+					min_ms_zValue =  min(ms_zValue, min_ms_zValue);
+				}
+				else{
+					  min_ms_xValue = ms_xValue;
+					  min_ms_yValue = ms_yValue;
+					  min_ms_zValue = ms_zValue;
+					  msMinInitialized = true;
+
+				}
+
+				avg_ms_xValue += ms_xValue;
+				avg_ms_yValue += ms_yValue;
+				avg_ms_zValue += ms_zValue;
+
+
+
+//~ ms berekenen
+
+
+		  // min berekenen
+		if(maxInitialized){
+			  max_complement_xValue =  max(complement_xValue, max_complement_xValue);
+			  max_complement_yValue =  max(complement_yValue, max_complement_yValue);
+			  max_complement_zValue =  max(complement_zValue, max_complement_zValue);
+		}
+		else{
+			  max_complement_xValue = complement_xValue;
+			  max_complement_yValue = complement_yValue;
+			  max_complement_zValue = complement_zValue;
+			  maxInitialized = true;
+		}
 
 //		  max_complement_xValue = max(gyro_x, max_gyro_xValue);
 //		  max_complement_yValue = max(gyro_y, max_gyro_yValue);
@@ -509,7 +646,7 @@ else{
 
 		  //max berekenen
 
-if(minInitialized){
+		if(minInitialized){
 //				min_complement_xValue = min(gyro_x, min_gyro_xValue);
 //				min_complement_yValue = min(gyro_y, min_gyro_yValue);
 //				min_complement_zValue = min(gyro_z, min_gyro_zValue);
@@ -550,6 +687,10 @@ if(minInitialized){
 		  avg_complement_yValue = avg_complement_yValue/num_of_samples;
 		  avg_complement_zValue = avg_complement_zValue/num_of_samples;
 
+		  avg_ms_xValue = avg_ms_xValue/num_of_samples;
+		  avg_ms_yValue = avg_ms_yValue/num_of_samples;
+		  avg_ms_zValue = avg_ms_zValue/num_of_samples;
+
 //		  bmi_gps_data.avg_x = avg_complement_xValue;
 //		  bmi_gps_data.avg_y = avg_complement_yValue;
 //		  bmi_gps_data.avg_z = avg_complement_zValue;
@@ -560,6 +701,7 @@ if(minInitialized){
 //		  bmi_gps_data.max_y = max_complement_yValue;
 //		  bmi_gps_data.max_z = max_complement_zValue;
 
+
 		  bmi_gps_data.avg_x = avg_complement_xValue;
 		  bmi_gps_data.avg_y = avg_complement_yValue;
 		  bmi_gps_data.avg_z = avg_complement_zValue;
@@ -569,6 +711,19 @@ if(minInitialized){
 		  bmi_gps_data.max_x = max_complement_xValue;
 		  bmi_gps_data.max_y = max_complement_yValue;
 		  bmi_gps_data.max_z = max_complement_zValue;
+
+		  bmi_ms_data.avg_x = avg_ms_xValue;
+		  bmi_ms_data.avg_y = avg_ms_yValue;
+		  bmi_ms_data.avg_z = avg_ms_zValue;
+		  bmi_ms_data.min_x = min_ms_xValue;
+		  bmi_ms_data.min_y = min_ms_yValue;
+		  bmi_ms_data.min_z = min_ms_zValue;
+		  bmi_ms_data.max_x = max_ms_xValue;
+		  bmi_ms_data.max_y = max_ms_yValue;
+		  bmi_ms_data.max_z = max_ms_zValue;
+
+
+
 
 //
 //		  bmi_gps_data.avg_x = 3;
@@ -581,6 +736,8 @@ if(minInitialized){
 //		  bmi_gps_data.max_y = 5;
 //		  bmi_gps_data.max_z = 5;
 
+		  udp_send_event_ms(&bmi_ms_data);
+		  udp_send_event_r(&bmi_gps_data);
 
 		  num_of_samples = 0;
 		  max_complement_xValue = 0;
@@ -598,8 +755,27 @@ if(minInitialized){
 		  avg_complement_yValue = 0;
 		  avg_complement_zValue = 0;
 
-		  char* c_v = &bmi_gps_data;
-		  udp_send_event2(c_v);
+		  max_ms_xValue = 0;
+		  max_ms_yValue = 0;
+		  max_ms_zValue = 0;
+
+		  msMinInitialized = false;
+		  msMaxInitialized = false;
+
+		  min_ms_xValue = 0;
+		  min_ms_yValue = 0;
+		  min_ms_zValue = 0;
+
+		  avg_ms_xValue = 0;
+		  avg_ms_yValue = 0;
+		  avg_ms_zValue = 0;
+
+
+//		  char* c_v = &bmi_gps_data;
+//		  udp_send_event_ms(&c_v);
+//		  udp_send_event_r(&c_v);
+
+
 		  udp_send_event(secondOutputBufferStart);
 		  gpsOutputready = false;
 		  //sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);

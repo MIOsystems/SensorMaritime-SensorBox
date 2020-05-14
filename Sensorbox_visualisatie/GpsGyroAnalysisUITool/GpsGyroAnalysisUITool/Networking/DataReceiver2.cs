@@ -107,7 +107,11 @@ namespace GpsGyroAnalysisUITool.Networking
                 string s = Encoding.UTF8.GetString(message, 0, message.Length);
 
 
-                if (s.StartsWith("ADMS"))
+                if (s.Contains("nan")) { 
+                    
+                }
+
+                else if (s.StartsWith("ADMS"))
                 {
 
                   

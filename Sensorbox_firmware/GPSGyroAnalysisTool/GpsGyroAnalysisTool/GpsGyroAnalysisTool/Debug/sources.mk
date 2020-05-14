@@ -38,6 +38,7 @@ Dave/Generated/TIMER \
 Dave/Generated/UART \
 Libraries/Newlib \
 Libraries/XMCLib/src \
+Source \
 Startup \
 . \
 

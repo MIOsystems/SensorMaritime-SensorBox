@@ -1,0 +1,545 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "UDP.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .comm com_pcb,4,4
+  20              	 .comm returnaddr,4,4
+  21              	 .comm bmi_gps_data,72,8
+  22              	 .comm bmi_ms_data,72,8
+  23              	 .comm ms_msg,104,4
+  24              	 .comm r_msg,104,4
+  25              	 .section .text.udp_initialize,"ax",%progbits
+  26              	 .align 2
+  27              	 .global udp_initialize
+  28              	 .thumb
+  29              	 .thumb_func
+  31              	udp_initialize:
+  32              	.LFB455:
+  33              	 .file 1 "../Source/UDP.c"
+   1:../Source/UDP.c **** /*
+   2:../Source/UDP.c ****  * UDP.c
+   3:../Source/UDP.c ****  *
+   4:../Source/UDP.c ****  *  Created on: 13 May 2020
+   5:../Source/UDP.c ****  *      Author: Beheerder
+   6:../Source/UDP.c ****  */
+   7:../Source/UDP.c **** 
+   8:../Source/UDP.c **** 
+   9:../Source/UDP.c **** #include "Header/UDP.h"
+  10:../Source/UDP.c **** 
+  11:../Source/UDP.c **** void udp_initialize()
+  12:../Source/UDP.c **** {
+  34              	 .loc 1 12 0
+  35              	 .cfi_startproc
+  36              	 
+  37              	 
+  38 0000 80B5     	 push {r7,lr}
+  39              	.LCFI0:
+  40              	 .cfi_def_cfa_offset 8
+  41              	 .cfi_offset 7,-8
+  42              	 .cfi_offset 14,-4
+  43 0002 00AF     	 add r7,sp,#0
+  44              	.LCFI1:
+  45              	 .cfi_def_cfa_register 7
+  13:../Source/UDP.c **** 	IP_ADDR4(&returnaddr, ip1,ip2,ip3,ip4);
+  46              	 .loc 1 13 0
+  47 0004 044B     	 ldr r3,.L2
+  48 0006 054A     	 ldr r2,.L2+4
+  49 0008 1A60     	 str r2,[r3]
+  14:../Source/UDP.c **** 	com_pcb = udp_new();
+  50              	 .loc 1 14 0
+  51 000a FFF7FEFF 	 bl udp_new
+  52 000e 0246     	 mov r2,r0
+  53 0010 034B     	 ldr r3,.L2+8
+  54 0012 1A60     	 str r2,[r3]
+  15:../Source/UDP.c **** }
+  55              	 .loc 1 15 0
+  56 0014 80BD     	 pop {r7,pc}
+  57              	.L3:
+  58 0016 00BF     	 .align 2
+  59              	.L2:
+  60 0018 00000000 	 .word returnaddr
+  61 001c C0A80009 	 .word 151038144
+  62 0020 00000000 	 .word com_pcb
+  63              	 .cfi_endproc
+  64              	.LFE455:
+  66              	 .section .rodata
+  67              	 .align 2
+  68              	.LC0:
+  69 0000 4144522C 	 .ascii "ADR,%f,%f,%f,%f,%f,%f,%f,%f,%f$\000"
+  69      25662C25 
+  69      662C2566 
+  69      2C25662C 
+  69      25662C25 
+  70              	 .align 2
+  71              	.LC1:
+  72 0020 6F6B00   	 .ascii "ok\000"
+  73              	 .section .text.udp_send_event_r,"ax",%progbits
+  74              	 .align 2
+  75              	 .global udp_send_event_r
+  76              	 .thumb
+  77              	 .thumb_func
+  79              	udp_send_event_r:
+  80              	.LFB456:
+  16:../Source/UDP.c **** 
+  17:../Source/UDP.c **** 
+  18:../Source/UDP.c **** 
+  19:../Source/UDP.c **** 
+  20:../Source/UDP.c **** void udp_send_event_r(angle_data* strct)
+  21:../Source/UDP.c **** {
+  81              	 .loc 1 21 0
+  82              	 .cfi_startproc
+  83              	 
+  84              	 
+  85 0000 2DE9B04F 	 push {r4,r5,r7,r8,r9,r10,fp,lr}
+  86              	.LCFI2:
+  87              	 .cfi_def_cfa_offset 32
+  88              	 .cfi_offset 4,-32
+  89              	 .cfi_offset 5,-28
+  90              	 .cfi_offset 7,-24
+  91              	 .cfi_offset 8,-20
+  92              	 .cfi_offset 9,-16
+  93              	 .cfi_offset 10,-12
+  94              	 .cfi_offset 11,-8
+  95              	 .cfi_offset 14,-4
+  96 0004 96B0     	 sub sp,sp,#88
+  97              	.LCFI3:
+  98              	 .cfi_def_cfa_offset 120
+  99 0006 10AF     	 add r7,sp,#64
+ 100              	.LCFI4:
+ 101              	 .cfi_def_cfa 7,56
+ 102 0008 7860     	 str r0,[r7,#4]
+  22:../Source/UDP.c **** 
+  23:../Source/UDP.c **** //	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, 200, PBUF_RAM);
+  24:../Source/UDP.c **** //	((char*)b->payload)[0] = 7;
+  25:../Source/UDP.c **** //	//ADMS,avg_x,avg_y,avg_z,min_x,min_y,min_z,max_x,max_y,max_z$
+  26:../Source/UDP.c **** //	sprintf(r_msg, "ADR,%f,%f,%f,%f,%f,%f,%f,%f,%f$", strct->avg_x, strct->avg_y, strct->avg_z, strc
+  27:../Source/UDP.c **** 
+  28:../Source/UDP.c **** 
+  29:../Source/UDP.c **** 	sprintf(r_msg, "ADR,%f,%f,%f,%f,%f,%f,%f,%f,%f$", strct->avg_x, strct->avg_y, strct->avg_z, strct-
+ 103              	 .loc 1 29 0
+ 104 000a 7B68     	 ldr r3,[r7,#4]
+ 105 000c 93ED004B 	 fldd d4,[r3]
+ 106 0010 7B68     	 ldr r3,[r7,#4]
+ 107 0012 D3E90245 	 ldrd r4,[r3,#8]
+ 108 0016 7B68     	 ldr r3,[r7,#4]
+ 109 0018 D3E90489 	 ldrd r8,[r3,#16]
+ 110 001c 7B68     	 ldr r3,[r7,#4]
+ 111 001e 93ED065B 	 fldd d5,[r3,#24]
+ 112 0022 7B68     	 ldr r3,[r7,#4]
+ 113 0024 93ED086B 	 fldd d6,[r3,#32]
+ 114 0028 7B68     	 ldr r3,[r7,#4]
+ 115 002a 93ED0A7B 	 fldd d7,[r3,#40]
+ 116 002e 7B68     	 ldr r3,[r7,#4]
+ 117 0030 D3E90CAB 	 ldrd r10,[r3,#48]
+ 118 0034 7B68     	 ldr r3,[r7,#4]
+ 119 0036 D3E90E01 	 ldrd r0,[r3,#56]
+ 120 003a 7B68     	 ldr r3,[r7,#4]
+ 121 003c D3E91023 	 ldrd r2,[r3,#64]
+ 122 0040 CDE90045 	 strd r4,[sp]
+ 123 0044 CDE90289 	 strd r8,[sp,#8]
+ 124 0048 8DED045B 	 fstd d5,[sp,#16]
+ 125 004c 8DED066B 	 fstd d6,[sp,#24]
+ 126 0050 8DED087B 	 fstd d7,[sp,#32]
+ 127 0054 CDE90AAB 	 strd r10,[sp,#40]
+ 128 0058 CDE90C01 	 strd r0,[sp,#48]
+ 129 005c CDE90E23 	 strd r2,[sp,#56]
+ 130 0060 1C48     	 ldr r0,.L6
+ 131 0062 1D49     	 ldr r1,.L6+4
+ 132 0064 53EC142B 	 fmrrd r2,r3,d4
+ 133 0068 FFF7FEFF 	 bl sprintf
+  30:../Source/UDP.c **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, strlen(r_msg), PBUF_RAM);
+ 134              	 .loc 1 30 0
+ 135 006c 1948     	 ldr r0,.L6
+ 136 006e FFF7FEFF 	 bl strlen
+ 137 0072 0346     	 mov r3,r0
+ 138 0074 9BB2     	 uxth r3,r3
+ 139 0076 3820     	 movs r0,#56
+ 140 0078 1946     	 mov r1,r3
+ 141 007a 4FF42072 	 mov r2,#640
+ 142 007e FFF7FEFF 	 bl pbuf_alloc
+ 143 0082 7861     	 str r0,[r7,#20]
+  31:../Source/UDP.c **** 	memcpy (b->payload, r_msg, strlen(r_msg));
+ 144              	 .loc 1 31 0
+ 145 0084 7B69     	 ldr r3,[r7,#20]
+ 146 0086 5C68     	 ldr r4,[r3,#4]
+ 147 0088 1248     	 ldr r0,.L6
+ 148 008a FFF7FEFF 	 bl strlen
+ 149 008e 0346     	 mov r3,r0
+ 150 0090 2046     	 mov r0,r4
+ 151 0092 1049     	 ldr r1,.L6
+ 152 0094 1A46     	 mov r2,r3
+ 153 0096 FFF7FEFF 	 bl memcpy
+  32:../Source/UDP.c **** 	char* c = (char*)b->payload;
+ 154              	 .loc 1 32 0
+ 155 009a 7B69     	 ldr r3,[r7,#20]
+ 156 009c 5B68     	 ldr r3,[r3,#4]
+ 157 009e 3B61     	 str r3,[r7,#16]
+  33:../Source/UDP.c **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+ 158              	 .loc 1 33 0
+ 159 00a0 0E4B     	 ldr r3,.L6+8
+ 160 00a2 1B68     	 ldr r3,[r3]
+ 161 00a4 1846     	 mov r0,r3
+ 162 00a6 7969     	 ldr r1,[r7,#20]
+ 163 00a8 0D4A     	 ldr r2,.L6+12
+ 164 00aa 4CF62043 	 movw r3,#52256
+ 165 00ae FFF7FEFF 	 bl udp_sendto
+ 166 00b2 0346     	 mov r3,r0
+ 167 00b4 FB73     	 strb r3,[r7,#15]
+  34:../Source/UDP.c **** 	if(e == ERR_OK){
+ 168              	 .loc 1 34 0
+ 169 00b6 97F90F30 	 ldrsb r3,[r7,#15]
+ 170 00ba 002B     	 cmp r3,#0
+ 171 00bc 02D1     	 bne .L5
+ 172              	.LBB2:
+  35:../Source/UDP.c **** 		printf("ok");
+ 173              	 .loc 1 35 0
+ 174 00be 0948     	 ldr r0,.L6+16
+ 175 00c0 FFF7FEFF 	 bl printf
+ 176              	.L5:
+ 177              	.LBE2:
+  36:../Source/UDP.c **** 	}
+  37:../Source/UDP.c **** 
+  38:../Source/UDP.c **** 	pbuf_free(b);
+ 178              	 .loc 1 38 0
+ 179 00c4 7869     	 ldr r0,[r7,#20]
+ 180 00c6 FFF7FEFF 	 bl pbuf_free
+  39:../Source/UDP.c **** }
+ 181              	 .loc 1 39 0
+ 182 00ca 1837     	 adds r7,r7,#24
+ 183              	.LCFI5:
+ 184              	 .cfi_def_cfa_offset 32
+ 185 00cc BD46     	 mov sp,r7
+ 186              	.LCFI6:
+ 187              	 .cfi_def_cfa_register 13
+ 188              	 
+ 189 00ce BDE8B08F 	 pop {r4,r5,r7,r8,r9,r10,fp,pc}
+ 190              	.L7:
+ 191 00d2 00BF     	 .align 2
+ 192              	.L6:
+ 193 00d4 00000000 	 .word r_msg
+ 194 00d8 00000000 	 .word .LC0
+ 195 00dc 00000000 	 .word com_pcb
+ 196 00e0 00000000 	 .word returnaddr
+ 197 00e4 20000000 	 .word .LC1
+ 198              	 .cfi_endproc
+ 199              	.LFE456:
+ 201              	 .section .rodata
+ 202 0023 00       	 .align 2
+ 203              	.LC2:
+ 204 0024 41444D53 	 .ascii "ADMS,%f,%f,%f,%f,%f,%f,%f,%f,%f$\000"
+ 204      2C25662C 
+ 204      25662C25 
+ 204      662C2566 
+ 204      2C25662C 
+ 205 0045 000000   	 .section .text.udp_send_event_ms,"ax",%progbits
+ 206              	 .align 2
+ 207              	 .global udp_send_event_ms
+ 208              	 .thumb
+ 209              	 .thumb_func
+ 211              	udp_send_event_ms:
+ 212              	.LFB457:
+  40:../Source/UDP.c **** 
+  41:../Source/UDP.c **** 
+  42:../Source/UDP.c **** void udp_send_event_ms(ms_data* strct)
+  43:../Source/UDP.c **** {
+ 213              	 .loc 1 43 0
+ 214              	 .cfi_startproc
+ 215              	 
+ 216              	 
+ 217 0000 2DE9B04F 	 push {r4,r5,r7,r8,r9,r10,fp,lr}
+ 218              	.LCFI7:
+ 219              	 .cfi_def_cfa_offset 32
+ 220              	 .cfi_offset 4,-32
+ 221              	 .cfi_offset 5,-28
+ 222              	 .cfi_offset 7,-24
+ 223              	 .cfi_offset 8,-20
+ 224              	 .cfi_offset 9,-16
+ 225              	 .cfi_offset 10,-12
+ 226              	 .cfi_offset 11,-8
+ 227              	 .cfi_offset 14,-4
+ 228 0004 96B0     	 sub sp,sp,#88
+ 229              	.LCFI8:
+ 230              	 .cfi_def_cfa_offset 120
+ 231 0006 10AF     	 add r7,sp,#64
+ 232              	.LCFI9:
+ 233              	 .cfi_def_cfa 7,56
+ 234 0008 7860     	 str r0,[r7,#4]
+  44:../Source/UDP.c **** 
+  45:../Source/UDP.c **** 
+  46:../Source/UDP.c **** 
+  47:../Source/UDP.c **** 	sprintf(ms_msg, "ADMS,%f,%f,%f,%f,%f,%f,%f,%f,%f$", strct->avg_x, strct->avg_y, strct->avg_z, strc
+ 235              	 .loc 1 47 0
+ 236 000a 7B68     	 ldr r3,[r7,#4]
+ 237 000c 93ED004B 	 fldd d4,[r3]
+ 238 0010 7B68     	 ldr r3,[r7,#4]
+ 239 0012 D3E90245 	 ldrd r4,[r3,#8]
+ 240 0016 7B68     	 ldr r3,[r7,#4]
+ 241 0018 D3E90489 	 ldrd r8,[r3,#16]
+ 242 001c 7B68     	 ldr r3,[r7,#4]
+ 243 001e 93ED065B 	 fldd d5,[r3,#24]
+ 244 0022 7B68     	 ldr r3,[r7,#4]
+ 245 0024 93ED086B 	 fldd d6,[r3,#32]
+ 246 0028 7B68     	 ldr r3,[r7,#4]
+ 247 002a 93ED0A7B 	 fldd d7,[r3,#40]
+ 248 002e 7B68     	 ldr r3,[r7,#4]
+ 249 0030 D3E90CAB 	 ldrd r10,[r3,#48]
+ 250 0034 7B68     	 ldr r3,[r7,#4]
+ 251 0036 D3E90E01 	 ldrd r0,[r3,#56]
+ 252 003a 7B68     	 ldr r3,[r7,#4]
+ 253 003c D3E91023 	 ldrd r2,[r3,#64]
+ 254 0040 CDE90045 	 strd r4,[sp]
+ 255 0044 CDE90289 	 strd r8,[sp,#8]
+ 256 0048 8DED045B 	 fstd d5,[sp,#16]
+ 257 004c 8DED066B 	 fstd d6,[sp,#24]
+ 258 0050 8DED087B 	 fstd d7,[sp,#32]
+ 259 0054 CDE90AAB 	 strd r10,[sp,#40]
+ 260 0058 CDE90C01 	 strd r0,[sp,#48]
+ 261 005c CDE90E23 	 strd r2,[sp,#56]
+ 262 0060 1C48     	 ldr r0,.L10
+ 263 0062 1D49     	 ldr r1,.L10+4
+ 264 0064 53EC142B 	 fmrrd r2,r3,d4
+ 265 0068 FFF7FEFF 	 bl sprintf
+  48:../Source/UDP.c **** 
+  49:../Source/UDP.c **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, strlen(ms_msg), PBUF_RAM);
+ 266              	 .loc 1 49 0
+ 267 006c 1948     	 ldr r0,.L10
+ 268 006e FFF7FEFF 	 bl strlen
+ 269 0072 0346     	 mov r3,r0
+ 270 0074 9BB2     	 uxth r3,r3
+ 271 0076 3820     	 movs r0,#56
+ 272 0078 1946     	 mov r1,r3
+ 273 007a 4FF42072 	 mov r2,#640
+ 274 007e FFF7FEFF 	 bl pbuf_alloc
+ 275 0082 7861     	 str r0,[r7,#20]
+  50:../Source/UDP.c **** 	memcpy (b->payload, ms_msg, strlen(ms_msg));
+ 276              	 .loc 1 50 0
+ 277 0084 7B69     	 ldr r3,[r7,#20]
+ 278 0086 5C68     	 ldr r4,[r3,#4]
+ 279 0088 1248     	 ldr r0,.L10
+ 280 008a FFF7FEFF 	 bl strlen
+ 281 008e 0346     	 mov r3,r0
+ 282 0090 2046     	 mov r0,r4
+ 283 0092 1049     	 ldr r1,.L10
+ 284 0094 1A46     	 mov r2,r3
+ 285 0096 FFF7FEFF 	 bl memcpy
+  51:../Source/UDP.c **** 	char* c = (char*)b->payload;
+ 286              	 .loc 1 51 0
+ 287 009a 7B69     	 ldr r3,[r7,#20]
+ 288 009c 5B68     	 ldr r3,[r3,#4]
+ 289 009e 3B61     	 str r3,[r7,#16]
+  52:../Source/UDP.c **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+ 290              	 .loc 1 52 0
+ 291 00a0 0E4B     	 ldr r3,.L10+8
+ 292 00a2 1B68     	 ldr r3,[r3]
+ 293 00a4 1846     	 mov r0,r3
+ 294 00a6 7969     	 ldr r1,[r7,#20]
+ 295 00a8 0D4A     	 ldr r2,.L10+12
+ 296 00aa 4CF62043 	 movw r3,#52256
+ 297 00ae FFF7FEFF 	 bl udp_sendto
+ 298 00b2 0346     	 mov r3,r0
+ 299 00b4 FB73     	 strb r3,[r7,#15]
+  53:../Source/UDP.c **** 	if(e == ERR_OK){
+ 300              	 .loc 1 53 0
+ 301 00b6 97F90F30 	 ldrsb r3,[r7,#15]
+ 302 00ba 002B     	 cmp r3,#0
+ 303 00bc 02D1     	 bne .L9
+ 304              	.LBB3:
+  54:../Source/UDP.c **** 		printf("ok");
+ 305              	 .loc 1 54 0
+ 306 00be 0948     	 ldr r0,.L10+16
+ 307 00c0 FFF7FEFF 	 bl printf
+ 308              	.L9:
+ 309              	.LBE3:
+  55:../Source/UDP.c **** 	}
+  56:../Source/UDP.c **** 
+  57:../Source/UDP.c **** 	pbuf_free(b);
+ 310              	 .loc 1 57 0
+ 311 00c4 7869     	 ldr r0,[r7,#20]
+ 312 00c6 FFF7FEFF 	 bl pbuf_free
+  58:../Source/UDP.c **** }
+ 313              	 .loc 1 58 0
+ 314 00ca 1837     	 adds r7,r7,#24
+ 315              	.LCFI10:
+ 316              	 .cfi_def_cfa_offset 32
+ 317 00cc BD46     	 mov sp,r7
+ 318              	.LCFI11:
+ 319              	 .cfi_def_cfa_register 13
+ 320              	 
+ 321 00ce BDE8B08F 	 pop {r4,r5,r7,r8,r9,r10,fp,pc}
+ 322              	.L11:
+ 323 00d2 00BF     	 .align 2
+ 324              	.L10:
+ 325 00d4 00000000 	 .word ms_msg
+ 326 00d8 24000000 	 .word .LC2
+ 327 00dc 00000000 	 .word com_pcb
+ 328 00e0 00000000 	 .word returnaddr
+ 329 00e4 20000000 	 .word .LC1
+ 330              	 .cfi_endproc
+ 331              	.LFE457:
+ 333              	 .section .text.udp_send_event,"ax",%progbits
+ 334              	 .align 2
+ 335              	 .global udp_send_event
+ 336              	 .thumb
+ 337              	 .thumb_func
+ 339              	udp_send_event:
+ 340              	.LFB458:
+  59:../Source/UDP.c **** 
+  60:../Source/UDP.c **** void udp_send_event(char* message)
+  61:../Source/UDP.c **** {
+ 341              	 .loc 1 61 0
+ 342              	 .cfi_startproc
+ 343              	 
+ 344              	 
+ 345 0000 80B5     	 push {r7,lr}
+ 346              	.LCFI12:
+ 347              	 .cfi_def_cfa_offset 8
+ 348              	 .cfi_offset 7,-8
+ 349              	 .cfi_offset 14,-4
+ 350 0002 86B0     	 sub sp,sp,#24
+ 351              	.LCFI13:
+ 352              	 .cfi_def_cfa_offset 32
+ 353 0004 00AF     	 add r7,sp,#0
+ 354              	.LCFI14:
+ 355              	 .cfi_def_cfa_register 7
+ 356 0006 7860     	 str r0,[r7,#4]
+  62:../Source/UDP.c **** 
+  63:../Source/UDP.c **** 
+  64:../Source/UDP.c **** 	u16_t l = strlen(message);
+ 357              	 .loc 1 64 0
+ 358 0008 7868     	 ldr r0,[r7,#4]
+ 359 000a FFF7FEFF 	 bl strlen
+ 360 000e 0346     	 mov r3,r0
+ 361 0010 FB82     	 strh r3,[r7,#22]
+  65:../Source/UDP.c **** 	struct pbuf* b = pbuf_alloc(PBUF_TRANSPORT, l, PBUF_RAM);
+ 362              	 .loc 1 65 0
+ 363 0012 FB8A     	 ldrh r3,[r7,#22]
+ 364 0014 3820     	 movs r0,#56
+ 365 0016 1946     	 mov r1,r3
+ 366 0018 4FF42072 	 mov r2,#640
+ 367 001c FFF7FEFF 	 bl pbuf_alloc
+ 368 0020 3861     	 str r0,[r7,#16]
+  66:../Source/UDP.c **** 	//((char*)b->payload)[0] = 3;
+  67:../Source/UDP.c **** 	memcpy (b->payload, message, l);
+ 369              	 .loc 1 67 0
+ 370 0022 3B69     	 ldr r3,[r7,#16]
+ 371 0024 5A68     	 ldr r2,[r3,#4]
+ 372 0026 FB8A     	 ldrh r3,[r7,#22]
+ 373 0028 1046     	 mov r0,r2
+ 374 002a 7968     	 ldr r1,[r7,#4]
+ 375 002c 1A46     	 mov r2,r3
+ 376 002e FFF7FEFF 	 bl memcpy
+  68:../Source/UDP.c **** 	char* c = (char*)b->payload;
+ 377              	 .loc 1 68 0
+ 378 0032 3B69     	 ldr r3,[r7,#16]
+ 379 0034 5B68     	 ldr r3,[r3,#4]
+ 380 0036 FB60     	 str r3,[r7,#12]
+  69:../Source/UDP.c **** 	err_t e = udp_sendto(com_pcb, b, &returnaddr, PORT_COM_OUT);
+ 381              	 .loc 1 69 0
+ 382 0038 0B4B     	 ldr r3,.L14
+ 383 003a 1B68     	 ldr r3,[r3]
+ 384 003c 1846     	 mov r0,r3
+ 385 003e 3969     	 ldr r1,[r7,#16]
+ 386 0040 0A4A     	 ldr r2,.L14+4
+ 387 0042 4CF62043 	 movw r3,#52256
+ 388 0046 FFF7FEFF 	 bl udp_sendto
+ 389 004a 0346     	 mov r3,r0
+ 390 004c FB72     	 strb r3,[r7,#11]
+  70:../Source/UDP.c **** 	if(e == ERR_OK){
+ 391              	 .loc 1 70 0
+ 392 004e 97F90B30 	 ldrsb r3,[r7,#11]
+ 393 0052 002B     	 cmp r3,#0
+ 394 0054 02D1     	 bne .L13
+ 395              	.LBB4:
+  71:../Source/UDP.c **** 		printf("ok");
+ 396              	 .loc 1 71 0
+ 397 0056 0648     	 ldr r0,.L14+8
+ 398 0058 FFF7FEFF 	 bl printf
+ 399              	.L13:
+ 400              	.LBE4:
+  72:../Source/UDP.c **** 	}
+  73:../Source/UDP.c **** 
+  74:../Source/UDP.c **** 	pbuf_free(b);
+ 401              	 .loc 1 74 0
+ 402 005c 3869     	 ldr r0,[r7,#16]
+ 403 005e FFF7FEFF 	 bl pbuf_free
+  75:../Source/UDP.c **** }
+ 404              	 .loc 1 75 0
+ 405 0062 1837     	 adds r7,r7,#24
+ 406              	.LCFI15:
+ 407              	 .cfi_def_cfa_offset 8
+ 408 0064 BD46     	 mov sp,r7
+ 409              	.LCFI16:
+ 410              	 .cfi_def_cfa_register 13
+ 411              	 
+ 412 0066 80BD     	 pop {r7,pc}
+ 413              	.L15:
+ 414              	 .align 2
+ 415              	.L14:
+ 416 0068 00000000 	 .word com_pcb
+ 417 006c 00000000 	 .word returnaddr
+ 418 0070 20000000 	 .word .LC1
+ 419              	 .cfi_endproc
+ 420              	.LFE458:
+ 422              	 .text
+ 423              	.Letext0:
+ 424              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 425              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 426              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_usic.h"
+ 427              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 428              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/err.h"
+ 429              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
+ 430              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
+ 431              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
+ 432              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 433              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/udp.h"
+ 434              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Header/UDP.h"
+ 435              	 .file 13 "<built-in>"
+ 436              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 437              	 .file 15 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+ 438              	 .file 16 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 UDP.c
+                            *COM*:00000004 com_pcb
+                            *COM*:00000004 returnaddr
+                            *COM*:00000048 bmi_gps_data
+                            *COM*:00000048 bmi_ms_data
+                            *COM*:00000068 ms_msg
+                            *COM*:00000068 r_msg
+    {standard input}:26     .text.udp_initialize:00000000 $t
+    {standard input}:31     .text.udp_initialize:00000000 udp_initialize
+    {standard input}:60     .text.udp_initialize:00000018 $d
+    {standard input}:67     .rodata:00000000 $d
+    {standard input}:74     .text.udp_send_event_r:00000000 $t
+    {standard input}:79     .text.udp_send_event_r:00000000 udp_send_event_r
+    {standard input}:193    .text.udp_send_event_r:000000d4 $d
+    {standard input}:206    .text.udp_send_event_ms:00000000 $t
+    {standard input}:211    .text.udp_send_event_ms:00000000 udp_send_event_ms
+    {standard input}:325    .text.udp_send_event_ms:000000d4 $d
+    {standard input}:334    .text.udp_send_event:00000000 $t
+    {standard input}:339    .text.udp_send_event:00000000 udp_send_event
+    {standard input}:416    .text.udp_send_event:00000068 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+udp_new
+sprintf
+strlen
+pbuf_alloc
+memcpy
+udp_sendto
+printf
+pbuf_free

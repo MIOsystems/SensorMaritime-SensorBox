@@ -18,35 +18,37 @@
   18              	 .cfi_sections .debug_frame
   19              	 .comm outputBufferReady,1,1
   20              	 .comm gpsOutputready,1,1
-  21              	 .comm msMinInitialized,1,1
-  22              	 .comm msMaxInitialized,1,1
-  23              	 .comm minInitialized,1,1
-  24              	 .comm maxInitialized,1,1
-  25              	 .comm messageState,4,4
-  26              	 .comm headerStateMachineFilter,4,4
-  27              	 .comm receivedSentence,200,4
-  28              	 .comm receivedSentence2,200,4
-  29              	 .comm firstSentenceBuffer,4,4
-  30              	 .comm secondSentenceBuffer,4,4
-  31              	 .comm outputBufferStart,4,4
-  32              	 .comm outputBufferCurrent,4,4
-  33              	 .comm outputBufferEnd,4,4
-  34              	 .comm secondOutputBufferStart,4,4
-  35              	 .comm secondOutputBufferCurrent,4,4
-  36              	 .comm secondOutputBufferEnd,4,4
-  37              	 .section .rodata
-  38              	 .align 2
-  39              	.LC0:
-  40 0000 24474E52 	 .ascii "$GNRMC\012\000"
-  40      4D430A00 
-  41              	 .section .text.initGPS,"ax",%progbits
-  42              	 .align 2
-  43              	 .global initGPS
-  44              	 .thumb
-  45              	 .thumb_func
-  47              	initGPS:
-  48              	.LFB455:
-  49              	 .file 1 "../Source/GPS.c"
+  21              	 .comm pollReady,1,1
+  22              	 .comm msMinInitialized,1,1
+  23              	 .comm msMaxInitialized,1,1
+  24              	 .comm minInitialized,1,1
+  25              	 .comm maxInitialized,1,1
+  26              	 .comm messageState,4,4
+  27              	 .comm headerStateMachineFilter,4,4
+  28              	 .comm receivedSentence,200,4
+  29              	 .comm receivedSentence2,200,4
+  30              	 .comm firstSentenceBuffer,4,4
+  31              	 .comm secondSentenceBuffer,4,4
+  32              	 .comm pollcounter,1,1
+  33              	 .comm outputBufferStart,4,4
+  34              	 .comm outputBufferCurrent,4,4
+  35              	 .comm outputBufferEnd,4,4
+  36              	 .comm secondOutputBufferStart,4,4
+  37              	 .comm secondOutputBufferCurrent,4,4
+  38              	 .comm secondOutputBufferEnd,4,4
+  39              	 .section .rodata
+  40              	 .align 2
+  41              	.LC0:
+  42 0000 24474E52 	 .ascii "$GNRMC\012\000"
+  42      4D430A00 
+  43              	 .section .text.initGPS,"ax",%progbits
+  44              	 .align 2
+  45              	 .global initGPS
+  46              	 .thumb
+  47              	 .thumb_func
+  49              	initGPS:
+  50              	.LFB455:
+  51              	 .file 1 "../Source/GPS.c"
    1:../Source/GPS.c **** /*
    2:../Source/GPS.c ****  * GPS.c
    3:../Source/GPS.c ****  *
@@ -58,275 +60,275 @@
    9:../Source/GPS.c **** 
   10:../Source/GPS.c **** 
   11:../Source/GPS.c **** void initGPS(){
-  50              	 .loc 1 11 0
-  51              	 .cfi_startproc
-  52              	 
-  53              	 
+  52              	 .loc 1 11 0
+  53              	 .cfi_startproc
   54              	 
-  55 0000 80B4     	 push {r7}
-  56              	.LCFI0:
-  57              	 .cfi_def_cfa_offset 4
-  58              	 .cfi_offset 7,-4
-  59 0002 00AF     	 add r7,sp,#0
-  60              	.LCFI1:
-  61              	 .cfi_def_cfa_register 7
+  55              	 
+  56              	 
+  57 0000 80B4     	 push {r7}
+  58              	.LCFI0:
+  59              	 .cfi_def_cfa_offset 4
+  60              	 .cfi_offset 7,-4
+  61 0002 00AF     	 add r7,sp,#0
+  62              	.LCFI1:
+  63              	 .cfi_def_cfa_register 7
   12:../Source/GPS.c **** 
   13:../Source/GPS.c **** 	headerStateMachineFilter = "$GNRMC\n";
-  62              	 .loc 1 13 0
-  63 0004 034B     	 ldr r3,.L2
-  64 0006 044A     	 ldr r2,.L2+4
-  65 0008 1A60     	 str r2,[r3]
+  64              	 .loc 1 13 0
+  65 0004 034B     	 ldr r3,.L2
+  66 0006 044A     	 ldr r2,.L2+4
+  67 0008 1A60     	 str r2,[r3]
   14:../Source/GPS.c **** 
   15:../Source/GPS.c **** }
-  66              	 .loc 1 15 0
-  67 000a BD46     	 mov sp,r7
-  68              	.LCFI2:
-  69              	 .cfi_def_cfa_register 13
-  70              	 
-  71 000c 5DF8047B 	 ldr r7,[sp],#4
-  72              	.LCFI3:
-  73              	 .cfi_restore 7
-  74              	 .cfi_def_cfa_offset 0
-  75 0010 7047     	 bx lr
-  76              	.L3:
-  77 0012 00BF     	 .align 2
-  78              	.L2:
-  79 0014 00000000 	 .word headerStateMachineFilter
-  80 0018 00000000 	 .word .LC0
-  81              	 .cfi_endproc
-  82              	.LFE455:
-  84              	 .section .text.swapGPSBuffers,"ax",%progbits
-  85              	 .align 2
-  86              	 .global swapGPSBuffers
-  87              	 .thumb
-  88              	 .thumb_func
-  90              	swapGPSBuffers:
-  91              	.LFB456:
+  68              	 .loc 1 15 0
+  69 000a BD46     	 mov sp,r7
+  70              	.LCFI2:
+  71              	 .cfi_def_cfa_register 13
+  72              	 
+  73 000c 5DF8047B 	 ldr r7,[sp],#4
+  74              	.LCFI3:
+  75              	 .cfi_restore 7
+  76              	 .cfi_def_cfa_offset 0
+  77 0010 7047     	 bx lr
+  78              	.L3:
+  79 0012 00BF     	 .align 2
+  80              	.L2:
+  81 0014 00000000 	 .word headerStateMachineFilter
+  82 0018 00000000 	 .word .LC0
+  83              	 .cfi_endproc
+  84              	.LFE455:
+  86              	 .section .text.swapGPSBuffers,"ax",%progbits
+  87              	 .align 2
+  88              	 .global swapGPSBuffers
+  89              	 .thumb
+  90              	 .thumb_func
+  92              	swapGPSBuffers:
+  93              	.LFB456:
   16:../Source/GPS.c **** 
   17:../Source/GPS.c **** 
   18:../Source/GPS.c **** void swapGPSBuffers(){
-  92              	 .loc 1 18 0
-  93              	 .cfi_startproc
-  94              	 
-  95              	 
+  94              	 .loc 1 18 0
+  95              	 .cfi_startproc
   96              	 
-  97 0000 80B4     	 push {r7}
-  98              	.LCFI4:
-  99              	 .cfi_def_cfa_offset 4
- 100              	 .cfi_offset 7,-4
- 101 0002 83B0     	 sub sp,sp,#12
- 102              	.LCFI5:
- 103              	 .cfi_def_cfa_offset 16
- 104 0004 00AF     	 add r7,sp,#0
- 105              	.LCFI6:
- 106              	 .cfi_def_cfa_register 7
+  97              	 
+  98              	 
+  99 0000 80B4     	 push {r7}
+ 100              	.LCFI4:
+ 101              	 .cfi_def_cfa_offset 4
+ 102              	 .cfi_offset 7,-4
+ 103 0002 83B0     	 sub sp,sp,#12
+ 104              	.LCFI5:
+ 105              	 .cfi_def_cfa_offset 16
+ 106 0004 00AF     	 add r7,sp,#0
+ 107              	.LCFI6:
+ 108              	 .cfi_def_cfa_register 7
   19:../Source/GPS.c **** 
   20:../Source/GPS.c **** 	uint8_t * tempSentence = firstSentenceBuffer;
- 107              	 .loc 1 20 0
- 108 0006 144B     	 ldr r3,.L5
- 109 0008 1B68     	 ldr r3,[r3]
- 110 000a 7B60     	 str r3,[r7,#4]
+ 109              	 .loc 1 20 0
+ 110 0006 144B     	 ldr r3,.L5
+ 111 0008 1B68     	 ldr r3,[r3]
+ 112 000a 7B60     	 str r3,[r7,#4]
   21:../Source/GPS.c **** 	firstSentenceBuffer = secondSentenceBuffer;
- 111              	 .loc 1 21 0
- 112 000c 134B     	 ldr r3,.L5+4
- 113 000e 1B68     	 ldr r3,[r3]
- 114 0010 114A     	 ldr r2,.L5
- 115 0012 1360     	 str r3,[r2]
+ 113              	 .loc 1 21 0
+ 114 000c 134B     	 ldr r3,.L5+4
+ 115 000e 1B68     	 ldr r3,[r3]
+ 116 0010 114A     	 ldr r2,.L5
+ 117 0012 1360     	 str r3,[r2]
   22:../Source/GPS.c **** 	secondSentenceBuffer = tempSentence;
- 116              	 .loc 1 22 0
- 117 0014 114A     	 ldr r2,.L5+4
- 118 0016 7B68     	 ldr r3,[r7,#4]
- 119 0018 1360     	 str r3,[r2]
+ 118              	 .loc 1 22 0
+ 119 0014 114A     	 ldr r2,.L5+4
+ 120 0016 7B68     	 ldr r3,[r7,#4]
+ 121 0018 1360     	 str r3,[r2]
   23:../Source/GPS.c **** 
   24:../Source/GPS.c **** 	//currentSentenceBuffer = firstSentenceBuffer;
   25:../Source/GPS.c **** 
   26:../Source/GPS.c **** 	outputBufferStart = firstSentenceBuffer;
- 120              	 .loc 1 26 0
- 121 001a 0F4B     	 ldr r3,.L5
- 122 001c 1B68     	 ldr r3,[r3]
- 123 001e 104A     	 ldr r2,.L5+8
- 124 0020 1360     	 str r3,[r2]
+ 122              	 .loc 1 26 0
+ 123 001a 0F4B     	 ldr r3,.L5
+ 124 001c 1B68     	 ldr r3,[r3]
+ 125 001e 104A     	 ldr r2,.L5+8
+ 126 0020 1360     	 str r3,[r2]
   27:../Source/GPS.c **** 	outputBufferCurrent = firstSentenceBuffer;
- 125              	 .loc 1 27 0
- 126 0022 0D4B     	 ldr r3,.L5
- 127 0024 1B68     	 ldr r3,[r3]
- 128 0026 0F4A     	 ldr r2,.L5+12
- 129 0028 1360     	 str r3,[r2]
+ 127              	 .loc 1 27 0
+ 128 0022 0D4B     	 ldr r3,.L5
+ 129 0024 1B68     	 ldr r3,[r3]
+ 130 0026 0F4A     	 ldr r2,.L5+12
+ 131 0028 1360     	 str r3,[r2]
   28:../Source/GPS.c **** 	outputBufferEnd = firstSentenceBuffer+199;
- 130              	 .loc 1 28 0
- 131 002a 0B4B     	 ldr r3,.L5
- 132 002c 1B68     	 ldr r3,[r3]
- 133 002e C733     	 adds r3,r3,#199
- 134 0030 0D4A     	 ldr r2,.L5+16
- 135 0032 1360     	 str r3,[r2]
+ 132              	 .loc 1 28 0
+ 133 002a 0B4B     	 ldr r3,.L5
+ 134 002c 1B68     	 ldr r3,[r3]
+ 135 002e C733     	 adds r3,r3,#199
+ 136 0030 0D4A     	 ldr r2,.L5+16
+ 137 0032 1360     	 str r3,[r2]
   29:../Source/GPS.c **** 
   30:../Source/GPS.c **** 	secondOutputBufferStart = secondSentenceBuffer;
- 136              	 .loc 1 30 0
- 137 0034 094B     	 ldr r3,.L5+4
- 138 0036 1B68     	 ldr r3,[r3]
- 139 0038 0C4A     	 ldr r2,.L5+20
- 140 003a 1360     	 str r3,[r2]
+ 138              	 .loc 1 30 0
+ 139 0034 094B     	 ldr r3,.L5+4
+ 140 0036 1B68     	 ldr r3,[r3]
+ 141 0038 0C4A     	 ldr r2,.L5+20
+ 142 003a 1360     	 str r3,[r2]
   31:../Source/GPS.c **** 	secondOutputBufferCurrent = secondSentenceBuffer;
- 141              	 .loc 1 31 0
- 142 003c 074B     	 ldr r3,.L5+4
- 143 003e 1B68     	 ldr r3,[r3]
- 144 0040 0B4A     	 ldr r2,.L5+24
- 145 0042 1360     	 str r3,[r2]
+ 143              	 .loc 1 31 0
+ 144 003c 074B     	 ldr r3,.L5+4
+ 145 003e 1B68     	 ldr r3,[r3]
+ 146 0040 0B4A     	 ldr r2,.L5+24
+ 147 0042 1360     	 str r3,[r2]
   32:../Source/GPS.c **** 	secondOutputBufferEnd = secondSentenceBuffer+199;
- 146              	 .loc 1 32 0
- 147 0044 054B     	 ldr r3,.L5+4
- 148 0046 1B68     	 ldr r3,[r3]
- 149 0048 C733     	 adds r3,r3,#199
- 150 004a 0A4A     	 ldr r2,.L5+28
- 151 004c 1360     	 str r3,[r2]
+ 148              	 .loc 1 32 0
+ 149 0044 054B     	 ldr r3,.L5+4
+ 150 0046 1B68     	 ldr r3,[r3]
+ 151 0048 C733     	 adds r3,r3,#199
+ 152 004a 0A4A     	 ldr r2,.L5+28
+ 153 004c 1360     	 str r3,[r2]
   33:../Source/GPS.c **** }
- 152              	 .loc 1 33 0
- 153 004e 0C37     	 adds r7,r7,#12
- 154              	.LCFI7:
- 155              	 .cfi_def_cfa_offset 4
- 156 0050 BD46     	 mov sp,r7
- 157              	.LCFI8:
- 158              	 .cfi_def_cfa_register 13
- 159              	 
- 160 0052 5DF8047B 	 ldr r7,[sp],#4
- 161              	.LCFI9:
- 162              	 .cfi_restore 7
- 163              	 .cfi_def_cfa_offset 0
- 164 0056 7047     	 bx lr
- 165              	.L6:
- 166              	 .align 2
- 167              	.L5:
- 168 0058 00000000 	 .word firstSentenceBuffer
- 169 005c 00000000 	 .word secondSentenceBuffer
- 170 0060 00000000 	 .word outputBufferStart
- 171 0064 00000000 	 .word outputBufferCurrent
- 172 0068 00000000 	 .word outputBufferEnd
- 173 006c 00000000 	 .word secondOutputBufferStart
- 174 0070 00000000 	 .word secondOutputBufferCurrent
- 175 0074 00000000 	 .word secondOutputBufferEnd
- 176              	 .cfi_endproc
- 177              	.LFE456:
- 179              	 .section .text.USIC1_1_IRQHandler,"ax",%progbits
- 180              	 .align 2
- 181              	 .global USIC1_1_IRQHandler
- 182              	 .thumb
- 183              	 .thumb_func
- 185              	USIC1_1_IRQHandler:
- 186              	.LFB457:
+ 154              	 .loc 1 33 0
+ 155 004e 0C37     	 adds r7,r7,#12
+ 156              	.LCFI7:
+ 157              	 .cfi_def_cfa_offset 4
+ 158 0050 BD46     	 mov sp,r7
+ 159              	.LCFI8:
+ 160              	 .cfi_def_cfa_register 13
+ 161              	 
+ 162 0052 5DF8047B 	 ldr r7,[sp],#4
+ 163              	.LCFI9:
+ 164              	 .cfi_restore 7
+ 165              	 .cfi_def_cfa_offset 0
+ 166 0056 7047     	 bx lr
+ 167              	.L6:
+ 168              	 .align 2
+ 169              	.L5:
+ 170 0058 00000000 	 .word firstSentenceBuffer
+ 171 005c 00000000 	 .word secondSentenceBuffer
+ 172 0060 00000000 	 .word outputBufferStart
+ 173 0064 00000000 	 .word outputBufferCurrent
+ 174 0068 00000000 	 .word outputBufferEnd
+ 175 006c 00000000 	 .word secondOutputBufferStart
+ 176 0070 00000000 	 .word secondOutputBufferCurrent
+ 177 0074 00000000 	 .word secondOutputBufferEnd
+ 178              	 .cfi_endproc
+ 179              	.LFE456:
+ 181              	 .section .text.USIC1_1_IRQHandler,"ax",%progbits
+ 182              	 .align 2
+ 183              	 .global USIC1_1_IRQHandler
+ 184              	 .thumb
+ 185              	 .thumb_func
+ 187              	USIC1_1_IRQHandler:
+ 188              	.LFB457:
   34:../Source/GPS.c **** 
   35:../Source/GPS.c **** void gpsInterrupt(){
- 187              	 .loc 1 35 0
- 188              	 .cfi_startproc
- 189              	 
- 190              	 
- 191 0000 80B5     	 push {r7,lr}
- 192              	.LCFI10:
- 193              	 .cfi_def_cfa_offset 8
- 194              	 .cfi_offset 7,-8
- 195              	 .cfi_offset 14,-4
- 196 0002 00AF     	 add r7,sp,#0
- 197              	.LCFI11:
- 198              	 .cfi_def_cfa_register 7
+ 189              	 .loc 1 35 0
+ 190              	 .cfi_startproc
+ 191              	 
+ 192              	 
+ 193 0000 80B5     	 push {r7,lr}
+ 194              	.LCFI10:
+ 195              	 .cfi_def_cfa_offset 8
+ 196              	 .cfi_offset 7,-8
+ 197              	 .cfi_offset 14,-4
+ 198 0002 00AF     	 add r7,sp,#0
+ 199              	.LCFI11:
+ 200              	 .cfi_def_cfa_register 7
   36:../Source/GPS.c **** 
   37:../Source/GPS.c **** 
   38:../Source/GPS.c **** 	UART_Receive(&UART_0, outputBufferCurrent, 1);
- 199              	 .loc 1 38 0
- 200 0004 1F4B     	 ldr r3,.L12
- 201 0006 1B68     	 ldr r3,[r3]
- 202 0008 1F48     	 ldr r0,.L12+4
- 203 000a 1946     	 mov r1,r3
- 204 000c 0122     	 movs r2,#1
- 205 000e FFF7FEFF 	 bl UART_Receive
+ 201              	 .loc 1 38 0
+ 202 0004 1F4B     	 ldr r3,.L12
+ 203 0006 1B68     	 ldr r3,[r3]
+ 204 0008 1F48     	 ldr r0,.L12+4
+ 205 000a 1946     	 mov r1,r3
+ 206 000c 0122     	 movs r2,#1
+ 207 000e FFF7FEFF 	 bl UART_Receive
   39:../Source/GPS.c **** 
   40:../Source/GPS.c **** 
   41:../Source/GPS.c **** 	if(headerStateMachineFilter[messageState] == *outputBufferCurrent){ //sequence correct go to next 
- 206              	 .loc 1 41 0
- 207 0012 1E4B     	 ldr r3,.L12+8
- 208 0014 1B68     	 ldr r3,[r3]
- 209 0016 1E4A     	 ldr r2,.L12+12
- 210 0018 1268     	 ldr r2,[r2]
- 211 001a 1344     	 add r3,r3,r2
- 212 001c 1A78     	 ldrb r2,[r3]
- 213 001e 194B     	 ldr r3,.L12
- 214 0020 1B68     	 ldr r3,[r3]
- 215 0022 1B78     	 ldrb r3,[r3]
- 216 0024 9A42     	 cmp r2,r3
- 217 0026 1AD1     	 bne .L8
+ 208              	 .loc 1 41 0
+ 209 0012 1E4B     	 ldr r3,.L12+8
+ 210 0014 1B68     	 ldr r3,[r3]
+ 211 0016 1E4A     	 ldr r2,.L12+12
+ 212 0018 1268     	 ldr r2,[r2]
+ 213 001a 1344     	 add r3,r3,r2
+ 214 001c 1A78     	 ldrb r2,[r3]
+ 215 001e 194B     	 ldr r3,.L12
+ 216 0020 1B68     	 ldr r3,[r3]
+ 217 0022 1B78     	 ldrb r3,[r3]
+ 218 0024 9A42     	 cmp r2,r3
+ 219 0026 1AD1     	 bne .L8
   42:../Source/GPS.c **** 		messageState++;
- 218              	 .loc 1 42 0
- 219 0028 194B     	 ldr r3,.L12+12
- 220 002a 1B68     	 ldr r3,[r3]
- 221 002c 0133     	 adds r3,r3,#1
- 222 002e 184A     	 ldr r2,.L12+12
- 223 0030 1360     	 str r3,[r2]
+ 220              	 .loc 1 42 0
+ 221 0028 194B     	 ldr r3,.L12+12
+ 222 002a 1B68     	 ldr r3,[r3]
+ 223 002c 0133     	 adds r3,r3,#1
+ 224 002e 184A     	 ldr r2,.L12+12
+ 225 0030 1360     	 str r3,[r2]
   43:../Source/GPS.c **** 		outputBufferCurrent++;
- 224              	 .loc 1 43 0
- 225 0032 144B     	 ldr r3,.L12
- 226 0034 1B68     	 ldr r3,[r3]
- 227 0036 0133     	 adds r3,r3,#1
- 228 0038 124A     	 ldr r2,.L12
- 229 003a 1360     	 str r3,[r2]
+ 226              	 .loc 1 43 0
+ 227 0032 144B     	 ldr r3,.L12
+ 228 0034 1B68     	 ldr r3,[r3]
+ 229 0036 0133     	 adds r3,r3,#1
+ 230 0038 124A     	 ldr r2,.L12
+ 231 003a 1360     	 str r3,[r2]
   44:../Source/GPS.c **** 		if(messageState == 7){
- 230              	 .loc 1 44 0
- 231 003c 144B     	 ldr r3,.L12+12
- 232 003e 1B68     	 ldr r3,[r3]
- 233 0040 072B     	 cmp r3,#7
- 234 0042 1DD1     	 bne .L7
+ 232              	 .loc 1 44 0
+ 233 003c 144B     	 ldr r3,.L12+12
+ 234 003e 1B68     	 ldr r3,[r3]
+ 235 0040 072B     	 cmp r3,#7
+ 236 0042 1DD1     	 bne .L7
   45:../Source/GPS.c **** 			swapGPSBuffers();
- 235              	 .loc 1 45 0
- 236 0044 FFF7FEFF 	 bl swapGPSBuffers
+ 237              	 .loc 1 45 0
+ 238 0044 FFF7FEFF 	 bl swapGPSBuffers
   46:../Source/GPS.c **** 			outputBufferCurrent = outputBufferStart;
- 237              	 .loc 1 46 0
- 238 0048 124B     	 ldr r3,.L12+16
- 239 004a 1B68     	 ldr r3,[r3]
- 240 004c 0D4A     	 ldr r2,.L12
- 241 004e 1360     	 str r3,[r2]
+ 239              	 .loc 1 46 0
+ 240 0048 124B     	 ldr r3,.L12+16
+ 241 004a 1B68     	 ldr r3,[r3]
+ 242 004c 0D4A     	 ldr r2,.L12
+ 243 004e 1360     	 str r3,[r2]
   47:../Source/GPS.c **** 			messageState = 0;
- 242              	 .loc 1 47 0
- 243 0050 0F4B     	 ldr r3,.L12+12
- 244 0052 0022     	 movs r2,#0
- 245 0054 1A60     	 str r2,[r3]
+ 244              	 .loc 1 47 0
+ 245 0050 0F4B     	 ldr r3,.L12+12
+ 246 0052 0022     	 movs r2,#0
+ 247 0054 1A60     	 str r2,[r3]
   48:../Source/GPS.c **** 			outputBufferReady = true;
- 246              	 .loc 1 48 0
- 247 0056 104B     	 ldr r3,.L12+20
- 248 0058 0122     	 movs r2,#1
- 249 005a 1A70     	 strb r2,[r3]
- 250 005c 10E0     	 b .L7
- 251              	.L8:
+ 248              	 .loc 1 48 0
+ 249 0056 104B     	 ldr r3,.L12+20
+ 250 0058 0122     	 movs r2,#1
+ 251 005a 1A70     	 strb r2,[r3]
+ 252 005c 10E0     	 b .L7
+ 253              	.L8:
   49:../Source/GPS.c **** 
   50:../Source/GPS.c **** 		}
   51:../Source/GPS.c **** 
   52:../Source/GPS.c **** 	}
   53:../Source/GPS.c **** 	else if (messageState  < 6){ // sequence incorrect oh mi god
- 252              	 .loc 1 53 0
- 253 005e 0C4B     	 ldr r3,.L12+12
- 254 0060 1B68     	 ldr r3,[r3]
- 255 0062 052B     	 cmp r3,#5
- 256 0064 07DC     	 bgt .L11
+ 254              	 .loc 1 53 0
+ 255 005e 0C4B     	 ldr r3,.L12+12
+ 256 0060 1B68     	 ldr r3,[r3]
+ 257 0062 052B     	 cmp r3,#5
+ 258 0064 07DC     	 bgt .L11
   54:../Source/GPS.c **** 		outputBufferCurrent = outputBufferStart;
- 257              	 .loc 1 54 0
- 258 0066 0B4B     	 ldr r3,.L12+16
- 259 0068 1B68     	 ldr r3,[r3]
- 260 006a 064A     	 ldr r2,.L12
- 261 006c 1360     	 str r3,[r2]
+ 259              	 .loc 1 54 0
+ 260 0066 0B4B     	 ldr r3,.L12+16
+ 261 0068 1B68     	 ldr r3,[r3]
+ 262 006a 064A     	 ldr r2,.L12
+ 263 006c 1360     	 str r3,[r2]
   55:../Source/GPS.c **** 		messageState = 0;
- 262              	 .loc 1 55 0
- 263 006e 084B     	 ldr r3,.L12+12
- 264 0070 0022     	 movs r2,#0
- 265 0072 1A60     	 str r2,[r3]
- 266 0074 04E0     	 b .L7
- 267              	.L11:
+ 264              	 .loc 1 55 0
+ 265 006e 084B     	 ldr r3,.L12+12
+ 266 0070 0022     	 movs r2,#0
+ 267 0072 1A60     	 str r2,[r3]
+ 268 0074 04E0     	 b .L7
+ 269              	.L11:
   56:../Source/GPS.c **** 
   57:../Source/GPS.c **** 	}
   58:../Source/GPS.c **** 	else{ //data part of sequence just increment here;
   59:../Source/GPS.c **** 		outputBufferCurrent++;
- 268              	 .loc 1 59 0
- 269 0076 034B     	 ldr r3,.L12
- 270 0078 1B68     	 ldr r3,[r3]
- 271 007a 0133     	 adds r3,r3,#1
- 272 007c 014A     	 ldr r2,.L12
- 273 007e 1360     	 str r3,[r2]
- 274              	.L7:
+ 270              	 .loc 1 59 0
+ 271 0076 034B     	 ldr r3,.L12
+ 272 0078 1B68     	 ldr r3,[r3]
+ 273 007a 0133     	 adds r3,r3,#1
+ 274 007c 014A     	 ldr r2,.L12
+ 275 007e 1360     	 str r3,[r2]
+ 276              	.L7:
   60:../Source/GPS.c **** 	}
   61:../Source/GPS.c **** 
   62:../Source/GPS.c **** 
@@ -336,38 +338,39 @@
   66:../Source/GPS.c **** //	}
   67:../Source/GPS.c **** 
   68:../Source/GPS.c **** }
- 275              	 .loc 1 68 0
- 276 0080 80BD     	 pop {r7,pc}
- 277              	.L13:
- 278 0082 00BF     	 .align 2
- 279              	.L12:
- 280 0084 00000000 	 .word outputBufferCurrent
- 281 0088 00000000 	 .word UART_0
- 282 008c 00000000 	 .word headerStateMachineFilter
- 283 0090 00000000 	 .word messageState
- 284 0094 00000000 	 .word outputBufferStart
- 285 0098 00000000 	 .word outputBufferReady
- 286              	 .cfi_endproc
- 287              	.LFE457:
- 289              	 .text
- 290              	.Letext0:
- 291              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 292              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 293              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_gpio.h"
- 294              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc4_gpio.h"
- 295              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_usic.h"
- 296              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_uart.h"
- 297              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart.h"
- 298              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
- 299              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
- 300              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
- 301              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart_extern.h"
- 302              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Header/GPS.h"
- 303              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 277              	 .loc 1 68 0
+ 278 0080 80BD     	 pop {r7,pc}
+ 279              	.L13:
+ 280 0082 00BF     	 .align 2
+ 281              	.L12:
+ 282 0084 00000000 	 .word outputBufferCurrent
+ 283 0088 00000000 	 .word UART_0
+ 284 008c 00000000 	 .word headerStateMachineFilter
+ 285 0090 00000000 	 .word messageState
+ 286 0094 00000000 	 .word outputBufferStart
+ 287 0098 00000000 	 .word outputBufferReady
+ 288              	 .cfi_endproc
+ 289              	.LFE457:
+ 291              	 .text
+ 292              	.Letext0:
+ 293              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 294              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 295              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_gpio.h"
+ 296              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc4_gpio.h"
+ 297              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_usic.h"
+ 298              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_uart.h"
+ 299              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart.h"
+ 300              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 301              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+ 302              	 .file 11 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
+ 303              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/UART/uart_extern.h"
+ 304              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Header/GPS.h"
+ 305              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 GPS.c
                             *COM*:00000001 outputBufferReady
                             *COM*:00000001 gpsOutputready
+                            *COM*:00000001 pollReady
                             *COM*:00000001 msMinInitialized
                             *COM*:00000001 msMaxInitialized
                             *COM*:00000001 minInitialized
@@ -378,22 +381,23 @@ DEFINED SYMBOLS
                             *COM*:000000c8 receivedSentence2
                             *COM*:00000004 firstSentenceBuffer
                             *COM*:00000004 secondSentenceBuffer
+                            *COM*:00000001 pollcounter
                             *COM*:00000004 outputBufferStart
                             *COM*:00000004 outputBufferCurrent
                             *COM*:00000004 outputBufferEnd
                             *COM*:00000004 secondOutputBufferStart
                             *COM*:00000004 secondOutputBufferCurrent
                             *COM*:00000004 secondOutputBufferEnd
-    {standard input}:38     .rodata:00000000 $d
-    {standard input}:42     .text.initGPS:00000000 $t
-    {standard input}:47     .text.initGPS:00000000 initGPS
-    {standard input}:79     .text.initGPS:00000014 $d
-    {standard input}:85     .text.swapGPSBuffers:00000000 $t
-    {standard input}:90     .text.swapGPSBuffers:00000000 swapGPSBuffers
-    {standard input}:168    .text.swapGPSBuffers:00000058 $d
-    {standard input}:180    .text.USIC1_1_IRQHandler:00000000 $t
-    {standard input}:185    .text.USIC1_1_IRQHandler:00000000 USIC1_1_IRQHandler
-    {standard input}:280    .text.USIC1_1_IRQHandler:00000084 $d
+    {standard input}:40     .rodata:00000000 $d
+    {standard input}:44     .text.initGPS:00000000 $t
+    {standard input}:49     .text.initGPS:00000000 initGPS
+    {standard input}:81     .text.initGPS:00000014 $d
+    {standard input}:87     .text.swapGPSBuffers:00000000 $t
+    {standard input}:92     .text.swapGPSBuffers:00000000 swapGPSBuffers
+    {standard input}:170    .text.swapGPSBuffers:00000058 $d
+    {standard input}:182    .text.USIC1_1_IRQHandler:00000000 $t
+    {standard input}:187    .text.USIC1_1_IRQHandler:00000000 USIC1_1_IRQHandler
+    {standard input}:282    .text.USIC1_1_IRQHandler:00000084 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

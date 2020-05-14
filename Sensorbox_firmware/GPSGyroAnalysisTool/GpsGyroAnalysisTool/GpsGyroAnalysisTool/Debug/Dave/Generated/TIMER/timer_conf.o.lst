@@ -24,14 +24,14 @@
   26 0001 00       	 .byte 0
   27 0002 00       	 .byte 0
   28 0003 00       	 .byte 0
-  29 0004 08       	 .byte 8
+  29 0004 05       	 .byte 5
   30 0005 00       	 .byte 0
   31 0006 0000     	 .space 2
   32              	 .global TIMER_0
   33              	 .section .data.TIMER_0,"aw",%progbits
   34              	 .align 2
   37              	TIMER_0:
-  38 0000 00127A00 	 .word 8000000
+  38 0000 40420F00 	 .word 1000000
   39 0004 3435E358 	 .word 1491285300
   40 0008 0A000000 	 .word 10
   41 000c 00500000 	 .word 20480

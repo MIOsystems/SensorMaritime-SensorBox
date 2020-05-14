@@ -24,71 +24,73 @@
   24              	 .comm r_msg,104,4
   25              	 .comm outputBufferReady,1,1
   26              	 .comm gpsOutputready,1,1
-  27              	 .comm msMinInitialized,1,1
-  28              	 .comm msMaxInitialized,1,1
-  29              	 .comm minInitialized,1,1
-  30              	 .comm maxInitialized,1,1
-  31              	 .comm messageState,4,4
-  32              	 .comm headerStateMachineFilter,4,4
-  33              	 .comm receivedSentence,200,4
-  34              	 .comm receivedSentence2,200,4
-  35              	 .comm firstSentenceBuffer,4,4
-  36              	 .comm secondSentenceBuffer,4,4
-  37              	 .comm outputBufferStart,4,4
-  38              	 .comm outputBufferCurrent,4,4
-  39              	 .comm outputBufferEnd,4,4
-  40              	 .comm secondOutputBufferStart,4,4
-  41              	 .comm secondOutputBufferCurrent,4,4
-  42              	 .comm secondOutputBufferEnd,4,4
-  43              	 .comm acceleration_register,8,4
-  44              	 .comm gyro_register,8,4
-  45              	 .comm acceleration_register_copy,4,4
-  46              	 .comm gyro_register_copy,4,4
-  47              	 .comm num_of_samples,4,4
-  48              	 .comm max_complement_xValue,8,8
-  49              	 .comm max_complement_yValue,8,8
-  50              	 .comm max_complement_zValue,8,8
-  51              	 .comm min_complement_xValue,8,8
-  52              	 .comm min_complement_yValue,8,8
-  53              	 .comm min_complement_zValue,8,8
-  54              	 .comm avg_complement_xValue,8,8
-  55              	 .comm avg_complement_yValue,8,8
-  56              	 .comm avg_complement_zValue,8,8
-  57              	 .comm complement_xValue,8,8
-  58              	 .comm complement_yValue,8,8
-  59              	 .comm complement_zValue,8,8
-  60              	 .comm max_ms_xValue,8,8
-  61              	 .comm max_ms_yValue,8,8
-  62              	 .comm max_ms_zValue,8,8
-  63              	 .comm min_ms_xValue,8,8
-  64              	 .comm min_ms_yValue,8,8
-  65              	 .comm min_ms_zValue,8,8
-  66              	 .comm avg_ms_xValue,8,8
-  67              	 .comm avg_ms_yValue,8,8
-  68              	 .comm avg_ms_zValue,8,8
-  69              	 .comm ms_xValue,8,8
-  70              	 .comm ms_yValue,8,8
-  71              	 .comm ms_zValue,8,8
-  72              	 .comm gyro_x,4,4
-  73              	 .comm gyro_y,4,4
-  74              	 .comm gyro_z,4,4
-  75              	 .comm acc_x,4,4
-  76              	 .comm acc_y,4,4
-  77              	 .comm acc_z,4,4
-  78              	 .comm acc_x_ms2,4,4
-  79              	 .comm acc_y_ms2,4,4
-  80              	 .comm acc_z_ms2,4,4
-  81              	 .comm gyro_xValue,2,2
-  82              	 .comm gyro_yValue,2,2
-  83              	 .comm gyro_zValue,2,2
-  84              	 .section .text.CCU43_1_IRQHandler,"ax",%progbits
-  85              	 .align 2
-  86              	 .global CCU43_1_IRQHandler
-  87              	 .thumb
-  88              	 .thumb_func
-  90              	CCU43_1_IRQHandler:
-  91              	.LFB455:
-  92              	 .file 1 "../main.c"
+  27              	 .comm pollReady,1,1
+  28              	 .comm msMinInitialized,1,1
+  29              	 .comm msMaxInitialized,1,1
+  30              	 .comm minInitialized,1,1
+  31              	 .comm maxInitialized,1,1
+  32              	 .comm messageState,4,4
+  33              	 .comm headerStateMachineFilter,4,4
+  34              	 .comm receivedSentence,200,4
+  35              	 .comm receivedSentence2,200,4
+  36              	 .comm firstSentenceBuffer,4,4
+  37              	 .comm secondSentenceBuffer,4,4
+  38              	 .comm pollcounter,1,1
+  39              	 .comm outputBufferStart,4,4
+  40              	 .comm outputBufferCurrent,4,4
+  41              	 .comm outputBufferEnd,4,4
+  42              	 .comm secondOutputBufferStart,4,4
+  43              	 .comm secondOutputBufferCurrent,4,4
+  44              	 .comm secondOutputBufferEnd,4,4
+  45              	 .comm acceleration_register,8,4
+  46              	 .comm gyro_register,8,4
+  47              	 .comm acceleration_register_copy,4,4
+  48              	 .comm gyro_register_copy,4,4
+  49              	 .comm num_of_samples,4,4
+  50              	 .comm max_complement_xValue,8,8
+  51              	 .comm max_complement_yValue,8,8
+  52              	 .comm max_complement_zValue,8,8
+  53              	 .comm min_complement_xValue,8,8
+  54              	 .comm min_complement_yValue,8,8
+  55              	 .comm min_complement_zValue,8,8
+  56              	 .comm avg_complement_xValue,8,8
+  57              	 .comm avg_complement_yValue,8,8
+  58              	 .comm avg_complement_zValue,8,8
+  59              	 .comm complement_xValue,8,8
+  60              	 .comm complement_yValue,8,8
+  61              	 .comm complement_zValue,8,8
+  62              	 .comm max_ms_xValue,8,8
+  63              	 .comm max_ms_yValue,8,8
+  64              	 .comm max_ms_zValue,8,8
+  65              	 .comm min_ms_xValue,8,8
+  66              	 .comm min_ms_yValue,8,8
+  67              	 .comm min_ms_zValue,8,8
+  68              	 .comm avg_ms_xValue,8,8
+  69              	 .comm avg_ms_yValue,8,8
+  70              	 .comm avg_ms_zValue,8,8
+  71              	 .comm ms_xValue,8,8
+  72              	 .comm ms_yValue,8,8
+  73              	 .comm ms_zValue,8,8
+  74              	 .comm gyro_x,4,4
+  75              	 .comm gyro_y,4,4
+  76              	 .comm gyro_z,4,4
+  77              	 .comm acc_x,4,4
+  78              	 .comm acc_y,4,4
+  79              	 .comm acc_z,4,4
+  80              	 .comm acc_x_ms2,4,4
+  81              	 .comm acc_y_ms2,4,4
+  82              	 .comm acc_z_ms2,4,4
+  83              	 .comm gyro_xValue,2,2
+  84              	 .comm gyro_yValue,2,2
+  85              	 .comm gyro_zValue,2,2
+  86              	 .section .text.CCU43_1_IRQHandler,"ax",%progbits
+  87              	 .align 2
+  88              	 .global CCU43_1_IRQHandler
+  89              	 .thumb
+  90              	 .thumb_func
+  92              	CCU43_1_IRQHandler:
+  93              	.LFB455:
+  94              	 .file 1 "../main.c"
    1:../main.c     **** /*
    2:../main.c     ****  * main.c
    3:../main.c     ****  *
@@ -120,171 +122,194 @@
   29:../main.c     ****  * code.
   30:../main.c     ****  */
   31:../main.c     **** 
-  32:../main.c     **** 
+  32:../main.c     **** void gyroTimerInterrupt(){
+  95              	 .loc 1 32 0
+  96              	 .cfi_startproc
+  97              	 
+  98              	 
+  99              	 
+ 100 0000 80B4     	 push {r7}
+ 101              	.LCFI0:
+ 102              	 .cfi_def_cfa_offset 4
+ 103              	 .cfi_offset 7,-4
+ 104 0002 00AF     	 add r7,sp,#0
+ 105              	.LCFI1:
+ 106              	 .cfi_def_cfa_register 7
   33:../main.c     **** 
   34:../main.c     **** 
-  35:../main.c     **** 
-  36:../main.c     **** void gyroTimerInterrupt(){
-  93              	 .loc 1 36 0
-  94              	 .cfi_startproc
-  95              	 
-  96              	 
-  97              	 
-  98 0000 80B4     	 push {r7}
-  99              	.LCFI0:
- 100              	 .cfi_def_cfa_offset 4
- 101              	 .cfi_offset 7,-4
- 102 0002 00AF     	 add r7,sp,#0
- 103              	.LCFI1:
- 104              	 .cfi_def_cfa_register 7
-  37:../main.c     **** 	gpsOutputready    = true;
- 105              	 .loc 1 37 0
- 106 0004 034B     	 ldr r3,.L2
- 107 0006 0122     	 movs r2,#1
- 108 0008 1A70     	 strb r2,[r3]
-  38:../main.c     **** }
- 109              	 .loc 1 38 0
- 110 000a BD46     	 mov sp,r7
- 111              	.LCFI2:
- 112              	 .cfi_def_cfa_register 13
- 113              	 
- 114 000c 5DF8047B 	 ldr r7,[sp],#4
- 115              	.LCFI3:
- 116              	 .cfi_restore 7
- 117              	 .cfi_def_cfa_offset 0
- 118 0010 7047     	 bx lr
- 119              	.L3:
- 120 0012 00BF     	 .align 2
- 121              	.L2:
- 122 0014 00000000 	 .word gpsOutputready
- 123              	 .cfi_endproc
- 124              	.LFE455:
- 126              	 .global __aeabi_dcmpgt
- 127              	 .global __aeabi_dcmplt
- 128              	 .global __aeabi_dadd
- 129              	 .global __aeabi_i2d
- 130              	 .global __aeabi_ddiv
- 131              	 .section .text.main,"ax",%progbits
- 132              	 .align 2
- 133              	 .global main
- 134              	 .thumb
- 135              	 .thumb_func
- 137              	main:
- 138              	.LFB456:
-  39:../main.c     **** 
+  35:../main.c     **** 	pollcounter++;
+ 107              	 .loc 1 35 0
+ 108 0004 0B4B     	 ldr r3,.L3
+ 109 0006 1B78     	 ldrb r3,[r3]
+ 110 0008 0133     	 adds r3,r3,#1
+ 111 000a DAB2     	 uxtb r2,r3
+ 112 000c 094B     	 ldr r3,.L3
+ 113 000e 1A70     	 strb r2,[r3]
+  36:../main.c     **** 	pollReady = true;
+ 114              	 .loc 1 36 0
+ 115 0010 094B     	 ldr r3,.L3+4
+ 116 0012 0122     	 movs r2,#1
+ 117 0014 1A70     	 strb r2,[r3]
+  37:../main.c     **** 	if(pollcounter > 99){
+ 118              	 .loc 1 37 0
+ 119 0016 074B     	 ldr r3,.L3
+ 120 0018 1B78     	 ldrb r3,[r3]
+ 121 001a 632B     	 cmp r3,#99
+ 122 001c 05D9     	 bls .L1
+  38:../main.c     **** 		gpsOutputready   = true;
+ 123              	 .loc 1 38 0
+ 124 001e 074B     	 ldr r3,.L3+8
+ 125 0020 0122     	 movs r2,#1
+ 126 0022 1A70     	 strb r2,[r3]
+  39:../main.c     **** 		pollcounter = 0;
+ 127              	 .loc 1 39 0
+ 128 0024 034B     	 ldr r3,.L3
+ 129 0026 0022     	 movs r2,#0
+ 130 0028 1A70     	 strb r2,[r3]
+ 131              	.L1:
   40:../main.c     **** 
-  41:../main.c     **** 
+  41:../main.c     **** 	}
   42:../main.c     **** 
   43:../main.c     **** 
-  44:../main.c     **** 
-  45:../main.c     **** int main(void)
-  46:../main.c     **** {
- 139              	 .loc 1 46 0
- 140              	 .cfi_startproc
- 141              	 
- 142              	 
- 143 0000 B0B5     	 push {r4,r5,r7,lr}
- 144              	.LCFI4:
- 145              	 .cfi_def_cfa_offset 16
- 146              	 .cfi_offset 4,-16
- 147              	 .cfi_offset 5,-12
- 148              	 .cfi_offset 7,-8
- 149              	 .cfi_offset 14,-4
- 150 0002 82B0     	 sub sp,sp,#8
- 151              	.LCFI5:
- 152              	 .cfi_def_cfa_offset 24
- 153 0004 00AF     	 add r7,sp,#0
- 154              	.LCFI6:
- 155              	 .cfi_def_cfa_register 7
-  47:../main.c     ****   DAVE_STATUS_t status;
-  48:../main.c     **** 
-  49:../main.c     ****   status = DAVE_Init();           /* Initialization of DAVE APPs  */
- 156              	 .loc 1 49 0
- 157 0006 FFF7FEFF 	 bl DAVE_Init
- 158 000a 0346     	 mov r3,r0
- 159 000c FB70     	 strb r3,[r7,#3]
-  50:../main.c     **** 
+  44:../main.c     **** }
+ 132              	 .loc 1 44 0
+ 133 002a BD46     	 mov sp,r7
+ 134              	.LCFI2:
+ 135              	 .cfi_def_cfa_register 13
+ 136              	 
+ 137 002c 5DF8047B 	 ldr r7,[sp],#4
+ 138              	.LCFI3:
+ 139              	 .cfi_restore 7
+ 140              	 .cfi_def_cfa_offset 0
+ 141 0030 7047     	 bx lr
+ 142              	.L4:
+ 143 0032 00BF     	 .align 2
+ 144              	.L3:
+ 145 0034 00000000 	 .word pollcounter
+ 146 0038 00000000 	 .word pollReady
+ 147 003c 00000000 	 .word gpsOutputready
+ 148              	 .cfi_endproc
+ 149              	.LFE455:
+ 151              	 .global __aeabi_dcmpgt
+ 152              	 .global __aeabi_dcmplt
+ 153              	 .global __aeabi_dadd
+ 154              	 .global __aeabi_i2d
+ 155              	 .global __aeabi_ddiv
+ 156              	 .section .text.main,"ax",%progbits
+ 157              	 .align 2
+ 158              	 .global main
+ 159              	 .thumb
+ 160              	 .thumb_func
+ 162              	main:
+ 163              	.LFB456:
+  45:../main.c     **** 
+  46:../main.c     **** int main(void)
+  47:../main.c     **** {
+ 164              	 .loc 1 47 0
+ 165              	 .cfi_startproc
+ 166              	 
+ 167              	 
+ 168 0000 B0B5     	 push {r4,r5,r7,lr}
+ 169              	.LCFI4:
+ 170              	 .cfi_def_cfa_offset 16
+ 171              	 .cfi_offset 4,-16
+ 172              	 .cfi_offset 5,-12
+ 173              	 .cfi_offset 7,-8
+ 174              	 .cfi_offset 14,-4
+ 175 0002 82B0     	 sub sp,sp,#8
+ 176              	.LCFI5:
+ 177              	 .cfi_def_cfa_offset 24
+ 178 0004 00AF     	 add r7,sp,#0
+ 179              	.LCFI6:
+ 180              	 .cfi_def_cfa_register 7
+  48:../main.c     ****   DAVE_STATUS_t status;
+  49:../main.c     **** 
+  50:../main.c     ****   status = DAVE_Init();           /* Initialization of DAVE APPs  */
+ 181              	 .loc 1 50 0
+ 182 0006 FFF7FEFF 	 bl DAVE_Init
+ 183 000a 0346     	 mov r3,r0
+ 184 000c FB71     	 strb r3,[r7,#7]
   51:../main.c     **** 
   52:../main.c     ****   initGPS();
- 160              	 .loc 1 52 0
- 161 000e FFF7FEFF 	 bl initGPS
+ 185              	 .loc 1 52 0
+ 186 000e FFF7FEFF 	 bl initGPS
   53:../main.c     **** 
   54:../main.c     ****   firstSentenceBuffer = receivedSentence;
- 162              	 .loc 1 54 0
- 163 0012 6E4B     	 ldr r3,.L79
- 164 0014 6E4A     	 ldr r2,.L79+4
- 165 0016 1A60     	 str r2,[r3]
+ 187              	 .loc 1 54 0
+ 188 0012 6B4B     	 ldr r3,.L79
+ 189 0014 6B4A     	 ldr r2,.L79+4
+ 190 0016 1A60     	 str r2,[r3]
   55:../main.c     ****   secondSentenceBuffer = receivedSentence2;
- 166              	 .loc 1 55 0
- 167 0018 6E4B     	 ldr r3,.L79+8
- 168 001a 6F4A     	 ldr r2,.L79+12
- 169 001c 1A60     	 str r2,[r3]
+ 191              	 .loc 1 55 0
+ 192 0018 6B4B     	 ldr r3,.L79+8
+ 193 001a 6C4A     	 ldr r2,.L79+12
+ 194 001c 1A60     	 str r2,[r3]
   56:../main.c     **** 
   57:../main.c     **** 
   58:../main.c     ****   outputBufferStart = firstSentenceBuffer;
- 170              	 .loc 1 58 0
- 171 001e 6B4B     	 ldr r3,.L79
- 172 0020 1B68     	 ldr r3,[r3]
- 173 0022 6E4A     	 ldr r2,.L79+16
- 174 0024 1360     	 str r3,[r2]
+ 195              	 .loc 1 58 0
+ 196 001e 684B     	 ldr r3,.L79
+ 197 0020 1B68     	 ldr r3,[r3]
+ 198 0022 6B4A     	 ldr r2,.L79+16
+ 199 0024 1360     	 str r3,[r2]
   59:../main.c     ****   outputBufferCurrent = firstSentenceBuffer;
- 175              	 .loc 1 59 0
- 176 0026 694B     	 ldr r3,.L79
- 177 0028 1B68     	 ldr r3,[r3]
- 178 002a 6D4A     	 ldr r2,.L79+20
- 179 002c 1360     	 str r3,[r2]
+ 200              	 .loc 1 59 0
+ 201 0026 664B     	 ldr r3,.L79
+ 202 0028 1B68     	 ldr r3,[r3]
+ 203 002a 6A4A     	 ldr r2,.L79+20
+ 204 002c 1360     	 str r3,[r2]
   60:../main.c     ****   outputBufferEnd = firstSentenceBuffer+199;
- 180              	 .loc 1 60 0
- 181 002e 674B     	 ldr r3,.L79
- 182 0030 1B68     	 ldr r3,[r3]
- 183 0032 C733     	 adds r3,r3,#199
- 184 0034 6B4A     	 ldr r2,.L79+24
- 185 0036 1360     	 str r3,[r2]
+ 205              	 .loc 1 60 0
+ 206 002e 644B     	 ldr r3,.L79
+ 207 0030 1B68     	 ldr r3,[r3]
+ 208 0032 C733     	 adds r3,r3,#199
+ 209 0034 684A     	 ldr r2,.L79+24
+ 210 0036 1360     	 str r3,[r2]
   61:../main.c     **** 
   62:../main.c     ****   secondOutputBufferStart = secondSentenceBuffer;
- 186              	 .loc 1 62 0
- 187 0038 664B     	 ldr r3,.L79+8
- 188 003a 1B68     	 ldr r3,[r3]
- 189 003c 6A4A     	 ldr r2,.L79+28
- 190 003e 1360     	 str r3,[r2]
+ 211              	 .loc 1 62 0
+ 212 0038 634B     	 ldr r3,.L79+8
+ 213 003a 1B68     	 ldr r3,[r3]
+ 214 003c 674A     	 ldr r2,.L79+28
+ 215 003e 1360     	 str r3,[r2]
   63:../main.c     ****   secondOutputBufferCurrent = secondSentenceBuffer;
- 191              	 .loc 1 63 0
- 192 0040 644B     	 ldr r3,.L79+8
- 193 0042 1B68     	 ldr r3,[r3]
- 194 0044 694A     	 ldr r2,.L79+32
- 195 0046 1360     	 str r3,[r2]
+ 216              	 .loc 1 63 0
+ 217 0040 614B     	 ldr r3,.L79+8
+ 218 0042 1B68     	 ldr r3,[r3]
+ 219 0044 664A     	 ldr r2,.L79+32
+ 220 0046 1360     	 str r3,[r2]
   64:../main.c     ****   secondOutputBufferEnd = secondSentenceBuffer;
- 196              	 .loc 1 64 0
- 197 0048 624B     	 ldr r3,.L79+8
- 198 004a 1B68     	 ldr r3,[r3]
- 199 004c 684A     	 ldr r2,.L79+36
- 200 004e 1360     	 str r3,[r2]
+ 221              	 .loc 1 64 0
+ 222 0048 5F4B     	 ldr r3,.L79+8
+ 223 004a 1B68     	 ldr r3,[r3]
+ 224 004c 654A     	 ldr r2,.L79+36
+ 225 004e 1360     	 str r3,[r2]
   65:../main.c     **** 
   66:../main.c     **** 
   67:../main.c     ****   cycledelay((uint32_t)(100000 * 2));
- 201              	 .loc 1 67 0
- 202 0050 6848     	 ldr r0,.L79+40
- 203 0052 FFF7FEFF 	 bl cycledelay
+ 226              	 .loc 1 67 0
+ 227 0050 6548     	 ldr r0,.L79+40
+ 228 0052 FFF7FEFF 	 bl cycledelay
   68:../main.c     **** 
   69:../main.c     ****   udp_initialize();
- 204              	 .loc 1 69 0
- 205 0056 FFF7FEFF 	 bl udp_initialize
+ 229              	 .loc 1 69 0
+ 230 0056 FFF7FEFF 	 bl udp_initialize
   70:../main.c     **** 
   71:../main.c     ****   cycledelay(140000* 50);
- 206              	 .loc 1 71 0
- 207 005a 6748     	 ldr r0,.L79+44
- 208 005c FFF7FEFF 	 bl cycledelay
+ 231              	 .loc 1 71 0
+ 232 005a 6448     	 ldr r0,.L79+44
+ 233 005c FFF7FEFF 	 bl cycledelay
   72:../main.c     **** 
   73:../main.c     ****   bmi055_start();
- 209              	 .loc 1 73 0
- 210 0060 FFF7FEFF 	 bl bmi055_start
+ 234              	 .loc 1 73 0
+ 235 0060 FFF7FEFF 	 bl bmi055_start
   74:../main.c     **** 
   75:../main.c     ****   if(status != DAVE_STATUS_SUCCESS)
- 211              	 .loc 1 75 0
- 212 0064 FB78     	 ldrb r3,[r7,#3]
- 213 0066 002B     	 cmp r3,#0
- 214 0068 00D0     	 beq .L5
- 215              	.L6:
+ 236              	 .loc 1 75 0
+ 237 0064 FB79     	 ldrb r3,[r7,#7]
+ 238 0066 002B     	 cmp r3,#0
+ 239 0068 00D0     	 beq .L6
+ 240              	.L7:
   76:../main.c     ****   {
   77:../main.c     ****     /* Placeholder for error handler code. The while loop below can be replaced with an user error 
   78:../main.c     ****     XMC_DEBUG("DAVE APPs initialization failed\n");
@@ -293,16 +318,12 @@
   81:../main.c     ****     {
   82:../main.c     **** 
   83:../main.c     ****     }
- 216              	 .loc 1 83 0 discriminator 1
- 217 006a FEE7     	 b .L6
- 218              	.L5:
+ 241              	 .loc 1 83 0 discriminator 1
+ 242 006a FEE7     	 b .L7
+ 243              	.L6:
   84:../main.c     ****   }
   85:../main.c     **** 
-  86:../main.c     ****   long polltime = 0;
- 219              	 .loc 1 86 0
- 220 006c 0023     	 movs r3,#0
- 221 006e 7B60     	 str r3,[r7,#4]
- 222              	.L54:
+  86:../main.c     ****   //long polltime = 0;
   87:../main.c     **** 
   88:../main.c     **** 
   89:../main.c     ****   /* Placeholder for user application code. The while loop below can be replaced with user applicat
@@ -310,1118 +331,1066 @@
   91:../main.c     ****   {
   92:../main.c     **** 
   93:../main.c     **** 	  sys_check_timeouts();
- 223              	 .loc 1 93 0
- 224 0070 FFF7FEFF 	 bl sys_check_timeouts
-  94:../main.c     **** 	  polltime++;
- 225              	 .loc 1 94 0
- 226 0074 7B68     	 ldr r3,[r7,#4]
- 227 0076 0133     	 adds r3,r3,#1
- 228 0078 7B60     	 str r3,[r7,#4]
-  95:../main.c     **** 	  if( polltime > 60000){//600000){
- 229              	 .loc 1 95 0
- 230 007a 7B68     	 ldr r3,[r7,#4]
- 231 007c 4EF66022 	 movw r2,#60000
- 232 0080 9342     	 cmp r3,r2
- 233 0082 40F31382 	 ble .L7
-  96:../main.c     **** 		  bmi055_poll_data();
- 234              	 .loc 1 96 0
- 235 0086 FFF7FEFF 	 bl bmi055_poll_data
-  97:../main.c     **** 		  bmi055_apply_gyro_all_angles();
- 236              	 .loc 1 97 0
- 237 008a FFF7FEFF 	 bl bmi055_apply_gyro_all_angles
-  98:../main.c     **** 		  bmi055_apply_accel_all_angles();
- 238              	 .loc 1 98 0
- 239 008e FFF7FEFF 	 bl bmi055_apply_accel_all_angles
-  99:../main.c     **** 
+ 244              	 .loc 1 93 0
+ 245 006c FFF7FEFF 	 bl sys_check_timeouts
+  94:../main.c     **** 	  if(pollReady){
+ 246              	 .loc 1 94 0
+ 247 0070 5F4B     	 ldr r3,.L79+48
+ 248 0072 1B78     	 ldrb r3,[r3]
+ 249 0074 002B     	 cmp r3,#0
+ 250 0076 00F01682 	 beq .L8
+  95:../main.c     **** 	 // polltime++;
+  96:../main.c     **** 	  //if( polltime > 60000){
+  97:../main.c     **** 		  bmi055_poll_data();
+ 251              	 .loc 1 97 0
+ 252 007a FFF7FEFF 	 bl bmi055_poll_data
+  98:../main.c     **** 		  bmi055_apply_gyro_all_angles();
+ 253              	 .loc 1 98 0
+ 254 007e FFF7FEFF 	 bl bmi055_apply_gyro_all_angles
+  99:../main.c     **** 		  bmi055_apply_accel_all_angles();
+ 255              	 .loc 1 99 0
+ 256 0082 FFF7FEFF 	 bl bmi055_apply_accel_all_angles
  100:../main.c     **** 
  101:../main.c     **** 
  102:../main.c     **** 
  103:../main.c     **** 
- 104:../main.c     **** // ms berekenen
- 105:../main.c     **** 
- 106:../main.c     **** 		  // min berekenen
- 107:../main.c     **** 				if(msMaxInitialized){
- 240              	 .loc 1 107 0
- 241 0092 5A4B     	 ldr r3,.L79+48
- 242 0094 1B78     	 ldrb r3,[r3]
- 243 0096 002B     	 cmp r3,#0
- 244 0098 3FD0     	 beq .L8
- 108:../main.c     **** 					max_ms_xValue =  max(ms_xValue, max_ms_xValue);
- 245              	 .loc 1 108 0
- 246 009a 594B     	 ldr r3,.L79+52
- 247 009c D3E90001 	 ldrd r0,[r3]
- 248 00a0 584B     	 ldr r3,.L79+56
- 249 00a2 D3E90023 	 ldrd r2,[r3]
- 250 00a6 FFF7FEFF 	 bl __aeabi_dcmpgt
- 251 00aa 0346     	 mov r3,r0
- 252 00ac 002B     	 cmp r3,#0
- 253 00ae 03D0     	 beq .L67
- 254              	 .loc 1 108 0 is_stmt 0 discriminator 1
- 255 00b0 534B     	 ldr r3,.L79+52
- 256 00b2 D3E90023 	 ldrd r2,[r3]
- 257 00b6 02E0     	 b .L11
- 258              	.L67:
- 259              	 .loc 1 108 0 discriminator 2
- 260 00b8 524B     	 ldr r3,.L79+56
- 261 00ba D3E90023 	 ldrd r2,[r3]
- 262              	.L11:
- 263              	 .loc 1 108 0 discriminator 4
- 264 00be 5149     	 ldr r1,.L79+56
- 265 00c0 C1E90023 	 strd r2,[r1]
- 109:../main.c     **** 					max_ms_yValue =  max(ms_yValue, max_ms_yValue);
- 266              	 .loc 1 109 0 is_stmt 1 discriminator 4
- 267 00c4 504B     	 ldr r3,.L79+60
- 268 00c6 D3E90001 	 ldrd r0,[r3]
- 269 00ca 504B     	 ldr r3,.L79+64
- 270 00cc D3E90023 	 ldrd r2,[r3]
- 271 00d0 FFF7FEFF 	 bl __aeabi_dcmpgt
- 272 00d4 0346     	 mov r3,r0
- 273 00d6 002B     	 cmp r3,#0
- 274 00d8 03D0     	 beq .L68
- 275              	 .loc 1 109 0 is_stmt 0 discriminator 1
- 276 00da 4B4B     	 ldr r3,.L79+60
- 277 00dc D3E90023 	 ldrd r2,[r3]
- 278 00e0 02E0     	 b .L14
- 279              	.L68:
- 280              	 .loc 1 109 0 discriminator 2
- 281 00e2 4A4B     	 ldr r3,.L79+64
- 282 00e4 D3E90023 	 ldrd r2,[r3]
- 283              	.L14:
- 284              	 .loc 1 109 0 discriminator 4
- 285 00e8 4849     	 ldr r1,.L79+64
- 286 00ea C1E90023 	 strd r2,[r1]
- 110:../main.c     **** 					max_ms_zValue =  max(ms_zValue, max_ms_zValue);
- 287              	 .loc 1 110 0 is_stmt 1 discriminator 4
- 288 00ee 484B     	 ldr r3,.L79+68
- 289 00f0 D3E90001 	 ldrd r0,[r3]
- 290 00f4 474B     	 ldr r3,.L79+72
- 291 00f6 D3E90023 	 ldrd r2,[r3]
- 292 00fa FFF7FEFF 	 bl __aeabi_dcmpgt
- 293 00fe 0346     	 mov r3,r0
- 294 0100 002B     	 cmp r3,#0
- 295 0102 03D0     	 beq .L69
- 296              	 .loc 1 110 0 is_stmt 0 discriminator 1
- 297 0104 424B     	 ldr r3,.L79+68
- 298 0106 D3E90023 	 ldrd r2,[r3]
- 299 010a 02E0     	 b .L17
- 300              	.L69:
- 301              	 .loc 1 110 0 discriminator 2
- 302 010c 414B     	 ldr r3,.L79+72
- 303 010e D3E90023 	 ldrd r2,[r3]
- 304              	.L17:
- 305              	 .loc 1 110 0 discriminator 4
- 306 0112 4049     	 ldr r1,.L79+72
- 307 0114 C1E90023 	 strd r2,[r1]
- 308 0118 14E0     	 b .L18
- 309              	.L8:
- 111:../main.c     **** 				}
- 112:../main.c     **** 				else{
- 113:../main.c     **** 					  max_ms_xValue = ms_xValue;
- 310              	 .loc 1 113 0 is_stmt 1
- 311 011a 394B     	 ldr r3,.L79+52
- 312 011c D3E90023 	 ldrd r2,[r3]
- 313 0120 3849     	 ldr r1,.L79+56
- 314 0122 C1E90023 	 strd r2,[r1]
- 114:../main.c     **** 					  max_ms_yValue = ms_yValue;
- 315              	 .loc 1 114 0
- 316 0126 384B     	 ldr r3,.L79+60
- 317 0128 D3E90023 	 ldrd r2,[r3]
- 318 012c 3749     	 ldr r1,.L79+64
- 319 012e C1E90023 	 strd r2,[r1]
- 115:../main.c     **** 					  max_ms_zValue = ms_zValue;
- 320              	 .loc 1 115 0
- 321 0132 374B     	 ldr r3,.L79+68
- 322 0134 D3E90023 	 ldrd r2,[r3]
- 323 0138 3649     	 ldr r1,.L79+72
- 324 013a C1E90023 	 strd r2,[r1]
- 116:../main.c     **** 					  msMaxInitialized = true;
- 325              	 .loc 1 116 0
- 326 013e 2F4B     	 ldr r3,.L79+48
- 327 0140 0122     	 movs r2,#1
- 328 0142 1A70     	 strb r2,[r3]
- 329              	.L18:
- 117:../main.c     **** 				}
- 118:../main.c     **** 
- 119:../main.c     **** 				//max berekenen
- 120:../main.c     **** 
- 121:../main.c     **** 				if(msMinInitialized){
- 330              	 .loc 1 121 0
- 331 0144 344B     	 ldr r3,.L79+76
- 332 0146 1B78     	 ldrb r3,[r3]
- 333 0148 002B     	 cmp r3,#0
- 334 014a 6DD0     	 beq .L19
- 122:../main.c     **** 					min_ms_xValue =  min(ms_xValue, min_ms_xValue);
- 335              	 .loc 1 122 0
- 336 014c 2C4B     	 ldr r3,.L79+52
- 337 014e D3E90001 	 ldrd r0,[r3]
- 338 0152 324B     	 ldr r3,.L79+80
- 339 0154 D3E90023 	 ldrd r2,[r3]
- 340 0158 FFF7FEFF 	 bl __aeabi_dcmplt
- 341 015c 0346     	 mov r3,r0
- 342 015e 002B     	 cmp r3,#0
- 343 0160 03D0     	 beq .L70
- 344              	 .loc 1 122 0 is_stmt 0 discriminator 1
- 345 0162 274B     	 ldr r3,.L79+52
- 346 0164 D3E90023 	 ldrd r2,[r3]
- 347 0168 02E0     	 b .L22
- 348              	.L70:
- 349              	 .loc 1 122 0 discriminator 2
- 350 016a 2C4B     	 ldr r3,.L79+80
- 351 016c D3E90023 	 ldrd r2,[r3]
- 352              	.L22:
- 353              	 .loc 1 122 0 discriminator 4
- 354 0170 2A49     	 ldr r1,.L79+80
- 355 0172 C1E90023 	 strd r2,[r1]
- 123:../main.c     **** 					min_ms_yValue =  min(ms_yValue, min_ms_yValue);
- 356              	 .loc 1 123 0 is_stmt 1 discriminator 4
- 357 0176 244B     	 ldr r3,.L79+60
- 358 0178 D3E90001 	 ldrd r0,[r3]
- 359 017c 284B     	 ldr r3,.L79+84
- 360 017e D3E90023 	 ldrd r2,[r3]
- 361 0182 FFF7FEFF 	 bl __aeabi_dcmplt
- 362 0186 0346     	 mov r3,r0
- 363 0188 002B     	 cmp r3,#0
- 364 018a 03D0     	 beq .L71
- 365              	 .loc 1 123 0 is_stmt 0 discriminator 1
- 366 018c 1E4B     	 ldr r3,.L79+60
- 367 018e D3E90023 	 ldrd r2,[r3]
- 368 0192 02E0     	 b .L25
- 369              	.L71:
- 370              	 .loc 1 123 0 discriminator 2
- 371 0194 224B     	 ldr r3,.L79+84
- 372 0196 D3E90023 	 ldrd r2,[r3]
- 373              	.L25:
- 374              	 .loc 1 123 0 discriminator 4
- 375 019a 2149     	 ldr r1,.L79+84
- 376 019c C1E90023 	 strd r2,[r1]
- 124:../main.c     **** 					min_ms_zValue =  min(ms_zValue, min_ms_zValue);
- 377              	 .loc 1 124 0 is_stmt 1 discriminator 4
- 378 01a0 1B4B     	 ldr r3,.L79+68
- 379 01a2 D3E90001 	 ldrd r0,[r3]
- 380 01a6 1F4B     	 ldr r3,.L79+88
- 381 01a8 D3E90023 	 ldrd r2,[r3]
- 382 01ac FFF7FEFF 	 bl __aeabi_dcmplt
- 383 01b0 0346     	 mov r3,r0
- 384 01b2 002B     	 cmp r3,#0
- 385 01b4 03D0     	 beq .L72
- 386              	 .loc 1 124 0 is_stmt 0 discriminator 1
- 387 01b6 164B     	 ldr r3,.L79+68
- 388 01b8 D3E90023 	 ldrd r2,[r3]
- 389 01bc 02E0     	 b .L28
- 390              	.L72:
- 391              	 .loc 1 124 0 discriminator 2
- 392 01be 194B     	 ldr r3,.L79+88
- 393 01c0 D3E90023 	 ldrd r2,[r3]
- 394              	.L28:
- 395              	 .loc 1 124 0 discriminator 4
- 396 01c4 1749     	 ldr r1,.L79+88
- 397 01c6 C1E90023 	 strd r2,[r1]
- 398 01ca 42E0     	 b .L29
- 399              	.L80:
- 400              	 .align 2
- 401              	.L79:
- 402 01cc 00000000 	 .word firstSentenceBuffer
- 403 01d0 00000000 	 .word receivedSentence
- 404 01d4 00000000 	 .word secondSentenceBuffer
- 405 01d8 00000000 	 .word receivedSentence2
- 406 01dc 00000000 	 .word outputBufferStart
- 407 01e0 00000000 	 .word outputBufferCurrent
- 408 01e4 00000000 	 .word outputBufferEnd
- 409 01e8 00000000 	 .word secondOutputBufferStart
- 410 01ec 00000000 	 .word secondOutputBufferCurrent
- 411 01f0 00000000 	 .word secondOutputBufferEnd
- 412 01f4 400D0300 	 .word 200000
- 413 01f8 C0CF6A00 	 .word 7000000
- 414 01fc 00000000 	 .word msMaxInitialized
- 415 0200 00000000 	 .word ms_xValue
- 416 0204 00000000 	 .word max_ms_xValue
- 417 0208 00000000 	 .word ms_yValue
- 418 020c 00000000 	 .word max_ms_yValue
- 419 0210 00000000 	 .word ms_zValue
- 420 0214 00000000 	 .word max_ms_zValue
- 421 0218 00000000 	 .word msMinInitialized
- 422 021c 00000000 	 .word min_ms_xValue
- 423 0220 00000000 	 .word min_ms_yValue
- 424 0224 00000000 	 .word min_ms_zValue
- 425              	.L19:
- 125:../main.c     **** 				}
- 126:../main.c     **** 				else{
- 127:../main.c     **** 					  min_ms_xValue = ms_xValue;
- 426              	 .loc 1 127 0 is_stmt 1
- 427 0228 6C4B     	 ldr r3,.L81
- 428 022a D3E90023 	 ldrd r2,[r3]
- 429 022e 6C49     	 ldr r1,.L81+4
- 430 0230 C1E90023 	 strd r2,[r1]
- 128:../main.c     **** 					  min_ms_yValue = ms_yValue;
- 431              	 .loc 1 128 0
- 432 0234 6B4B     	 ldr r3,.L81+8
- 433 0236 D3E90023 	 ldrd r2,[r3]
- 434 023a 6B49     	 ldr r1,.L81+12
- 435 023c C1E90023 	 strd r2,[r1]
- 129:../main.c     **** 					  min_ms_zValue = ms_zValue;
- 436              	 .loc 1 129 0
- 437 0240 6A4B     	 ldr r3,.L81+16
- 438 0242 D3E90023 	 ldrd r2,[r3]
- 439 0246 6A49     	 ldr r1,.L81+20
- 440 0248 C1E90023 	 strd r2,[r1]
- 130:../main.c     **** 					  msMinInitialized = true;
- 441              	 .loc 1 130 0
- 442 024c 694B     	 ldr r3,.L81+24
- 443 024e 0122     	 movs r2,#1
- 444 0250 1A70     	 strb r2,[r3]
- 445              	.L29:
- 131:../main.c     **** 
- 132:../main.c     **** 				}
- 133:../main.c     **** 
- 134:../main.c     **** 				avg_ms_xValue += ms_xValue;
- 446              	 .loc 1 134 0
- 447 0252 694B     	 ldr r3,.L81+28
- 448 0254 D3E90001 	 ldrd r0,[r3]
- 449 0258 604B     	 ldr r3,.L81
- 450 025a D3E90023 	 ldrd r2,[r3]
- 451 025e FFF7FEFF 	 bl __aeabi_dadd
- 452 0262 0246     	 mov r2,r0
- 453 0264 0B46     	 mov r3,r1
- 454 0266 6449     	 ldr r1,.L81+28
- 455 0268 C1E90023 	 strd r2,[r1]
- 135:../main.c     **** 				avg_ms_yValue += ms_yValue;
- 456              	 .loc 1 135 0
- 457 026c 634B     	 ldr r3,.L81+32
- 458 026e D3E90001 	 ldrd r0,[r3]
- 459 0272 5C4B     	 ldr r3,.L81+8
- 460 0274 D3E90023 	 ldrd r2,[r3]
- 461 0278 FFF7FEFF 	 bl __aeabi_dadd
- 462 027c 0246     	 mov r2,r0
- 463 027e 0B46     	 mov r3,r1
- 464 0280 5E49     	 ldr r1,.L81+32
- 465 0282 C1E90023 	 strd r2,[r1]
- 136:../main.c     **** 				avg_ms_zValue += ms_zValue;
- 466              	 .loc 1 136 0
- 467 0286 5E4B     	 ldr r3,.L81+36
- 468 0288 D3E90001 	 ldrd r0,[r3]
- 469 028c 574B     	 ldr r3,.L81+16
- 470 028e D3E90023 	 ldrd r2,[r3]
- 471 0292 FFF7FEFF 	 bl __aeabi_dadd
- 472 0296 0246     	 mov r2,r0
- 473 0298 0B46     	 mov r3,r1
- 474 029a 5949     	 ldr r1,.L81+36
- 475 029c C1E90023 	 strd r2,[r1]
- 137:../main.c     **** 
+ 104:../main.c     **** 
+ 105:../main.c     **** // ms berekenen
+ 106:../main.c     **** 
+ 107:../main.c     **** 		  // min berekenen
+ 108:../main.c     **** 				if(msMaxInitialized){
+ 257              	 .loc 1 108 0
+ 258 0086 5B4B     	 ldr r3,.L79+52
+ 259 0088 1B78     	 ldrb r3,[r3]
+ 260 008a 002B     	 cmp r3,#0
+ 261 008c 3FD0     	 beq .L9
+ 109:../main.c     **** 					max_ms_xValue =  max(ms_xValue, max_ms_xValue);
+ 262              	 .loc 1 109 0
+ 263 008e 5A4B     	 ldr r3,.L79+56
+ 264 0090 D3E90001 	 ldrd r0,[r3]
+ 265 0094 594B     	 ldr r3,.L79+60
+ 266 0096 D3E90023 	 ldrd r2,[r3]
+ 267 009a FFF7FEFF 	 bl __aeabi_dcmpgt
+ 268 009e 0346     	 mov r3,r0
+ 269 00a0 002B     	 cmp r3,#0
+ 270 00a2 03D0     	 beq .L67
+ 271              	 .loc 1 109 0 is_stmt 0 discriminator 1
+ 272 00a4 544B     	 ldr r3,.L79+56
+ 273 00a6 D3E90023 	 ldrd r2,[r3]
+ 274 00aa 02E0     	 b .L12
+ 275              	.L67:
+ 276              	 .loc 1 109 0 discriminator 2
+ 277 00ac 534B     	 ldr r3,.L79+60
+ 278 00ae D3E90023 	 ldrd r2,[r3]
+ 279              	.L12:
+ 280              	 .loc 1 109 0 discriminator 4
+ 281 00b2 5249     	 ldr r1,.L79+60
+ 282 00b4 C1E90023 	 strd r2,[r1]
+ 110:../main.c     **** 					max_ms_yValue =  max(ms_yValue, max_ms_yValue);
+ 283              	 .loc 1 110 0 is_stmt 1 discriminator 4
+ 284 00b8 514B     	 ldr r3,.L79+64
+ 285 00ba D3E90001 	 ldrd r0,[r3]
+ 286 00be 514B     	 ldr r3,.L79+68
+ 287 00c0 D3E90023 	 ldrd r2,[r3]
+ 288 00c4 FFF7FEFF 	 bl __aeabi_dcmpgt
+ 289 00c8 0346     	 mov r3,r0
+ 290 00ca 002B     	 cmp r3,#0
+ 291 00cc 03D0     	 beq .L68
+ 292              	 .loc 1 110 0 is_stmt 0 discriminator 1
+ 293 00ce 4C4B     	 ldr r3,.L79+64
+ 294 00d0 D3E90023 	 ldrd r2,[r3]
+ 295 00d4 02E0     	 b .L15
+ 296              	.L68:
+ 297              	 .loc 1 110 0 discriminator 2
+ 298 00d6 4B4B     	 ldr r3,.L79+68
+ 299 00d8 D3E90023 	 ldrd r2,[r3]
+ 300              	.L15:
+ 301              	 .loc 1 110 0 discriminator 4
+ 302 00dc 4949     	 ldr r1,.L79+68
+ 303 00de C1E90023 	 strd r2,[r1]
+ 111:../main.c     **** 					max_ms_zValue =  max(ms_zValue, max_ms_zValue);
+ 304              	 .loc 1 111 0 is_stmt 1 discriminator 4
+ 305 00e2 494B     	 ldr r3,.L79+72
+ 306 00e4 D3E90001 	 ldrd r0,[r3]
+ 307 00e8 484B     	 ldr r3,.L79+76
+ 308 00ea D3E90023 	 ldrd r2,[r3]
+ 309 00ee FFF7FEFF 	 bl __aeabi_dcmpgt
+ 310 00f2 0346     	 mov r3,r0
+ 311 00f4 002B     	 cmp r3,#0
+ 312 00f6 03D0     	 beq .L69
+ 313              	 .loc 1 111 0 is_stmt 0 discriminator 1
+ 314 00f8 434B     	 ldr r3,.L79+72
+ 315 00fa D3E90023 	 ldrd r2,[r3]
+ 316 00fe 02E0     	 b .L18
+ 317              	.L69:
+ 318              	 .loc 1 111 0 discriminator 2
+ 319 0100 424B     	 ldr r3,.L79+76
+ 320 0102 D3E90023 	 ldrd r2,[r3]
+ 321              	.L18:
+ 322              	 .loc 1 111 0 discriminator 4
+ 323 0106 4149     	 ldr r1,.L79+76
+ 324 0108 C1E90023 	 strd r2,[r1]
+ 325 010c 14E0     	 b .L19
+ 326              	.L9:
+ 112:../main.c     **** 				}
+ 113:../main.c     **** 				else{
+ 114:../main.c     **** 					  max_ms_xValue = ms_xValue;
+ 327              	 .loc 1 114 0 is_stmt 1
+ 328 010e 3A4B     	 ldr r3,.L79+56
+ 329 0110 D3E90023 	 ldrd r2,[r3]
+ 330 0114 3949     	 ldr r1,.L79+60
+ 331 0116 C1E90023 	 strd r2,[r1]
+ 115:../main.c     **** 					  max_ms_yValue = ms_yValue;
+ 332              	 .loc 1 115 0
+ 333 011a 394B     	 ldr r3,.L79+64
+ 334 011c D3E90023 	 ldrd r2,[r3]
+ 335 0120 3849     	 ldr r1,.L79+68
+ 336 0122 C1E90023 	 strd r2,[r1]
+ 116:../main.c     **** 					  max_ms_zValue = ms_zValue;
+ 337              	 .loc 1 116 0
+ 338 0126 384B     	 ldr r3,.L79+72
+ 339 0128 D3E90023 	 ldrd r2,[r3]
+ 340 012c 3749     	 ldr r1,.L79+76
+ 341 012e C1E90023 	 strd r2,[r1]
+ 117:../main.c     **** 					  msMaxInitialized = true;
+ 342              	 .loc 1 117 0
+ 343 0132 304B     	 ldr r3,.L79+52
+ 344 0134 0122     	 movs r2,#1
+ 345 0136 1A70     	 strb r2,[r3]
+ 346              	.L19:
+ 118:../main.c     **** 				}
+ 119:../main.c     **** 
+ 120:../main.c     **** 				//max berekenen
+ 121:../main.c     **** 
+ 122:../main.c     **** 				if(msMinInitialized){
+ 347              	 .loc 1 122 0
+ 348 0138 354B     	 ldr r3,.L79+80
+ 349 013a 1B78     	 ldrb r3,[r3]
+ 350 013c 002B     	 cmp r3,#0
+ 351 013e 6FD0     	 beq .L20
+ 123:../main.c     **** 					min_ms_xValue =  min(ms_xValue, min_ms_xValue);
+ 352              	 .loc 1 123 0
+ 353 0140 2D4B     	 ldr r3,.L79+56
+ 354 0142 D3E90001 	 ldrd r0,[r3]
+ 355 0146 334B     	 ldr r3,.L79+84
+ 356 0148 D3E90023 	 ldrd r2,[r3]
+ 357 014c FFF7FEFF 	 bl __aeabi_dcmplt
+ 358 0150 0346     	 mov r3,r0
+ 359 0152 002B     	 cmp r3,#0
+ 360 0154 03D0     	 beq .L70
+ 361              	 .loc 1 123 0 is_stmt 0 discriminator 1
+ 362 0156 284B     	 ldr r3,.L79+56
+ 363 0158 D3E90023 	 ldrd r2,[r3]
+ 364 015c 02E0     	 b .L23
+ 365              	.L70:
+ 366              	 .loc 1 123 0 discriminator 2
+ 367 015e 2D4B     	 ldr r3,.L79+84
+ 368 0160 D3E90023 	 ldrd r2,[r3]
+ 369              	.L23:
+ 370              	 .loc 1 123 0 discriminator 4
+ 371 0164 2B49     	 ldr r1,.L79+84
+ 372 0166 C1E90023 	 strd r2,[r1]
+ 124:../main.c     **** 					min_ms_yValue =  min(ms_yValue, min_ms_yValue);
+ 373              	 .loc 1 124 0 is_stmt 1 discriminator 4
+ 374 016a 254B     	 ldr r3,.L79+64
+ 375 016c D3E90001 	 ldrd r0,[r3]
+ 376 0170 294B     	 ldr r3,.L79+88
+ 377 0172 D3E90023 	 ldrd r2,[r3]
+ 378 0176 FFF7FEFF 	 bl __aeabi_dcmplt
+ 379 017a 0346     	 mov r3,r0
+ 380 017c 002B     	 cmp r3,#0
+ 381 017e 03D0     	 beq .L71
+ 382              	 .loc 1 124 0 is_stmt 0 discriminator 1
+ 383 0180 1F4B     	 ldr r3,.L79+64
+ 384 0182 D3E90023 	 ldrd r2,[r3]
+ 385 0186 02E0     	 b .L26
+ 386              	.L71:
+ 387              	 .loc 1 124 0 discriminator 2
+ 388 0188 234B     	 ldr r3,.L79+88
+ 389 018a D3E90023 	 ldrd r2,[r3]
+ 390              	.L26:
+ 391              	 .loc 1 124 0 discriminator 4
+ 392 018e 2249     	 ldr r1,.L79+88
+ 393 0190 C1E90023 	 strd r2,[r1]
+ 125:../main.c     **** 					min_ms_zValue =  min(ms_zValue, min_ms_zValue);
+ 394              	 .loc 1 125 0 is_stmt 1 discriminator 4
+ 395 0194 1C4B     	 ldr r3,.L79+72
+ 396 0196 D3E90001 	 ldrd r0,[r3]
+ 397 019a 204B     	 ldr r3,.L79+92
+ 398 019c D3E90023 	 ldrd r2,[r3]
+ 399 01a0 FFF7FEFF 	 bl __aeabi_dcmplt
+ 400 01a4 0346     	 mov r3,r0
+ 401 01a6 002B     	 cmp r3,#0
+ 402 01a8 03D0     	 beq .L72
+ 403              	 .loc 1 125 0 is_stmt 0 discriminator 1
+ 404 01aa 174B     	 ldr r3,.L79+72
+ 405 01ac D3E90023 	 ldrd r2,[r3]
+ 406 01b0 02E0     	 b .L29
+ 407              	.L72:
+ 408              	 .loc 1 125 0 discriminator 2
+ 409 01b2 1A4B     	 ldr r3,.L79+92
+ 410 01b4 D3E90023 	 ldrd r2,[r3]
+ 411              	.L29:
+ 412              	 .loc 1 125 0 discriminator 4
+ 413 01b8 1849     	 ldr r1,.L79+92
+ 414 01ba C1E90023 	 strd r2,[r1]
+ 415 01be 44E0     	 b .L30
+ 416              	.L80:
+ 417              	 .align 2
+ 418              	.L79:
+ 419 01c0 00000000 	 .word firstSentenceBuffer
+ 420 01c4 00000000 	 .word receivedSentence
+ 421 01c8 00000000 	 .word secondSentenceBuffer
+ 422 01cc 00000000 	 .word receivedSentence2
+ 423 01d0 00000000 	 .word outputBufferStart
+ 424 01d4 00000000 	 .word outputBufferCurrent
+ 425 01d8 00000000 	 .word outputBufferEnd
+ 426 01dc 00000000 	 .word secondOutputBufferStart
+ 427 01e0 00000000 	 .word secondOutputBufferCurrent
+ 428 01e4 00000000 	 .word secondOutputBufferEnd
+ 429 01e8 400D0300 	 .word 200000
+ 430 01ec C0CF6A00 	 .word 7000000
+ 431 01f0 00000000 	 .word pollReady
+ 432 01f4 00000000 	 .word msMaxInitialized
+ 433 01f8 00000000 	 .word ms_xValue
+ 434 01fc 00000000 	 .word max_ms_xValue
+ 435 0200 00000000 	 .word ms_yValue
+ 436 0204 00000000 	 .word max_ms_yValue
+ 437 0208 00000000 	 .word ms_zValue
+ 438 020c 00000000 	 .word max_ms_zValue
+ 439 0210 00000000 	 .word msMinInitialized
+ 440 0214 00000000 	 .word min_ms_xValue
+ 441 0218 00000000 	 .word min_ms_yValue
+ 442 021c 00000000 	 .word min_ms_zValue
+ 443              	.L20:
+ 126:../main.c     **** 				}
+ 127:../main.c     **** 				else{
+ 128:../main.c     **** 					  min_ms_xValue = ms_xValue;
+ 444              	 .loc 1 128 0 is_stmt 1
+ 445 0220 6C4B     	 ldr r3,.L81
+ 446 0222 D3E90023 	 ldrd r2,[r3]
+ 447 0226 6C49     	 ldr r1,.L81+4
+ 448 0228 C1E90023 	 strd r2,[r1]
+ 129:../main.c     **** 					  min_ms_yValue = ms_yValue;
+ 449              	 .loc 1 129 0
+ 450 022c 6B4B     	 ldr r3,.L81+8
+ 451 022e D3E90023 	 ldrd r2,[r3]
+ 452 0232 6B49     	 ldr r1,.L81+12
+ 453 0234 C1E90023 	 strd r2,[r1]
+ 130:../main.c     **** 					  min_ms_zValue = ms_zValue;
+ 454              	 .loc 1 130 0
+ 455 0238 6A4B     	 ldr r3,.L81+16
+ 456 023a D3E90023 	 ldrd r2,[r3]
+ 457 023e 6A49     	 ldr r1,.L81+20
+ 458 0240 C1E90023 	 strd r2,[r1]
+ 131:../main.c     **** 					  msMinInitialized = true;
+ 459              	 .loc 1 131 0
+ 460 0244 694B     	 ldr r3,.L81+24
+ 461 0246 0122     	 movs r2,#1
+ 462 0248 1A70     	 strb r2,[r3]
+ 463              	.L30:
+ 132:../main.c     **** 
+ 133:../main.c     **** 				}
+ 134:../main.c     **** 
+ 135:../main.c     **** 				avg_ms_xValue += ms_xValue;
+ 464              	 .loc 1 135 0
+ 465 024a 694B     	 ldr r3,.L81+28
+ 466 024c D3E90001 	 ldrd r0,[r3]
+ 467 0250 604B     	 ldr r3,.L81
+ 468 0252 D3E90023 	 ldrd r2,[r3]
+ 469 0256 FFF7FEFF 	 bl __aeabi_dadd
+ 470 025a 0246     	 mov r2,r0
+ 471 025c 0B46     	 mov r3,r1
+ 472 025e 6449     	 ldr r1,.L81+28
+ 473 0260 C1E90023 	 strd r2,[r1]
+ 136:../main.c     **** 				avg_ms_yValue += ms_yValue;
+ 474              	 .loc 1 136 0
+ 475 0264 634B     	 ldr r3,.L81+32
+ 476 0266 D3E90001 	 ldrd r0,[r3]
+ 477 026a 5C4B     	 ldr r3,.L81+8
+ 478 026c D3E90023 	 ldrd r2,[r3]
+ 479 0270 FFF7FEFF 	 bl __aeabi_dadd
+ 480 0274 0246     	 mov r2,r0
+ 481 0276 0B46     	 mov r3,r1
+ 482 0278 5E49     	 ldr r1,.L81+32
+ 483 027a C1E90023 	 strd r2,[r1]
+ 137:../main.c     **** 				avg_ms_zValue += ms_zValue;
+ 484              	 .loc 1 137 0
+ 485 027e 5E4B     	 ldr r3,.L81+36
+ 486 0280 D3E90001 	 ldrd r0,[r3]
+ 487 0284 574B     	 ldr r3,.L81+16
+ 488 0286 D3E90023 	 ldrd r2,[r3]
+ 489 028a FFF7FEFF 	 bl __aeabi_dadd
+ 490 028e 0246     	 mov r2,r0
+ 491 0290 0B46     	 mov r3,r1
+ 492 0292 5949     	 ldr r1,.L81+36
+ 493 0294 C1E90023 	 strd r2,[r1]
  138:../main.c     **** 
  139:../main.c     **** 
- 140:../main.c     **** //~ ms berekenen
- 141:../main.c     **** 
+ 140:../main.c     **** 
+ 141:../main.c     **** //~ ms berekenen
  142:../main.c     **** 
- 143:../main.c     **** 		  // min berekenen
- 144:../main.c     **** 		if(maxInitialized){
- 476              	 .loc 1 144 0
- 477 02a0 584B     	 ldr r3,.L81+40
- 478 02a2 1B78     	 ldrb r3,[r3]
- 479 02a4 002B     	 cmp r3,#0
- 480 02a6 3FD0     	 beq .L30
- 145:../main.c     **** 			  max_complement_xValue =  max(complement_xValue, max_complement_xValue);
- 481              	 .loc 1 145 0
- 482 02a8 574B     	 ldr r3,.L81+44
- 483 02aa D3E90001 	 ldrd r0,[r3]
- 484 02ae 574B     	 ldr r3,.L81+48
- 485 02b0 D3E90023 	 ldrd r2,[r3]
- 486 02b4 FFF7FEFF 	 bl __aeabi_dcmpgt
- 487 02b8 0346     	 mov r3,r0
- 488 02ba 002B     	 cmp r3,#0
- 489 02bc 03D0     	 beq .L73
- 490              	 .loc 1 145 0 is_stmt 0 discriminator 1
- 491 02be 524B     	 ldr r3,.L81+44
- 492 02c0 D3E90023 	 ldrd r2,[r3]
- 493 02c4 02E0     	 b .L33
- 494              	.L73:
- 495              	 .loc 1 145 0 discriminator 2
- 496 02c6 514B     	 ldr r3,.L81+48
- 497 02c8 D3E90023 	 ldrd r2,[r3]
- 498              	.L33:
- 499              	 .loc 1 145 0 discriminator 4
- 500 02cc 4F49     	 ldr r1,.L81+48
- 501 02ce C1E90023 	 strd r2,[r1]
- 146:../main.c     **** 			  max_complement_yValue =  max(complement_yValue, max_complement_yValue);
- 502              	 .loc 1 146 0 is_stmt 1 discriminator 4
- 503 02d2 4F4B     	 ldr r3,.L81+52
- 504 02d4 D3E90001 	 ldrd r0,[r3]
- 505 02d8 4E4B     	 ldr r3,.L81+56
- 506 02da D3E90023 	 ldrd r2,[r3]
- 507 02de FFF7FEFF 	 bl __aeabi_dcmpgt
- 508 02e2 0346     	 mov r3,r0
- 509 02e4 002B     	 cmp r3,#0
- 510 02e6 03D0     	 beq .L74
- 511              	 .loc 1 146 0 is_stmt 0 discriminator 1
- 512 02e8 494B     	 ldr r3,.L81+52
- 513 02ea D3E90023 	 ldrd r2,[r3]
- 514 02ee 02E0     	 b .L36
- 515              	.L74:
- 516              	 .loc 1 146 0 discriminator 2
- 517 02f0 484B     	 ldr r3,.L81+56
- 518 02f2 D3E90023 	 ldrd r2,[r3]
- 519              	.L36:
- 520              	 .loc 1 146 0 discriminator 4
- 521 02f6 4749     	 ldr r1,.L81+56
- 522 02f8 C1E90023 	 strd r2,[r1]
- 147:../main.c     **** 			  max_complement_zValue =  max(complement_zValue, max_complement_zValue);
- 523              	 .loc 1 147 0 is_stmt 1 discriminator 4
- 524 02fc 464B     	 ldr r3,.L81+60
- 525 02fe D3E90001 	 ldrd r0,[r3]
- 526 0302 464B     	 ldr r3,.L81+64
- 527 0304 D3E90023 	 ldrd r2,[r3]
- 528 0308 FFF7FEFF 	 bl __aeabi_dcmpgt
- 529 030c 0346     	 mov r3,r0
- 530 030e 002B     	 cmp r3,#0
- 531 0310 03D0     	 beq .L75
- 532              	 .loc 1 147 0 is_stmt 0 discriminator 1
- 533 0312 414B     	 ldr r3,.L81+60
- 534 0314 D3E90023 	 ldrd r2,[r3]
- 535 0318 02E0     	 b .L39
- 536              	.L75:
- 537              	 .loc 1 147 0 discriminator 2
- 538 031a 404B     	 ldr r3,.L81+64
- 539 031c D3E90023 	 ldrd r2,[r3]
- 540              	.L39:
- 541              	 .loc 1 147 0 discriminator 4
- 542 0320 3E49     	 ldr r1,.L81+64
- 543 0322 C1E90023 	 strd r2,[r1]
- 544 0326 14E0     	 b .L40
- 545              	.L30:
- 148:../main.c     **** 		}
- 149:../main.c     **** 		else{
- 150:../main.c     **** 			  max_complement_xValue = complement_xValue;
- 546              	 .loc 1 150 0 is_stmt 1
- 547 0328 374B     	 ldr r3,.L81+44
- 548 032a D3E90023 	 ldrd r2,[r3]
- 549 032e 3749     	 ldr r1,.L81+48
- 550 0330 C1E90023 	 strd r2,[r1]
- 151:../main.c     **** 			  max_complement_yValue = complement_yValue;
- 551              	 .loc 1 151 0
- 552 0334 364B     	 ldr r3,.L81+52
- 553 0336 D3E90023 	 ldrd r2,[r3]
- 554 033a 3649     	 ldr r1,.L81+56
- 555 033c C1E90023 	 strd r2,[r1]
- 152:../main.c     **** 			  max_complement_zValue = complement_zValue;
- 556              	 .loc 1 152 0
- 557 0340 354B     	 ldr r3,.L81+60
- 558 0342 D3E90023 	 ldrd r2,[r3]
- 559 0346 3549     	 ldr r1,.L81+64
- 560 0348 C1E90023 	 strd r2,[r1]
- 153:../main.c     **** 			  maxInitialized = true;
- 561              	 .loc 1 153 0
- 562 034c 2D4B     	 ldr r3,.L81+40
- 563 034e 0122     	 movs r2,#1
- 564 0350 1A70     	 strb r2,[r3]
- 565              	.L40:
- 154:../main.c     **** 		}
- 155:../main.c     **** 
- 156:../main.c     **** //		  max_complement_xValue = max(gyro_x, max_gyro_xValue);
- 157:../main.c     **** //		  max_complement_yValue = max(gyro_y, max_gyro_yValue);
- 158:../main.c     **** //		  max_complement_zValue = max(gyro_z, max_gyro_zValue);
+ 143:../main.c     **** 
+ 144:../main.c     **** 		  // min berekenen
+ 145:../main.c     **** 		if(maxInitialized){
+ 494              	 .loc 1 145 0
+ 495 0298 584B     	 ldr r3,.L81+40
+ 496 029a 1B78     	 ldrb r3,[r3]
+ 497 029c 002B     	 cmp r3,#0
+ 498 029e 3FD0     	 beq .L31
+ 146:../main.c     **** 			  max_complement_xValue =  max(complement_xValue, max_complement_xValue);
+ 499              	 .loc 1 146 0
+ 500 02a0 574B     	 ldr r3,.L81+44
+ 501 02a2 D3E90001 	 ldrd r0,[r3]
+ 502 02a6 574B     	 ldr r3,.L81+48
+ 503 02a8 D3E90023 	 ldrd r2,[r3]
+ 504 02ac FFF7FEFF 	 bl __aeabi_dcmpgt
+ 505 02b0 0346     	 mov r3,r0
+ 506 02b2 002B     	 cmp r3,#0
+ 507 02b4 03D0     	 beq .L73
+ 508              	 .loc 1 146 0 is_stmt 0 discriminator 1
+ 509 02b6 524B     	 ldr r3,.L81+44
+ 510 02b8 D3E90023 	 ldrd r2,[r3]
+ 511 02bc 02E0     	 b .L34
+ 512              	.L73:
+ 513              	 .loc 1 146 0 discriminator 2
+ 514 02be 514B     	 ldr r3,.L81+48
+ 515 02c0 D3E90023 	 ldrd r2,[r3]
+ 516              	.L34:
+ 517              	 .loc 1 146 0 discriminator 4
+ 518 02c4 4F49     	 ldr r1,.L81+48
+ 519 02c6 C1E90023 	 strd r2,[r1]
+ 147:../main.c     **** 			  max_complement_yValue =  max(complement_yValue, max_complement_yValue);
+ 520              	 .loc 1 147 0 is_stmt 1 discriminator 4
+ 521 02ca 4F4B     	 ldr r3,.L81+52
+ 522 02cc D3E90001 	 ldrd r0,[r3]
+ 523 02d0 4E4B     	 ldr r3,.L81+56
+ 524 02d2 D3E90023 	 ldrd r2,[r3]
+ 525 02d6 FFF7FEFF 	 bl __aeabi_dcmpgt
+ 526 02da 0346     	 mov r3,r0
+ 527 02dc 002B     	 cmp r3,#0
+ 528 02de 03D0     	 beq .L74
+ 529              	 .loc 1 147 0 is_stmt 0 discriminator 1
+ 530 02e0 494B     	 ldr r3,.L81+52
+ 531 02e2 D3E90023 	 ldrd r2,[r3]
+ 532 02e6 02E0     	 b .L37
+ 533              	.L74:
+ 534              	 .loc 1 147 0 discriminator 2
+ 535 02e8 484B     	 ldr r3,.L81+56
+ 536 02ea D3E90023 	 ldrd r2,[r3]
+ 537              	.L37:
+ 538              	 .loc 1 147 0 discriminator 4
+ 539 02ee 4749     	 ldr r1,.L81+56
+ 540 02f0 C1E90023 	 strd r2,[r1]
+ 148:../main.c     **** 			  max_complement_zValue =  max(complement_zValue, max_complement_zValue);
+ 541              	 .loc 1 148 0 is_stmt 1 discriminator 4
+ 542 02f4 464B     	 ldr r3,.L81+60
+ 543 02f6 D3E90001 	 ldrd r0,[r3]
+ 544 02fa 464B     	 ldr r3,.L81+64
+ 545 02fc D3E90023 	 ldrd r2,[r3]
+ 546 0300 FFF7FEFF 	 bl __aeabi_dcmpgt
+ 547 0304 0346     	 mov r3,r0
+ 548 0306 002B     	 cmp r3,#0
+ 549 0308 03D0     	 beq .L75
+ 550              	 .loc 1 148 0 is_stmt 0 discriminator 1
+ 551 030a 414B     	 ldr r3,.L81+60
+ 552 030c D3E90023 	 ldrd r2,[r3]
+ 553 0310 02E0     	 b .L40
+ 554              	.L75:
+ 555              	 .loc 1 148 0 discriminator 2
+ 556 0312 404B     	 ldr r3,.L81+64
+ 557 0314 D3E90023 	 ldrd r2,[r3]
+ 558              	.L40:
+ 559              	 .loc 1 148 0 discriminator 4
+ 560 0318 3E49     	 ldr r1,.L81+64
+ 561 031a C1E90023 	 strd r2,[r1]
+ 562 031e 14E0     	 b .L41
+ 563              	.L31:
+ 149:../main.c     **** 		}
+ 150:../main.c     **** 		else{
+ 151:../main.c     **** 			  max_complement_xValue = complement_xValue;
+ 564              	 .loc 1 151 0 is_stmt 1
+ 565 0320 374B     	 ldr r3,.L81+44
+ 566 0322 D3E90023 	 ldrd r2,[r3]
+ 567 0326 3749     	 ldr r1,.L81+48
+ 568 0328 C1E90023 	 strd r2,[r1]
+ 152:../main.c     **** 			  max_complement_yValue = complement_yValue;
+ 569              	 .loc 1 152 0
+ 570 032c 364B     	 ldr r3,.L81+52
+ 571 032e D3E90023 	 ldrd r2,[r3]
+ 572 0332 3649     	 ldr r1,.L81+56
+ 573 0334 C1E90023 	 strd r2,[r1]
+ 153:../main.c     **** 			  max_complement_zValue = complement_zValue;
+ 574              	 .loc 1 153 0
+ 575 0338 354B     	 ldr r3,.L81+60
+ 576 033a D3E90023 	 ldrd r2,[r3]
+ 577 033e 3549     	 ldr r1,.L81+64
+ 578 0340 C1E90023 	 strd r2,[r1]
+ 154:../main.c     **** 			  maxInitialized = true;
+ 579              	 .loc 1 154 0
+ 580 0344 2D4B     	 ldr r3,.L81+40
+ 581 0346 0122     	 movs r2,#1
+ 582 0348 1A70     	 strb r2,[r3]
+ 583              	.L41:
+ 155:../main.c     **** 		}
+ 156:../main.c     **** 
+ 157:../main.c     **** 
+ 158:../main.c     **** 		  //max berekenen
  159:../main.c     **** 
- 160:../main.c     **** 		  //max berekenen
+ 160:../main.c     **** 		if(minInitialized){
+ 584              	 .loc 1 160 0
+ 585 034a 334B     	 ldr r3,.L81+68
+ 586 034c 1B78     	 ldrb r3,[r3]
+ 587 034e 002B     	 cmp r3,#0
+ 588 0350 6AD0     	 beq .L42
  161:../main.c     **** 
- 162:../main.c     **** 		if(minInitialized){
- 566              	 .loc 1 162 0
- 567 0352 334B     	 ldr r3,.L81+68
- 568 0354 1B78     	 ldrb r3,[r3]
- 569 0356 002B     	 cmp r3,#0
- 570 0358 6AD0     	 beq .L41
- 163:../main.c     **** //				min_complement_xValue = min(gyro_x, min_gyro_xValue);
- 164:../main.c     **** //				min_complement_yValue = min(gyro_y, min_gyro_yValue);
- 165:../main.c     **** //				min_complement_zValue = min(gyro_z, min_gyro_zValue);
- 166:../main.c     **** 
- 167:../main.c     **** 				min_complement_xValue =  min(complement_xValue, min_complement_xValue);
- 571              	 .loc 1 167 0
- 572 035a 2B4B     	 ldr r3,.L81+44
- 573 035c D3E90001 	 ldrd r0,[r3]
- 574 0360 304B     	 ldr r3,.L81+72
- 575 0362 D3E90023 	 ldrd r2,[r3]
- 576 0366 FFF7FEFF 	 bl __aeabi_dcmplt
- 577 036a 0346     	 mov r3,r0
- 578 036c 002B     	 cmp r3,#0
- 579 036e 03D0     	 beq .L76
- 580              	 .loc 1 167 0 is_stmt 0 discriminator 1
- 581 0370 254B     	 ldr r3,.L81+44
- 582 0372 D3E90023 	 ldrd r2,[r3]
- 583 0376 02E0     	 b .L44
- 584              	.L76:
- 585              	 .loc 1 167 0 discriminator 2
- 586 0378 2A4B     	 ldr r3,.L81+72
- 587 037a D3E90023 	 ldrd r2,[r3]
- 588              	.L44:
- 589              	 .loc 1 167 0 discriminator 4
- 590 037e 2949     	 ldr r1,.L81+72
- 591 0380 C1E90023 	 strd r2,[r1]
- 168:../main.c     **** 				min_complement_yValue =  min(complement_yValue, min_complement_yValue);
- 592              	 .loc 1 168 0 is_stmt 1 discriminator 4
- 593 0384 224B     	 ldr r3,.L81+52
- 594 0386 D3E90001 	 ldrd r0,[r3]
- 595 038a 274B     	 ldr r3,.L81+76
- 596 038c D3E90023 	 ldrd r2,[r3]
- 597 0390 FFF7FEFF 	 bl __aeabi_dcmplt
- 598 0394 0346     	 mov r3,r0
- 599 0396 002B     	 cmp r3,#0
- 600 0398 03D0     	 beq .L77
- 601              	 .loc 1 168 0 is_stmt 0 discriminator 1
- 602 039a 1D4B     	 ldr r3,.L81+52
- 603 039c D3E90023 	 ldrd r2,[r3]
- 604 03a0 02E0     	 b .L47
- 605              	.L77:
- 606              	 .loc 1 168 0 discriminator 2
- 607 03a2 214B     	 ldr r3,.L81+76
- 608 03a4 D3E90023 	 ldrd r2,[r3]
- 609              	.L47:
- 610              	 .loc 1 168 0 discriminator 4
- 611 03a8 1F49     	 ldr r1,.L81+76
- 612 03aa C1E90023 	 strd r2,[r1]
- 169:../main.c     **** 				min_complement_zValue =  min(complement_zValue, min_complement_zValue);
- 613              	 .loc 1 169 0 is_stmt 1 discriminator 4
- 614 03ae 1A4B     	 ldr r3,.L81+60
- 615 03b0 D3E90001 	 ldrd r0,[r3]
- 616 03b4 1D4B     	 ldr r3,.L81+80
- 617 03b6 D3E90023 	 ldrd r2,[r3]
- 618 03ba FFF7FEFF 	 bl __aeabi_dcmplt
- 619 03be 0346     	 mov r3,r0
- 620 03c0 002B     	 cmp r3,#0
- 621 03c2 03D0     	 beq .L78
- 622              	 .loc 1 169 0 is_stmt 0 discriminator 1
- 623 03c4 144B     	 ldr r3,.L81+60
- 624 03c6 D3E90023 	 ldrd r2,[r3]
- 625 03ca 02E0     	 b .L50
- 626              	.L78:
- 627              	 .loc 1 169 0 discriminator 2
- 628 03cc 174B     	 ldr r3,.L81+80
- 629 03ce D3E90023 	 ldrd r2,[r3]
- 630              	.L50:
- 631              	 .loc 1 169 0 discriminator 4
- 632 03d2 1649     	 ldr r1,.L81+80
- 633 03d4 C1E90023 	 strd r2,[r1]
- 634 03d8 3FE0     	 b .L51
- 635              	.L82:
- 636 03da 00BF     	 .align 2
- 637              	.L81:
- 638 03dc 00000000 	 .word ms_xValue
- 639 03e0 00000000 	 .word min_ms_xValue
- 640 03e4 00000000 	 .word ms_yValue
- 641 03e8 00000000 	 .word min_ms_yValue
- 642 03ec 00000000 	 .word ms_zValue
- 643 03f0 00000000 	 .word min_ms_zValue
- 644 03f4 00000000 	 .word msMinInitialized
- 645 03f8 00000000 	 .word avg_ms_xValue
- 646 03fc 00000000 	 .word avg_ms_yValue
- 647 0400 00000000 	 .word avg_ms_zValue
- 648 0404 00000000 	 .word maxInitialized
- 649 0408 00000000 	 .word complement_xValue
- 650 040c 00000000 	 .word max_complement_xValue
- 651 0410 00000000 	 .word complement_yValue
- 652 0414 00000000 	 .word max_complement_yValue
- 653 0418 00000000 	 .word complement_zValue
- 654 041c 00000000 	 .word max_complement_zValue
- 655 0420 00000000 	 .word minInitialized
- 656 0424 00000000 	 .word min_complement_xValue
- 657 0428 00000000 	 .word min_complement_yValue
- 658 042c 00000000 	 .word min_complement_zValue
- 659              	.L41:
- 170:../main.c     **** 		  }
- 171:../main.c     **** 		  else{
- 172:../main.c     **** 			  min_complement_xValue = complement_xValue;
- 660              	 .loc 1 172 0 is_stmt 1
- 661 0430 954B     	 ldr r3,.L83
- 662 0432 D3E90023 	 ldrd r2,[r3]
- 663 0436 9549     	 ldr r1,.L83+4
- 664 0438 C1E90023 	 strd r2,[r1]
- 173:../main.c     **** 			  min_complement_yValue = complement_yValue;
- 665              	 .loc 1 173 0
- 666 043c 944B     	 ldr r3,.L83+8
- 667 043e D3E90023 	 ldrd r2,[r3]
- 668 0442 9449     	 ldr r1,.L83+12
- 669 0444 C1E90023 	 strd r2,[r1]
- 174:../main.c     **** 			  min_complement_zValue = complement_zValue;
- 670              	 .loc 1 174 0
- 671 0448 934B     	 ldr r3,.L83+16
- 672 044a D3E90023 	 ldrd r2,[r3]
- 673 044e 9349     	 ldr r1,.L83+20
- 674 0450 C1E90023 	 strd r2,[r1]
- 175:../main.c     **** 			  minInitialized = true;
- 675              	 .loc 1 175 0
- 676 0454 924B     	 ldr r3,.L83+24
- 677 0456 0122     	 movs r2,#1
- 678 0458 1A70     	 strb r2,[r3]
- 679              	.L51:
- 176:../main.c     **** 
- 177:../main.c     **** 		  }
- 178:../main.c     **** 
- 179:../main.c     **** 		  //avg berekenen
- 180:../main.c     **** 
- 181:../main.c     **** 		  avg_complement_xValue += complement_xValue;
- 680              	 .loc 1 181 0
- 681 045a 924B     	 ldr r3,.L83+28
- 682 045c D3E90001 	 ldrd r0,[r3]
- 683 0460 894B     	 ldr r3,.L83
- 684 0462 D3E90023 	 ldrd r2,[r3]
- 685 0466 FFF7FEFF 	 bl __aeabi_dadd
- 686 046a 0246     	 mov r2,r0
- 687 046c 0B46     	 mov r3,r1
- 688 046e 8D49     	 ldr r1,.L83+28
- 689 0470 C1E90023 	 strd r2,[r1]
- 182:../main.c     **** 		  avg_complement_yValue += complement_yValue;
- 690              	 .loc 1 182 0
- 691 0474 8C4B     	 ldr r3,.L83+32
- 692 0476 D3E90001 	 ldrd r0,[r3]
- 693 047a 854B     	 ldr r3,.L83+8
- 694 047c D3E90023 	 ldrd r2,[r3]
- 695 0480 FFF7FEFF 	 bl __aeabi_dadd
- 696 0484 0246     	 mov r2,r0
- 697 0486 0B46     	 mov r3,r1
- 698 0488 8749     	 ldr r1,.L83+32
- 699 048a C1E90023 	 strd r2,[r1]
- 183:../main.c     **** 		  avg_complement_zValue += complement_zValue;
- 700              	 .loc 1 183 0
- 701 048e 874B     	 ldr r3,.L83+36
- 702 0490 D3E90001 	 ldrd r0,[r3]
- 703 0494 804B     	 ldr r3,.L83+16
- 704 0496 D3E90023 	 ldrd r2,[r3]
- 705 049a FFF7FEFF 	 bl __aeabi_dadd
- 706 049e 0246     	 mov r2,r0
- 707 04a0 0B46     	 mov r3,r1
- 708 04a2 8249     	 ldr r1,.L83+36
- 709 04a4 C1E90023 	 strd r2,[r1]
- 184:../main.c     **** 
- 185:../main.c     **** //		  __disable_irq();
- 186:../main.c     **** //		  v.id[0] = 'G';
- 187:../main.c     **** //		  v.id[1] = 'Y';
- 188:../main.c     **** //		  v.g_x = gyro_x;
- 189:../main.c     **** //		  v.g_y = gyro_y;
- 190:../main.c     **** //		  v.g_z = gyro_z;
- 191:../main.c     **** //		  char* c_v = &v;
- 192:../main.c     **** //		  sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
- 193:../main.c     **** //		  udp_send_event(sprintString);
- 194:../main.c     **** 		 // udp_send_event2(c_v);
- 195:../main.c     **** //		  __enable_irq();
- 196:../main.c     **** 		  polltime = 0;
- 710              	 .loc 1 196 0
- 711 04a8 0023     	 movs r3,#0
- 712 04aa 7B60     	 str r3,[r7,#4]
- 713              	.L7:
- 197:../main.c     **** 	  }
- 198:../main.c     **** 	  if(gpsOutputready){
- 714              	 .loc 1 198 0
- 715 04ac 804B     	 ldr r3,.L83+40
- 716 04ae 1B78     	 ldrb r3,[r3]
- 717 04b0 002B     	 cmp r3,#0
- 718 04b2 00F0AF81 	 beq .L52
- 199:../main.c     **** 		  avg_complement_xValue = avg_complement_xValue/num_of_samples;
- 719              	 .loc 1 199 0
- 720 04b6 7B4B     	 ldr r3,.L83+28
- 721 04b8 D3E90045 	 ldrd r4,[r3]
- 722 04bc 7D4B     	 ldr r3,.L83+44
- 723 04be 1B68     	 ldr r3,[r3]
- 724 04c0 1846     	 mov r0,r3
- 725 04c2 FFF7FEFF 	 bl __aeabi_i2d
- 726 04c6 0246     	 mov r2,r0
- 727 04c8 0B46     	 mov r3,r1
- 728 04ca 2046     	 mov r0,r4
- 729 04cc 2946     	 mov r1,r5
- 730 04ce FFF7FEFF 	 bl __aeabi_ddiv
- 731 04d2 0246     	 mov r2,r0
- 732 04d4 0B46     	 mov r3,r1
- 733 04d6 7349     	 ldr r1,.L83+28
- 734 04d8 C1E90023 	 strd r2,[r1]
- 200:../main.c     **** 		  avg_complement_yValue = avg_complement_yValue/num_of_samples;
- 735              	 .loc 1 200 0
- 736 04dc 724B     	 ldr r3,.L83+32
- 737 04de D3E90045 	 ldrd r4,[r3]
- 738 04e2 744B     	 ldr r3,.L83+44
- 739 04e4 1B68     	 ldr r3,[r3]
- 740 04e6 1846     	 mov r0,r3
- 741 04e8 FFF7FEFF 	 bl __aeabi_i2d
- 742 04ec 0246     	 mov r2,r0
- 743 04ee 0B46     	 mov r3,r1
- 744 04f0 2046     	 mov r0,r4
- 745 04f2 2946     	 mov r1,r5
- 746 04f4 FFF7FEFF 	 bl __aeabi_ddiv
- 747 04f8 0246     	 mov r2,r0
- 748 04fa 0B46     	 mov r3,r1
- 749 04fc 6A49     	 ldr r1,.L83+32
- 750 04fe C1E90023 	 strd r2,[r1]
- 201:../main.c     **** 		  avg_complement_zValue = avg_complement_zValue/num_of_samples;
- 751              	 .loc 1 201 0
- 752 0502 6A4B     	 ldr r3,.L83+36
- 753 0504 D3E90045 	 ldrd r4,[r3]
- 754 0508 6A4B     	 ldr r3,.L83+44
- 755 050a 1B68     	 ldr r3,[r3]
- 756 050c 1846     	 mov r0,r3
- 757 050e FFF7FEFF 	 bl __aeabi_i2d
- 758 0512 0246     	 mov r2,r0
- 759 0514 0B46     	 mov r3,r1
- 760 0516 2046     	 mov r0,r4
- 761 0518 2946     	 mov r1,r5
- 762 051a FFF7FEFF 	 bl __aeabi_ddiv
- 763 051e 0246     	 mov r2,r0
- 764 0520 0B46     	 mov r3,r1
- 765 0522 6249     	 ldr r1,.L83+36
- 766 0524 C1E90023 	 strd r2,[r1]
- 202:../main.c     **** 
- 203:../main.c     **** 		  avg_ms_xValue = avg_ms_xValue/num_of_samples;
- 767              	 .loc 1 203 0
- 768 0528 634B     	 ldr r3,.L83+48
- 769 052a D3E90045 	 ldrd r4,[r3]
- 770 052e 614B     	 ldr r3,.L83+44
- 771 0530 1B68     	 ldr r3,[r3]
- 772 0532 1846     	 mov r0,r3
- 773 0534 FFF7FEFF 	 bl __aeabi_i2d
- 774 0538 0246     	 mov r2,r0
- 775 053a 0B46     	 mov r3,r1
- 776 053c 2046     	 mov r0,r4
- 777 053e 2946     	 mov r1,r5
- 778 0540 FFF7FEFF 	 bl __aeabi_ddiv
- 779 0544 0246     	 mov r2,r0
- 780 0546 0B46     	 mov r3,r1
- 781 0548 5B49     	 ldr r1,.L83+48
- 782 054a C1E90023 	 strd r2,[r1]
- 204:../main.c     **** 		  avg_ms_yValue = avg_ms_yValue/num_of_samples;
- 783              	 .loc 1 204 0
- 784 054e 5B4B     	 ldr r3,.L83+52
- 785 0550 D3E90045 	 ldrd r4,[r3]
- 786 0554 574B     	 ldr r3,.L83+44
- 787 0556 1B68     	 ldr r3,[r3]
- 788 0558 1846     	 mov r0,r3
- 789 055a FFF7FEFF 	 bl __aeabi_i2d
- 790 055e 0246     	 mov r2,r0
- 791 0560 0B46     	 mov r3,r1
- 792 0562 2046     	 mov r0,r4
- 793 0564 2946     	 mov r1,r5
- 794 0566 FFF7FEFF 	 bl __aeabi_ddiv
- 795 056a 0246     	 mov r2,r0
- 796 056c 0B46     	 mov r3,r1
- 797 056e 5349     	 ldr r1,.L83+52
- 798 0570 C1E90023 	 strd r2,[r1]
- 205:../main.c     **** 		  avg_ms_zValue = avg_ms_zValue/num_of_samples;
- 799              	 .loc 1 205 0
- 800 0574 524B     	 ldr r3,.L83+56
- 801 0576 D3E90045 	 ldrd r4,[r3]
- 802 057a 4E4B     	 ldr r3,.L83+44
- 803 057c 1B68     	 ldr r3,[r3]
- 804 057e 1846     	 mov r0,r3
- 805 0580 FFF7FEFF 	 bl __aeabi_i2d
- 806 0584 0246     	 mov r2,r0
- 807 0586 0B46     	 mov r3,r1
- 808 0588 2046     	 mov r0,r4
- 809 058a 2946     	 mov r1,r5
- 810 058c FFF7FEFF 	 bl __aeabi_ddiv
- 811 0590 0246     	 mov r2,r0
- 812 0592 0B46     	 mov r3,r1
- 813 0594 4A49     	 ldr r1,.L83+56
- 814 0596 C1E90023 	 strd r2,[r1]
- 206:../main.c     **** 
- 207:../main.c     **** //		  bmi_gps_data.avg_x = avg_complement_xValue;
- 208:../main.c     **** //		  bmi_gps_data.avg_y = avg_complement_yValue;
- 209:../main.c     **** //		  bmi_gps_data.avg_z = avg_complement_zValue;
- 210:../main.c     **** //		  bmi_gps_data.min_x = min_complement_xValue;
- 211:../main.c     **** //		  bmi_gps_data.min_y = min_complement_yValue;
- 212:../main.c     **** //		  bmi_gps_data.min_z = min_complement_zValue;
- 213:../main.c     **** //		  bmi_gps_data.max_x = max_complement_xValue;
- 214:../main.c     **** //		  bmi_gps_data.max_y = max_complement_yValue;
- 215:../main.c     **** //		  bmi_gps_data.max_z = max_complement_zValue;
- 216:../main.c     **** 
- 217:../main.c     **** 
- 218:../main.c     **** 		  bmi_gps_data.avg_x = avg_complement_xValue;
- 815              	 .loc 1 218 0
- 816 059a 424B     	 ldr r3,.L83+28
- 817 059c D3E90023 	 ldrd r2,[r3]
- 818 05a0 4849     	 ldr r1,.L83+60
- 819 05a2 C1E90023 	 strd r2,[r1]
- 219:../main.c     **** 		  bmi_gps_data.avg_y = avg_complement_yValue;
- 820              	 .loc 1 219 0
- 821 05a6 404B     	 ldr r3,.L83+32
- 822 05a8 D3E90023 	 ldrd r2,[r3]
- 823 05ac 4549     	 ldr r1,.L83+60
- 824 05ae C1E90223 	 strd r2,[r1,#8]
- 220:../main.c     **** 		  bmi_gps_data.avg_z = avg_complement_zValue;
- 825              	 .loc 1 220 0
- 826 05b2 3E4B     	 ldr r3,.L83+36
- 827 05b4 D3E90023 	 ldrd r2,[r3]
- 828 05b8 4249     	 ldr r1,.L83+60
- 829 05ba C1E90423 	 strd r2,[r1,#16]
- 221:../main.c     **** 		  bmi_gps_data.min_x = min_complement_xValue;
- 830              	 .loc 1 221 0
- 831 05be 334B     	 ldr r3,.L83+4
- 832 05c0 D3E90023 	 ldrd r2,[r3]
- 833 05c4 3F49     	 ldr r1,.L83+60
- 834 05c6 C1E90623 	 strd r2,[r1,#24]
- 222:../main.c     **** 		  bmi_gps_data.min_y = min_complement_yValue;
- 835              	 .loc 1 222 0
- 836 05ca 324B     	 ldr r3,.L83+12
- 837 05cc D3E90023 	 ldrd r2,[r3]
- 838 05d0 3C49     	 ldr r1,.L83+60
- 839 05d2 C1E90823 	 strd r2,[r1,#32]
- 223:../main.c     **** 		  bmi_gps_data.min_z = min_complement_zValue;
- 840              	 .loc 1 223 0
- 841 05d6 314B     	 ldr r3,.L83+20
- 842 05d8 D3E90023 	 ldrd r2,[r3]
- 843 05dc 3949     	 ldr r1,.L83+60
- 844 05de C1E90A23 	 strd r2,[r1,#40]
- 224:../main.c     **** 		  bmi_gps_data.max_x = max_complement_xValue;
- 845              	 .loc 1 224 0
- 846 05e2 394B     	 ldr r3,.L83+64
- 847 05e4 D3E90023 	 ldrd r2,[r3]
- 848 05e8 3649     	 ldr r1,.L83+60
- 849 05ea C1E90C23 	 strd r2,[r1,#48]
- 225:../main.c     **** 		  bmi_gps_data.max_y = max_complement_yValue;
- 850              	 .loc 1 225 0
- 851 05ee 374B     	 ldr r3,.L83+68
- 852 05f0 D3E90023 	 ldrd r2,[r3]
- 853 05f4 3349     	 ldr r1,.L83+60
- 854 05f6 C1E90E23 	 strd r2,[r1,#56]
- 226:../main.c     **** 		  bmi_gps_data.max_z = max_complement_zValue;
- 855              	 .loc 1 226 0
- 856 05fa 354B     	 ldr r3,.L83+72
- 857 05fc D3E90023 	 ldrd r2,[r3]
- 858 0600 3049     	 ldr r1,.L83+60
- 859 0602 C1E91023 	 strd r2,[r1,#64]
- 227:../main.c     **** 
- 228:../main.c     **** 		  bmi_ms_data.avg_x = avg_ms_xValue;
- 860              	 .loc 1 228 0
- 861 0606 2C4B     	 ldr r3,.L83+48
- 862 0608 D3E90023 	 ldrd r2,[r3]
- 863 060c 3149     	 ldr r1,.L83+76
- 864 060e C1E90023 	 strd r2,[r1]
- 229:../main.c     **** 		  bmi_ms_data.avg_y = avg_ms_yValue;
- 865              	 .loc 1 229 0
- 866 0612 2A4B     	 ldr r3,.L83+52
- 867 0614 D3E90023 	 ldrd r2,[r3]
- 868 0618 2E49     	 ldr r1,.L83+76
- 869 061a C1E90223 	 strd r2,[r1,#8]
- 230:../main.c     **** 		  bmi_ms_data.avg_z = avg_ms_zValue;
- 870              	 .loc 1 230 0
- 871 061e 284B     	 ldr r3,.L83+56
- 872 0620 D3E90023 	 ldrd r2,[r3]
- 873 0624 2B49     	 ldr r1,.L83+76
- 874 0626 C1E90423 	 strd r2,[r1,#16]
- 231:../main.c     **** 		  bmi_ms_data.min_x = min_ms_xValue;
- 875              	 .loc 1 231 0
- 876 062a 2B4B     	 ldr r3,.L83+80
- 877 062c D3E90023 	 ldrd r2,[r3]
- 878 0630 2849     	 ldr r1,.L83+76
- 879 0632 C1E90623 	 strd r2,[r1,#24]
- 232:../main.c     **** 		  bmi_ms_data.min_y = min_ms_yValue;
- 880              	 .loc 1 232 0
- 881 0636 294B     	 ldr r3,.L83+84
- 882 0638 D3E90023 	 ldrd r2,[r3]
- 883 063c 2549     	 ldr r1,.L83+76
- 884 063e C1E90823 	 strd r2,[r1,#32]
- 233:../main.c     **** 		  bmi_ms_data.min_z = min_ms_zValue;
- 885              	 .loc 1 233 0
- 886 0642 274B     	 ldr r3,.L83+88
- 887 0644 D3E90023 	 ldrd r2,[r3]
- 888 0648 2249     	 ldr r1,.L83+76
- 889 064a C1E90A23 	 strd r2,[r1,#40]
- 234:../main.c     **** 		  bmi_ms_data.max_x = max_ms_xValue;
- 890              	 .loc 1 234 0
- 891 064e 254B     	 ldr r3,.L83+92
- 892 0650 D3E90023 	 ldrd r2,[r3]
- 893 0654 1F49     	 ldr r1,.L83+76
- 894 0656 C1E90C23 	 strd r2,[r1,#48]
- 235:../main.c     **** 		  bmi_ms_data.max_y = max_ms_yValue;
- 895              	 .loc 1 235 0
- 896 065a 234B     	 ldr r3,.L83+96
- 897 065c D3E90023 	 ldrd r2,[r3]
- 898 0660 1C49     	 ldr r1,.L83+76
- 899 0662 C1E90E23 	 strd r2,[r1,#56]
- 236:../main.c     **** 		  bmi_ms_data.max_z = max_ms_zValue;
- 900              	 .loc 1 236 0
- 901 0666 214B     	 ldr r3,.L83+100
- 902 0668 D3E90023 	 ldrd r2,[r3]
- 903 066c 1949     	 ldr r1,.L83+76
- 904 066e C1E91023 	 strd r2,[r1,#64]
+ 162:../main.c     **** 				min_complement_xValue =  min(complement_xValue, min_complement_xValue);
+ 589              	 .loc 1 162 0
+ 590 0352 2B4B     	 ldr r3,.L81+44
+ 591 0354 D3E90001 	 ldrd r0,[r3]
+ 592 0358 304B     	 ldr r3,.L81+72
+ 593 035a D3E90023 	 ldrd r2,[r3]
+ 594 035e FFF7FEFF 	 bl __aeabi_dcmplt
+ 595 0362 0346     	 mov r3,r0
+ 596 0364 002B     	 cmp r3,#0
+ 597 0366 03D0     	 beq .L76
+ 598              	 .loc 1 162 0 is_stmt 0 discriminator 1
+ 599 0368 254B     	 ldr r3,.L81+44
+ 600 036a D3E90023 	 ldrd r2,[r3]
+ 601 036e 02E0     	 b .L45
+ 602              	.L76:
+ 603              	 .loc 1 162 0 discriminator 2
+ 604 0370 2A4B     	 ldr r3,.L81+72
+ 605 0372 D3E90023 	 ldrd r2,[r3]
+ 606              	.L45:
+ 607              	 .loc 1 162 0 discriminator 4
+ 608 0376 2949     	 ldr r1,.L81+72
+ 609 0378 C1E90023 	 strd r2,[r1]
+ 163:../main.c     **** 				min_complement_yValue =  min(complement_yValue, min_complement_yValue);
+ 610              	 .loc 1 163 0 is_stmt 1 discriminator 4
+ 611 037c 224B     	 ldr r3,.L81+52
+ 612 037e D3E90001 	 ldrd r0,[r3]
+ 613 0382 274B     	 ldr r3,.L81+76
+ 614 0384 D3E90023 	 ldrd r2,[r3]
+ 615 0388 FFF7FEFF 	 bl __aeabi_dcmplt
+ 616 038c 0346     	 mov r3,r0
+ 617 038e 002B     	 cmp r3,#0
+ 618 0390 03D0     	 beq .L77
+ 619              	 .loc 1 163 0 is_stmt 0 discriminator 1
+ 620 0392 1D4B     	 ldr r3,.L81+52
+ 621 0394 D3E90023 	 ldrd r2,[r3]
+ 622 0398 02E0     	 b .L48
+ 623              	.L77:
+ 624              	 .loc 1 163 0 discriminator 2
+ 625 039a 214B     	 ldr r3,.L81+76
+ 626 039c D3E90023 	 ldrd r2,[r3]
+ 627              	.L48:
+ 628              	 .loc 1 163 0 discriminator 4
+ 629 03a0 1F49     	 ldr r1,.L81+76
+ 630 03a2 C1E90023 	 strd r2,[r1]
+ 164:../main.c     **** 				min_complement_zValue =  min(complement_zValue, min_complement_zValue);
+ 631              	 .loc 1 164 0 is_stmt 1 discriminator 4
+ 632 03a6 1A4B     	 ldr r3,.L81+60
+ 633 03a8 D3E90001 	 ldrd r0,[r3]
+ 634 03ac 1D4B     	 ldr r3,.L81+80
+ 635 03ae D3E90023 	 ldrd r2,[r3]
+ 636 03b2 FFF7FEFF 	 bl __aeabi_dcmplt
+ 637 03b6 0346     	 mov r3,r0
+ 638 03b8 002B     	 cmp r3,#0
+ 639 03ba 03D0     	 beq .L78
+ 640              	 .loc 1 164 0 is_stmt 0 discriminator 1
+ 641 03bc 144B     	 ldr r3,.L81+60
+ 642 03be D3E90023 	 ldrd r2,[r3]
+ 643 03c2 02E0     	 b .L51
+ 644              	.L78:
+ 645              	 .loc 1 164 0 discriminator 2
+ 646 03c4 174B     	 ldr r3,.L81+80
+ 647 03c6 D3E90023 	 ldrd r2,[r3]
+ 648              	.L51:
+ 649              	 .loc 1 164 0 discriminator 4
+ 650 03ca 1649     	 ldr r1,.L81+80
+ 651 03cc C1E90023 	 strd r2,[r1]
+ 652 03d0 3FE0     	 b .L52
+ 653              	.L82:
+ 654 03d2 00BF     	 .align 2
+ 655              	.L81:
+ 656 03d4 00000000 	 .word ms_xValue
+ 657 03d8 00000000 	 .word min_ms_xValue
+ 658 03dc 00000000 	 .word ms_yValue
+ 659 03e0 00000000 	 .word min_ms_yValue
+ 660 03e4 00000000 	 .word ms_zValue
+ 661 03e8 00000000 	 .word min_ms_zValue
+ 662 03ec 00000000 	 .word msMinInitialized
+ 663 03f0 00000000 	 .word avg_ms_xValue
+ 664 03f4 00000000 	 .word avg_ms_yValue
+ 665 03f8 00000000 	 .word avg_ms_zValue
+ 666 03fc 00000000 	 .word maxInitialized
+ 667 0400 00000000 	 .word complement_xValue
+ 668 0404 00000000 	 .word max_complement_xValue
+ 669 0408 00000000 	 .word complement_yValue
+ 670 040c 00000000 	 .word max_complement_yValue
+ 671 0410 00000000 	 .word complement_zValue
+ 672 0414 00000000 	 .word max_complement_zValue
+ 673 0418 00000000 	 .word minInitialized
+ 674 041c 00000000 	 .word min_complement_xValue
+ 675 0420 00000000 	 .word min_complement_yValue
+ 676 0424 00000000 	 .word min_complement_zValue
+ 677              	.L42:
+ 165:../main.c     **** 		  }
+ 166:../main.c     **** 		  else{
+ 167:../main.c     **** 			  min_complement_xValue = complement_xValue;
+ 678              	 .loc 1 167 0 is_stmt 1
+ 679 0428 954B     	 ldr r3,.L83
+ 680 042a D3E90023 	 ldrd r2,[r3]
+ 681 042e 9549     	 ldr r1,.L83+4
+ 682 0430 C1E90023 	 strd r2,[r1]
+ 168:../main.c     **** 			  min_complement_yValue = complement_yValue;
+ 683              	 .loc 1 168 0
+ 684 0434 944B     	 ldr r3,.L83+8
+ 685 0436 D3E90023 	 ldrd r2,[r3]
+ 686 043a 9449     	 ldr r1,.L83+12
+ 687 043c C1E90023 	 strd r2,[r1]
+ 169:../main.c     **** 			  min_complement_zValue = complement_zValue;
+ 688              	 .loc 1 169 0
+ 689 0440 934B     	 ldr r3,.L83+16
+ 690 0442 D3E90023 	 ldrd r2,[r3]
+ 691 0446 9349     	 ldr r1,.L83+20
+ 692 0448 C1E90023 	 strd r2,[r1]
+ 170:../main.c     **** 			  minInitialized = true;
+ 693              	 .loc 1 170 0
+ 694 044c 924B     	 ldr r3,.L83+24
+ 695 044e 0122     	 movs r2,#1
+ 696 0450 1A70     	 strb r2,[r3]
+ 697              	.L52:
+ 171:../main.c     **** 
+ 172:../main.c     **** 		  }
+ 173:../main.c     **** 
+ 174:../main.c     **** 		  //avg berekenen
+ 175:../main.c     **** 
+ 176:../main.c     **** 		  avg_complement_xValue += complement_xValue;
+ 698              	 .loc 1 176 0
+ 699 0452 924B     	 ldr r3,.L83+28
+ 700 0454 D3E90001 	 ldrd r0,[r3]
+ 701 0458 894B     	 ldr r3,.L83
+ 702 045a D3E90023 	 ldrd r2,[r3]
+ 703 045e FFF7FEFF 	 bl __aeabi_dadd
+ 704 0462 0246     	 mov r2,r0
+ 705 0464 0B46     	 mov r3,r1
+ 706 0466 8D49     	 ldr r1,.L83+28
+ 707 0468 C1E90023 	 strd r2,[r1]
+ 177:../main.c     **** 		  avg_complement_yValue += complement_yValue;
+ 708              	 .loc 1 177 0
+ 709 046c 8C4B     	 ldr r3,.L83+32
+ 710 046e D3E90001 	 ldrd r0,[r3]
+ 711 0472 854B     	 ldr r3,.L83+8
+ 712 0474 D3E90023 	 ldrd r2,[r3]
+ 713 0478 FFF7FEFF 	 bl __aeabi_dadd
+ 714 047c 0246     	 mov r2,r0
+ 715 047e 0B46     	 mov r3,r1
+ 716 0480 8749     	 ldr r1,.L83+32
+ 717 0482 C1E90023 	 strd r2,[r1]
+ 178:../main.c     **** 		  avg_complement_zValue += complement_zValue;
+ 718              	 .loc 1 178 0
+ 719 0486 874B     	 ldr r3,.L83+36
+ 720 0488 D3E90001 	 ldrd r0,[r3]
+ 721 048c 804B     	 ldr r3,.L83+16
+ 722 048e D3E90023 	 ldrd r2,[r3]
+ 723 0492 FFF7FEFF 	 bl __aeabi_dadd
+ 724 0496 0246     	 mov r2,r0
+ 725 0498 0B46     	 mov r3,r1
+ 726 049a 8249     	 ldr r1,.L83+36
+ 727 049c C1E90023 	 strd r2,[r1]
+ 179:../main.c     **** 
+ 180:../main.c     **** 		  //polltime = 0;
+ 181:../main.c     **** 		  pollReady = false;
+ 728              	 .loc 1 181 0
+ 729 04a0 814B     	 ldr r3,.L83+40
+ 730 04a2 0022     	 movs r2,#0
+ 731 04a4 1A70     	 strb r2,[r3]
+ 732              	.L8:
+ 182:../main.c     **** 	  }
+ 183:../main.c     **** 	  if(gpsOutputready){
+ 733              	 .loc 1 183 0
+ 734 04a6 814B     	 ldr r3,.L83+44
+ 735 04a8 1B78     	 ldrb r3,[r3]
+ 736 04aa 002B     	 cmp r3,#0
+ 737 04ac 00F0B081 	 beq .L53
+ 184:../main.c     **** 		  avg_complement_xValue = avg_complement_xValue/num_of_samples;
+ 738              	 .loc 1 184 0
+ 739 04b0 7A4B     	 ldr r3,.L83+28
+ 740 04b2 D3E90045 	 ldrd r4,[r3]
+ 741 04b6 7E4B     	 ldr r3,.L83+48
+ 742 04b8 1B68     	 ldr r3,[r3]
+ 743 04ba 1846     	 mov r0,r3
+ 744 04bc FFF7FEFF 	 bl __aeabi_i2d
+ 745 04c0 0246     	 mov r2,r0
+ 746 04c2 0B46     	 mov r3,r1
+ 747 04c4 2046     	 mov r0,r4
+ 748 04c6 2946     	 mov r1,r5
+ 749 04c8 FFF7FEFF 	 bl __aeabi_ddiv
+ 750 04cc 0246     	 mov r2,r0
+ 751 04ce 0B46     	 mov r3,r1
+ 752 04d0 7249     	 ldr r1,.L83+28
+ 753 04d2 C1E90023 	 strd r2,[r1]
+ 185:../main.c     **** 		  avg_complement_yValue = avg_complement_yValue/num_of_samples;
+ 754              	 .loc 1 185 0
+ 755 04d6 724B     	 ldr r3,.L83+32
+ 756 04d8 D3E90045 	 ldrd r4,[r3]
+ 757 04dc 744B     	 ldr r3,.L83+48
+ 758 04de 1B68     	 ldr r3,[r3]
+ 759 04e0 1846     	 mov r0,r3
+ 760 04e2 FFF7FEFF 	 bl __aeabi_i2d
+ 761 04e6 0246     	 mov r2,r0
+ 762 04e8 0B46     	 mov r3,r1
+ 763 04ea 2046     	 mov r0,r4
+ 764 04ec 2946     	 mov r1,r5
+ 765 04ee FFF7FEFF 	 bl __aeabi_ddiv
+ 766 04f2 0246     	 mov r2,r0
+ 767 04f4 0B46     	 mov r3,r1
+ 768 04f6 6A49     	 ldr r1,.L83+32
+ 769 04f8 C1E90023 	 strd r2,[r1]
+ 186:../main.c     **** 		  avg_complement_zValue = avg_complement_zValue/num_of_samples;
+ 770              	 .loc 1 186 0
+ 771 04fc 694B     	 ldr r3,.L83+36
+ 772 04fe D3E90045 	 ldrd r4,[r3]
+ 773 0502 6B4B     	 ldr r3,.L83+48
+ 774 0504 1B68     	 ldr r3,[r3]
+ 775 0506 1846     	 mov r0,r3
+ 776 0508 FFF7FEFF 	 bl __aeabi_i2d
+ 777 050c 0246     	 mov r2,r0
+ 778 050e 0B46     	 mov r3,r1
+ 779 0510 2046     	 mov r0,r4
+ 780 0512 2946     	 mov r1,r5
+ 781 0514 FFF7FEFF 	 bl __aeabi_ddiv
+ 782 0518 0246     	 mov r2,r0
+ 783 051a 0B46     	 mov r3,r1
+ 784 051c 6149     	 ldr r1,.L83+36
+ 785 051e C1E90023 	 strd r2,[r1]
+ 187:../main.c     **** 
+ 188:../main.c     **** 		  avg_ms_xValue = avg_ms_xValue/num_of_samples;
+ 786              	 .loc 1 188 0
+ 787 0522 644B     	 ldr r3,.L83+52
+ 788 0524 D3E90045 	 ldrd r4,[r3]
+ 789 0528 614B     	 ldr r3,.L83+48
+ 790 052a 1B68     	 ldr r3,[r3]
+ 791 052c 1846     	 mov r0,r3
+ 792 052e FFF7FEFF 	 bl __aeabi_i2d
+ 793 0532 0246     	 mov r2,r0
+ 794 0534 0B46     	 mov r3,r1
+ 795 0536 2046     	 mov r0,r4
+ 796 0538 2946     	 mov r1,r5
+ 797 053a FFF7FEFF 	 bl __aeabi_ddiv
+ 798 053e 0246     	 mov r2,r0
+ 799 0540 0B46     	 mov r3,r1
+ 800 0542 5C49     	 ldr r1,.L83+52
+ 801 0544 C1E90023 	 strd r2,[r1]
+ 189:../main.c     **** 		  avg_ms_yValue = avg_ms_yValue/num_of_samples;
+ 802              	 .loc 1 189 0
+ 803 0548 5B4B     	 ldr r3,.L83+56
+ 804 054a D3E90045 	 ldrd r4,[r3]
+ 805 054e 584B     	 ldr r3,.L83+48
+ 806 0550 1B68     	 ldr r3,[r3]
+ 807 0552 1846     	 mov r0,r3
+ 808 0554 FFF7FEFF 	 bl __aeabi_i2d
+ 809 0558 0246     	 mov r2,r0
+ 810 055a 0B46     	 mov r3,r1
+ 811 055c 2046     	 mov r0,r4
+ 812 055e 2946     	 mov r1,r5
+ 813 0560 FFF7FEFF 	 bl __aeabi_ddiv
+ 814 0564 0246     	 mov r2,r0
+ 815 0566 0B46     	 mov r3,r1
+ 816 0568 5349     	 ldr r1,.L83+56
+ 817 056a C1E90023 	 strd r2,[r1]
+ 190:../main.c     **** 		  avg_ms_zValue = avg_ms_zValue/num_of_samples;
+ 818              	 .loc 1 190 0
+ 819 056e 534B     	 ldr r3,.L83+60
+ 820 0570 D3E90045 	 ldrd r4,[r3]
+ 821 0574 4E4B     	 ldr r3,.L83+48
+ 822 0576 1B68     	 ldr r3,[r3]
+ 823 0578 1846     	 mov r0,r3
+ 824 057a FFF7FEFF 	 bl __aeabi_i2d
+ 825 057e 0246     	 mov r2,r0
+ 826 0580 0B46     	 mov r3,r1
+ 827 0582 2046     	 mov r0,r4
+ 828 0584 2946     	 mov r1,r5
+ 829 0586 FFF7FEFF 	 bl __aeabi_ddiv
+ 830 058a 0246     	 mov r2,r0
+ 831 058c 0B46     	 mov r3,r1
+ 832 058e 4B49     	 ldr r1,.L83+60
+ 833 0590 C1E90023 	 strd r2,[r1]
+ 191:../main.c     **** 
+ 192:../main.c     **** 		  bmi_gps_data.avg_x = avg_complement_xValue;
+ 834              	 .loc 1 192 0
+ 835 0594 414B     	 ldr r3,.L83+28
+ 836 0596 D3E90023 	 ldrd r2,[r3]
+ 837 059a 4949     	 ldr r1,.L83+64
+ 838 059c C1E90023 	 strd r2,[r1]
+ 193:../main.c     **** 		  bmi_gps_data.avg_y = avg_complement_yValue;
+ 839              	 .loc 1 193 0
+ 840 05a0 3F4B     	 ldr r3,.L83+32
+ 841 05a2 D3E90023 	 ldrd r2,[r3]
+ 842 05a6 4649     	 ldr r1,.L83+64
+ 843 05a8 C1E90223 	 strd r2,[r1,#8]
+ 194:../main.c     **** 		  bmi_gps_data.avg_z = avg_complement_zValue;
+ 844              	 .loc 1 194 0
+ 845 05ac 3D4B     	 ldr r3,.L83+36
+ 846 05ae D3E90023 	 ldrd r2,[r3]
+ 847 05b2 4349     	 ldr r1,.L83+64
+ 848 05b4 C1E90423 	 strd r2,[r1,#16]
+ 195:../main.c     **** 		  bmi_gps_data.min_x = min_complement_xValue;
+ 849              	 .loc 1 195 0
+ 850 05b8 324B     	 ldr r3,.L83+4
+ 851 05ba D3E90023 	 ldrd r2,[r3]
+ 852 05be 4049     	 ldr r1,.L83+64
+ 853 05c0 C1E90623 	 strd r2,[r1,#24]
+ 196:../main.c     **** 		  bmi_gps_data.min_y = min_complement_yValue;
+ 854              	 .loc 1 196 0
+ 855 05c4 314B     	 ldr r3,.L83+12
+ 856 05c6 D3E90023 	 ldrd r2,[r3]
+ 857 05ca 3D49     	 ldr r1,.L83+64
+ 858 05cc C1E90823 	 strd r2,[r1,#32]
+ 197:../main.c     **** 		  bmi_gps_data.min_z = min_complement_zValue;
+ 859              	 .loc 1 197 0
+ 860 05d0 304B     	 ldr r3,.L83+20
+ 861 05d2 D3E90023 	 ldrd r2,[r3]
+ 862 05d6 3A49     	 ldr r1,.L83+64
+ 863 05d8 C1E90A23 	 strd r2,[r1,#40]
+ 198:../main.c     **** 		  bmi_gps_data.max_x = max_complement_xValue;
+ 864              	 .loc 1 198 0
+ 865 05dc 394B     	 ldr r3,.L83+68
+ 866 05de D3E90023 	 ldrd r2,[r3]
+ 867 05e2 3749     	 ldr r1,.L83+64
+ 868 05e4 C1E90C23 	 strd r2,[r1,#48]
+ 199:../main.c     **** 		  bmi_gps_data.max_y = max_complement_yValue;
+ 869              	 .loc 1 199 0
+ 870 05e8 374B     	 ldr r3,.L83+72
+ 871 05ea D3E90023 	 ldrd r2,[r3]
+ 872 05ee 3449     	 ldr r1,.L83+64
+ 873 05f0 C1E90E23 	 strd r2,[r1,#56]
+ 200:../main.c     **** 		  bmi_gps_data.max_z = max_complement_zValue;
+ 874              	 .loc 1 200 0
+ 875 05f4 354B     	 ldr r3,.L83+76
+ 876 05f6 D3E90023 	 ldrd r2,[r3]
+ 877 05fa 3149     	 ldr r1,.L83+64
+ 878 05fc C1E91023 	 strd r2,[r1,#64]
+ 201:../main.c     **** 
+ 202:../main.c     **** 		  bmi_ms_data.avg_x = avg_ms_xValue;
+ 879              	 .loc 1 202 0
+ 880 0600 2C4B     	 ldr r3,.L83+52
+ 881 0602 D3E90023 	 ldrd r2,[r3]
+ 882 0606 3249     	 ldr r1,.L83+80
+ 883 0608 C1E90023 	 strd r2,[r1]
+ 203:../main.c     **** 		  bmi_ms_data.avg_y = avg_ms_yValue;
+ 884              	 .loc 1 203 0
+ 885 060c 2A4B     	 ldr r3,.L83+56
+ 886 060e D3E90023 	 ldrd r2,[r3]
+ 887 0612 2F49     	 ldr r1,.L83+80
+ 888 0614 C1E90223 	 strd r2,[r1,#8]
+ 204:../main.c     **** 		  bmi_ms_data.avg_z = avg_ms_zValue;
+ 889              	 .loc 1 204 0
+ 890 0618 284B     	 ldr r3,.L83+60
+ 891 061a D3E90023 	 ldrd r2,[r3]
+ 892 061e 2C49     	 ldr r1,.L83+80
+ 893 0620 C1E90423 	 strd r2,[r1,#16]
+ 205:../main.c     **** 		  bmi_ms_data.min_x = min_ms_xValue;
+ 894              	 .loc 1 205 0
+ 895 0624 2B4B     	 ldr r3,.L83+84
+ 896 0626 D3E90023 	 ldrd r2,[r3]
+ 897 062a 2949     	 ldr r1,.L83+80
+ 898 062c C1E90623 	 strd r2,[r1,#24]
+ 206:../main.c     **** 		  bmi_ms_data.min_y = min_ms_yValue;
+ 899              	 .loc 1 206 0
+ 900 0630 294B     	 ldr r3,.L83+88
+ 901 0632 D3E90023 	 ldrd r2,[r3]
+ 902 0636 2649     	 ldr r1,.L83+80
+ 903 0638 C1E90823 	 strd r2,[r1,#32]
+ 207:../main.c     **** 		  bmi_ms_data.min_z = min_ms_zValue;
+ 904              	 .loc 1 207 0
+ 905 063c 274B     	 ldr r3,.L83+92
+ 906 063e D3E90023 	 ldrd r2,[r3]
+ 907 0642 2349     	 ldr r1,.L83+80
+ 908 0644 C1E90A23 	 strd r2,[r1,#40]
+ 208:../main.c     **** 		  bmi_ms_data.max_x = max_ms_xValue;
+ 909              	 .loc 1 208 0
+ 910 0648 254B     	 ldr r3,.L83+96
+ 911 064a D3E90023 	 ldrd r2,[r3]
+ 912 064e 2049     	 ldr r1,.L83+80
+ 913 0650 C1E90C23 	 strd r2,[r1,#48]
+ 209:../main.c     **** 		  bmi_ms_data.max_y = max_ms_yValue;
+ 914              	 .loc 1 209 0
+ 915 0654 234B     	 ldr r3,.L83+100
+ 916 0656 D3E90023 	 ldrd r2,[r3]
+ 917 065a 1D49     	 ldr r1,.L83+80
+ 918 065c C1E90E23 	 strd r2,[r1,#56]
+ 210:../main.c     **** 		  bmi_ms_data.max_z = max_ms_zValue;
+ 919              	 .loc 1 210 0
+ 920 0660 214B     	 ldr r3,.L83+104
+ 921 0662 D3E90023 	 ldrd r2,[r3]
+ 922 0666 1A49     	 ldr r1,.L83+80
+ 923 0668 C1E91023 	 strd r2,[r1,#64]
+ 211:../main.c     **** 
+ 212:../main.c     **** 		  udp_send_event_ms(&bmi_ms_data);
+ 924              	 .loc 1 212 0
+ 925 066c 1848     	 ldr r0,.L83+80
+ 926 066e FFF7FEFF 	 bl udp_send_event_ms
+ 213:../main.c     **** 		  udp_send_event_r(&bmi_gps_data);
+ 927              	 .loc 1 213 0
+ 928 0672 1348     	 ldr r0,.L83+64
+ 929 0674 FFF7FEFF 	 bl udp_send_event_r
+ 214:../main.c     **** 
+ 215:../main.c     **** 		  num_of_samples = 0;
+ 930              	 .loc 1 215 0
+ 931 0678 0D4B     	 ldr r3,.L83+48
+ 932 067a 0022     	 movs r2,#0
+ 933 067c 1A60     	 str r2,[r3]
+ 934 067e 35E0     	 b .L84
+ 935              	.L85:
+ 936              	 .align 2
+ 937              	.L83:
+ 938 0680 00000000 	 .word complement_xValue
+ 939 0684 00000000 	 .word min_complement_xValue
+ 940 0688 00000000 	 .word complement_yValue
+ 941 068c 00000000 	 .word min_complement_yValue
+ 942 0690 00000000 	 .word complement_zValue
+ 943 0694 00000000 	 .word min_complement_zValue
+ 944 0698 00000000 	 .word minInitialized
+ 945 069c 00000000 	 .word avg_complement_xValue
+ 946 06a0 00000000 	 .word avg_complement_yValue
+ 947 06a4 00000000 	 .word avg_complement_zValue
+ 948 06a8 00000000 	 .word pollReady
+ 949 06ac 00000000 	 .word gpsOutputready
+ 950 06b0 00000000 	 .word num_of_samples
+ 951 06b4 00000000 	 .word avg_ms_xValue
+ 952 06b8 00000000 	 .word avg_ms_yValue
+ 953 06bc 00000000 	 .word avg_ms_zValue
+ 954 06c0 00000000 	 .word bmi_gps_data
+ 955 06c4 00000000 	 .word max_complement_xValue
+ 956 06c8 00000000 	 .word max_complement_yValue
+ 957 06cc 00000000 	 .word max_complement_zValue
+ 958 06d0 00000000 	 .word bmi_ms_data
+ 959 06d4 00000000 	 .word min_ms_xValue
+ 960 06d8 00000000 	 .word min_ms_yValue
+ 961 06dc 00000000 	 .word min_ms_zValue
+ 962 06e0 00000000 	 .word max_ms_xValue
+ 963 06e4 00000000 	 .word max_ms_yValue
+ 964 06e8 00000000 	 .word max_ms_zValue
+ 965              	.L84:
+ 216:../main.c     **** 		  max_complement_xValue = 0;
+ 966              	 .loc 1 216 0
+ 967 06ec 4C49     	 ldr r1,.L86
+ 968 06ee 4FF00002 	 mov r2,#0
+ 969 06f2 4FF00003 	 mov r3,#0
+ 970 06f6 C1E90023 	 strd r2,[r1]
+ 217:../main.c     **** 		  max_complement_yValue = 0;
+ 971              	 .loc 1 217 0
+ 972 06fa 4A49     	 ldr r1,.L86+4
+ 973 06fc 4FF00002 	 mov r2,#0
+ 974 0700 4FF00003 	 mov r3,#0
+ 975 0704 C1E90023 	 strd r2,[r1]
+ 218:../main.c     **** 		  max_complement_zValue = 0;
+ 976              	 .loc 1 218 0
+ 977 0708 4749     	 ldr r1,.L86+8
+ 978 070a 4FF00002 	 mov r2,#0
+ 979 070e 4FF00003 	 mov r3,#0
+ 980 0712 C1E90023 	 strd r2,[r1]
+ 219:../main.c     **** 
+ 220:../main.c     **** 		  minInitialized = false;
+ 981              	 .loc 1 220 0
+ 982 0716 454B     	 ldr r3,.L86+12
+ 983 0718 0022     	 movs r2,#0
+ 984 071a 1A70     	 strb r2,[r3]
+ 221:../main.c     **** 		  maxInitialized = false;
+ 985              	 .loc 1 221 0
+ 986 071c 444B     	 ldr r3,.L86+16
+ 987 071e 0022     	 movs r2,#0
+ 988 0720 1A70     	 strb r2,[r3]
+ 222:../main.c     **** 
+ 223:../main.c     **** 		  min_complement_xValue = 0;
+ 989              	 .loc 1 223 0
+ 990 0722 4449     	 ldr r1,.L86+20
+ 991 0724 4FF00002 	 mov r2,#0
+ 992 0728 4FF00003 	 mov r3,#0
+ 993 072c C1E90023 	 strd r2,[r1]
+ 224:../main.c     **** 		  min_complement_yValue = 0;
+ 994              	 .loc 1 224 0
+ 995 0730 4149     	 ldr r1,.L86+24
+ 996 0732 4FF00002 	 mov r2,#0
+ 997 0736 4FF00003 	 mov r3,#0
+ 998 073a C1E90023 	 strd r2,[r1]
+ 225:../main.c     **** 		  min_complement_zValue = 0;
+ 999              	 .loc 1 225 0
+ 1000 073e 3F49     	 ldr r1,.L86+28
+ 1001 0740 4FF00002 	 mov r2,#0
+ 1002 0744 4FF00003 	 mov r3,#0
+ 1003 0748 C1E90023 	 strd r2,[r1]
+ 226:../main.c     **** 
+ 227:../main.c     **** 		  avg_complement_xValue = 0;
+ 1004              	 .loc 1 227 0
+ 1005 074c 3C49     	 ldr r1,.L86+32
+ 1006 074e 4FF00002 	 mov r2,#0
+ 1007 0752 4FF00003 	 mov r3,#0
+ 1008 0756 C1E90023 	 strd r2,[r1]
+ 228:../main.c     **** 		  avg_complement_yValue = 0;
+ 1009              	 .loc 1 228 0
+ 1010 075a 3A49     	 ldr r1,.L86+36
+ 1011 075c 4FF00002 	 mov r2,#0
+ 1012 0760 4FF00003 	 mov r3,#0
+ 1013 0764 C1E90023 	 strd r2,[r1]
+ 229:../main.c     **** 		  avg_complement_zValue = 0;
+ 1014              	 .loc 1 229 0
+ 1015 0768 3749     	 ldr r1,.L86+40
+ 1016 076a 4FF00002 	 mov r2,#0
+ 1017 076e 4FF00003 	 mov r3,#0
+ 1018 0772 C1E90023 	 strd r2,[r1]
+ 230:../main.c     **** 
+ 231:../main.c     **** 		  max_ms_xValue = 0;
+ 1019              	 .loc 1 231 0
+ 1020 0776 3549     	 ldr r1,.L86+44
+ 1021 0778 4FF00002 	 mov r2,#0
+ 1022 077c 4FF00003 	 mov r3,#0
+ 1023 0780 C1E90023 	 strd r2,[r1]
+ 232:../main.c     **** 		  max_ms_yValue = 0;
+ 1024              	 .loc 1 232 0
+ 1025 0784 3249     	 ldr r1,.L86+48
+ 1026 0786 4FF00002 	 mov r2,#0
+ 1027 078a 4FF00003 	 mov r3,#0
+ 1028 078e C1E90023 	 strd r2,[r1]
+ 233:../main.c     **** 		  max_ms_zValue = 0;
+ 1029              	 .loc 1 233 0
+ 1030 0792 3049     	 ldr r1,.L86+52
+ 1031 0794 4FF00002 	 mov r2,#0
+ 1032 0798 4FF00003 	 mov r3,#0
+ 1033 079c C1E90023 	 strd r2,[r1]
+ 234:../main.c     **** 
+ 235:../main.c     **** 		  msMinInitialized = false;
+ 1034              	 .loc 1 235 0
+ 1035 07a0 2D4B     	 ldr r3,.L86+56
+ 1036 07a2 0022     	 movs r2,#0
+ 1037 07a4 1A70     	 strb r2,[r3]
+ 236:../main.c     **** 		  msMaxInitialized = false;
+ 1038              	 .loc 1 236 0
+ 1039 07a6 2D4B     	 ldr r3,.L86+60
+ 1040 07a8 0022     	 movs r2,#0
+ 1041 07aa 1A70     	 strb r2,[r3]
  237:../main.c     **** 
- 238:../main.c     **** 
- 239:../main.c     **** 
- 240:../main.c     **** 
- 241:../main.c     **** //
- 242:../main.c     **** //		  bmi_gps_data.avg_x = 3;
- 243:../main.c     **** //		  bmi_gps_data.avg_y = 3;
- 244:../main.c     **** //		  bmi_gps_data.avg_z = 3;
- 245:../main.c     **** //		  bmi_gps_data.min_x = 4;
- 246:../main.c     **** //		  bmi_gps_data.min_y = 4;
- 247:../main.c     **** //		  bmi_gps_data.min_z = 4;
- 248:../main.c     **** //		  bmi_gps_data.max_x = 5;
- 249:../main.c     **** //		  bmi_gps_data.max_y = 5;
- 250:../main.c     **** //		  bmi_gps_data.max_z = 5;
+ 238:../main.c     **** 		  min_ms_xValue = 0;
+ 1042              	 .loc 1 238 0
+ 1043 07ac 2C49     	 ldr r1,.L86+64
+ 1044 07ae 4FF00002 	 mov r2,#0
+ 1045 07b2 4FF00003 	 mov r3,#0
+ 1046 07b6 C1E90023 	 strd r2,[r1]
+ 239:../main.c     **** 		  min_ms_yValue = 0;
+ 1047              	 .loc 1 239 0
+ 1048 07ba 2A49     	 ldr r1,.L86+68
+ 1049 07bc 4FF00002 	 mov r2,#0
+ 1050 07c0 4FF00003 	 mov r3,#0
+ 1051 07c4 C1E90023 	 strd r2,[r1]
+ 240:../main.c     **** 		  min_ms_zValue = 0;
+ 1052              	 .loc 1 240 0
+ 1053 07c8 2749     	 ldr r1,.L86+72
+ 1054 07ca 4FF00002 	 mov r2,#0
+ 1055 07ce 4FF00003 	 mov r3,#0
+ 1056 07d2 C1E90023 	 strd r2,[r1]
+ 241:../main.c     **** 
+ 242:../main.c     **** 		  avg_ms_xValue = 0;
+ 1057              	 .loc 1 242 0
+ 1058 07d6 2549     	 ldr r1,.L86+76
+ 1059 07d8 4FF00002 	 mov r2,#0
+ 1060 07dc 4FF00003 	 mov r3,#0
+ 1061 07e0 C1E90023 	 strd r2,[r1]
+ 243:../main.c     **** 		  avg_ms_yValue = 0;
+ 1062              	 .loc 1 243 0
+ 1063 07e4 2249     	 ldr r1,.L86+80
+ 1064 07e6 4FF00002 	 mov r2,#0
+ 1065 07ea 4FF00003 	 mov r3,#0
+ 1066 07ee C1E90023 	 strd r2,[r1]
+ 244:../main.c     **** 		  avg_ms_zValue = 0;
+ 1067              	 .loc 1 244 0
+ 1068 07f2 2049     	 ldr r1,.L86+84
+ 1069 07f4 4FF00002 	 mov r2,#0
+ 1070 07f8 4FF00003 	 mov r3,#0
+ 1071 07fc C1E90023 	 strd r2,[r1]
+ 245:../main.c     **** 
+ 246:../main.c     **** 		  udp_send_event(secondOutputBufferStart);
+ 1072              	 .loc 1 246 0
+ 1073 0800 1D4B     	 ldr r3,.L86+88
+ 1074 0802 1B68     	 ldr r3,[r3]
+ 1075 0804 1846     	 mov r0,r3
+ 1076 0806 FFF7FEFF 	 bl udp_send_event
+ 247:../main.c     **** 		  gpsOutputready = false;
+ 1077              	 .loc 1 247 0
+ 1078 080a 1C4B     	 ldr r3,.L86+92
+ 1079 080c 0022     	 movs r2,#0
+ 1080 080e 1A70     	 strb r2,[r3]
+ 1081              	.L53:
+ 248:../main.c     **** 	  }
+ 249:../main.c     **** 	  if(outputBufferReady){
+ 1082              	 .loc 1 249 0
+ 1083 0810 1B4B     	 ldr r3,.L86+96
+ 1084 0812 1B78     	 ldrb r3,[r3]
+ 1085 0814 002B     	 cmp r3,#0
+ 1086 0816 02D0     	 beq .L54
+ 250:../main.c     **** 		  outputBufferReady = false;
+ 1087              	 .loc 1 250 0
+ 1088 0818 194B     	 ldr r3,.L86+96
+ 1089 081a 0022     	 movs r2,#0
+ 1090 081c 1A70     	 strb r2,[r3]
+ 1091              	.L54:
  251:../main.c     **** 
- 252:../main.c     **** 		  udp_send_event_ms(&bmi_ms_data);
- 905              	 .loc 1 252 0
- 906 0672 1848     	 ldr r0,.L83+76
- 907 0674 FFF7FEFF 	 bl udp_send_event_ms
- 253:../main.c     **** 		  udp_send_event_r(&bmi_gps_data);
- 908              	 .loc 1 253 0
- 909 0678 1248     	 ldr r0,.L83+60
- 910 067a FFF7FEFF 	 bl udp_send_event_r
+ 252:../main.c     **** 	  }
+ 253:../main.c     **** 
  254:../main.c     **** 
- 255:../main.c     **** 		  num_of_samples = 0;
- 911              	 .loc 1 255 0
- 912 067e 0D4B     	 ldr r3,.L83+44
- 913 0680 0022     	 movs r2,#0
- 914 0682 1A60     	 str r2,[r3]
- 915 0684 34E0     	 b .L84
- 916              	.L85:
- 917 0686 00BF     	 .align 2
- 918              	.L83:
- 919 0688 00000000 	 .word complement_xValue
- 920 068c 00000000 	 .word min_complement_xValue
- 921 0690 00000000 	 .word complement_yValue
- 922 0694 00000000 	 .word min_complement_yValue
- 923 0698 00000000 	 .word complement_zValue
- 924 069c 00000000 	 .word min_complement_zValue
- 925 06a0 00000000 	 .word minInitialized
- 926 06a4 00000000 	 .word avg_complement_xValue
- 927 06a8 00000000 	 .word avg_complement_yValue
- 928 06ac 00000000 	 .word avg_complement_zValue
- 929 06b0 00000000 	 .word gpsOutputready
- 930 06b4 00000000 	 .word num_of_samples
- 931 06b8 00000000 	 .word avg_ms_xValue
- 932 06bc 00000000 	 .word avg_ms_yValue
- 933 06c0 00000000 	 .word avg_ms_zValue
- 934 06c4 00000000 	 .word bmi_gps_data
- 935 06c8 00000000 	 .word max_complement_xValue
- 936 06cc 00000000 	 .word max_complement_yValue
- 937 06d0 00000000 	 .word max_complement_zValue
- 938 06d4 00000000 	 .word bmi_ms_data
- 939 06d8 00000000 	 .word min_ms_xValue
- 940 06dc 00000000 	 .word min_ms_yValue
- 941 06e0 00000000 	 .word min_ms_zValue
- 942 06e4 00000000 	 .word max_ms_xValue
- 943 06e8 00000000 	 .word max_ms_yValue
- 944 06ec 00000000 	 .word max_ms_zValue
- 945              	.L84:
- 256:../main.c     **** 		  max_complement_xValue = 0;
- 946              	 .loc 1 256 0
- 947 06f0 4C49     	 ldr r1,.L86
- 948 06f2 4FF00002 	 mov r2,#0
- 949 06f6 4FF00003 	 mov r3,#0
- 950 06fa C1E90023 	 strd r2,[r1]
- 257:../main.c     **** 		  max_complement_yValue = 0;
- 951              	 .loc 1 257 0
- 952 06fe 4A49     	 ldr r1,.L86+4
- 953 0700 4FF00002 	 mov r2,#0
- 954 0704 4FF00003 	 mov r3,#0
- 955 0708 C1E90023 	 strd r2,[r1]
- 258:../main.c     **** 		  max_complement_zValue = 0;
- 956              	 .loc 1 258 0
- 957 070c 4749     	 ldr r1,.L86+8
- 958 070e 4FF00002 	 mov r2,#0
- 959 0712 4FF00003 	 mov r3,#0
- 960 0716 C1E90023 	 strd r2,[r1]
- 259:../main.c     **** 
- 260:../main.c     **** 		  minInitialized = false;
- 961              	 .loc 1 260 0
- 962 071a 454B     	 ldr r3,.L86+12
- 963 071c 0022     	 movs r2,#0
- 964 071e 1A70     	 strb r2,[r3]
- 261:../main.c     **** 		  maxInitialized = false;
- 965              	 .loc 1 261 0
- 966 0720 444B     	 ldr r3,.L86+16
- 967 0722 0022     	 movs r2,#0
- 968 0724 1A70     	 strb r2,[r3]
- 262:../main.c     **** 
- 263:../main.c     **** 		  min_complement_xValue = 0;
- 969              	 .loc 1 263 0
- 970 0726 4449     	 ldr r1,.L86+20
- 971 0728 4FF00002 	 mov r2,#0
- 972 072c 4FF00003 	 mov r3,#0
- 973 0730 C1E90023 	 strd r2,[r1]
- 264:../main.c     **** 		  min_complement_yValue = 0;
- 974              	 .loc 1 264 0
- 975 0734 4149     	 ldr r1,.L86+24
- 976 0736 4FF00002 	 mov r2,#0
- 977 073a 4FF00003 	 mov r3,#0
- 978 073e C1E90023 	 strd r2,[r1]
- 265:../main.c     **** 		  min_complement_zValue = 0;
- 979              	 .loc 1 265 0
- 980 0742 3F49     	 ldr r1,.L86+28
- 981 0744 4FF00002 	 mov r2,#0
- 982 0748 4FF00003 	 mov r3,#0
- 983 074c C1E90023 	 strd r2,[r1]
- 266:../main.c     **** 
- 267:../main.c     **** 		  avg_complement_xValue = 0;
- 984              	 .loc 1 267 0
- 985 0750 3C49     	 ldr r1,.L86+32
- 986 0752 4FF00002 	 mov r2,#0
- 987 0756 4FF00003 	 mov r3,#0
- 988 075a C1E90023 	 strd r2,[r1]
- 268:../main.c     **** 		  avg_complement_yValue = 0;
- 989              	 .loc 1 268 0
- 990 075e 3A49     	 ldr r1,.L86+36
- 991 0760 4FF00002 	 mov r2,#0
- 992 0764 4FF00003 	 mov r3,#0
- 993 0768 C1E90023 	 strd r2,[r1]
- 269:../main.c     **** 		  avg_complement_zValue = 0;
- 994              	 .loc 1 269 0
- 995 076c 3749     	 ldr r1,.L86+40
- 996 076e 4FF00002 	 mov r2,#0
- 997 0772 4FF00003 	 mov r3,#0
- 998 0776 C1E90023 	 strd r2,[r1]
- 270:../main.c     **** 
- 271:../main.c     **** 		  max_ms_xValue = 0;
- 999              	 .loc 1 271 0
- 1000 077a 3549     	 ldr r1,.L86+44
- 1001 077c 4FF00002 	 mov r2,#0
- 1002 0780 4FF00003 	 mov r3,#0
- 1003 0784 C1E90023 	 strd r2,[r1]
- 272:../main.c     **** 		  max_ms_yValue = 0;
- 1004              	 .loc 1 272 0
- 1005 0788 3249     	 ldr r1,.L86+48
- 1006 078a 4FF00002 	 mov r2,#0
- 1007 078e 4FF00003 	 mov r3,#0
- 1008 0792 C1E90023 	 strd r2,[r1]
- 273:../main.c     **** 		  max_ms_zValue = 0;
- 1009              	 .loc 1 273 0
- 1010 0796 3049     	 ldr r1,.L86+52
- 1011 0798 4FF00002 	 mov r2,#0
- 1012 079c 4FF00003 	 mov r3,#0
- 1013 07a0 C1E90023 	 strd r2,[r1]
- 274:../main.c     **** 
- 275:../main.c     **** 		  msMinInitialized = false;
- 1014              	 .loc 1 275 0
- 1015 07a4 2D4B     	 ldr r3,.L86+56
- 1016 07a6 0022     	 movs r2,#0
- 1017 07a8 1A70     	 strb r2,[r3]
- 276:../main.c     **** 		  msMaxInitialized = false;
- 1018              	 .loc 1 276 0
- 1019 07aa 2D4B     	 ldr r3,.L86+60
- 1020 07ac 0022     	 movs r2,#0
- 1021 07ae 1A70     	 strb r2,[r3]
- 277:../main.c     **** 
- 278:../main.c     **** 		  min_ms_xValue = 0;
- 1022              	 .loc 1 278 0
- 1023 07b0 2C49     	 ldr r1,.L86+64
- 1024 07b2 4FF00002 	 mov r2,#0
- 1025 07b6 4FF00003 	 mov r3,#0
- 1026 07ba C1E90023 	 strd r2,[r1]
- 279:../main.c     **** 		  min_ms_yValue = 0;
- 1027              	 .loc 1 279 0
- 1028 07be 2A49     	 ldr r1,.L86+68
- 1029 07c0 4FF00002 	 mov r2,#0
- 1030 07c4 4FF00003 	 mov r3,#0
- 1031 07c8 C1E90023 	 strd r2,[r1]
- 280:../main.c     **** 		  min_ms_zValue = 0;
- 1032              	 .loc 1 280 0
- 1033 07cc 2749     	 ldr r1,.L86+72
- 1034 07ce 4FF00002 	 mov r2,#0
- 1035 07d2 4FF00003 	 mov r3,#0
- 1036 07d6 C1E90023 	 strd r2,[r1]
- 281:../main.c     **** 
- 282:../main.c     **** 		  avg_ms_xValue = 0;
- 1037              	 .loc 1 282 0
- 1038 07da 2549     	 ldr r1,.L86+76
- 1039 07dc 4FF00002 	 mov r2,#0
- 1040 07e0 4FF00003 	 mov r3,#0
- 1041 07e4 C1E90023 	 strd r2,[r1]
- 283:../main.c     **** 		  avg_ms_yValue = 0;
- 1042              	 .loc 1 283 0
- 1043 07e8 2249     	 ldr r1,.L86+80
- 1044 07ea 4FF00002 	 mov r2,#0
- 1045 07ee 4FF00003 	 mov r3,#0
- 1046 07f2 C1E90023 	 strd r2,[r1]
- 284:../main.c     **** 		  avg_ms_zValue = 0;
- 1047              	 .loc 1 284 0
- 1048 07f6 2049     	 ldr r1,.L86+84
- 1049 07f8 4FF00002 	 mov r2,#0
- 1050 07fc 4FF00003 	 mov r3,#0
- 1051 0800 C1E90023 	 strd r2,[r1]
- 285:../main.c     **** 
- 286:../main.c     **** 
- 287:../main.c     **** //		  char* c_v = &bmi_gps_data;
- 288:../main.c     **** //		  udp_send_event_ms(&c_v);
- 289:../main.c     **** //		  udp_send_event_r(&c_v);
- 290:../main.c     **** 
- 291:../main.c     **** 
- 292:../main.c     **** 		  udp_send_event(secondOutputBufferStart);
- 1052              	 .loc 1 292 0
- 1053 0804 1D4B     	 ldr r3,.L86+88
- 1054 0806 1B68     	 ldr r3,[r3]
- 1055 0808 1846     	 mov r0,r3
- 1056 080a FFF7FEFF 	 bl udp_send_event
- 293:../main.c     **** 		  gpsOutputready = false;
- 1057              	 .loc 1 293 0
- 1058 080e 1C4B     	 ldr r3,.L86+92
- 1059 0810 0022     	 movs r2,#0
- 1060 0812 1A70     	 strb r2,[r3]
- 1061              	.L52:
- 294:../main.c     **** 		  //sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
- 295:../main.c     **** 	  }
- 296:../main.c     **** 	  if(outputBufferReady){
- 1062              	 .loc 1 296 0
- 1063 0814 1B4B     	 ldr r3,.L86+96
- 1064 0816 1B78     	 ldrb r3,[r3]
- 1065 0818 002B     	 cmp r3,#0
- 1066 081a 02D0     	 beq .L53
- 297:../main.c     **** 		 // udp_send_event(receivedSentence);
- 298:../main.c     **** 		  outputBufferReady = false;
- 1067              	 .loc 1 298 0
- 1068 081c 194B     	 ldr r3,.L86+96
- 1069 081e 0022     	 movs r2,#0
- 1070 0820 1A70     	 strb r2,[r3]
- 1071              	.L53:
- 299:../main.c     **** 
- 300:../main.c     **** 	  }
- 301:../main.c     **** 
- 302:../main.c     **** 
- 303:../main.c     **** 	//  printf("g");
- 304:../main.c     **** 
- 305:../main.c     **** 
- 306:../main.c     ****   }
- 1072              	 .loc 1 306 0
- 1073 0822 25E4     	 b .L54
- 1074              	.L87:
- 1075              	 .align 2
- 1076              	.L86:
- 1077 0824 00000000 	 .word max_complement_xValue
- 1078 0828 00000000 	 .word max_complement_yValue
- 1079 082c 00000000 	 .word max_complement_zValue
- 1080 0830 00000000 	 .word minInitialized
- 1081 0834 00000000 	 .word maxInitialized
- 1082 0838 00000000 	 .word min_complement_xValue
- 1083 083c 00000000 	 .word min_complement_yValue
- 1084 0840 00000000 	 .word min_complement_zValue
- 1085 0844 00000000 	 .word avg_complement_xValue
- 1086 0848 00000000 	 .word avg_complement_yValue
- 1087 084c 00000000 	 .word avg_complement_zValue
- 1088 0850 00000000 	 .word max_ms_xValue
- 1089 0854 00000000 	 .word max_ms_yValue
- 1090 0858 00000000 	 .word max_ms_zValue
- 1091 085c 00000000 	 .word msMinInitialized
- 1092 0860 00000000 	 .word msMaxInitialized
- 1093 0864 00000000 	 .word min_ms_xValue
- 1094 0868 00000000 	 .word min_ms_yValue
- 1095 086c 00000000 	 .word min_ms_zValue
- 1096 0870 00000000 	 .word avg_ms_xValue
- 1097 0874 00000000 	 .word avg_ms_yValue
- 1098 0878 00000000 	 .word avg_ms_zValue
- 1099 087c 00000000 	 .word secondOutputBufferStart
- 1100 0880 00000000 	 .word gpsOutputready
- 1101 0884 00000000 	 .word outputBufferReady
- 1102              	 .cfi_endproc
- 1103              	.LFE456:
- 1105              	 .text
- 1106              	.Letext0:
- 1107              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1108              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 1109              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_usic.h"
- 1110              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
- 1111              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
- 1112              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
- 1113              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
- 1114              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/udp.h"
- 1115              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/DAVE.h"
- 1116              	 .file 11 "../Header/UDP.h"
- 1117              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
- 1118              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
- 1119              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
- 1120              	 .file 15 "../Header/GPS.h"
- 1121              	 .file 16 "../Header/BMI.h"
- 1122              	 .file 17 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
+ 255:../main.c     ****   }
+ 1092              	 .loc 1 255 0
+ 1093 081e 25E4     	 b .L6
+ 1094              	.L87:
+ 1095              	 .align 2
+ 1096              	.L86:
+ 1097 0820 00000000 	 .word max_complement_xValue
+ 1098 0824 00000000 	 .word max_complement_yValue
+ 1099 0828 00000000 	 .word max_complement_zValue
+ 1100 082c 00000000 	 .word minInitialized
+ 1101 0830 00000000 	 .word maxInitialized
+ 1102 0834 00000000 	 .word min_complement_xValue
+ 1103 0838 00000000 	 .word min_complement_yValue
+ 1104 083c 00000000 	 .word min_complement_zValue
+ 1105 0840 00000000 	 .word avg_complement_xValue
+ 1106 0844 00000000 	 .word avg_complement_yValue
+ 1107 0848 00000000 	 .word avg_complement_zValue
+ 1108 084c 00000000 	 .word max_ms_xValue
+ 1109 0850 00000000 	 .word max_ms_yValue
+ 1110 0854 00000000 	 .word max_ms_zValue
+ 1111 0858 00000000 	 .word msMinInitialized
+ 1112 085c 00000000 	 .word msMaxInitialized
+ 1113 0860 00000000 	 .word min_ms_xValue
+ 1114 0864 00000000 	 .word min_ms_yValue
+ 1115 0868 00000000 	 .word min_ms_zValue
+ 1116 086c 00000000 	 .word avg_ms_xValue
+ 1117 0870 00000000 	 .word avg_ms_yValue
+ 1118 0874 00000000 	 .word avg_ms_zValue
+ 1119 0878 00000000 	 .word secondOutputBufferStart
+ 1120 087c 00000000 	 .word gpsOutputready
+ 1121 0880 00000000 	 .word outputBufferReady
+ 1122              	 .cfi_endproc
+ 1123              	.LFE456:
+ 1125              	 .text
+ 1126              	.Letext0:
+ 1127              	 .file 2 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1128              	 .file 3 "d:\\program files\\dave\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 1129              	 .file 4 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/XMCLib/inc/xmc_usic.h"
+ 1130              	 .file 5 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/arch.h"
+ 1131              	 .file 6 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/pbuf.h"
+ 1132              	 .file 7 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip4_addr.h"
+ 1133              	 .file 8 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/ip_addr.h"
+ 1134              	 .file 9 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/udp.h"
+ 1135              	 .file 10 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/DAVE.h"
+ 1136              	 .file 11 "../Header/UDP.h"
+ 1137              	 .file 12 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 1138              	 .file 13 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Include/core_cm4.h"
+ 1139              	 .file 14 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Libraries/CMSIS/Infineon/XMC4800_series/Include/system_XMC4800.h"
+ 1140              	 .file 15 "../Header/GPS.h"
+ 1141              	 .file 16 "../Header/BMI.h"
+ 1142              	 .file 17 "D:/Users/Beheerder/Desktop/GPSBox/SensorMaritime-SensorBox/Sensorbox_firmware/GPSGyroAnalysisTool/GpsGyroAnalysisTool/GpsGyroAnalysisTool/Dave/Generated/ETH_LWIP/lwip/include/lwip/memp.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
                             *COM*:00000004 com_pcb
@@ -1432,6 +1401,7 @@ DEFINED SYMBOLS
                             *COM*:00000068 r_msg
                             *COM*:00000001 outputBufferReady
                             *COM*:00000001 gpsOutputready
+                            *COM*:00000001 pollReady
                             *COM*:00000001 msMinInitialized
                             *COM*:00000001 msMaxInitialized
                             *COM*:00000001 minInitialized
@@ -1442,6 +1412,7 @@ DEFINED SYMBOLS
                             *COM*:000000c8 receivedSentence2
                             *COM*:00000004 firstSentenceBuffer
                             *COM*:00000004 secondSentenceBuffer
+                            *COM*:00000001 pollcounter
                             *COM*:00000004 outputBufferStart
                             *COM*:00000004 outputBufferCurrent
                             *COM*:00000004 outputBufferEnd
@@ -1489,18 +1460,18 @@ DEFINED SYMBOLS
                             *COM*:00000002 gyro_xValue
                             *COM*:00000002 gyro_yValue
                             *COM*:00000002 gyro_zValue
-    {standard input}:85     .text.CCU43_1_IRQHandler:00000000 $t
-    {standard input}:90     .text.CCU43_1_IRQHandler:00000000 CCU43_1_IRQHandler
-    {standard input}:122    .text.CCU43_1_IRQHandler:00000014 $d
-    {standard input}:132    .text.main:00000000 $t
-    {standard input}:137    .text.main:00000000 main
-    {standard input}:402    .text.main:000001cc $d
-    {standard input}:427    .text.main:00000228 $t
-    {standard input}:638    .text.main:000003dc $d
-    {standard input}:661    .text.main:00000430 $t
-    {standard input}:919    .text.main:00000688 $d
-    {standard input}:947    .text.main:000006f0 $t
-    {standard input}:1077   .text.main:00000824 $d
+    {standard input}:87     .text.CCU43_1_IRQHandler:00000000 $t
+    {standard input}:92     .text.CCU43_1_IRQHandler:00000000 CCU43_1_IRQHandler
+    {standard input}:145    .text.CCU43_1_IRQHandler:00000034 $d
+    {standard input}:157    .text.main:00000000 $t
+    {standard input}:162    .text.main:00000000 main
+    {standard input}:419    .text.main:000001c0 $d
+    {standard input}:445    .text.main:00000220 $t
+    {standard input}:656    .text.main:000003d4 $d
+    {standard input}:679    .text.main:00000428 $t
+    {standard input}:938    .text.main:00000680 $d
+    {standard input}:967    .text.main:000006ec $t
+    {standard input}:1097   .text.main:00000820 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

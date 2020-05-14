@@ -15,6 +15,7 @@ bool outputBufferReady;
 
 bool gpsOutputready;
 
+bool pollReady;
 
 bool msMinInitialized;
 
@@ -36,6 +37,8 @@ char  receivedSentence2[200];
 
 uint8_t* firstSentenceBuffer;
 uint8_t* secondSentenceBuffer;
+
+uint8_t pollcounter;
 
 //char  sprintString[200];
 

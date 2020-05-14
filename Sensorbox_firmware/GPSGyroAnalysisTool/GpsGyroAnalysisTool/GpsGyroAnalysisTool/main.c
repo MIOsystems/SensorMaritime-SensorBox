@@ -29,25 +29,25 @@
  * code.
  */
 
-
-
-
-
 void gyroTimerInterrupt(){
-	gpsOutputready    = true;
+
+
+	pollcounter++;
+	pollReady = true;
+	if(pollcounter > 99){
+		gpsOutputready   = true;
+		pollcounter = 0;
+
+	}
+
+
 }
-
-
-
-
-
 
 int main(void)
 {
   DAVE_STATUS_t status;
 
   status = DAVE_Init();           /* Initialization of DAVE APPs  */
-
 
   initGPS();
 
@@ -83,7 +83,7 @@ int main(void)
     }
   }
 
-  long polltime = 0;
+  //long polltime = 0;
 
 
   /* Placeholder for user application code. The while loop below can be replaced with user application code. */
@@ -91,8 +91,9 @@ int main(void)
   {
 
 	  sys_check_timeouts();
-	  polltime++;
-	  if( polltime > 60000){//600000){
+	  if(pollReady){
+	 // polltime++;
+	  //if( polltime > 60000){
 		  bmi055_poll_data();
 		  bmi055_apply_gyro_all_angles();
 		  bmi055_apply_accel_all_angles();
@@ -153,16 +154,10 @@ int main(void)
 			  maxInitialized = true;
 		}
 
-//		  max_complement_xValue = max(gyro_x, max_gyro_xValue);
-//		  max_complement_yValue = max(gyro_y, max_gyro_yValue);
-//		  max_complement_zValue = max(gyro_z, max_gyro_zValue);
 
 		  //max berekenen
 
 		if(minInitialized){
-//				min_complement_xValue = min(gyro_x, min_gyro_xValue);
-//				min_complement_yValue = min(gyro_y, min_gyro_yValue);
-//				min_complement_zValue = min(gyro_z, min_gyro_zValue);
 
 				min_complement_xValue =  min(complement_xValue, min_complement_xValue);
 				min_complement_yValue =  min(complement_yValue, min_complement_yValue);
@@ -182,18 +177,8 @@ int main(void)
 		  avg_complement_yValue += complement_yValue;
 		  avg_complement_zValue += complement_zValue;
 
-//		  __disable_irq();
-//		  v.id[0] = 'G';
-//		  v.id[1] = 'Y';
-//		  v.g_x = gyro_x;
-//		  v.g_y = gyro_y;
-//		  v.g_z = gyro_z;
-//		  char* c_v = &v;
-//		  sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
-//		  udp_send_event(sprintString);
-		 // udp_send_event2(c_v);
-//		  __enable_irq();
-		  polltime = 0;
+		  //polltime = 0;
+		  pollReady = false;
 	  }
 	  if(gpsOutputready){
 		  avg_complement_xValue = avg_complement_xValue/num_of_samples;
@@ -203,17 +188,6 @@ int main(void)
 		  avg_ms_xValue = avg_ms_xValue/num_of_samples;
 		  avg_ms_yValue = avg_ms_yValue/num_of_samples;
 		  avg_ms_zValue = avg_ms_zValue/num_of_samples;
-
-//		  bmi_gps_data.avg_x = avg_complement_xValue;
-//		  bmi_gps_data.avg_y = avg_complement_yValue;
-//		  bmi_gps_data.avg_z = avg_complement_zValue;
-//		  bmi_gps_data.min_x = min_complement_xValue;
-//		  bmi_gps_data.min_y = min_complement_yValue;
-//		  bmi_gps_data.min_z = min_complement_zValue;
-//		  bmi_gps_data.max_x = max_complement_xValue;
-//		  bmi_gps_data.max_y = max_complement_yValue;
-//		  bmi_gps_data.max_z = max_complement_zValue;
-
 
 		  bmi_gps_data.avg_x = avg_complement_xValue;
 		  bmi_gps_data.avg_y = avg_complement_yValue;
@@ -234,20 +208,6 @@ int main(void)
 		  bmi_ms_data.max_x = max_ms_xValue;
 		  bmi_ms_data.max_y = max_ms_yValue;
 		  bmi_ms_data.max_z = max_ms_zValue;
-
-
-
-
-//
-//		  bmi_gps_data.avg_x = 3;
-//		  bmi_gps_data.avg_y = 3;
-//		  bmi_gps_data.avg_z = 3;
-//		  bmi_gps_data.min_x = 4;
-//		  bmi_gps_data.min_y = 4;
-//		  bmi_gps_data.min_z = 4;
-//		  bmi_gps_data.max_x = 5;
-//		  bmi_gps_data.max_y = 5;
-//		  bmi_gps_data.max_z = 5;
 
 		  udp_send_event_ms(&bmi_ms_data);
 		  udp_send_event_r(&bmi_gps_data);
@@ -283,24 +243,13 @@ int main(void)
 		  avg_ms_yValue = 0;
 		  avg_ms_zValue = 0;
 
-
-//		  char* c_v = &bmi_gps_data;
-//		  udp_send_event_ms(&c_v);
-//		  udp_send_event_r(&c_v);
-
-
 		  udp_send_event(secondOutputBufferStart);
 		  gpsOutputready = false;
-		  //sprintf(sprintString,"gyro: %i, %i,  %i", gyro_xValue, gyro_yValue, gyro_zValue);
 	  }
 	  if(outputBufferReady){
-		 // udp_send_event(receivedSentence);
 		  outputBufferReady = false;
 
 	  }
-
-
-	//  printf("g");
 
 
   }
